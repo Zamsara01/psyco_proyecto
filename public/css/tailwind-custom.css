@@ -1,0 +1,55 @@
+/* 
+ * Custom styles that extend Tailwind.
+ * As per instructions, "cambia el archivo md a css", 
+ * this consolidates the custom inline styles from the previous HTML prototypes.
+ */
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.bg-pattern {
+    background-color: #f8f9fb;
+    background-image: radial-gradient(#ea580c 0.5px, transparent 0.5px); /* orange-600 */
+    background-size: 24px 24px;
+    opacity: 0.05;
+}
+
+.drawer-blur {
+    backdrop-filter: blur(8px);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e1e2e4;
+    border-radius: 10px;
+}
+
+.form-input-focus:focus {
+    outline: none;
+    border-color: #0c6e00;
+    box-shadow: 0 0 0 2px rgba(12, 110, 0, 0.1);
+}
