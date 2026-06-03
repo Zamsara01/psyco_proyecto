@@ -1,6 +1,6 @@
 <header class="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm flex justify-between items-center w-full px-6 h-16 sticky top-0 z-40">
     <div class="flex items-center gap-3">
-        <img alt="PSYCO Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uigUbwXlB6uds47rFCSITeBUx-qrV58slq7oWrEwBr1loXaOkq8dbpvFLT0aUO90rs9RhtkGVISwoWTTN_W5F7igS2J6v4LLNbuRTanMZevWxvQIl4Tf2sBkVN0StyDv80011I9lWKGNnHfSefAY4bJQPJa7Tm1_LVfYA9Gxd7WS_Lfr0ptr5X44GMwQF4i8v2bVZWLpKDLoHDCKXbelSllQ7vNaU6PI64w0R8KZnymHMF5xJ0llAzbtGDCt-T66kTHJ5vaBr136D8"/>
+        <img alt="PSYCO Logo" class="h-8 w-auto object-contain" src="<?= URL_BASE ?>public/img/logo.png"/>
         <a href="<?= URL_BASE ?>" class="text-xl font-bold text-orange-600 font-headline-sm hover:text-orange-700 transition-colors">
             PSYCO
         </a>

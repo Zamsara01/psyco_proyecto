@@ -1,9 +1,30 @@
 tailwind.config = {
     darkMode: "class",
+    safelist: [
+        "bg-surface", "bg-surface-dim", "bg-surface-bright",
+        "bg-surface-container-lowest", "bg-surface-container-low",
+        "bg-surface-container", "bg-surface-container-high", "bg-surface-container-highest",
+        "bg-primary", "bg-primary-container", "bg-secondary", "bg-secondary-container",
+        "bg-tertiary", "bg-tertiary-container", "bg-error", "bg-error-container",
+        "bg-inverse-surface", "bg-background",
+        "text-on-surface", "text-on-surface-variant", "text-on-primary",
+        "text-on-primary-container", "text-on-secondary", "text-on-secondary-container",
+        "text-on-tertiary", "text-on-tertiary-container", "text-on-error",
+        "text-on-error-container", "text-on-background", "text-inverse-on-surface",
+        "text-primary", "text-secondary", "text-tertiary", "text-error",
+        "text-outline", "text-outline-variant",
+        "border-outline", "border-outline-variant", "border-primary",
+        "font-body-md", "font-body-lg", "font-body-sm",
+        "font-headline-lg", "font-headline-md", "font-headline-sm",
+        "font-label-md",
+        "text-headline-lg", "text-headline-md", "text-headline-sm",
+        "text-body-lg", "text-body-md", "text-body-sm", "text-label-md",
+        "overflow-x-hidden",
+    ],
     theme: {
         extend: {
             colors: {
-                "primary": "#0c6e00", // Verde unificado para acciones principales
+                "primary": "#0c6e00",
                 "primary-container": "#46b033",
                 "on-primary": "#ffffff",
                 "on-primary-container": "#043c00",

@@ -17,11 +17,11 @@ $content = $content ?? '';
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-    <!-- Tailwind CSS (CDN) -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
     <!-- Configuración Unificada de Tailwind -->
     <script src="<?= URL_BASE ?>public/js/tailwind-config.js"></script>
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <!-- Estilos Adicionales / Utilidades -->
     <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css">

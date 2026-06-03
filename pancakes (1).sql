@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-05-2026 a las 03:37:30
+-- Tiempo de generación: 04-06-2026 a las 01:08:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,10 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `psycoLomejor`
-
-CREATE DATABASE IF NOT EXISTS `psycoLomejor` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `psycoLomejor`;
+-- Base de datos: `psyco_intento`
 --
 
 -- --------------------------------------------------------
@@ -32,6 +29,7 @@ USE `psycoLomejor`;
 
 CREATE TABLE `chatbot_interacciones` (
   `id_interaccion` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `id_opcion` int(11) NOT NULL,
   `id_sesion` varchar(64) NOT NULL,
   `respuesta` text DEFAULT NULL,
@@ -46,6 +44,7 @@ CREATE TABLE `chatbot_interacciones` (
 
 CREATE TABLE `citas` (
   `id_cita` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `id_psicologo` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
@@ -156,6 +155,7 @@ CREATE TABLE `recordatorios` (
 --
 
 CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL,
   `grado` enum('6','7','8','9','10','11') DEFAULT NULL,
   `nombre` varchar(100) NOT NULL,
   `correo_electronico` varchar(100) NOT NULL,

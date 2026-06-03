@@ -10,7 +10,7 @@ class Database
 
     // ── Credenciales ──────────────────────────────────────────────
     private static string $host   = 'localhost';
-    private static string $dbname = 'basemvc';
+    private static string $dbname = 'psyco_intento';
     private static string $user   = 'root';
     private static string $pass   = '';
     // ─────────────────────────────────────────────────────────────

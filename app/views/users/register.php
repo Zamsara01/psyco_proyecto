@@ -12,7 +12,7 @@
             <header class="mb-8">
                 <!-- Color Logo placed in the top left corner above the form content -->
                 <div class="mb-8 flex justify-center">
-                    <img alt="PSYCO Logo" class="h-40 w-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uivEcdTeZh4LjML8Ap7wbSuN9wbOw89eAAkqN984qdDhtCcCAE3Es24NSAW0PSl5VbkebWMx7McT4tIXaFox5bFYxc66vOq4vAIdD-tuoxoDYWLtGdYuiy06Gu4ZE-qKSM-IMVA74ytUhD1FFEEnJp5rysbCpSCjHtADiQauc4pHgpC_byKfG2gmVHKI8l_c5_DhqAfssNScXbthM0ts-T8-B9gX5GYaVFzKqNpz13i5Iqb-0_x629qd44dLVWjA5FaWY_4vf1xYg"/>
+                    <img alt="PSYCO Logo" class="h-16 w-auto" src="<?= URL_BASE ?>public/img/psycoLogo.png"/>
                 </div>
                 <h1 class="text-headline-md font-headline-md text-on-surface">Crear una cuenta</h1>
                 <p class="text-body-md font-body-md text-tertiary mt-2">Completa tus datos para registrarte en PSYCO.</p>
@@ -21,6 +21,21 @@
             <form class="space-y-5" method="POST" action="<?= URL_BASE ?>users/store">
                 <!-- Perfil por defecto, oculto -->
                 <input type="hidden" name="txtperfil" value="usuario">
+
+                <!-- Grado -->
+                <div class="space-y-1.5">
+                    <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputGrado">Grado</label>
+                    <select class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                            id="inputGrado" name="txtgrado" required>
+                        <option value="" disabled selected>Selecciona tu grado</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </div>
 
                 <!-- Nombre Completo -->
                 <div class="space-y-1.5">
@@ -46,21 +61,114 @@
                         <span class="material-symbols-outlined absolute left-3 text-tertiary">lock</span>
                         <input class="w-full pl-10 pr-12 h-12 bg-surface-container-low border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
                                id="inputPassword" name="txtPassword" placeholder="••••••••" type="password" required/>
+                        <button type="button" onclick="const p = document.getElementById('inputPassword'); p.type = p.type === 'password' ? 'text' : 'password'; this.innerText = p.type === 'password' ? 'visibility_off' : 'visibility';" class="material-symbols-outlined absolute right-3 text-tertiary hover:text-on-surface transition-colors focus:outline-none">visibility_off</button>
+                    </div>
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="space-y-1.5">
+                    <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputPassword2">Confirmar Contraseña</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-3 text-tertiary">lock</span>
+                        <input class="w-full pl-10 pr-12 h-12 bg-surface-container-low border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                               id="inputPassword2" name="txtPassword2" placeholder="••••••••" type="password" required/>
+                        <button type="button" onclick="const p = document.getElementById('inputPassword2'); p.type = p.type === 'password' ? 'text' : 'password'; this.innerText = p.type === 'password' ? 'visibility_off' : 'visibility';" class="material-symbols-outlined absolute right-3 text-tertiary hover:text-on-surface transition-colors focus:outline-none">visibility_off</button>
+                    </div>
+                </div>
+
+                <!-- Política de Tratamiento de Datos -->
+                <div class="space-y-3 pt-2">
+                    <label class="text-label-md font-label-md text-on-surface-variant block leading-relaxed">
+                        ¿Acepta la política de tratamiento de datos para su historial clínico de forma digital?
+                    </label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer text-body-md text-on-surface">
+                            <input type="radio" name="acepta_politica" value="si" class="text-primary focus:ring-primary h-4 w-4" onchange="togglePoliticaData(this.value)" required>
+                            Sí
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-body-md text-on-surface">
+                            <input type="radio" name="acepta_politica" value="no" class="text-primary focus:ring-primary h-4 w-4" onchange="togglePoliticaData(this.value)" required>
+                            No
+                        </label>
+                    </div>
+
+                    <!-- Sección Sí -->
+                    <div id="section_politica_si" class="hidden space-y-4 pt-4 border-t border-slate-200 mt-2">
+                        <div class="space-y-1.5">
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputAcudiente">Nombre del acudiente</label>
+                            <input class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                                   id="inputAcudiente" name="txtacudiente" placeholder="Ej. María López" type="text" />
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputCedula">Número de cédula</label>
+                            <input class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                                   id="inputCedula" name="txtcedula" placeholder="Ej. 1234567890" type="text" />
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputRelacion">Relación con el estudiante</label>
+                            <select class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                                    id="inputRelacion" name="txtrelacion">
+                                <option value="" disabled selected>Selecciona una relación</option>
+                                <option value="padre">Padre</option>
+                                <option value="madre">Madre</option>
+                                <option value="tutor">Tutor(a)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-start gap-3 py-2 mt-2">
+                            <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="checkDatos" name="checkDatos" type="checkbox"/>
+                            <label class="text-body-sm text-tertiary" for="checkDatos">
+                                Acepto explícitamente que mis datos personales (nombre, cédula y relación con el estudiante) y el historial clínico del estudiante sean recopilados, almacenados y procesados de forma digital exclusivamente para fines de seguimiento psicológico y logístico.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sección No -->
+                    <div id="section_politica_no" class="hidden pt-2">
+                        <p class="text-body-sm text-orange-800 bg-orange-50 p-3 rounded-lg border border-orange-200">
+                            La psicóloga encargada aún puede tomar apuntes sobre la cita en presencial o por formatos físicos o de papelería por motivos de logística en la psicología.
+                        </p>
                     </div>
                 </div>
 
                 <!-- Privacy Policy -->
                 <div class="flex items-start gap-3 py-2 mt-4">
                     <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="terms" type="checkbox" required/>
-                    <label class="text-body-sm text-tertiary" for="terms">Acepto los <a class="text-orange-600 font-medium hover:underline" href="#">términos de servicio</a> y la <a class="text-orange-600 font-medium hover:underline" href="#">política de privacidad</a>.</label>
+                    <label class="text-body-sm text-tertiary" for="terms">Acepto los <a class="text-green-600 font-medium hover:underline" href="#">términos y condiciones generales</a>.</label>
                 </div>
 
                 <!-- Submit Button -->
-                <button class="w-full h-14 bg-primary text-on-primary font-bold text-headline-sm rounded-xl shadow-lg shadow-primary/20 hover:bg-on-primary-fixed-variant transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 mt-4" type="submit">
+                <button class="w-full h-14 bg-green-600 text-white font-bold text-headline-sm rounded-xl shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 mt-4" type="submit">
                     Registrarse
                     <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
             </form>
+
+            <script>
+                function togglePoliticaData(value) {
+                    const sectionSi = document.getElementById('section_politica_si');
+                    const sectionNo = document.getElementById('section_politica_no');
+                    const checkDatos = document.getElementById('checkDatos');
+                    const inputAcudiente = document.getElementById('inputAcudiente');
+                    const inputCedula = document.getElementById('inputCedula');
+                    const inputRelacion = document.getElementById('inputRelacion');
+                    
+                    if (value === 'si') {
+                        sectionSi.classList.remove('hidden');
+                        sectionNo.classList.add('hidden');
+                        checkDatos.setAttribute('required', 'required');
+                        inputAcudiente.setAttribute('required', 'required');
+                        inputCedula.setAttribute('required', 'required');
+                        inputRelacion.setAttribute('required', 'required');
+                    } else {
+                        sectionSi.classList.add('hidden');
+                        sectionNo.classList.remove('hidden');
+                        checkDatos.removeAttribute('required');
+                        inputAcudiente.removeAttribute('required');
+                        inputCedula.removeAttribute('required');
+                        inputRelacion.removeAttribute('required');
+                    }
+                }
+            </script>
 
             <footer class="mt-8 text-center">
                 <p class="text-body-md text-tertiary">

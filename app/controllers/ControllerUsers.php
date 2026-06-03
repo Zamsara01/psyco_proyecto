@@ -28,12 +28,18 @@ class ControllerUsers extends Controller
             $this->redirect('users/login');
         }
 
-        $email    = $_POST['txtEmail']    ?? '';
+        $email    = trim($_POST['txtEmail']    ?? '');
         $password = $_POST['txtPassword'] ?? '';
         $user     = $this->userModel->findByCredentials($email, $password);
 
         if ($user) {
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = [
+                'id'     => $user['id_usuario'],
+                'nombre' => $user['nombre'],
+                'correo' => $user['correo_electronico'],
+                'grado'  => $user['grado'],
+                'estado' => $user['estado'],
+            ];
             $this->redirect('pages/index');
         } else {
             $this->layout = 'tailwind';
@@ -51,14 +57,66 @@ class ControllerUsers extends Controller
     /** POST /users/store — guarda nuevo usuario */
     public function store(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->userModel->create(
-                $_POST['txtperfil']   ?? 'usuario',
-                $_POST['txtnombre'],
-                $_POST['txtEmail'],
-                $_POST['txtPassword']
-            );
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('users/register');
+            return;
         }
+
+        // ── Datos básicos ─────────────────────────────────────────
+        $grado     = $_POST['txtgrado']    ?? '';
+        $nombre    = trim($_POST['txtnombre']  ?? '');
+        $email     = trim($_POST['txtEmail']   ?? '');
+        $password  = $_POST['txtPassword']  ?? '';
+        $password2 = $_POST['txtPassword2'] ?? '';
+
+        // ── Validaciones básicas ──────────────────────────────────
+        if (!$grado || !$nombre || !$email || !$password) {
+            $this->layout = 'tailwind';
+            $this->render('users/register', ['error' => 'Todos los campos obligatorios deben completarse.']);
+            return;
+        }
+
+        if ($password !== $password2) {
+            $this->layout = 'tailwind';
+            $this->render('users/register', ['error' => 'Las contraseñas no coinciden.']);
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->layout = 'tailwind';
+            $this->render('users/register', ['error' => 'El correo electrónico no es válido.']);
+            return;
+        }
+
+        if ($this->userModel->emailExists($email)) {
+            $this->layout = 'tailwind';
+            $this->render('users/register', ['error' => 'Este correo ya está registrado.']);
+            return;
+        }
+
+        // ── Política de datos clínicos ────────────────────────────
+        $aceptaPolitica = $_POST['acepta_politica'] ?? 'no';
+        $datosAcudiente = null;
+
+        if ($aceptaPolitica === 'si') {
+            $datosAcudiente = [
+                'nombre_acudiente' => trim($_POST['txtacudiente'] ?? ''),
+                'cedula'           => trim($_POST['txtcedula']    ?? ''),
+                'relacion'         => $_POST['txtrelacion']       ?? '',
+                'acepta_checkbox'  => isset($_POST['checkDatos']) ? true : false,
+            ];
+        }
+
+        // ── Persistencia ─────────────────────────────────────────
+        $this->userModel->create(
+            $grado,
+            $nombre,
+            $email,
+            $password,
+            $aceptaPolitica,
+            $datosAcudiente
+        );
+
         $this->redirect('users/login');
     }
 
