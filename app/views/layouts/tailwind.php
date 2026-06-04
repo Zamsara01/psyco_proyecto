@@ -26,26 +26,35 @@ $content = $content ?? '';
     <!-- Estilos Adicionales / Utilidades -->
     <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css">
 </head>
-<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md relative overflow-x-hidden">
+<body class="bg-surface text-on-surface min-h-screen flex flex-row font-body-md relative overflow-x-hidden">
     
-    <!-- Navbar unificado para vistas Tailwind -->
-    <?php require __DIR__ . '/../partials/tailwind_navbar.php'; ?>
+    <!-- Sidebar unificado para vistas Tailwind -->
+    <?php require __DIR__ . '/../partials/tailwind_sidebar.php'; ?>
 
-    <!-- Contenido dinámico inyectado por el controlador -->
-    <?= $content ?>
+    <!-- Contenedor Principal (deja espacio para el sidebar fijo w-64) -->
+    <div class="flex-grow flex flex-col min-h-screen ml-64 w-[calc(100%-16rem)]">
+        
+        <!-- Contenido dinámico inyectado por el controlador -->
+        <main class="flex-grow flex flex-col relative">
+            <?= $content ?>
+        </main>
 
-    <!-- Modal de Login (global) -->
-    <?php require __DIR__ . '/../partials/login_modal.php'; ?>
+        <!-- Modal de Login (global) -->
+        <?php require __DIR__ . '/../partials/login_modal.php'; ?>
 
-    <!-- Modal de Registro (global) -->
-    <?php require __DIR__ . '/../partials/register_modal.php'; ?>
+        <!-- Modal de Registro (global) -->
+        <?php require __DIR__ . '/../partials/register_modal.php'; ?>
 
-    <!-- Footer global -->
-    <footer class="bg-white border-t border-slate-100 py-4 px-6 text-center">
-        <p class="text-body-sm text-on-surface-variant">
-            &copy; <?= date('Y') ?> <span class="font-semibold text-primary">grupo_psyco</span> — Todos los derechos reservados.
-        </p>
-    </footer>
+        <!-- Modal del Chatbot (global) -->
+        <?php require __DIR__ . '/../partials/chatbot_modal.php'; ?>
+
+        <!-- Footer global -->
+        <footer class="bg-white border-t border-slate-100 py-4 px-6 text-center mt-auto">
+            <p class="text-body-sm text-on-surface-variant">
+                &copy; <?= date('Y') ?> <span class="font-semibold text-primary">grupo_psyco</span> — Todos los derechos reservados.
+            </p>
+        </footer>
+    </div>
 
 </body>
 </html>

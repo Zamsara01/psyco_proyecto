@@ -8,6 +8,6 @@ class ControllerCalendario extends Controller
     public function index(): void
     {
         $this->layout = 'tailwind';
-        $this->render('calendario/index');
+        $this->render('pages/calendario');
     }
 }

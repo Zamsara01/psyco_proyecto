@@ -8,6 +8,6 @@ class ControllerChat_bot extends Controller
     public function index(): void
     {
         $this->layout = 'tailwind';
-        $this->render('chat_bot/index');
+        $this->render('pages/chatbot');
     }
 }

@@ -8,6 +8,6 @@ class ControllerPanel_psicologas extends Controller
     public function index(): void
     {
         $this->layout = 'tailwind';
-        $this->render('panel_psicologas/index');
+        $this->render('pages/panelpsicologas');
     }
 }
