@@ -21,7 +21,6 @@ class ControllerUsers extends Controller
         $this->render('users/login');
     }
 
-    /** POST /users/authenticate — procesa login */
     public function authenticate(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -30,7 +29,9 @@ class ControllerUsers extends Controller
 
         $email    = trim($_POST['txtEmail']    ?? '');
         $password = $_POST['txtPassword'] ?? '';
-        $user     = $this->userModel->findByCredentials($email, $password);
+        
+        // 1. Intentar login como Paciente (tabla usuarios)
+        $user = $this->userModel->findByCredentials($email, $password);
 
         if ($user) {
             $_SESSION['user'] = [
@@ -39,12 +40,34 @@ class ControllerUsers extends Controller
                 'correo' => $user['correo_electronico'],
                 'grado'  => $user['grado'],
                 'estado' => $user['estado'],
+                'rol'    => 'paciente'
             ];
+            // Redirigir a inicio o calendario donde ahora tiene todo desbloqueado
             $this->redirect('pages/index');
-        } else {
-            $this->layout = 'tailwind';
-            $this->render('users/login', ['error' => 'Correo o contraseña inválidos']);
+            return;
         }
+
+        // 2. Intentar login como Psicóloga (tabla psicologos)
+        require_once dirname(__DIR__) . '/models/PsicologoModel.php';
+        $psicoModel = new PsicologoModel();
+        $psicologa = $psicoModel->findByCredentials($email, $password);
+
+        if ($psicologa) {
+            $_SESSION['user'] = [
+                'id'     => $psicologa['id_psicologo'],
+                'nombre' => $psicologa['nombre'],
+                'correo' => $psicologa['correo_electronico'],
+                'estado' => $psicologa['estado'],
+                'rol'    => 'psicologo'
+            ];
+            // Redirigir a su panel de gestión
+            $this->redirect('panel_psicologas/index');
+            return;
+        }
+
+        // 3. Ambos fallaron
+        $this->layout = 'tailwind';
+        $this->render('users/login', ['error' => 'Correo o contraseña inválidos']);
     }
 
     /** GET  /users/register — muestra formulario */

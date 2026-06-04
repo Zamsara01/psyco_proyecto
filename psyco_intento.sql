@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-06-2026 a las 01:08:05
+-- Tiempo de generación: 04-06-2026 a las 04:00:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -129,7 +129,9 @@ CREATE TABLE `psicologos` (
   `telefono` varchar(20) DEFAULT NULL,
   `foto_perfil` varchar(255) DEFAULT NULL,
   `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp()
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `correo_electronico` varchar(100) NOT NULL,
+  `contrasena` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -160,9 +162,18 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(100) NOT NULL,
   `correo_electronico` varchar(100) NOT NULL,
   `contrasena` varchar(255) NOT NULL,
+  `acepta_politica` enum('si','no') NOT NULL DEFAULT 'no',
+  `datos_acudiente` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`datos_acudiente`)),
   `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
   `fecha_registro` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `grado`, `nombre`, `correo_electronico`, `contrasena`, `acepta_politica`, `datos_acudiente`, `estado`, `fecha_registro`) VALUES
+(1, '8', 'David Bedoya Zuluaga', 'pepito1234@gmail.com', '$2y$10$j5ciKLa3LHomxSTgEUOV7.MS5K6ROBoXuJe5IJkO398h6ZuprUviu', 'no', NULL, 'activo', '2026-06-03 18:11:08');
 
 --
 -- Índices para tablas volcadas
@@ -209,6 +220,7 @@ ALTER TABLE `opciones_chatbot`
 --
 ALTER TABLE `psicologos`
   ADD PRIMARY KEY (`id_psicologo`),
+  ADD UNIQUE KEY `correo_electronico` (`correo_electronico`),
   ADD KEY `fk_psicologo_especialidad` (`id_especialidad`);
 
 --
@@ -275,7 +287,7 @@ ALTER TABLE `recordatorios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

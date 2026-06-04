@@ -70,80 +70,55 @@
     <aside class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
         <div class="bg-white rounded-2xl shadow-lg border border-slate-100 flex flex-col h-full sticky top-24">
             <div class="p-6 border-b border-slate-50">
-                <h3 class="font-headline-md text-on-surface" id="selected-date-display">Martes, 8 Oct</h3>
-                <p class="text-body-sm text-slate-500">2 Psicólogos disponibles</p>
+                <h3 class="font-headline-md text-on-surface" id="selected-date-display">Selecciona un día</h3>
+                <p class="text-body-sm text-slate-500" id="psico-count">Haz clic en un día para ver disponibilidad</p>
             </div>
             
-            <div class="p-6 flex-grow flex flex-col gap-8 overflow-y-auto hide-scrollbar max-h-[614px]">
-                <!-- Psicólogo 1 -->
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-100 p-0.5">
-                            <img class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAoCt8e7vWmBlHVCPztD4M6zP6RYQm_TPiSyvOB77MEDxC5EWIV3FxihpDjgKH0OmG3Lsrlry5AJUoazNhPIbmNLHItvrew3cLkU4Yuyv5uOqyfaucb5dTkctyp6mtL-KJaMiXtbe0FMRRG5BmVLDIG9dunS1-q11VparZsVaOZ8vkHLJIXFXqZ6y41RTYRIR8KRAfoGUvSaGGADY6PeXOnGMh7qKFufXr7DPdmEwNWE-Z9BhnDq2R46AdottHjFsU0bezmyBtMBK2"/>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-on-surface">Dra. Elena Vargas</span>
-                            <span class="text-body-sm text-orange-600">Terapia Cognitivo-Conductual</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="px-4 py-2 rounded-xl text-label-md border border-orange-100 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-all active:scale-95">09:00 AM</button>
-                        <button class="px-4 py-2 rounded-xl text-label-md border border-orange-100 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-all active:scale-95">10:30 AM</button>
-                        <button class="px-4 py-2 rounded-xl text-label-md border border-orange-100 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-all active:scale-95">03:00 PM</button>
-                    </div>
-                </div>
-
-                <!-- Psicólogo 2 -->
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center border-2 border-slate-50">
-                            <span class="material-symbols-outlined text-slate-400 text-3xl">person</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-on-surface">Dr. Ricardo Mena</span>
-                            <span class="text-body-sm text-orange-600">Especialista en Ansiedad</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="px-4 py-2 rounded-xl text-label-md border border-orange-100 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-all active:scale-95">11:00 AM</button>
-                        <button class="px-4 py-2 rounded-xl text-label-md border border-orange-100 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-all active:scale-95">04:30 PM</button>
-                    </div>
+            <!-- Lista dinámica de psicólogos -->
+            <div class="p-6 flex-grow flex flex-col gap-6 overflow-y-auto hide-scrollbar max-h-[614px]" id="psicologos-panel">
+                <!-- Relleno por JavaScript -->
+                <div class="flex flex-col items-center justify-center h-40 text-slate-400 gap-3">
+                    <span class="material-symbols-outlined text-5xl text-slate-300">calendar_month</span>
+                    <p class="text-sm text-center">Selecciona un día en el calendario para ver la disponibilidad</p>
                 </div>
             </div>
 
             <div class="p-6 bg-slate-50 rounded-b-2xl">
-                <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150">
-                    Confirmar Cita
-                </button>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <?php if ($_SESSION['user']['rol'] === 'paciente'): ?>
+                        <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150">
+                            Confirmar Cita
+                        </button>
+                    <?php else: ?>
+                        <!-- Si es psicólogo, no tiene sentido que agende citas para sí mismo por este medio -->
+                        <button class="w-full bg-slate-200 text-slate-500 font-bold py-4 rounded-xl cursor-not-allowed" disabled>
+                            Modo Psicóloga (Agendamiento Deshabilitado)
+                        </button>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <button type="button" onclick="openLoginModal()" class="w-full bg-orange-100 text-orange-600 font-bold py-4 rounded-xl shadow-sm hover:bg-orange-200 transition-colors active:scale-95 duration-150">
+                        Inicia sesión para agendar
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     </aside>
 </main>
 
-<!-- BottomNavBar Section -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_20px_rgba(249,115,22,0.08)]">
-    <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-orange-500 dark:hover:text-orange-300 active:scale-90 transition-transform duration-150" href="<?= URL_BASE ?>chat_bot">
-        <span class="material-symbols-outlined mb-1">forum</span>
-        <span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-wider font-bold">Asistente</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 rounded-xl px-4 py-2 active:scale-90 transition-transform duration-150" href="<?= URL_BASE ?>calendario">
-        <span class="material-symbols-outlined mb-1">calendar_month</span>
-        <span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-wider font-bold">Agenda</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-orange-500 dark:hover:text-orange-300 active:scale-90 transition-transform duration-150" href="#">
-        <span class="material-symbols-outlined mb-1">auto_stories</span>
-        <span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-wider font-bold">Recursos</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-orange-500 dark:hover:text-orange-300 active:scale-90 transition-transform duration-150" href="<?= URL_BASE ?>panel_psicologas">
-        <span class="material-symbols-outlined mb-1">person</span>
-        <span class="font-['Plus_Jakarta_Sans'] text-[10px] uppercase tracking-wider font-bold">Perfil</span>
-    </a>
-</nav>
+
+
+<!-- Datos inyectados desde la BD (PHP → JS) -->
+<script>
+    const psicologosData = <?= $psicologosJson ?? '[]' ?>;
+    const citasData = <?= $citasJson ?? '{}' ?>;
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const calendarGrid = document.getElementById('calendar-grid');
         const selectedDateDisplay = document.getElementById('selected-date-display');
+        const psicoCount = document.getElementById('psico-count');
+        const psicologosPanel = document.getElementById('psicologos-panel');
         const monthSelect = document.getElementById('month-select');
         const yearSelect = document.getElementById('year-select');
         const prevBtn = document.getElementById('prev-month-btn');
@@ -241,10 +216,33 @@
                 
                 const isSelected = selectedDate && dateObj.getTime() === selectedDate.getTime();
                 const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+                const diaNombreBD = diasSemanaMap[dateObj.getDay()];
                 
-                const seed = currentYear * 10000 + currentMonth * 100 + i;
-                const colorClass = colors[seed % colors.length];
+                // Formatear fecha a YYYY-MM-DD
+                const mFormat = String(currentMonth + 1).padStart(2, '0');
+                const dFormat = String(i).padStart(2, '0');
+                const dateString = `${currentYear}-${mFormat}-${dFormat}`;
                 
+                // 1. Verificar si hay al menos un psicólogo disponible este día
+                const hayDisponibilidad = psicologosData.some(p => p.disponibilidad.some(d => d.dia === diaNombreBD));
+                
+                // 2. Determinar color del punto (solo si hay disponibilidad y no es un día pasado)
+                let dotHtml = '';
+                if (!isPast && hayDisponibilidad) {
+                    const totalCitas = citasData[dateString] || 0;
+                    let colorClass = '';
+                    
+                    if (totalCitas >= 5) {
+                        colorClass = 'bg-red-500';      // Completamente ocupado
+                    } else if (totalCitas >= 1) {
+                        colorClass = 'bg-yellow-500';   // Disponibilidad parcial
+                    } else {
+                        colorClass = 'bg-green-500';    // Totalmente libre
+                    }
+                    
+                    dotHtml = `<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full ${colorClass}"></div>`;
+                }
+
                 let classes = 'h-16 flex flex-col items-center justify-center rounded-xl relative transition-all ';
                 
                 if (isPast) {
@@ -259,8 +257,6 @@
                         classes += ' border border-slate-100 hover:border-orange-200';
                     }
                 }
-                
-                let dotHtml = (!isPast && colorClass) ? `<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full ${colorClass}"></div>` : '';
                 
                 html += `
                 <div class="${classes}" data-day="${i}" data-month="${currentMonth}" data-year="${currentYear}">
@@ -291,12 +287,76 @@
             });
         }
         
+        // Mapeo de getDay() (0=Domingo..6=Sábado) → nombre en BD
+        const diasSemanaMap = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
         function updateDisplay() {
             if (!selectedDate) return;
+
+            // Actualizar título del panel
             const dayName = dayNames[selectedDate.getDay()];
             const d = selectedDate.getDate();
             const m = monthNames[selectedDate.getMonth()].substr(0, 3);
             selectedDateDisplay.textContent = `${dayName}, ${d} ${m}`;
+
+            // Determinar qué día de la semana es (ej. 'Lunes')
+            const diaBD = diasSemanaMap[selectedDate.getDay()];
+
+            // Filtrar psicólogos que tienen disponibilidad ese día
+            const disponibles = psicologosData.filter(p =>
+                p.disponibilidad.some(d => d.dia === diaBD)
+            );
+
+            // Actualizar contador
+            if (disponibles.length === 0) {
+                psicoCount.textContent = 'Sin psicólogos disponibles este día';
+            } else {
+                psicoCount.textContent = `${disponibles.length} psicólogo${disponibles.length !== 1 ? 's' : ''} disponible${disponibles.length !== 1 ? 's' : ''}`;
+            }
+
+            // Generar HTML del panel
+            if (disponibles.length === 0) {
+                psicologosPanel.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-40 text-slate-400 gap-3">
+                        <span class="material-symbols-outlined text-5xl text-slate-300">event_busy</span>
+                        <p class="text-sm text-center">No hay psicólogos disponibles para este día.</p>
+                    </div>`;
+                return;
+            }
+
+            let html = '';
+            disponibles.forEach(p => {
+                // Obtener sólo los turnos del día seleccionado
+                const turnos = p.disponibilidad.filter(d => d.dia === diaBD);
+
+                const turnosHtml = turnos.map(t =>
+                    `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                            text-sm font-medium bg-orange-50 text-orange-600 border border-orange-100">
+                        <span class="material-symbols-outlined text-[15px]">schedule</span>
+                        ${t.inicio} – ${t.fin}
+                    </span>`
+                ).join('');
+
+                html += `
+                <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-100 shrink-0">
+                            <img class="w-full h-full object-cover rounded-full"
+                                 src="${p.foto_perfil}"
+                                 alt="${p.nombre}"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=F97316&color=fff'"/>
+                        </div>
+                        <div class="flex flex-col overflow-hidden">
+                            <span class="font-bold text-slate-800 truncate">${p.nombre}</span>
+                            <span class="text-sm text-orange-600 truncate">${p.especialidad}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">${turnosHtml}</div>
+                    <div class="h-px bg-slate-50"></div>
+                </div>`;
+            });
+
+            psicologosPanel.innerHTML = html;
         }
 
         prevBtn.addEventListener('click', () => {
