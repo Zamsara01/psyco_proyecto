@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro — PSYCO · I.E. Barrio Santa Margarita</title>
+  <meta name="description" content="Crea tu cuenta en PSYCO, la plataforma de bienestar psicológico de la I.E. Barrio Santa Margarita." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #1565C0;
+      --blue-h:      #1976D2;
+      --green:       #2E7D32;
+      --green-h:     #388E3C;
+      --bg:          #F0F7FF;
+      --title:       #0F172A;
+      --secondary:   #64748B;
+      --label:       #374151;
+      --border:      #E2E8F0;
+      --radius:      10px;
+      --tr:          0.2s ease;
+      --success-clr: #16A34A;
+      --error-clr:   #DC2626;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--title);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── LAYOUT ───────────────────────────────────────────────── */
+    .page {
+      display: flex;
+      min-height: 100vh;
+      align-items: stretch;
+    }
+
+    /* ─── LEFT PANEL ───────────────────────────────────────────── */
+    .left {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 42%;
+      flex-shrink: 0;
+      background: linear-gradient(145deg, #0D47A1 0%, #1B5E20 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 36px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInL 0.4s ease-out 0.1s forwards;
+    }
+
+    #neural-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+
+    .left-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 18px; text-align: center;
+    }
+
+    .logo-wrap {
+      width: 160px; height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      filter: drop-shadow(0 0 28px rgba(255,255,255,0.30));
+      animation: logoIn 0.8s ease-out 0.5s both;
+    }
+
+    .logo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      border-radius: 50%;
+    }
+
+    .deco-icons { display: flex; gap: 26px; }
+    .deco-icons i {
+      font-size: 26px; color: rgba(255,255,255,0.75);
+      transition: color var(--tr), transform var(--tr);
+    }
+    .deco-icons i:hover { color: #fff; transform: scale(1.15); }
+
+    .left-title {
+      font-size: 24px; font-weight: 700; color: #fff; line-height: 1.3;
+    }
+
+    .left-sub {
+      font-size: 13px; color: rgba(255,255,255,0.82); line-height: 1.55; max-width: 250px;
+    }
+
+    /* Benefits list */
+    .benefits {
+      list-style: none;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      padding: 16px 20px;
+      width: 100%;
+      max-width: 260px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .benefits li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12.5px; color: rgba(255,255,255,0.88); text-align: left;
+    }
+
+    .benefits li i {
+      font-size: 16px; color: rgba(255,255,255,0.70); flex-shrink: 0;
+    }
+
+    .left-footer {
+      position: absolute; bottom: 22px; left: 0; right: 0;
+      text-align: center; font-size: 11px; color: rgba(255,255,255,0.50);
+      z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .left-footer-shield {
+      width: 20px; height: 20px; border-radius: 50%; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .left-footer-shield img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── RIGHT PANEL ──────────────────────────────────────────── */
+    .right {
+      flex: 1;
+      background: #fff;
+      padding: 40px 52px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0; transform: translateY(20px);
+      animation: slideIn 0.6s ease-out 0.2s forwards;
+      overflow-y: auto;
+    }
+
+    .form-container {
+      width: 100%; max-width: 540px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* Inst header */
+    .inst-header {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 7px; margin-bottom: 16px;
+    }
+
+    .shield-wrap {
+      width: 64px; height: 64px;
+      background: #fff; border-radius: 50%;
+      border: 2.5px solid var(--border);
+      box-shadow: 0 3px 16px rgba(0,0,0,0.09);
+      overflow: hidden;
+    }
+
+    .shield-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    .inst-name { font-size: 11px; color: var(--secondary); }
+
+    .h-divider {
+      width: 100%; height: 1px;
+      background: var(--border); margin-bottom: 18px;
+    }
+
+    .page-title {
+      font-size: 24px; font-weight: 700; color: var(--title);
+      text-align: center; margin-bottom: 5px;
+    }
+
+    .page-sub {
+      font-size: 13.5px; color: var(--secondary);
+      text-align: center; margin-bottom: 22px; line-height: 1.5;
+    }
+
+    /* ─── PROGRESS BAR ─────────────────────────────────────────── */
+    .progress-wrap {
+      width: 100%; margin-bottom: 28px;
+    }
+
+    .progress-steps {
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative;
+    }
+
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 14px; left: 14px; right: 14px;
+      height: 2px; background: var(--border); z-index: 0;
+    }
+
+    .progress-track {
+      position: absolute;
+      top: 14px; left: 14px;
+      height: 2px; background: var(--blue);
+      transition: width 0.4s ease; z-index: 1;
+      width: 0%;
+    }
+
+    .step-node {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      position: relative; z-index: 2;
+    }
+
+    .step-circle {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #9CA3AF;
+      transition: all 0.3s ease;
+    }
+
+    .step-node.active   .step-circle { border-color: var(--blue); color: var(--blue); background: #EFF6FF; }
+    .step-node.done     .step-circle { border-color: var(--green); background: var(--green); color: #fff; }
+
+    .step-label {
+      font-size: 9.5px; font-weight: 600; color: #9CA3AF;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .step-node.active .step-label { color: var(--blue); }
+    .step-node.done  .step-label  { color: var(--green); }
+
+    /* ─── FORM SECTIONS ────────────────────────────────────────── */
+    form { width: 100%; display: flex; flex-direction: column; gap: 22px; }
+
+    .section-block { display: flex; flex-direction: column; gap: 14px; }
+
+    .section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; color: var(--secondary);
+      text-transform: uppercase; letter-spacing: 1px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+
+    .section-title i { font-size: 15px; color: var(--blue); }
+
+    /* 2-column grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Field group */
+    .fg { display: flex; flex-direction: column; gap: 5px; }
+
+    .fl {
+      font-size: 13px; font-weight: 500; color: var(--label);
+      transition: color var(--tr), transform var(--tr);
+      transform-origin: left;
+    }
+
+    .fl.fb { color: var(--blue);  transform: translateY(-2px); }
+    .fl.fg-c { color: var(--green); transform: translateY(-2px); }
+
+    /* Input wrapper */
+    .iw { position: relative; display: flex; align-items: center; }
+
+    .ii {
+      position: absolute; left: 13px; font-size: 17px; color: #9CA3AF;
+      pointer-events: none; transition: color var(--tr); z-index: 2;
+    }
+
+    .ir {
+      position: absolute; right: 10px; width: 30px; height: 30px;
+      font-size: 18px; color: #9CA3AF; cursor: pointer;
+      background: none; border: none; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 7px;
+      transition: color 0.2s, background 0.2s, transform 0.15s; z-index: 2;
+    }
+
+    .ir:hover { color: var(--green); background: rgba(46,125,50,0.08); transform: scale(1.15); }
+    .ir.success-icon { color: var(--success-clr) !important; cursor: default; }
+    .ir.success-icon:hover { transform: none; background: none; }
+
+    .iw input,
+    .iw select {
+      width: 100%; height: 46px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0 42px 0 42px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px; color: var(--title);
+      background: #fff; outline: none;
+      transition: border-color var(--tr), box-shadow var(--tr);
+      appearance: none; -webkit-appearance: none;
+    }
+
+    .iw input[type="date"] { padding-right: 14px; }
+    .iw input::placeholder { color: #9CA3AF; }
+    .iw select { cursor: pointer; }
+
+    /* Select arrow */
+    .sel-arrow {
+      position: absolute; right: 12px; pointer-events: none;
+      color: #9CA3AF; font-size: 15px; z-index: 2;
+    }
+
+    /* Phone prefix */
+    .phone-prefix {
+      position: absolute; left: 42px;
+      font-size: 13.5px; font-weight: 600; color: var(--label);
+      z-index: 3; pointer-events: none; letter-spacing: 0.5px;
+    }
+
+    .phone-input { padding-left: 82px !important; }
+
+    /* Focus states */
+    .iw.fb-focus input,
+    .iw.fb-focus select {
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
+    }
+    .iw.fb-focus .ii { color: var(--blue); }
+
+    .iw.fg-focus input,
+    .iw.fg-focus select {
+      border: 2px solid var(--green);
+      box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
+    }
+    .iw.fg-focus .ii { color: var(--green); }
+
+    /* Valid / invalid states */
+    .iw.valid input,
+    .iw.valid select {
+      border: 2px solid var(--success-clr);
+      box-shadow: 0 0 0 3px rgba(22,163,74,0.10);
+    }
+
+    .iw.invalid input,
+    .iw.invalid select {
+      border: 2px solid var(--error-clr);
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.10);
+      animation: shake 0.35s ease;
+    }
+
+    /* Error message */
+    .em {
+      display: none; align-items: center; gap: 6px;
+      background: #FEE2E2; color: #991B1B;
+      border-radius: 7px; padding: 8px 12px;
+      font-size: 12px; font-weight: 500;
+    }
+
+    .em i { font-size: 13px; flex-shrink: 0; }
+
+    .em.show {
+      display: flex;
+      animation: fadeInMsg 0.2s ease;
+    }
+
+    /* ─── PASSWORD STRENGTH ─────────────────────────────────────── */
+    .strength-bar {
+      display: flex; gap: 5px; margin-top: 6px;
+    }
+
+    .seg {
+      flex: 1; height: 4px; border-radius: 99px;
+      background: var(--border);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .seg.s1 { background: #DC2626; }
+    .seg.s2 { background: #EA580C; }
+    .seg.s3 { background: #CA8A04; }
+    .seg.s4 { background: var(--success-clr); }
+
+    .strength-txt {
+      font-size: 11.5px; font-weight: 600; margin-top: 3px;
+      transition: color 0.3s;
+    }
+
+    /* Password requirements */
+    .pw-reqs {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: none; flex-direction: column; gap: 7px;
+      margin-top: 4px;
+    }
+
+    .pw-reqs.visible { display: flex; animation: fadeInMsg 0.2s ease; }
+
+    .req-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12.5px; color: #9CA3AF;
+      transition: color 0.2s ease;
+    }
+
+    .req-item.met { color: var(--success-clr); }
+    .req-item i { font-size: 14px; transition: transform 0.2s ease; }
+    .req-item.met i { transform: rotateY(360deg); }
+
+    /* ─── CONDITIONAL FIELDS ───────────────────────────────────── */
+    .conditional-block {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .conditional-block.open {
+      max-height: 600px;
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    .conditional-inner {
+      display: flex; flex-direction: column; gap: 14px;
+      padding-top: 14px;
+    }
+
+    /* ─── CHECKBOXES ───────────────────────────────────────────── */
+    .cb-row {
+      display: flex; align-items: flex-start; gap: 11px;
+      padding: 12px 14px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color var(--tr);
+    }
+
+    .cb-row:has(.custom-cb:checked) { border-color: rgba(21,101,192,0.35); background: #EFF6FF; }
+
+    .custom-cb {
+      -webkit-appearance: none; appearance: none;
+      width: 18px; height: 18px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 5px; background: #fff; cursor: pointer;
+      transition: background var(--tr), border-color var(--tr);
+      position: relative; flex-shrink: 0; margin-top: 1px;
+    }
+
+    .custom-cb:checked { background: var(--blue); border-color: var(--blue); }
+
+    .custom-cb:checked::after {
+      content: ''; position: absolute;
+      top: 1px; left: 4px;
+      width: 6px; height: 10px;
+      border: 2.5px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .cb-text { font-size: 13px; color: var(--label); line-height: 1.55; }
+    .cb-text a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .cb-text a:hover { text-decoration: underline; color: var(--green); }
+
+    .optional-badge {
+      font-size: 10px; background: #E0F2FE; color: #0369A1;
+      border-radius: 4px; padding: 1px 6px; font-weight: 600;
+      margin-left: 4px; vertical-align: middle;
+    }
+
+    /* ─── SUBMIT BUTTON ────────────────────────────────────────── */
+    .btn-submit {
+      width: 100%; height: 50px;
+      border: none; border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+      color: #fff;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s, filter 0.2s;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 18px rgba(21,101,192,0.28);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .btn-submit.enabled {
+      opacity: 1; pointer-events: all; cursor: pointer;
+    }
+
+    .btn-submit.enabled:hover {
+      background: linear-gradient(90deg, var(--blue-h) 0%, var(--green-h) 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 7px 22px rgba(21,101,192,0.34);
+    }
+
+    .btn-submit.enabled:active { transform: translateY(0); filter: brightness(0.95); }
+
+    .btn-icon { font-size: 18px; transition: transform 0.2s; }
+    .btn-submit.enabled:hover .btn-icon { transform: translateX(3px); }
+
+    .btn-spinner {
+      display: none; width: 20px; height: 20px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .btn-submit.loading .btn-text,
+    .btn-submit.loading .btn-icon { display: none; }
+    .btn-submit.loading .btn-spinner { display: block; }
+    .btn-submit.success { background: var(--success-clr); box-shadow: 0 4px 16px rgba(22,163,74,0.35); }
+
+    /* ─── LOGIN LINK + FOOTER ───────────────────────────────────── */
+    .login-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin-top: 20px; font-size: 13.5px;
+    }
+
+    .login-row span { color: var(--secondary); }
+
+    .login-link {
+      color: var(--blue); font-weight: 600; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .login-link:hover { color: var(--green); }
+    .login-link i { font-size: 14px; }
+
+    .rpage-footer {
+      margin-top: 18px; font-size: 11px; color: #94A3B8;
+      text-align: center; line-height: 1.6;
+    }
+
+    /* ─── SUCCESS OVERLAY ───────────────────────────────────────── */
+    .success-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(15,23,42,0.58);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      align-items: center; justify-content: center;
+    }
+
+    .success-overlay.open { display: flex; animation: fadeInMsg 0.3s ease; }
+
+    .scard {
+      background: #fff; border-radius: 22px;
+      padding: 48px 44px; text-align: center;
+      max-width: 370px; width: 90%;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.18);
+      animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .scard-icon {
+      width: 78px; height: 78px;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .scard-icon i { font-size: 38px; color: #fff; }
+    .scard h2 { font-size: 22px; font-weight: 700; color: var(--title); margin-bottom: 9px; }
+    .scard p  { font-size: 14px; color: var(--secondary); line-height: 1.6; margin-bottom: 26px; }
+
+    .btn-go {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      color: #fff; border: none; border-radius: 11px;
+      padding: 14px 30px;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      box-shadow: 0 4px 14px rgba(21,101,192,0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-go:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(21,101,192,0.36); }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────────── */
+    @keyframes fadeInL   { to { opacity: 1; } }
+    @keyframes slideIn   { to { opacity: 1; transform: translateY(0); } }
+    @keyframes logoIn    { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes spin      { to { transform: rotate(360deg); } }
+    @keyframes fadeInMsg { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes popIn     { from { opacity: 0; transform: scale(0.75); } to { opacity: 1; transform: scale(1); } }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%  { transform: translateX(-4px); }
+      40%  { transform: translateX(4px); }
+      60%  { transform: translateX(-3px); }
+      80%  { transform: translateX(3px); }
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────── */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .left { width: 38%; }
+      .right { padding: 36px 32px 40px; }
+      .logo-wrap { width: 130px; height: 130px; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 767px) {
+      .page { flex-direction: column; }
+      .left {
+        position: relative; height: auto;
+        width: 100%; min-height: 200px;
+        padding: 24px 20px; flex-shrink: 0;
+      }
+      .left-content { gap: 12px; }
+      .logo-wrap { width: 100px; height: 100px; }
+      .deco-icons, .left-sub, .benefits, .left-footer { display: none; }
+      .left-title { font-size: 18px; }
+      .right { padding: 28px 20px 40px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .progress-steps { gap: 2px; }
+      .step-label { display: none; }
+      .form-container { max-width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page" role="main">
+
+  <!-- ══════════ LEFT PANEL ══════════ -->
+  <aside class="left" aria-label="Información de bienvenida PSYCO">
+    <canvas id="neural-canvas" aria-hidden="true"></canvas>
+    <div class="left-content">
+
+      <div class="logo-wrap">
+        <img src="psyco_logo.png" alt="Logo PSYCO — Sistema de bienestar psicológico" />
+      </div>
+
+      <div class="deco-icons" aria-hidden="true">
+        <i class="ti ti-brain"></i>
+        <i class="ti ti-heart"></i>
+        <i class="ti ti-shield-check"></i>
+      </div>
+
+      <p class="left-title">Únete a PSYCO</p>
+      <p class="left-sub">Crea tu cuenta y accede a un espacio seguro de bienestar psicológico</p>
+
+      <ul class="benefits" aria-label="Beneficios de la plataforma">
+        <li><i class="ti ti-chart-line" aria-hidden="true"></i>Seguimiento personalizado de tu bienestar</li>
+        <li><i class="ti ti-books" aria-hidden="true"></i>Acceso a recursos psicológicos</li>
+        <li><i class="ti ti-messages" aria-hidden="true"></i>Comunicación directa con orientadores</li>
+        <li><i class="ti ti-report-analytics" aria-hidden="true"></i>Historial y reportes de progreso</li>
+      </ul>
+    </div>
+
+    <div class="left-footer">
+      <div class="left-footer-shield">
+        <img src="escudo_institucional.png" alt="" aria-hidden="true" />
+      </div>
+      I.E. Barrio Santa Margarita
+    </div>
+  </aside>
+
+  <!-- ══════════ RIGHT PANEL ══════════ -->
+  <main class="right" aria-label="Formulario de registro">
+    <div class="form-container">
+
+      <!-- Institutional header -->
+      <div class="inst-header">
+        <div class="shield-wrap">
+          <img src="escudo_institucional.png" alt="Escudo I.E. Barrio Santa Margarita" />
+        </div>
+        <span class="inst-name">I.E. Barrio Santa Margarita</span>
+      </div>
+
+      <div class="h-divider" role="separator"></div>
+
+      <h1 class="page-title">Crear cuenta</h1>
+      <p class="page-sub">Completa el formulario para registrarte en PSYCO</p>
+
+      <!-- ─── PROGRESS BAR ─── -->
+      <div class="progress-wrap" aria-label="Progreso del formulario">
+        <div class="progress-steps" id="progress-steps">
+          <div class="progress-track" id="progress-track"></div>
+          <div class="step-node active" data-step="1">
+            <div class="step-circle" id="sc1">1</div>
+            <span class="step-label">Personal</span>
+          </div>
+          <div class="step-node" data-step="2">
+            <div class="step-circle" id="sc2">2</div>
+            <span class="step-label">Contacto</span>
+          </div>
+          <div class="step-node" data-step="3">
+            <div class="step-circle" id="sc3">3</div>
+            <span class="step-label">Institución</span>
+          </div>
+          <div class="step-node" data-step="4">
+            <div class="step-circle" id="sc4">4</div>
+            <span class="step-label">Seguridad</span>
+          </div>
+          <div class="step-node" data-step="5">
+            <div class="step-circle" id="sc5">5</div>
+            <span class="step-label">Confirmación</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── FORM ─── -->
+      <form id="reg-form" novalidate autocomplete="on">
+
+        <!-- ══ SECTION 1: INFORMACIÓN PERSONAL ══ -->
+        <div class="section-block" id="section-personal">
+          <div class="section-title">
+            <i class="ti ti-user-circle" aria-hidden="true"></i>
+            Información personal
+          </div>
+
+          <!-- Nombres + Apellidos -->
+          <div class="grid-2">
+            <div class="fg" id="fg-nombres">
+              <label class="fl" for="nombres" id="lbl-nombres">Nombres completos</label>
+              <div class="iw" id="iw-nombres">
+                <i class="ti ti-user ii" aria-hidden="true"></i>
+                <input type="text" id="nombres" name="nombres" placeholder="Ej: María Fernanda"
+                  autocomplete="given-name" tabindex="1"
+                  aria-labelledby="lbl-nombres" aria-describedby="em-nombres" aria-required="true" />
+              </div>
+              <div class="em" id="em-nombres" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-nombres-t">Ingresa tus nombres</span>
+              </div>
+            </div>
+
+            <div class="fg" id="fg-apellidos">
+              <label class="fl" for="apellidos" id="lbl-apellidos">Apellidos completos</label>
+              <div class="iw" id="iw-apellidos">
+                <i class="ti ti-user ii" aria-hidden="true"></i>
+                <input type="text" id="apellidos" name="apellidos" placeholder="Ej: García López"
+                  autocomplete="family-name" tabindex="2"
+                  aria-labelledby="lbl-apellidos" aria-describedby="em-apellidos" aria-required="true" />
+              </div>
+              <div class="em" id="em-apellidos" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-apellidos-t">Ingresa tus apellidos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tipo doc + Número doc -->
+          <div class="grid-2">
+            <div class="fg" id="fg-tipodoc">
+              <label class="fl" for="tipodoc" id="lbl-tipodoc">Tipo de documento</label>
+              <div class="iw" id="iw-tipodoc">
+                <i class="ti ti-id-badge ii" aria-hidden="true"></i>
+                <select id="tipodoc" name="tipodoc" tabindex="3"
+                  aria-labelledby="lbl-tipodoc" aria-required="true">
+                  <option value="" disabled selected>Selecciona tu documento</option>
+                  <option value="TI">Tarjeta de Identidad</option>
+                  <option value="CC">Cédula de Ciudadanía</option>
+                  <option value="CE">Cédula de Extranjería</option>
+                  <option value="PA">Pasaporte</option>
+                  <option value="RC">Registro Civil</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+              </div>
+              <div class="em" id="em-tipodoc" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span>Selecciona un tipo de documento</span>
+              </div>
+            </div>
+
+            <div class="fg" id="fg-numdoc">
+              <label class="fl" for="numdoc" id="lbl-numdoc">Número de documento</label>
+              <div class="iw" id="iw-numdoc">
+                <i class="ti ti-hash ii" aria-hidden="true"></i>
+                <input type="text" id="numdoc" name="numdoc" placeholder="Ej: 1234567890"
+                  inputmode="numeric" tabindex="4"
+                  aria-labelledby="lbl-numdoc" aria-describedby="em-numdoc" aria-required="true" />
+              </div>
+              <div class="em" id="em-numdoc" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-numdoc-t">Entre 6 y 12 dígitos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fecha + Género -->
+          <div class="grid-2">
+            <div class="fg" id="fg-fnac">
+              <label class="fl" for="fnac" id="lbl-fnac">Fecha de nacimiento</label>
+              <div class="iw" id="iw-fnac">
+                <i class="ti ti-calendar ii" aria-hidden="true"></i>
+                <input type="date" id="fnac" name="fnac" tabindex="5"
+                  aria-labelledby="lbl-fnac" aria-describedby="em-fnac" aria-required="true" />
+              </div>
+              <div class="em" id="em-fnac" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-fnac-t">Ingresa una fecha válida</span>
+              </div>
+            </div>
+
+            <div class="fg" id="fg-genero">
+              <label class="fl" for="genero" id="lbl-genero">Género</label>
+              <div class="iw" id="iw-genero">
+                <i class="ti ti-gender-bigender ii" aria-hidden="true"></i>
+                <select id="genero" name="genero" tabindex="6"
+                  aria-labelledby="lbl-genero" aria-required="true">
+                  <option value="" disabled selected>Selecciona una opción</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="NB">No binario</option>
+                  <option value="ND">Prefiero no decirlo</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+              </div>
+              <div class="em" id="em-genero" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span>Selecciona una opción</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 2: CONTACTO ══ -->
+        <div class="section-block" id="section-contacto">
+          <div class="section-title">
+            <i class="ti ti-address-book" aria-hidden="true"></i>
+            Información de contacto
+          </div>
+
+          <!-- Correo + Confirmar correo -->
+          <div class="grid-2">
+            <div class="fg" id="fg-email">
+              <label class="fl" for="email" id="lbl-email">Correo electrónico</label>
+              <div class="iw" id="iw-email">
+                <i class="ti ti-mail ii" aria-hidden="true"></i>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com"
+                  autocomplete="email" tabindex="7"
+                  aria-labelledby="lbl-email" aria-describedby="em-email" aria-required="true" />
+                <button type="button" class="ir" id="ir-email" aria-label="Estado del correo" tabindex="-1">
+                  <i class="ti ti-circle-check" id="email-icon" style="display:none;" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="em" id="em-email" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-email-t">Ingresa un correo válido</span>
+              </div>
+            </div>
+
+            <div class="fg" id="fg-email2">
+              <label class="fl" for="email2" id="lbl-email2">Confirmar correo</label>
+              <div class="iw" id="iw-email2">
+                <i class="ti ti-mail-check ii" aria-hidden="true"></i>
+                <input type="email" id="email2" name="email2" placeholder="Repite tu correo"
+                  autocomplete="email" tabindex="8"
+                  aria-labelledby="lbl-email2" aria-describedby="em-email2" aria-required="true" />
+                <button type="button" class="ir" id="ir-email2" aria-label="Estado del correo confirmado" tabindex="-1">
+                  <i class="ti ti-circle-check" id="email2-icon" style="display:none;" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="em" id="em-email2" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-email2-t">Los correos no coinciden</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Teléfono + Ciudad -->
+          <div class="grid-2">
+            <div class="fg" id="fg-tel">
+              <label class="fl" for="tel" id="lbl-tel">Número de teléfono</label>
+              <div class="iw" id="iw-tel">
+                <i class="ti ti-phone ii" aria-hidden="true"></i>
+                <span class="phone-prefix" aria-hidden="true">+57</span>
+                <input type="tel" id="tel" name="tel" placeholder="3001234567"
+                  class="phone-input" inputmode="numeric" maxlength="10" tabindex="9"
+                  autocomplete="tel" aria-labelledby="lbl-tel" aria-describedby="em-tel" aria-required="true" />
+              </div>
+              <div class="em" id="em-tel" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span id="em-tel-t">Ingresa 10 dígitos válidos</span>
+              </div>
+            </div>
+
+            <div class="fg" id="fg-ciudad">
+              <label class="fl" for="ciudad" id="lbl-ciudad">Ciudad de residencia</label>
+              <div class="iw" id="iw-ciudad">
+                <i class="ti ti-map-pin ii" aria-hidden="true"></i>
+                <input type="text" id="ciudad" name="ciudad" placeholder="Ej: Medellín"
+                  autocomplete="address-level2" tabindex="10"
+                  aria-labelledby="lbl-ciudad" aria-describedby="em-ciudad" aria-required="true" />
+              </div>
+              <div class="em" id="em-ciudad" role="alert" aria-live="polite">
+                <i class="ti ti-alert-circle"></i><span>Ingresa tu ciudad</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 3: INSTITUCIONAL ══ -->
+        <div class="section-block" id="section-inst">
+          <div class="section-title">
+            <i class="ti ti-school" aria-hidden="true"></i>
+            Información institucional
+          </div>
+
+          <!-- Rol -->
+          <div class="fg" id="fg-rol">
+            <label class="fl" for="rol" id="lbl-rol">Soy...</label>
+            <div class="iw" id="iw-rol">
+              <i class="ti ti-briefcase ii" aria-hidden="true"></i>
+              <select id="rol" name="rol" tabindex="11"
+                aria-labelledby="lbl-rol" aria-required="true">
+                <option value="" disabled selected>Selecciona tu rol</option>
+                <option value="estudiante">🎓 Estudiante</option>
+                <option value="docente">📚 Docente</option>
+                <option value="psicologo">🧠 Psicólogo / Orientador</option>
+                <option value="acudiente">👪 Acudiente / Padre de familia</option>
+                <option value="administrativo">🏫 Administrativo</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+            </div>
+            <div class="em" id="em-rol" role="alert" aria-live="polite">
+              <i class="ti ti-alert-circle"></i><span>Selecciona tu rol</span>
+            </div>
+          </div>
+
+          <!-- Conditional: ESTUDIANTE -->
+          <div class="conditional-block" id="cond-estudiante">
+            <div class="conditional-inner">
+              <div class="fg">
+                <label class="fl" for="grado" id="lbl-grado">Grado / Curso</label>
+                <div class="iw" id="iw-grado">
+                  <i class="ti ti-school ii" aria-hidden="true"></i>
+                  <select id="grado" name="grado" tabindex="12" aria-labelledby="lbl-grado">
+                    <option value="" disabled selected>Selecciona tu grado</option>
+                    <option value="pre">Preescolar</option>
+                    <option value="1">1°</option><option value="2">2°</option>
+                    <option value="3">3°</option><option value="4">4°</option>
+                    <option value="5">5°</option><option value="6">6°</option>
+                    <option value="7">7°</option><option value="8">8°</option>
+                    <option value="9">9°</option><option value="10">10°</option>
+                    <option value="11">11°</option>
+                  </select>
+                  <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="fg">
+                  <label class="fl" for="acudiente-nombre" id="lbl-acud">Nombre del acudiente</label>
+                  <div class="iw" id="iw-acud">
+                    <i class="ti ti-user ii" aria-hidden="true"></i>
+                    <input type="text" id="acudiente-nombre" name="acudiente-nombre"
+                      placeholder="Nombre completo del acudiente" tabindex="13" aria-labelledby="lbl-acud" />
+                  </div>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="acudiente-tel" id="lbl-acud-tel">Teléfono del acudiente</label>
+                  <div class="iw" id="iw-acud-tel">
+                    <i class="ti ti-phone ii" aria-hidden="true"></i>
+                    <input type="tel" id="acudiente-tel" name="acudiente-tel"
+                      placeholder="Teléfono de contacto" inputmode="numeric" tabindex="14"
+                      aria-labelledby="lbl-acud-tel" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conditional: DOCENTE -->
+          <div class="conditional-block" id="cond-docente">
+            <div class="conditional-inner">
+              <div class="grid-2">
+                <div class="fg">
+                  <label class="fl" for="area" id="lbl-area">Área / Materia</label>
+                  <div class="iw" id="iw-area">
+                    <i class="ti ti-book ii" aria-hidden="true"></i>
+                    <input type="text" id="area" name="area"
+                      placeholder="Ej: Matemáticas, Ciencias..." tabindex="12" aria-labelledby="lbl-area" />
+                  </div>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="exp" id="lbl-exp">Años de experiencia</label>
+                  <div class="iw" id="iw-exp">
+                    <i class="ti ti-calendar-stats ii" aria-hidden="true"></i>
+                    <input type="number" id="exp" name="exp" min="0" max="50"
+                      placeholder="Ej: 5" tabindex="13" aria-labelledby="lbl-exp" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conditional: PSICÓLOGO -->
+          <div class="conditional-block" id="cond-psicologo">
+            <div class="conditional-inner">
+              <div class="grid-2">
+                <div class="fg">
+                  <label class="fl" for="tarjeta" id="lbl-tarjeta">N° Tarjeta profesional</label>
+                  <div class="iw" id="iw-tarjeta">
+                    <i class="ti ti-certificate ii" aria-hidden="true"></i>
+                    <input type="text" id="tarjeta" name="tarjeta"
+                      placeholder="Ej: TP-12345" tabindex="12" aria-labelledby="lbl-tarjeta" />
+                  </div>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="especialidad" id="lbl-esp">Especialidad</label>
+                  <div class="iw" id="iw-esp">
+                    <i class="ti ti-stethoscope ii" aria-hidden="true"></i>
+                    <input type="text" id="especialidad" name="especialidad"
+                      placeholder="Ej: Psicología clínica infantil" tabindex="13" aria-labelledby="lbl-esp" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conditional: ACUDIENTE -->
+          <div class="conditional-block" id="cond-acudiente">
+            <div class="conditional-inner">
+              <div class="grid-2">
+                <div class="fg">
+                  <label class="fl" for="est-nombre" id="lbl-est">Nombre del estudiante a cargo</label>
+                  <div class="iw" id="iw-est">
+                    <i class="ti ti-user-check ii" aria-hidden="true"></i>
+                    <input type="text" id="est-nombre" name="est-nombre"
+                      placeholder="Nombre del estudiante" tabindex="12" aria-labelledby="lbl-est" />
+                  </div>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="est-grado" id="lbl-est-grado">Grado del estudiante</label>
+                  <div class="iw" id="iw-est-grado">
+                    <i class="ti ti-school ii" aria-hidden="true"></i>
+                    <select id="est-grado" name="est-grado" tabindex="13" aria-labelledby="lbl-est-grado">
+                      <option value="" disabled selected>Selecciona el grado</option>
+                      <option value="pre">Preescolar</option>
+                      <option value="1">1°</option><option value="2">2°</option>
+                      <option value="3">3°</option><option value="4">4°</option>
+                      <option value="5">5°</option><option value="6">6°</option>
+                      <option value="7">7°</option><option value="8">8°</option>
+                      <option value="9">9°</option><option value="10">10°</option>
+                      <option value="11">11°</option>
+                    </select>
+                    <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 4: SEGURIDAD ══ -->
+        <div class="section-block" id="section-seg">
+          <div class="section-title">
+            <i class="ti ti-shield-lock" aria-hidden="true"></i>
+            Seguridad de la cuenta
+          </div>
+
+          <!-- Contraseña -->
+          <div class="fg" id="fg-pw">
+            <label class="fl" for="pw" id="lbl-pw">Contraseña</label>
+            <div class="iw" id="iw-pw">
+              <i class="ti ti-lock ii" aria-hidden="true"></i>
+              <input type="password" id="pw" name="pw" placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password" tabindex="15"
+                aria-labelledby="lbl-pw" aria-describedby="em-pw pw-reqs-id" aria-required="true" />
+              <button type="button" class="ir" id="tog-pw" tabindex="-1" aria-label="Mostrar contraseña">
+                <i class="ti ti-eye" id="eye-pw" aria-hidden="true"></i>
+              </button>
+            </div>
+            <!-- Strength bar (4 segments) -->
+            <div class="strength-bar" id="sbar" aria-label="Nivel de seguridad de la contraseña">
+              <div class="seg" id="seg1"></div>
+              <div class="seg" id="seg2"></div>
+              <div class="seg" id="seg3"></div>
+              <div class="seg" id="seg4"></div>
+            </div>
+            <span class="strength-txt" id="str-txt" style="color:#9CA3AF"></span>
+
+            <!-- Requirements -->
+            <div class="pw-reqs" id="pw-reqs-id" aria-label="Requisitos de contraseña">
+              <div class="req-item" id="req-len"><i class="ti ti-circle-check" aria-hidden="true"></i>Mínimo 8 caracteres</div>
+              <div class="req-item" id="req-upper"><i class="ti ti-circle-check" aria-hidden="true"></i>Al menos una letra mayúscula</div>
+              <div class="req-item" id="req-num"><i class="ti ti-circle-check" aria-hidden="true"></i>Al menos un número</div>
+              <div class="req-item" id="req-spec"><i class="ti ti-circle-check" aria-hidden="true"></i>Al menos un carácter especial (!@#$...)</div>
+            </div>
+
+            <div class="em" id="em-pw" role="alert" aria-live="polite">
+              <i class="ti ti-alert-circle"></i><span id="em-pw-t">La contraseña no cumple los requisitos</span>
+            </div>
+          </div>
+
+          <!-- Confirmar contraseña -->
+          <div class="fg" id="fg-pw2">
+            <label class="fl" for="pw2" id="lbl-pw2">Confirmar contraseña</label>
+            <div class="iw" id="iw-pw2">
+              <i class="ti ti-lock-check ii" aria-hidden="true"></i>
+              <input type="password" id="pw2" name="pw2" placeholder="Repite tu contraseña"
+                autocomplete="new-password" tabindex="16"
+                aria-labelledby="lbl-pw2" aria-describedby="em-pw2" aria-required="true" />
+              <button type="button" class="ir" id="tog-pw2" tabindex="-1" aria-label="Mostrar contraseña de confirmación">
+                <i class="ti ti-eye" id="eye-pw2" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="em" id="em-pw2" role="alert" aria-live="polite">
+              <i class="ti ti-alert-circle"></i><span id="em-pw2-t">Las contraseñas no coinciden</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 5: TÉRMINOS ══ -->
+        <div class="section-block" id="section-terms">
+          <div class="section-title">
+            <i class="ti ti-file-certificate" aria-hidden="true"></i>
+            Consentimiento y términos
+          </div>
+
+          <div class="cb-row">
+            <input type="checkbox" class="custom-cb" id="cb1" name="cb1" tabindex="17" aria-required="true" />
+            <label class="cb-text" for="cb1">
+              He leído y acepto los <a href="#" tabindex="-1">Términos y Condiciones</a> y la
+              <a href="#" tabindex="-1">Política de Privacidad</a> de PSYCO
+            </label>
+          </div>
+          <div class="em" id="em-cb1" role="alert" aria-live="polite">
+            <i class="ti ti-alert-circle"></i><span>Debes aceptar los términos para continuar</span>
+          </div>
+
+          <div class="cb-row">
+            <input type="checkbox" class="custom-cb" id="cb2" name="cb2" tabindex="18" aria-required="true" />
+            <label class="cb-text" for="cb2">
+              Autorizo el tratamiento de mis datos personales para fines institucionales de bienestar psicológico,
+              de acuerdo con la <strong>Ley 1581 de 2012</strong>.
+            </label>
+          </div>
+          <div class="em" id="em-cb2" role="alert" aria-live="polite">
+            <i class="ti ti-alert-circle"></i><span>Esta autorización es obligatoria</span>
+          </div>
+
+          <div class="cb-row">
+            <input type="checkbox" class="custom-cb" id="cb3" name="cb3" tabindex="19" />
+            <label class="cb-text" for="cb3">
+              Deseo recibir notificaciones y recordatorios sobre mis sesiones y recursos de bienestar.
+              <span class="optional-badge">Opcional</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-submit" id="btn-submit" tabindex="20" aria-label="Crear mi cuenta en PSYCO">
+          <span class="btn-text">Crear mi cuenta</span>
+          <i class="ti ti-user-plus btn-icon" aria-hidden="true"></i>
+          <div class="btn-spinner" aria-hidden="true"></div>
+        </button>
+
+      </form>
+
+      <!-- Login link -->
+      <div class="login-row">
+        <span>¿Ya tienes cuenta?</span>
+        <a href="index.html" class="login-link" tabindex="21">
+          <i class="ti ti-login" aria-hidden="true"></i>
+          Inicia sesión aquí
+        </a>
+      </div>
+
+      <p class="rpage-footer">
+        © 2026 PSYCO · I.E. Barrio Santa Margarita · Todos los derechos reservados
+      </p>
+    </div>
+  </main>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay" role="dialog" aria-modal="true" aria-label="Registro exitoso">
+  <div class="scard">
+    <div class="scard-icon">
+      <i class="ti ti-check" aria-hidden="true"></i>
+    </div>
+    <h2>¡Cuenta creada!</h2>
+    <p>Tu registro fue exitoso. Ya puedes iniciar sesión con tus credenciales en PSYCO. ¡Bienvenido/a a tu espacio de bienestar!</p>
+    <a href="index.html" class="btn-go">
+      <i class="ti ti-login" aria-hidden="true"></i>
+      Ir a Iniciar sesión
+    </a>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── NEURAL CANVAS ─────────────────────────────────────────── */
+  const canvas = document.getElementById('neural-canvas');
+  const ctx    = canvas.getContext('2d');
+  let pts = [], running = !REDUCED;
+
+  function resize()    { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  function initPts()   {
+    pts = [];
+    for (let i = 0; i < 40; i++) {
+      pts.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+        vx: (Math.random()-0.5)*0.45, vy: (Math.random()-0.5)*0.45,
+        r: 1.5 + Math.random()*1.5 });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x<0||p.x>canvas.width)  p.vx*=-1;
+      if (p.y<0||p.y>canvas.height) p.vy*=-1;
+    });
+    for (let i=0; i<pts.length; i++) for (let j=i+1; j<pts.length; j++) {
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+      if (d<130) {
+        ctx.beginPath(); ctx.strokeStyle=`rgba(255,255,255,${(1-d/130)*0.18})`;
+        ctx.lineWidth=1; ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke();
+      }
+    }
+    pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.fill(); });
+    if (running) requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', () => { resize(); initPts(); });
+  window.addEventListener('load', () => { resize(); initPts(); if (!REDUCED) draw(); });
+
+  /* ── TOGGLE PASSWORD ─────────────────────────────────────────── */
+  function setupToggle(btnId, inputId, iconId) {
+    const btn=document.getElementById(btnId), inp=document.getElementById(inputId), ic=document.getElementById(iconId);
+    btn.addEventListener('click', () => {
+      const show = inp.type==='password';
+      inp.type = show ? 'text' : 'password';
+      ic.className = show ? 'ti ti-eye-off' : 'ti ti-eye';
+      btn.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    });
+  }
+  setupToggle('tog-pw',  'pw',  'eye-pw');
+  setupToggle('tog-pw2', 'pw2', 'eye-pw2');
+
+  /* ── FOCUS STYLES ───────────────────────────────────────────── */
+  const focusFields = [
+    ['nombres','iw-nombres','lbl-nombres','blue'],['apellidos','iw-apellidos','lbl-apellidos','blue'],
+    ['tipodoc','iw-tipodoc','lbl-tipodoc','blue'],['numdoc','iw-numdoc','lbl-numdoc','blue'],
+    ['fnac','iw-fnac','lbl-fnac','blue'],['genero','iw-genero','lbl-genero','blue'],
+    ['email','iw-email','lbl-email','blue'],['email2','iw-email2','lbl-email2','blue'],
+    ['tel','iw-tel','lbl-tel','blue'],['ciudad','iw-ciudad','lbl-ciudad','blue'],
+    ['rol','iw-rol','lbl-rol','blue'],['pw','iw-pw','lbl-pw','green'],['pw2','iw-pw2','lbl-pw2','green'],
+  ];
+
+  focusFields.forEach(([id, wid, lid, clr]) => {
+    const el=document.getElementById(id), w=document.getElementById(wid), l=document.getElementById(lid);
+    if (!el||!w||!l) return;
+    const wc = clr==='blue' ? 'fb-focus' : 'fg-focus';
+    const lc = clr==='blue' ? 'fb' : 'fg-c';
+    el.addEventListener('focus', () => { w.classList.add(wc); l.classList.add(lc); });
+    el.addEventListener('blur',  () => { w.classList.remove(wc); l.classList.remove(lc); });
+  });
+
+  /* ── PASSWORD REQUIREMENTS ──────────────────────────────────── */
+  const pwInp  = document.getElementById('pw');
+  const segs   = [document.getElementById('seg1'), document.getElementById('seg2'),
+                  document.getElementById('seg3'), document.getElementById('seg4')];
+  const strTxt = document.getElementById('str-txt');
+  const reqs   = document.getElementById('pw-reqs-id');
+
+  const strLevels = [
+    { score: 0,  label: '',         color: '#9CA3AF', active: 0 },
+    { score: 1,  label: 'Débil',    color: '#DC2626', active: 1 },
+    { score: 2,  label: 'Regular',  color: '#EA580C', active: 2 },
+    { score: 3,  label: 'Buena',    color: '#CA8A04', active: 3 },
+    { score: 4,  label: 'Fuerte',   color: '#16A34A', active: 4 },
+  ];
+  const segColors = ['#DC2626','#EA580C','#CA8A04','#16A34A'];
+
+  function calcScore(pw) {
+    let s = 0;
+    if (pw.length >= 8)               s++;
+    if (/[A-Z]/.test(pw))             s++;
+    if (/[0-9]/.test(pw))             s++;
+    if (/[^A-Za-z0-9]/.test(pw))      s++;
+    return s;
+  }
+
+  function updateReq(id, ok) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('met', ok);
+  }
+
+  pwInp.addEventListener('focus', () => {
+    if (!REDUCED) reqs.classList.add('visible');
+  });
+
+  pwInp.addEventListener('input', () => {
+    const pw = pwInp.value;
+    reqs.classList.add('visible');
+    const score = pw ? calcScore(pw) : 0;
+    const lvl   = strLevels[score] || strLevels[4];
+
+    segs.forEach((s, i) => {
+      const active = i < lvl.active;
+      s.className  = 'seg';
+      if (active) s.classList.add('s' + (score));
+      s.style.background = active ? segColors[score-1] || segColors[3] : '';
+    });
+
+    strTxt.textContent = pw ? lvl.label : '';
+    strTxt.style.color = lvl.color;
+
+    updateReq('req-len',   pw.length >= 8);
+    updateReq('req-upper', /[A-Z]/.test(pw));
+    updateReq('req-num',   /[0-9]/.test(pw));
+    updateReq('req-spec',  /[^A-Za-z0-9]/.test(pw));
+
+    if (afterFirstSubmit) validateField('pw');
+    checkBtnEnable();
+    // validate pw2 in real time
+    const pw2 = document.getElementById('pw2').value;
+    if (pw2) {
+      const iw2 = document.getElementById('iw-pw2');
+      if (pw === pw2) { iw2.classList.remove('invalid'); iw2.classList.add('valid'); hideEm('pw2'); }
+      else            { iw2.classList.remove('valid'); }
+    }
+  });
+
+  /* ── EMAIL VALIDATION ───────────────────────────────────────── */
+  const emailInp  = document.getElementById('email');
+  const email2Inp = document.getElementById('email2');
+
+  function isEmailValid(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  function checkEmailMatch() {
+    const v1 = emailInp.value.trim(), v2 = email2Inp.value.trim();
+    const iw2 = document.getElementById('iw-email2');
+    const ic2 = document.getElementById('email2-icon');
+    if (!v2) return;
+    if (v1 === v2 && isEmailValid(v1)) {
+      iw2.classList.remove('invalid'); iw2.classList.add('valid');
+      ic2.style.display = 'inline'; hideEm('email2');
+    } else {
+      iw2.classList.remove('valid'); iw2.classList.add('invalid');
+      ic2.style.display = 'none';
+      showEm('email2', 'Los correos no coinciden');
+    }
+  }
+
+  emailInp.addEventListener('input', () => {
+    const v = emailInp.value.trim();
+    const iw = document.getElementById('iw-email');
+    const ic = document.getElementById('email-icon');
+    if (isEmailValid(v)) {
+      iw.classList.remove('invalid'); iw.classList.add('valid');
+      ic.style.display = 'inline'; hideEm('email');
+    } else {
+      iw.classList.remove('valid');
+      ic.style.display = 'none';
+    }
+    if (email2Inp.value) checkEmailMatch();
+    if (afterFirstSubmit) validateField('email');
+    checkBtnEnable();
+  });
+
+  email2Inp.addEventListener('input', () => { checkEmailMatch(); checkBtnEnable(); });
+
+  /* ── CONDITIONAL ROLE FIELDS ─────────────────────────────────── */
+  const rolSel = document.getElementById('rol');
+  const condMap = {
+    'estudiante':    'cond-estudiante',
+    'docente':       'cond-docente',
+    'psicologo':     'cond-psicologo',
+    'acudiente':     'cond-acudiente',
+  };
+
+  function closeAll() {
+    Object.values(condMap).forEach(id => {
+      document.getElementById(id).classList.remove('open');
+    });
+  }
+
+  rolSel.addEventListener('change', () => {
+    closeAll();
+    const cid = condMap[rolSel.value];
+    if (cid) document.getElementById(cid).classList.add('open');
+    if (afterFirstSubmit) validateField('rol');
+    checkBtnEnable();
+  });
+
+  /* ── PROGRESS BAR ───────────────────────────────────────────── */
+  const nodes  = document.querySelectorAll('.step-node');
+  const track  = document.getElementById('progress-track');
+
+  const sectionMap = [
+    ['nombres','apellidos','tipodoc','numdoc','fnac','genero'],
+    ['email','email2','tel','ciudad'],
+    ['rol'],
+    ['pw','pw2'],
+    ['cb1','cb2'],
+  ];
+
+  function isSectionDone(idx) {
+    return sectionMap[idx].every(fid => {
+      const el = document.getElementById(fid);
+      if (!el) return true;
+      if (el.tagName === 'SELECT') return el.value !== '';
+      if (el.type === 'checkbox') return el.checked;
+      return el.value.trim() !== '';
+    });
+  }
+
+  function updateProgress() {
+    let done = 0;
+    nodes.forEach((n, i) => {
+      n.classList.remove('active','done');
+      if (isSectionDone(i)) { n.classList.add('done'); done = i+1; }
+    });
+    const active = Math.min(done, nodes.length - 1);
+    if (!nodes[done]) nodes[nodes.length-1].classList.add('active');
+    else if (!isSectionDone(done)) nodes[done].classList.add('active');
+
+    const pct = nodes.length > 1 ? (done / (nodes.length-1)) * 100 : 0;
+    track.style.width = Math.min(pct, 100) + '%';
+  }
+
+  document.getElementById('reg-form').addEventListener('input', updateProgress);
+  document.getElementById('reg-form').addEventListener('change', updateProgress);
+
+  /* ── VALIDATION HELPERS ─────────────────────────────────────── */
+  let afterFirstSubmit = false;
+
+  function showEm(id, msg) {
+    const em = document.getElementById('em-' + id);
+    const t  = document.getElementById('em-' + id + '-t');
+    if (!em) return;
+    if (msg && t) t.textContent = msg;
+    em.classList.remove('show'); void em.offsetWidth; em.classList.add('show');
+  }
+
+  function hideEm(id) {
+    const em = document.getElementById('em-' + id);
+    if (em) em.classList.remove('show');
+  }
+
+  function setValid(iwId) {
+    const w = document.getElementById(iwId);
+    if (w) { w.classList.remove('invalid'); w.classList.add('valid'); }
+  }
+
+  function setInvalid(iwId) {
+    const w = document.getElementById(iwId);
+    if (w) { w.classList.remove('valid'); w.classList.add('invalid'); }
+  }
+
+  function validateField(id) {
+    const el = document.getElementById(id);
+    if (!el) return true;
+    const v = el.value.trim();
+    let ok = true, msg = '';
+
+    switch(id) {
+      case 'nombres':
+      case 'apellidos':
+        ok = v.split(' ').filter(w => w.length > 0).length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(v);
+        msg = 'Ingresa al menos dos palabras (solo letras)';
+        break;
+      case 'tipodoc': ok = v !== ''; msg = 'Selecciona un tipo de documento'; break;
+      case 'numdoc':  ok = /^\d{6,12}$/.test(v); msg = 'Ingresa entre 6 y 12 dígitos'; break;
+      case 'fnac': {
+        const d = new Date(v);
+        const now = new Date();
+        const age = (now - d) / (1000 * 60 * 60 * 24 * 365.25);
+        ok = !isNaN(d) && age >= 5 && age <= 100;
+        msg = 'Ingresa una fecha válida (entre 5 y 100 años)';
+        break;
+      }
+      case 'genero':  ok = v !== ''; msg = 'Selecciona una opción'; break;
+      case 'email':   ok = isEmailValid(v); msg = 'Ingresa un correo electrónico válido'; break;
+      case 'email2':  ok = v === emailInp.value.trim() && isEmailValid(v); msg = 'Los correos no coinciden'; break;
+      case 'tel':     ok = /^\d{10}$/.test(v); msg = 'Ingresa exactamente 10 dígitos'; break;
+      case 'ciudad':  ok = v.length >= 2; msg = 'Ingresa tu ciudad de residencia'; break;
+      case 'rol':     ok = v !== ''; msg = 'Selecciona tu rol'; break;
+      case 'pw':      ok = calcScore(v) >= 2 && v.length >= 8; msg = 'La contraseña no cumple los requisitos'; break;
+      case 'pw2':     ok = v === document.getElementById('pw').value && v.length > 0; msg = 'Las contraseñas no coinciden'; break;
+      case 'cb1': case 'cb2': ok = el.checked; msg = 'Este campo es obligatorio'; break;
+      default: ok = v !== '';
+    }
+
+    const iwId = 'iw-' + id;
+    if (ok) { setValid(iwId); hideEm(id); }
+    else    { setInvalid(iwId); showEm(id, msg); }
+    return ok;
+  }
+
+  /* ── BUTTON ENABLE LOGIC ────────────────────────────────────── */
+  const btn = document.getElementById('btn-submit');
+
+  function checkBtnEnable() {
+    const requiredIds = ['nombres','apellidos','tipodoc','numdoc','fnac','genero',
+      'email','email2','tel','ciudad','rol','pw','pw2','cb1','cb2'];
+    const allOk = requiredIds.every(id => {
+      const el = document.getElementById(id);
+      if (!el) return true;
+      if (el.type === 'checkbox') return el.checked;
+      const v = el.value.trim();
+      if (id==='email')  return isEmailValid(v);
+      if (id==='email2') return v === emailInp.value.trim() && isEmailValid(v);
+      if (id==='pw')     return calcScore(v)>=2 && v.length>=8;
+      if (id==='pw2')    return v===document.getElementById('pw').value && v.length>0;
+      return v !== '';
+    });
+    btn.classList.toggle('enabled', allOk);
+  }
+
+  // Attach listeners for enable check
+  ['nombres','apellidos','tipodoc','numdoc','fnac','genero','tel','ciudad','pw','pw2','cb1','cb2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input',  checkBtnEnable);
+    el.addEventListener('change', checkBtnEnable);
+  });
+
+  // phone: digits only
+  document.getElementById('tel').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+  });
+  // numdoc: digits only
+  document.getElementById('numdoc').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '');
+  });
+
+  /* ── FORM SUBMIT ─────────────────────────────────────────────── */
+  const form    = document.getElementById('reg-form');
+  const overlay = document.getElementById('success-overlay');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    afterFirstSubmit = true;
+
+    const required = ['nombres','apellidos','tipodoc','numdoc','fnac','genero',
+      'email','email2','tel','ciudad','rol','pw','pw2','cb1','cb2'];
+
+    let firstError = null;
+    let allValid = true;
+
+    required.forEach(id => {
+      const ok = validateField(id);
+      if (!ok && !firstError) firstError = document.getElementById('iw-' + id) || document.getElementById('em-' + id);
+      if (!ok) allValid = false;
+    });
+
+    if (!allValid) {
+      if (firstError && !REDUCED) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Loading
+    btn.disabled = true;
+    btn.classList.add('loading');
+
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Success
+    btn.classList.remove('loading');
+    btn.classList.add('success');
+    btn.innerHTML = '<span class="btn-text">¡Cuenta creada!</span><i class="ti ti-check btn-icon"></i>';
+
+    setTimeout(() => { overlay.classList.add('open'); }, 700);
+  });
+
+  // Initial check
+  checkBtnEnable();
+
+})();
+</script>
+
+</body>
+</html>

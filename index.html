@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSYCO — Plataforma de Bienestar Psicológico</title>
+  <meta name="description" content="Accede a PSYCO, el sistema de gestión de bienestar psicológico de la I.E. Barrio Santa Margarita." />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tabler Icons CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <style>
+    /* ─── RESET & BASE ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-primary:   #1565C0;
+      --blue-hover:     #1976D2;
+      --green-primary:  #2E7D32;
+      --green-hover:    #388E3C;
+      --bg-page:        #F0F7FF;
+      --text-title:     #0F172A;
+      --text-secondary: #64748B;
+      --text-label:     #374151;
+      --border-default: #E2E8F0;
+      --border-radius:  10px;
+      --transition:     0.2s ease;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-title);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── PAGE WRAPPER ────────────────────────────────────── */
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* ─── LEFT PANEL ──────────────────────────────────────── */
+    .panel-left {
+      position: relative;
+      width: 50%;
+      background: linear-gradient(145deg, #0D47A1 0%, #1B5E20 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInPanel 0.4s ease-out 0.1s forwards;
+    }
+
+    /* Neural network canvas */
+    #neural-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .panel-left-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+
+    /* PSYCO Logo */
+    .psyco-logo-wrap {
+      width: 190px;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 28px rgba(255,255,255,0.32));
+      animation: logoReveal 0.8s ease-out 0.5s both;
+    }
+
+    .psyco-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* Elimina el fondo gris claro sobre el panel oscuro */
+      mix-blend-mode: multiply;
+      border-radius: 50%;
+    }
+
+    /* Fallback SVG logo rendered inline if img fails */
+    .psyco-svg-fallback {
+      display: none;
+    }
+
+    /* Decorative icons */
+    .deco-icons {
+      display: flex;
+      gap: 28px;
+      margin-top: 4px;
+    }
+
+    .deco-icons i {
+      font-size: 28px;
+      color: rgba(255,255,255,0.75);
+      transition: color var(--transition), transform var(--transition);
+    }
+
+    .deco-icons i:hover {
+      color: #fff;
+      transform: scale(1.15);
+    }
+
+    /* Slogan & subtexts */
+    .slogan {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.45;
+      max-width: 280px;
+    }
+
+    .subtext {
+      font-size: 13px;
+      color: rgba(255,255,255,0.80);
+      letter-spacing: 0.3px;
+    }
+
+    .panel-left-footer {
+      position: absolute;
+      bottom: 22px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.3px;
+      z-index: 1;
+    }
+
+    /* ─── RIGHT PANEL ─────────────────────────────────────── */
+    .panel-right {
+      width: 50%;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 48px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeSlideUp 0.6s ease-out 0.2s forwards;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Institutional header */
+    .inst-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .inst-shield-wrap {
+      width: 72px;
+      height: 72px;
+      background: #fff;
+      border-radius: 50%;
+      border: 2.5px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.10);
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .inst-shield-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .inst-name {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border-default);
+      margin-bottom: 24px;
+    }
+
+    /* Titles */
+    .login-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-title);
+      text-align: center;
+      margin-bottom: 6px;
+      line-height: 1.2;
+      width: 100%;
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1.5;
+      width: 100%;
+    }
+
+    /* ─── FORM ────────────────────────────────────────────── */
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-label);
+      transition: transform var(--transition), color var(--transition);
+      transform-origin: left;
+    }
+
+    .field-label.focused-blue  { transform: translateY(-2px); color: var(--blue-primary); }
+    .field-label.focused-green { transform: translateY(-2px); color: var(--green-primary); }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon-left {
+      position: absolute;
+      left: 13px;
+      font-size: 17px;
+      color: #9CA3AF;
+      pointer-events: none;
+      transition: color var(--transition);
+      z-index: 2;
+    }
+
+    .input-icon-right {
+      position: absolute;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      font-size: 19px;
+      color: #9CA3AF;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+      z-index: 2;
+    }
+
+    .input-icon-right:hover {
+      color: var(--green-primary);
+      background: rgba(46,125,50,0.08);
+      transform: scale(1.15);
+    }
+
+    .input-icon-right:active {
+      transform: scale(0.95);
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 46px;
+      border: 1.5px solid var(--border-default);
+      border-radius: var(--border-radius);
+      padding: 0 44px 0 42px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      color: var(--text-title);
+      background: #fff;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .input-wrap input::placeholder { color: #9CA3AF; }
+
+    /* Focus states */
+    .input-wrap.focus-blue  input {
+      border: 2px solid var(--blue-primary);
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
+    }
+    .input-wrap.focus-blue  .input-icon-left { color: var(--blue-primary); }
+
+    .input-wrap.focus-green input {
+      border: 2px solid var(--green-primary);
+      box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
+    }
+    .input-wrap.focus-green .input-icon-left { color: var(--green-primary); }
+
+    /* Error state */
+    .input-wrap.has-error input {
+      border: 2px solid #DC2626;
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.10);
+    }
+
+    /* Error message */
+    .error-msg {
+      display: none;
+      align-items: center;
+      gap: 7px;
+      background: #FEE2E2;
+      color: #991B1B;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .error-msg i { font-size: 15px; flex-shrink: 0; }
+
+    .error-msg.visible {
+      display: flex;
+      animation: fadeIn 0.2s ease-out, shake 0.4s ease-out;
+    }
+
+    /* ─── REMEMBER + FORGOT ROW ───────────────────────────── */
+    .row-remember {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .custom-checkbox {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox:checked {
+      background: var(--blue-primary);
+      border-color: var(--blue-primary);
+    }
+
+    .custom-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      top: 1px; left: 4px;
+      width: 5px; height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .remember-text {
+      font-size: 13px;
+      color: var(--text-label);
+    }
+
+    .forgot-link {
+      font-size: 13px;
+      color: var(--blue-primary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .forgot-link:hover {
+      color: var(--blue-hover);
+      text-decoration: underline;
+    }
+
+    /* ─── SUBMIT BUTTON ───────────────────────────────────── */
+    .btn-submit {
+      width: 100%;
+      height: 48px;
+      border: none;
+      border-radius: var(--border-radius);
+      background: linear-gradient(90deg, var(--blue-primary) 0%, var(--green-primary) 100%);
+      color: #fff;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background var(--transition), transform var(--transition), filter var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.25);
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: linear-gradient(90deg, var(--blue-hover) 0%, var(--green-hover) 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(21,101,192,0.32);
+    }
+
+    .btn-submit:active:not(:disabled) {
+      transform: translateY(0);
+      filter: brightness(0.95);
+    }
+
+    .btn-submit:disabled { cursor: not-allowed; opacity: 0.85; }
+
+    .btn-submit .btn-icon { transition: transform 0.2s ease; font-size: 16px; }
+    .btn-submit:hover .btn-icon { transform: translateX(3px); }
+
+    /* Spinner */
+    .btn-spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* States */
+    .btn-submit.loading .btn-text  { display: none; }
+    .btn-submit.loading .btn-icon  { display: none; }
+    .btn-submit.loading .btn-spinner { display: block; }
+
+    .btn-submit.success {
+      background: #2E7D32;
+      box-shadow: 0 4px 16px rgba(46,125,50,0.35);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    .panel-right-footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: #94A3B8;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Register link row */
+    .register-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+      font-size: 13.5px;
+    }
+
+    .register-row span {
+      color: var(--text-secondary);
+    }
+
+    .register-link {
+      color: var(--blue-primary);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s ease, gap 0.2s ease;
+    }
+
+    .register-link:hover {
+      color: var(--green-primary);
+      gap: 7px;
+    }
+
+    .register-link i { font-size: 14px; }
+
+    /* ─── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeInPanel   { to { opacity: 1; } }
+    @keyframes fadeSlideUp   { to { opacity: 1; transform: translateY(0); } }
+    @keyframes logoReveal    { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes spin          { to { transform: rotate(360deg); } }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-5px); }
+      40%       { transform: translateX(5px); }
+      60%       { transform: translateX(-4px); }
+      80%       { transform: translateX(4px); }
+    }
+
+    /* Eye animation on page load */
+    @keyframes eyePulse {
+      0%   { transform: scale(0.8); }
+      100% { transform: scale(1.0); }
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+
+    /* Tablet */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .panel-left { width: 40%; }
+      .panel-right { width: 60%; padding: 40px 36px; }
+      .psyco-logo-wrap { width: 140px; height: 140px; }
+      .slogan { font-size: 14px; }
+      .deco-icons i { font-size: 22px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 767px) {
+      .login-page { flex-direction: column; }
+
+      .panel-left {
+        width: 100%;
+        min-height: 180px;
+        padding: 24px 20px;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .psyco-logo-wrap  { width: 110px; height: 110px; }
+      .slogan, .subtext { display: none; }
+      .deco-icons       { display: none; }
+      .panel-left-footer { display: none; }
+
+      .panel-right {
+        width: 100%;
+        padding: 32px 24px;
+        justify-content: flex-start;
+        min-height: calc(100vh - 180px);
+      }
+
+      .form-container { max-width: 100%; }
+      .login-title { font-size: 22px; }
+    }
+
+    /* ─── REDUCED MOTION ──────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-page" role="main">
+
+  <!-- ══════════ LEFT PANEL ══════════ -->
+  <section class="panel-left" aria-label="Información de la plataforma PSYCO">
+    <canvas id="neural-canvas" aria-hidden="true"></canvas>
+
+    <div class="panel-left-content">
+
+      <!-- PSYCO Logo -->
+      <div class="psyco-logo-wrap">
+        <img
+          id="psyco-logo-img"
+          src="psyco_logo.png"
+          alt="Logo PSYCO — Sistema de bienestar psicológico"
+          onerror="this.style.display='none'; document.getElementById('psyco-svg').style.display='block';"
+        />
+        <!-- SVG Fallback inline logo -->
+        <svg id="psyco-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="display:none; width:100%; height:100%;" aria-label="Logo PSYCO">
+          <defs>
+            <clipPath id="leftHalf"><rect x="0" y="0" width="100" height="200"/></clipPath>
+            <clipPath id="rightHalf"><rect x="100" y="0" width="100" height="200"/></clipPath>
+          </defs>
+          <!-- Brain shape left -->
+          <g clip-path="url(#leftHalf)">
+            <ellipse cx="100" cy="88" rx="68" ry="62" fill="#1565C0"/>
+            <path d="M32 88 Q18 55 50 38 Q72 22 100 30" fill="#1565C0" opacity="0.8"/>
+          </g>
+          <!-- Brain shape right -->
+          <g clip-path="url(#rightHalf)">
+            <ellipse cx="100" cy="88" rx="68" ry="62" fill="#2E7D32"/>
+            <path d="M168 88 Q182 55 150 38 Q128 22 100 30" fill="#2E7D32" opacity="0.8"/>
+          </g>
+          <!-- Center divider -->
+          <line x1="100" y1="26" x2="100" y2="150" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          <!-- Eye -->
+          <ellipse cx="100" cy="90" rx="18" ry="11" fill="white" opacity="0.95"/>
+          <circle cx="100" cy="90" r="7" fill="#0D47A1"/>
+          <circle cx="103" cy="87" r="2.5" fill="white"/>
+          <!-- Banner -->
+          <rect x="40" y="152" width="120" height="32" rx="6" fill="#0D47A1"/>
+          <rect x="38" y="152" width="124" height="32" rx="6" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <text x="100" y="173" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="17" fill="white" letter-spacing="3">PSYCO</text>
+        </svg>
+      </div>
+
+      <!-- Decorative icons -->
+      <div class="deco-icons" aria-hidden="true">
+        <i class="ti ti-brain"></i>
+        <i class="ti ti-heart"></i>
+        <i class="ti ti-shield-check"></i>
+      </div>
+
+      <!-- Texts -->
+      <p class="slogan">"Un sistema ordenado para un bienestar adecuado"</p>
+      <p class="subtext">Plataforma de bienestar psicológico</p>
+    </div>
+
+    <p class="panel-left-footer">I.E. Barrio Santa Margarita</p>
+  </section>
+
+  <!-- ══════════ RIGHT PANEL ══════════ -->
+  <section class="panel-right" aria-label="Formulario de acceso">
+    <div class="form-container">
+
+      <!-- Institutional header -->
+      <div class="inst-header">
+        <div class="inst-shield-wrap">
+          <img
+            id="shield-img"
+            src="escudo_institucional.png"
+            alt="Escudo I.E. Barrio Santa Margarita"
+            onerror="this.style.display='none'; document.getElementById('shield-svg').style.display='flex';"
+          />
+          <!-- SVG Fallback shield -->
+          <svg id="shield-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" style="display:none; width:100%; height:100%;">
+            <path d="M50 5 L90 20 L90 65 Q90 95 50 115 Q10 95 10 65 L10 20 Z" fill="#1565C0"/>
+            <path d="M50 15 L82 28 L82 65 Q82 90 50 107 Q18 90 18 65 L18 28 Z" fill="#2E7D32"/>
+            <text x="50" y="55" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" fill="white">IE</text>
+            <text x="50" y="75" text-anchor="middle" font-family="Inter" font-size="10" fill="rgba(255,255,255,0.8)">BSM</text>
+          </svg>
+        </div>
+        <span class="inst-name">I.E. Barrio Santa Margarita</span>
+      </div>
+
+      <div class="divider" role="separator"></div>
+
+      <h1 class="login-title">Bienvenido a PSYCO</h1>
+      <p class="login-subtitle">Ingresa tus datos para acceder a tu espacio</p>
+
+      <!-- ─── FORM ─── -->
+      <form id="login-form" novalidate autocomplete="on">
+
+        <!-- Usuario -->
+        <div class="field-group">
+          <label class="field-label" for="username" id="label-username">
+            Usuario o correo electrónico
+          </label>
+          <div class="input-wrap" id="wrap-username">
+            <i class="ti ti-user input-icon-left" aria-hidden="true"></i>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="ejemplo@correo.com"
+              autocomplete="username"
+              tabindex="1"
+              aria-labelledby="label-username"
+              aria-describedby="error-username"
+              aria-required="true"
+            />
+          </div>
+          <div class="error-msg" id="error-username" role="alert" aria-live="polite">
+            <i class="ti ti-alert-circle" aria-hidden="true"></i>
+            <span id="error-username-text">El usuario no existe</span>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field-group">
+          <label class="field-label" for="password" id="label-password">
+            Contraseña
+          </label>
+          <div class="input-wrap" id="wrap-password">
+            <i class="ti ti-lock input-icon-left" aria-hidden="true"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              tabindex="2"
+              aria-labelledby="label-password"
+              aria-describedby="error-password"
+              aria-required="true"
+            />
+            <button
+              type="button"
+              class="input-icon-right"
+              id="toggle-password"
+              tabindex="-1"
+              aria-label="Mostrar u ocultar contraseña"
+            >
+              <i class="ti ti-eye" id="eye-icon" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="error-msg" id="error-password" role="alert" aria-live="polite">
+            <i class="ti ti-alert-circle" aria-hidden="true"></i>
+            <span id="error-password-text">Contraseña incorrecta</span>
+          </div>
+        </div>
+
+        <!-- Remember + Forgot -->
+        <div class="row-remember">
+          <label class="remember-label" for="remember">
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              id="remember"
+              name="remember"
+              tabindex="3"
+            />
+            <span class="remember-text">Recordar sesión</span>
+          </label>
+          <a href="#" class="forgot-link" tabindex="5" aria-label="Recuperar contraseña olvidada">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit" id="btn-submit" tabindex="4">
+          <span class="btn-text">Iniciar sesión</span>
+          <i class="ti ti-arrow-right btn-icon" aria-hidden="true"></i>
+          <div class="btn-spinner" aria-hidden="true"></div>
+        </button>
+
+      </form>
+
+      <!-- Register link -->
+      <div class="register-row">
+        <span>¿No tienes cuenta?</span>
+        <a href="register.html" class="register-link" tabindex="6">
+          Regístrate aquí <i class="ti ti-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <p class="panel-right-footer">
+        © 2026 PSYCO · I.E. Barrio Santa Margarita · Todos los derechos reservados
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  // ── NEURAL NETWORK CANVAS ──────────────────────────────────
+  const canvas = document.getElementById('neural-canvas');
+  const ctx    = canvas.getContext('2d');
+  const POINT_COUNT    = 40;
+  const CONNECTION_DIST = 130;
+  const REDUCED_MOTION  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let points = [];
+  let animId = null;
+  let running = !REDUCED_MOTION;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  function initPoints() {
+    points = [];
+    for (let i = 0; i < POINT_COUNT; i++) {
+      points.push({
+        x:  Math.random() * canvas.width,
+        y:  Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r:  1.5 + Math.random() * 1.5
+      });
+    }
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Move
+    points.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    });
+
+    // Draw connections
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const dx   = points[i].x - points[j].x;
+        const dy   = points[i].y - points[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          const alpha = (1 - dist / CONNECTION_DIST) * 0.18;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+          ctx.lineWidth   = 1;
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[j].x, points[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw points
+    points.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fill();
+    });
+
+    if (running) animId = requestAnimationFrame(drawFrame);
+  }
+
+  function startNeural() {
+    resize();
+    initPoints();
+    if (!REDUCED_MOTION) drawFrame();
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    initPoints();
+  });
+
+  // Start after fonts/icons load
+  if (document.readyState === 'complete') {
+    startNeural();
+  } else {
+    window.addEventListener('load', startNeural);
+  }
+
+  // ── TOGGLE PASSWORD ────────────────────────────────────────
+  const toggleBtn = document.getElementById('toggle-password');
+  const passInput = document.getElementById('password');
+  const eyeIcon   = document.getElementById('eye-icon');
+
+  toggleBtn.addEventListener('click', () => {
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    eyeIcon.className = isPass ? 'ti ti-eye-off' : 'ti ti-eye';
+    toggleBtn.setAttribute('aria-label', isPass ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  });
+
+  // ── INPUT FOCUS STYLING ────────────────────────────────────
+  function setupFieldFocus(inputId, wrapId, labelId, colorClass, labelColorClass) {
+    const input = document.getElementById(inputId);
+    const wrap  = document.getElementById(wrapId);
+    const label = document.getElementById(labelId);
+
+    input.addEventListener('focus', () => {
+      wrap.classList.add(colorClass);
+      label.classList.add(labelColorClass);
+    });
+
+    input.addEventListener('blur', () => {
+      wrap.classList.remove(colorClass);
+      label.classList.remove(labelColorClass);
+    });
+  }
+
+  setupFieldFocus('username', 'wrap-username', 'label-username', 'focus-blue',  'focused-blue');
+  setupFieldFocus('password', 'wrap-password', 'label-password', 'focus-green', 'focused-green');
+
+  // ── FORM VALIDATION & SUBMIT ───────────────────────────────
+  const form      = document.getElementById('login-form');
+  const btnSubmit = document.getElementById('btn-submit');
+
+  // Demo credentials — replace with real auth
+  const DEMO_USER = 'admin';
+  const DEMO_PASS = 'psyco2025';
+
+  function showError(fieldId, message) {
+    const wrap    = document.getElementById('wrap-' + fieldId);
+    const errDiv  = document.getElementById('error-' + fieldId);
+    const errText = document.getElementById('error-' + fieldId + '-text');
+
+    wrap.classList.add('has-error');
+    errText.textContent = message;
+    errDiv.classList.remove('visible');
+    // Trigger reflow for re-animation
+    void errDiv.offsetWidth;
+    errDiv.classList.add('visible');
+  }
+
+  function clearError(fieldId) {
+    const wrap   = document.getElementById('wrap-' + fieldId);
+    const errDiv = document.getElementById('error-' + fieldId);
+    wrap.classList.remove('has-error');
+    errDiv.classList.remove('visible');
+  }
+
+  function setLoading(isLoading) {
+    btnSubmit.disabled = isLoading;
+    btnSubmit.classList.toggle('loading', isLoading);
+  }
+
+  function setSuccess() {
+    btnSubmit.classList.remove('loading');
+    btnSubmit.classList.add('success');
+    btnSubmit.innerHTML = `
+      <span class="btn-text">¡Acceso concedido!</span>
+      <i class="ti ti-check btn-icon" aria-hidden="true"></i>
+    `;
+  }
+
+  // Clear errors on input
+  document.getElementById('username').addEventListener('input', () => clearError('username'));
+  document.getElementById('password').addEventListener('input', () => clearError('password'));
+
+  // Enter key submits from any field
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError('username');
+    clearError('password');
+
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value;
+
+    // Client-side validation
+    let hasError = false;
+
+    if (!user) {
+      showError('username', 'Por favor ingresa tu usuario o correo electrónico.');
+      hasError = true;
+    }
+
+    if (!pass) {
+      showError('password', 'Por favor ingresa tu contraseña.');
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    // Show loading
+    setLoading(true);
+
+    // Simulate async authentication (replace with real fetch)
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    // Demo validation
+    if (user !== DEMO_USER && !user.includes('@')) {
+      setLoading(false);
+      showError('username', 'El usuario no existe. Verifica el dato ingresado.');
+      return;
+    }
+
+    if (pass !== DEMO_PASS) {
+      setLoading(false);
+      showError('password', 'Contraseña incorrecta. Intenta nuevamente.');
+      return;
+    }
+
+    // Success
+    setLoading(false);
+    setSuccess();
+
+    // Wait 0.8s then redirect
+    setTimeout(() => {
+      // Replace with actual dashboard URL
+      window.location.href = 'dashboard.html';
+    }, 800);
+  });
+
+})();
+</script>
+
+</body>
+</html>
