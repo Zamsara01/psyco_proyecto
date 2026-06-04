@@ -7,10 +7,9 @@
                 <div class="p-3 bg-orange-100 text-orange-600 rounded-xl">
                     <span class="material-symbols-outlined">clinical_notes</span>
                 </div>
-                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+12%</span>
             </div>
             <p class="text-slate-500 text-sm font-medium">Sesiones este mes</p>
-            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">48</h3>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1"><?= htmlspecialchars($stats['sesiones_mes'] ?? 0) ?></h3>
         </div>
         
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
@@ -20,8 +19,8 @@
                 </div>
                 <span class="text-xs font-bold text-slate-500 bg-slate-50 px-2 py-1 rounded-full">Hoy</span>
             </div>
-            <p class="text-slate-500 text-sm font-medium">Citas Pendientes</p>
-            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">6</h3>
+            <p class="text-slate-500 text-sm font-medium">Pendientes Hoy</p>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1"><?= htmlspecialchars($stats['pendientes_hoy'] ?? 0) ?></h3>
         </div>
         
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
@@ -31,7 +30,7 @@
                 </div>
             </div>
             <p class="text-slate-500 text-sm font-medium">Nuevos Diagnósticos</p>
-            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">3</h3>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1"><?= htmlspecialchars($stats['nuevos_diagnosticos'] ?? 0) ?></h3>
         </div>
         
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
@@ -40,8 +39,8 @@
                     <span class="material-symbols-outlined">sentiment_satisfied</span>
                 </div>
             </div>
-            <p class="text-slate-500 text-sm font-medium">Alta Médica</p>
-            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">12</h3>
+            <p class="text-slate-500 text-sm font-medium">Altas Médicas</p>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1"><?= htmlspecialchars($stats['altas_medicas'] ?? 0) ?></h3>
         </div>
     </div>
 
@@ -69,92 +68,63 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-slate-400">1</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs">CG</div>
-                                <span class="text-sm font-bold text-slate-900 dark:text-white">Carlos Gómez</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700">
-                                Esquizofrenia
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">15 de Mayo 2026</td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-slate-900 dark:text-white">#3007314624</span>
-                                <span class="text-xs text-slate-500">carlosgomez@gmail.com</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="text-sm italic text-red-500">No asistió.</span>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <button class="text-slate-400 hover:text-orange-600 transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">more_vert</span>
-                            </button>
-                        </td>
+                    <?php if (empty($citasRecientes)): ?>
+                    <tr>
+                        <td colspan="7" class="px-6 py-8 text-center text-slate-500">No hay citas registradas.</td>
                     </tr>
-                    
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-slate-400">2</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">VR</div>
-                                <span class="text-sm font-bold text-slate-900 dark:text-white">Valeria Ríos</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
-                                Autismo
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">18 de Julio 2026</td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-slate-900 dark:text-white">#3244377127</span>
-                                <span class="text-xs text-slate-500">valeriarios@gmail.com</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
-                            Viene con los padres.
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <button class="text-slate-400 hover:text-orange-600 transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">more_vert</span>
-                            </button>
-                        </td>
-                    </tr>
-                    
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-slate-400">3</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">SD</div>
-                                <span class="text-sm font-bold text-slate-900 dark:text-white">Simón Duque</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-400 font-medium italic">No tiene</td>
-                        <td class="px-6 py-4 text-sm text-slate-400 font-medium italic">No definida</td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-slate-900 dark:text-white">#42134737421</span>
-                                <span class="text-xs text-slate-400 italic">No tiene correo.</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-400 italic">--</td>
-                        <td class="px-6 py-4 text-center">
-                            <button class="text-slate-400 hover:text-orange-600 transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">more_vert</span>
-                            </button>
-                        </td>
-                    </tr>
+                    <?php else: ?>
+                        <?php foreach ($citasRecientes as $index => $cita): ?>
+                            <?php 
+                                // Generar iniciales
+                                $partes = explode(' ', $cita['paciente_nombre']);
+                                $iniciales = count($partes) >= 2 
+                                    ? strtoupper(substr($partes[0], 0, 1) . substr($partes[1], 0, 1))
+                                    : strtoupper(substr($cita['paciente_nombre'], 0, 2));
+
+                                // Formato de fecha
+                                $fechaFormateada = date('d M Y', strtotime($cita['fecha']));
+                                
+                                // Color basado en el estado
+                                $estadoColor = match($cita['estado']) {
+                                    'pendiente' => 'bg-blue-100 text-blue-700',
+                                    'completada' => 'bg-green-100 text-green-700',
+                                    'cancelada' => 'bg-red-100 text-red-700',
+                                    default => 'bg-slate-100 text-slate-700'
+                                };
+                            ?>
+                            <tr class="hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm font-semibold text-slate-400"><?= $index + 1 ?></td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs"><?= htmlspecialchars($iniciales) ?></div>
+                                        <span class="text-sm font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($cita['paciente_nombre']) ?></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold <?= $estadoColor ?>">
+                                        <?= htmlspecialchars($cita['motivo_consulta'] ?? 'No especificado') ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400"><?= $fechaFormateada ?></td>
+                                <td class="px-6 py-4 text-sm">
+                                    <div class="flex flex-col">
+                                        <span class="font-medium text-slate-900 dark:text-white">#<?= str_pad($cita['id_usuario'], 6, '0', STR_PAD_LEFT) ?></span>
+                                        <span class="text-xs text-slate-500"><?= htmlspecialchars($cita['correo_electronico']) ?></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
+                                    <?= htmlspecialchars($cita['notas_sesion'] ?? '--') ?>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button class="text-slate-400 hover:text-orange-600 transition-colors" title="<?= ucfirst($cita['estado']) ?>">
+                                        <span class="material-symbols-outlined text-[20px]">
+                                            <?= $cita['estado'] === 'completada' ? 'check_circle' : ($cita['estado'] === 'cancelada' ? 'cancel' : 'schedule') ?>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -184,32 +154,31 @@
                 <span class="material-symbols-outlined text-orange-500">event_upcoming</span>
                 Citas para Hoy
             </h3>
-            <div class="space-y-4">
-                <div class="flex items-center gap-4 p-4 rounded-xl border border-slate-50 hover:border-orange-100 hover:bg-orange-50/20 transition-all">
-                    <div class="text-center w-16">
-                        <p class="text-xs font-black text-orange-600 uppercase">09:00</p>
-                        <p class="text-[10px] text-slate-400">AM</p>
+            <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                <?php if (empty($citasHoy)): ?>
+                    <div class="p-6 text-center text-slate-500 border border-dashed border-slate-200 rounded-xl">
+                        Día libre. No tienes citas pendientes para hoy.
                     </div>
-                    <div class="h-10 w-[2px] bg-orange-200"></div>
-                    <div class="flex-1">
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">Carlos Gómez</p>
-                        <p class="text-xs text-slate-500">Seguimiento mensual • Consultorio 402</p>
-                    </div>
-                    <button class="px-3 py-1.5 bg-orange-600 text-white text-xs font-bold rounded-lg active:scale-95">Check-in</button>
-                </div>
-                
-                <div class="flex items-center gap-4 p-4 rounded-xl border border-slate-50 hover:border-orange-100 hover:bg-orange-50/20 transition-all">
-                    <div class="text-center w-16">
-                        <p class="text-xs font-black text-orange-600 uppercase">10:30</p>
-                        <p class="text-[10px] text-slate-400">AM</p>
-                    </div>
-                    <div class="h-10 w-[2px] bg-orange-200"></div>
-                    <div class="flex-1">
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">Valeria Ríos</p>
-                        <p class="text-xs text-slate-500">Terapia Ocupacional • Consultorio 201</p>
-                    </div>
-                    <button class="px-3 py-1.5 bg-slate-100 text-slate-500 text-xs font-bold rounded-lg active:scale-95">Re-agendar</button>
-                </div>
+                <?php else: ?>
+                    <?php foreach ($citasHoy as $citaHoy): ?>
+                        <?php
+                            $horaFormateada = date('h:i', strtotime($citaHoy['hora']));
+                            $amPm = date('A', strtotime($citaHoy['hora']));
+                        ?>
+                        <div class="flex items-center gap-4 p-4 rounded-xl border border-slate-50 hover:border-orange-100 hover:bg-orange-50/20 transition-all">
+                            <div class="text-center w-16">
+                                <p class="text-xs font-black text-orange-600 uppercase"><?= $horaFormateada ?></p>
+                                <p class="text-[10px] text-slate-400"><?= $amPm ?></p>
+                            </div>
+                            <div class="h-10 w-[2px] bg-orange-200"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($citaHoy['paciente_nombre']) ?></p>
+                                <p class="text-xs text-slate-500"><?= htmlspecialchars($citaHoy['motivo_consulta'] ?? 'Sin motivo específico') ?> • Consultorio</p>
+                            </div>
+                            <button class="px-3 py-1.5 bg-orange-600 text-white text-xs font-bold rounded-lg active:scale-95 hover:bg-orange-700 transition-colors">Check-in</button>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -221,17 +190,28 @@
                     <h3 class="text-white font-bold">Resumen Diario</h3>
                     <span class="material-symbols-outlined text-white/80">lightbulb</span>
                 </div>
-                <p class="text-white/90 font-body-sm mb-6 leading-relaxed">
-                    Recuerda revisar las notas de Valeria Ríos antes de su sesión. Los padres mencionaron cambios en su rutina de sueño durante la última llamada.
-                </p>
+                <?php if (!empty($citasHoy)): ?>
+                    <p class="text-white/90 font-body-sm mb-6 leading-relaxed">
+                        Tienes <?= count($citasHoy) ?> paciente(s) esperando hoy. Tu primer paciente es <strong><?= htmlspecialchars($citasHoy[0]['paciente_nombre']) ?></strong> a las <?= date('h:i A', strtotime($citasHoy[0]['hora'])) ?>.
+                    </p>
+                <?php else: ?>
+                    <p class="text-white/90 font-body-sm mb-6 leading-relaxed">
+                        Aprovecha este tiempo para actualizar tus diagnósticos o revisar material de apoyo para tus próximos pacientes.
+                    </p>
+                <?php endif; ?>
                 
+                <?php
+                    $sesionesMes  = (int) ($stats['sesiones_mes']  ?? 0);
+                    $altasMedicas = (int) ($stats['altas_medicas'] ?? 0);
+                    $porcentaje   = $sesionesMes > 0 ? min(100, round(($altasMedicas / $sesionesMes) * 100)) : 0;
+                ?>
                 <div class="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold text-white uppercase">Progreso del Día</span>
-                        <span class="text-xs font-bold text-white">75%</span>
+                        <span class="text-xs font-bold text-white uppercase">Progreso del Mes</span>
+                        <span class="text-xs font-bold text-white"><?= $porcentaje ?>%</span>
                     </div>
                     <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
-                        <div class="bg-white h-full" style="width: 75%"></div>
+                        <div class="bg-white h-full transition-all duration-1000" style="width: <?= $porcentaje ?>%"></div>
                     </div>
                 </div>
             </div>
