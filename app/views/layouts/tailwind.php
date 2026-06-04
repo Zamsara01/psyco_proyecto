@@ -34,5 +34,18 @@ $content = $content ?? '';
     <!-- Contenido dinámico inyectado por el controlador -->
     <?= $content ?>
 
+    <!-- Modal de Login (global) -->
+    <?php require __DIR__ . '/../partials/login_modal.php'; ?>
+
+    <!-- Modal de Registro (global) -->
+    <?php require __DIR__ . '/../partials/register_modal.php'; ?>
+
+    <!-- Footer global -->
+    <footer class="bg-white border-t border-slate-100 py-4 px-6 text-center">
+        <p class="text-body-sm text-on-surface-variant">
+            &copy; <?= date('Y') ?> <span class="font-semibold text-primary">grupo_psyco</span> — Todos los derechos reservados.
+        </p>
+    </footer>
+
 </body>
 </html>

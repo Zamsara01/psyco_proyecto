@@ -10,7 +10,7 @@
         <!-- Logo Header -->
         <div class="pt-stack-lg px-stack-lg flex flex-col items-center">
             <div class="w-24 h-24 mb-stack-md flex items-center justify-center overflow-hidden">
-                <img alt="PSYCO Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uiOUkpR-uX3pbcr8qDf7NFfp2MBKT1SRByOafvSaVtpiJa9HzfBx5Kd4UqqFg7ZPLd3JNhgcr1AJzM0at1DuOGU-2JbtkpuWI1-xy1KUMxcM5z_wxCWXCqtQk3VpMYJvMyqZC6QAB_Q5r71C6EBs2Us9lvMjBoQJvJO7_eNlvAUBNGFfyzTv_GWJ0dr_yDABQ3eVEQhU78Jnk43iFXaMl3SZQA64lpcA-fvSWoj_HhCMx1oubWNLJSQjdVaSxoB0I5-LpY93PC0gwQ"/>
+                <img alt="PSYCO Logo" class="w-full h-full object-contain" src="<?= URL_BASE ?>public/img/psyco.png"/>
             </div>
             <h1 class="font-headline-md text-headline-md text-on-surface text-center mb-stack-sm">Bienvenido de nuevo</h1>
             <p class="font-body-sm text-body-sm text-tertiary text-center">Inicia sesión para gestionar tus recursos y horarios.</p>
