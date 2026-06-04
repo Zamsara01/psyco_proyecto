@@ -1,7 +1,17 @@
-# Redirige todas las peticiones al Front Controller (index.php)
+# ============================================================
+# PSYCO - Front Controller .htaccess
+# 100% PORTABLE: Sin RewriteBase. Funciona en XAMPP, WAMP, 
+# Laragon, sin importar el nombre de la carpeta ni la ubicación.
+# ============================================================
+
+Options -Indexes
 RewriteEngine On
 
+# 1. Ignorar archivos y directorios reales (CSS, JS, imágenes, etc.)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
+# 2. Redirigir cualquier otra ruta al index.php, pasando la ruta como parámetro 'url'.
+# Al no usar "/" al inicio del target, es una ruta relativa a donde está el .htaccess,
+# lo que lo hace 100% inmune a cambios de nombre de carpeta.
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

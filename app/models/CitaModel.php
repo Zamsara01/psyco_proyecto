@@ -81,6 +81,7 @@ class CitaModel extends Model
      */
     public function getCitasRecientes(int $idPsicologo, int $limit = 10): array
     {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
         $sql = "
             SELECT 
                 c.id_cita, c.fecha, c.hora, c.estado, c.motivo_consulta, c.notas_sesion,
@@ -97,7 +98,26 @@ class CitaModel extends Model
         $stmt->bindValue(2, $limit, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Descifrar datos sensibles antes de retornar a la vista
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+                if (!empty($row['notas_sesion'])) {
+                    $row['notas_sesion'] = EncryptionService::decrypt($row['notas_sesion']);
+                }
+            } catch (\Exception $e) {
+                // En caso de que el tag de integridad falle o la clave cambie, 
+                // evitamos que toda la aplicación crashee mostrando un error controlado.
+                $row['motivo_consulta'] = '⚠️ [Error de Descifrado]';
+                $row['notas_sesion'] = '⚠️ [Error de Descifrado]';
+            }
+        }
+        
+        return $results;
     }
 
     /**
@@ -105,6 +125,7 @@ class CitaModel extends Model
      */
     public function getCitasHoy(int $idPsicologo): array
     {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
         $sql = "
             SELECT 
                 c.id_cita, c.hora, c.motivo_consulta,
@@ -119,6 +140,47 @@ class CitaModel extends Model
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$idPsicologo]);
         
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Descifrar datos sensibles
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = '⚠️ [Error de Descifrado]';
+            }
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Ejemplo de uso: Guardar una nueva cita aplicando cifrado
+     * a los campos sensibles (motivo_consulta y notas_sesion).
+     */
+    public function insertCita(array $data): bool
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        
+        // Cifrar datos médicos sensibles antes del INSERT
+        $motivoCifrado = EncryptionService::encrypt($data['motivo_consulta'] ?? '');
+        $notasCifradas = EncryptionService::encrypt($data['notas_sesion'] ?? '');
+        
+        $sql = "
+            INSERT INTO citas (id_usuario, id_psicologo, fecha, hora, motivo_consulta, notas_sesion, estado)
+            VALUES (?, ?, ?, ?, ?, ?, 'pendiente')
+        ";
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            $data['id_usuario'],
+            $data['id_psicologo'],
+            $data['fecha'],
+            $data['hora'],
+            $motivoCifrado,
+            $notasCifradas
+        ]);
     }
 }
