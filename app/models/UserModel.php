@@ -104,4 +104,90 @@ class UserModel extends Model
         $stmt->execute([$email]);
         return (int) $stmt->fetchColumn() > 0;
     }
+
+    // ──────────────────────────────────────────────────────────────
+    //  Google OAuth
+    // ──────────────────────────────────────────────────────────────
+
+    /**
+     * Busca un usuario por google_id o por correo electrónico.
+     * Si no existe, lo crea con los datos del perfil de Google.
+     *
+     * @param array $googleUser  Perfil devuelto por GoogleOAuthService::getUserInfo()
+     *                           Campos esperados: sub, email, name, picture, email_verified
+     * @return array  Fila completa del usuario en nuestra BD
+     */
+    public function findOrCreateByGoogle(array $googleUser): array
+    {
+        $googleId  = $googleUser['sub']     ?? '';
+        $email     = $googleUser['email']   ?? '';
+        $nombre    = $googleUser['name']    ?? 'Usuario Google';
+        $avatar    = $googleUser['picture'] ?? null;
+
+        // 1. Buscar por google_id (usuario que ya inició sesión antes con Google)
+        if ($googleId) {
+            $stmt = $this->db->prepare(
+                'SELECT * FROM usuarios WHERE google_id = ? LIMIT 1'
+            );
+            $stmt->execute([$googleId]);
+            $user = $stmt->fetch();
+            if ($user) {
+                // Actualizar avatar si cambió
+                if ($avatar && $user['avatar_url'] !== $avatar) {
+                    $this->db->prepare(
+                        'UPDATE usuarios SET avatar_url = ? WHERE id_usuario = ?'
+                    )->execute([$avatar, $user['id_usuario']]);
+                    $user['avatar_url'] = $avatar;
+                }
+                return $user;
+            }
+        }
+
+        // 2. Buscar por correo (usuario registrado manualmente antes)
+        if ($email) {
+            $stmt = $this->db->prepare(
+                'SELECT * FROM usuarios WHERE correo_electronico = ? LIMIT 1'
+            );
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+            if ($user) {
+                // Vincular google_id y avatar para futuros inicios de sesión
+                $this->db->prepare(
+                    'UPDATE usuarios SET google_id = ?, avatar_url = ? WHERE id_usuario = ?'
+                )->execute([$googleId, $avatar, $user['id_usuario']]);
+                $user['google_id']  = $googleId;
+                $user['avatar_url'] = $avatar;
+                return $user;
+            }
+        }
+
+        // 3. Primera vez: crear usuario nuevo (sin contraseña, solo OAuth)
+        $sql = 'INSERT INTO usuarios
+                    (nombre, correo_electronico, google_id, avatar_url,
+                     grado, acepta_politica, contrasena, estado)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            $nombre,
+            $email,
+            $googleId,
+            $avatar,
+            '',              // grado vacío (puede completar el perfil después)
+            'no',
+            '',              // sin contraseña local
+            'activo',
+        ]);
+
+        $newId = (int) $this->db->lastInsertId();
+        return $this->findById($newId) ?? [
+            'id_usuario'         => $newId,
+            'nombre'             => $nombre,
+            'correo_electronico' => $email,
+            'google_id'          => $googleId,
+            'avatar_url'         => $avatar,
+            'grado'              => '',
+            'estado'             => 'activo',
+        ];
+    }
 }
