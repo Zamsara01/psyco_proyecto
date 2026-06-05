@@ -144,7 +144,6 @@
                         </p>
                     </div>
                 </div>
-
                 <!-- Privacy Policy -->
                 <div class="flex items-start gap-3 py-2 mt-4">
                     <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="terms" type="checkbox" required/>

@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 04-06-2026 a las 05:22:43
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 05-06-2026 a las 05:11:22
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -263,69 +263,79 @@ CREATE TABLE `usuarios` (
   `grado` enum('6','7','8','9','10','11') DEFAULT NULL,
   `nombre` varchar(100) NOT NULL,
   `correo_electronico` varchar(100) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
+  `contrasena` varchar(255) DEFAULT NULL COMMENT 'Hash bcrypt de la contraseña; NULL para usuarios OAuth',
   `acepta_politica` enum('si','no') NOT NULL DEFAULT 'no',
-  `datos_acudiente` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`datos_acudiente`)),
   `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp()
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `acudiente_nombre` text NOT NULL,
+  `acudiente_cedula` text NOT NULL,
+  `acudiente_relacion` text NOT NULL,
+  `acudiente_telefono` text DEFAULT NULL,
+  `acudiente_correo` text DEFAULT NULL,
+  `acudiente_direccion` text DEFAULT NULL,
+  `observaciones_psicologicas` text DEFAULT NULL,
+  `google_id` varchar(100) DEFAULT NULL,
+  `avatar_url` varchar(512) DEFAULT NULL COMMENT 'URL de la foto de perfil de Google'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `grado`, `nombre`, `correo_electronico`, `contrasena`, `acepta_politica`, `datos_acudiente`, `estado`, `fecha_registro`) VALUES
-(1, '8', 'David Bedoya Zuluaga', 'pepito1234@gmail.com', '$2y$10$j5ciKLa3LHomxSTgEUOV7.MS5K6ROBoXuJe5IJkO398h6ZuprUviu', 'no', NULL, 'activo', '2026-06-03 18:11:08'),
-(2, '6', 'Valentina Torres', 'valentina.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Carlos Torres\",\"cedula\":\"12345678\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(3, '7', 'Santiago Gómez', 'santiago.gomez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(4, '8', 'Isabella Ramírez', 'isabella.ramirez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Ana Ramírez\",\"cedula\":\"23456789\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(5, '9', 'Sebastián López', 'sebastian.lopez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(6, '10', 'Camila Martínez', 'camila.martinez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Luis Martínez\",\"cedula\":\"34567890\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(7, '11', 'Mateo Rodríguez', 'mateo.rodriguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(8, '6', 'Luciana Hernández', 'luciana.hernandez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Rosa Hernández\",\"cedula\":\"45678901\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(9, '7', 'Nicolás García', 'nicolas.garcia@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(10, '8', 'Sofía Vargas', 'sofia.vargas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Jorge Vargas\",\"cedula\":\"56789012\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(11, '9', 'Diego Morales', 'diego.morales@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(12, '10', 'Mariana Jiménez', 'mariana.jimenez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Pedro Jiménez\",\"cedula\":\"67890123\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(13, '11', 'Alejandro Pérez', 'alejandro.perez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(14, '6', 'Gabriela Sánchez', 'gabriela.sanchez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"María Sánchez\",\"cedula\":\"78901234\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(15, '7', 'Andrés Castro', 'andres.castro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(16, '8', 'Daniela Ruiz', 'daniela.ruiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Fernando Ruiz\",\"cedula\":\"89012345\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(17, '9', 'Felipe Flores', 'felipe.flores@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(18, '10', 'Natalia Cruz', 'natalia.cruz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Roberto Cruz\",\"cedula\":\"90123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(19, '11', 'Julián Torres', 'julian.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(20, '6', 'Valeria Moreno', 'valeria.moreno@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Gloria Moreno\",\"cedula\":\"01234567\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(21, '7', 'Samuel Ortiz', 'samuel.ortiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(22, '8', 'Melissa Gutiérrez', 'melissa.gutierrez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Hugo Gutiérrez\",\"cedula\":\"11234567\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(23, '9', 'Tomás Herrera', 'tomas.herrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(24, '10', 'Laura Medina', 'laura.medina@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Álvaro Medina\",\"cedula\":\"22345678\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(25, '11', 'Ricardo Aguilar', 'ricardo.aguilar@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(26, '6', 'Paola Reyes', 'paola.reyes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Claudia Reyes\",\"cedula\":\"33456789\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(27, '7', 'Emilio Vega', 'emilio.vega@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(28, '8', 'Carolina Ríos', 'carolina.rios@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Mauricio Ríos\",\"cedula\":\"44567890\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(29, '9', 'Javier Sandoval', 'javier.sandoval@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(30, '10', 'Ana Delgado', 'ana.delgado@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Ernesto Delgado\",\"cedula\":\"55678901\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(31, '11', 'Pablo Mendoza', 'pablo.mendoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(32, '6', 'Adriana Rojas', 'adriana.rojas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Beatriz Rojas\",\"cedula\":\"66789012\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(33, '7', 'Cristian Navarro', 'cristian.navarro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(34, '8', 'Lorena Espinoza', 'lorena.espinoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Rodrigo Espinoza\",\"cedula\":\"77890123\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(35, '9', 'Esteban Fuentes', 'esteban.fuentes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(36, '10', 'Verónica Paredes', 'veronica.paredes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Gustavo Paredes\",\"cedula\":\"88901234\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(37, '11', 'Mauricio Silva', 'mauricio.silva@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(38, '6', 'Alejandra Ibáñez', 'alejandra.ibanez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Patricia Ibáñez\",\"cedula\":\"99012345\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(39, '7', 'Hernán Cabrera', 'hernan.cabrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(40, '8', 'Pilar Guerrero', 'pilar.guerrero@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Francisco Guerrero\",\"cedula\":\"10123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(41, '9', 'Rodrigo Campos', 'rodrigo.campos@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(42, '10', 'Mónica Peña', 'monica.pena@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Jaime Peña\",\"cedula\":\"20123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(43, '11', 'Gustavo Bravo', 'gustavo.bravo@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(44, '6', 'Diana Lozano', 'diana.lozano@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Héctor Lozano\",\"cedula\":\"30123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(45, '7', 'Iván Contreras', 'ivan.contreras@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(46, '8', 'Rebeca Acosta', 'rebeca.acosta@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Silvia Acosta\",\"cedula\":\"40123456\",\"relacion\":\"madre\"}', 'activo', '2026-06-03 21:53:14'),
-(47, '9', 'Leonel Miranda', 'leonel.miranda@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(48, '10', 'Ximena Pacheco', 'ximena.pacheco@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Omar Pacheco\",\"cedula\":\"50123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(49, '11', 'Arturo Domínguez', 'arturo.dominguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14'),
-(50, '6', 'Fernanda Varela', 'fernanda.varela@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', '{\"nombre\":\"Raúl Varela\",\"cedula\":\"60123456\",\"relacion\":\"padre\"}', 'activo', '2026-06-03 21:53:14'),
-(51, '7', 'Oswaldo Figueroa', 'oswaldo.figueroa@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', NULL, 'activo', '2026-06-03 21:53:14');
+INSERT INTO `usuarios` (`id_usuario`, `grado`, `nombre`, `correo_electronico`, `contrasena`, `acepta_politica`, `estado`, `fecha_registro`, `acudiente_nombre`, `acudiente_cedula`, `acudiente_relacion`, `acudiente_telefono`, `acudiente_correo`, `acudiente_direccion`, `observaciones_psicologicas`, `google_id`, `avatar_url`) VALUES
+(1, '8', 'David Bedoya Zuluaga', 'pepito1234@gmail.com', '$2y$10$j5ciKLa3LHomxSTgEUOV7.MS5K6ROBoXuJe5IJkO398h6ZuprUviu', 'no', 'activo', '2026-06-03 18:11:08', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '6', 'Valentina Torres', 'valentina.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Carlos Torres', '12345678', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(3, '7', 'Santiago Gómez', 'santiago.gomez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(4, '8', 'Isabella Ramírez', 'isabella.ramirez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Ana Ramírez', '23456789', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(5, '9', 'Sebastián López', 'sebastian.lopez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(6, '10', 'Camila Martínez', 'camila.martinez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Luis Martínez', '34567890', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(7, '11', 'Mateo Rodríguez', 'mateo.rodriguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(8, '6', 'Luciana Hernández', 'luciana.hernandez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Rosa Hernández', '45678901', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(9, '7', 'Nicolás García', 'nicolas.garcia@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(10, '8', 'Sofía Vargas', 'sofia.vargas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Jorge Vargas', '56789012', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(11, '9', 'Diego Morales', 'diego.morales@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(12, '10', 'Mariana Jiménez', 'mariana.jimenez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Pedro Jiménez', '67890123', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(13, '11', 'Alejandro Pérez', 'alejandro.perez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(14, '6', 'Gabriela Sánchez', 'gabriela.sanchez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'María Sánchez', '78901234', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(15, '7', 'Andrés Castro', 'andres.castro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(16, '8', 'Daniela Ruiz', 'daniela.ruiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Fernando Ruiz', '89012345', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(17, '9', 'Felipe Flores', 'felipe.flores@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(18, '10', 'Natalia Cruz', 'natalia.cruz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Roberto Cruz', '90123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(19, '11', 'Julián Torres', 'julian.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(20, '6', 'Valeria Moreno', 'valeria.moreno@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Gloria Moreno', '01234567', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(21, '7', 'Samuel Ortiz', 'samuel.ortiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(22, '8', 'Melissa Gutiérrez', 'melissa.gutierrez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Hugo Gutiérrez', '11234567', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(23, '9', 'Tomás Herrera', 'tomas.herrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(24, '10', 'Laura Medina', 'laura.medina@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Álvaro Medina', '22345678', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(25, '11', 'Ricardo Aguilar', 'ricardo.aguilar@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(26, '6', 'Paola Reyes', 'paola.reyes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Claudia Reyes', '33456789', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(27, '7', 'Emilio Vega', 'emilio.vega@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(28, '8', 'Carolina Ríos', 'carolina.rios@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Mauricio Ríos', '44567890', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(29, '9', 'Javier Sandoval', 'javier.sandoval@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(30, '10', 'Ana Delgado', 'ana.delgado@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Ernesto Delgado', '55678901', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(31, '11', 'Pablo Mendoza', 'pablo.mendoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(32, '6', 'Adriana Rojas', 'adriana.rojas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Beatriz Rojas', '66789012', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(33, '7', 'Cristian Navarro', 'cristian.navarro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(34, '8', 'Lorena Espinoza', 'lorena.espinoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Rodrigo Espinoza', '77890123', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(35, '9', 'Esteban Fuentes', 'esteban.fuentes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(36, '10', 'Verónica Paredes', 'veronica.paredes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Gustavo Paredes', '88901234', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(37, '11', 'Mauricio Silva', 'mauricio.silva@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(38, '6', 'Alejandra Ibáñez', 'alejandra.ibanez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Patricia Ibáñez', '99012345', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(39, '7', 'Hernán Cabrera', 'hernan.cabrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(40, '8', 'Pilar Guerrero', 'pilar.guerrero@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Francisco Guerrero', '10123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(41, '9', 'Rodrigo Campos', 'rodrigo.campos@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(42, '10', 'Mónica Peña', 'monica.pena@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Jaime Peña', '20123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(43, '11', 'Gustavo Bravo', 'gustavo.bravo@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(44, '6', 'Diana Lozano', 'diana.lozano@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Héctor Lozano', '30123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(45, '7', 'Iván Contreras', 'ivan.contreras@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(46, '8', 'Rebeca Acosta', 'rebeca.acosta@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Silvia Acosta', '40123456', 'madre', NULL, NULL, NULL, NULL, NULL, NULL),
+(47, '9', 'Leonel Miranda', 'leonel.miranda@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(48, '10', 'Ximena Pacheco', 'ximena.pacheco@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Omar Pacheco', '50123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(49, '11', 'Arturo Domínguez', 'arturo.dominguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(50, '6', 'Fernanda Varela', 'fernanda.varela@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', 'Raúl Varela', '60123456', 'padre', NULL, NULL, NULL, NULL, NULL, NULL),
+(51, '7', 'Oswaldo Figueroa', 'oswaldo.figueroa@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(52, '10', 'pepito lopez muñoz', 'aguaconpimienta1234@gmail.com', '$2y$10$BpUV0ZYVzoGSQJSjgUzdkOLemKTbqPnMqwaw3P0lMqYZF0s87PyQi', 'no', 'activo', '2026-06-04 16:57:48', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL),
+(53, '11', 'rodrigo di paul', 'frtghbggtyh@gmail.com', '$2y$10$RlU2ZSbU.wF5a1R8wPoOl.eW.trFib/4gRhcq26lDJPDSuuPn6mB2', 'no', 'activo', '2026-06-04 17:47:31', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -387,7 +397,9 @@ ALTER TABLE `recordatorios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `correo_electronico` (`correo_electronico`);
+  ADD UNIQUE KEY `correo_electronico` (`correo_electronico`),
+  ADD UNIQUE KEY `uk_google_id` (`google_id`),
+  ADD UNIQUE KEY `idx_google_id` (`google_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -439,7 +451,7 @@ ALTER TABLE `recordatorios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- Restricciones para tablas volcadas
