@@ -14,11 +14,14 @@ class ControllerUsers extends Controller
         $this->userModel = new UserModel();
     }
 
-    /** GET  /users/login  — muestra formulario */
     public function login(): void
     {
+        $error = '';
+        if (isset($_GET['error']) && $_GET['error'] === 'not_registered_google') {
+            $error = 'not_registered_google';
+        }
         $this->layout = 'tailwind';
-        $this->render('users/login');
+        $this->render('users/login', ['error' => $error]);
     }
 
     public function authenticate(): void

@@ -80,7 +80,7 @@ class ControllerAuth extends Controller
             $user = $this->userModel->findByGoogle($googleUser);
 
             if (!$user) {
-                $this->redirect('auth/error?reason=not_registered');
+                $this->redirect('users/login?error=not_registered_google');
                 return;
             }
 

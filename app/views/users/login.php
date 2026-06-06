@@ -17,10 +17,27 @@
         </div>
         
         <?php if (!empty($error)): ?>
-            <div class="mx-stack-lg mt-stack-md bg-error-container text-on-error-container p-3 rounded-lg flex items-center gap-2">
-                <span class="material-symbols-outlined">error</span>
-                <span class="font-body-sm"><?= htmlspecialchars($error) ?></span>
-            </div>
+            <?php if ($error === 'not_registered_google'): ?>
+                <div id="googleErrorModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="document.getElementById('googleErrorModal').classList.add('hidden')"></div>
+                    <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 text-center animate-[fadeInScale_0.2s_ease-out]">
+                        <span class="material-symbols-outlined text-[48px] text-orange-500 mb-4">warning</span>
+                        <h2 class="font-headline-sm text-headline-sm text-on-surface mb-2">Correo no registrado</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 text-left">
+                            Este correo no está registrado. Si sientes que te pudiste equivocar de correo vuelve a login, en caso de que no tengas creada una cuenta puedes crearla registrándote.
+                        </p>
+                        <div class="flex flex-col gap-3">
+                            <a href="<?= URL_BASE ?>users/register" class="w-full bg-primary text-white py-3 rounded-lg font-label-lg font-bold hover:opacity-90 transition-opacity">Ir a Registrarse</a>
+                            <a href="<?= URL_BASE ?>users/login" class="w-full border-2 border-primary text-primary py-3 rounded-lg font-label-lg font-bold hover:bg-primary/5 transition-colors">Volver a Login</a>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="mx-stack-lg mt-stack-md bg-error-container text-on-error-container p-3 rounded-lg flex items-center gap-2">
+                    <span class="material-symbols-outlined">error</span>
+                    <span class="font-body-sm"><?= htmlspecialchars($error) ?></span>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
 
         <!-- Form Section -->
