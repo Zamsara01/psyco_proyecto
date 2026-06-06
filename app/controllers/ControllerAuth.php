@@ -94,7 +94,12 @@ class ControllerAuth extends Controller
                 'rol'             => 'paciente',
                 'avatar'          => $user['avatar_url'] ?? null,
                 'auth_type'       => 'google',
-                'datos_acudiente' => isset($user['datos_acudiente']) ? json_decode($user['datos_acudiente'], true) : null,
+                'acudiente' => [
+                    'nombre'   => $user['acudiente_nombre'] ?? null,
+                    'cedula'   => $user['acudiente_cedula'] ?? null,
+                    'relacion' => $user['acudiente_relacion'] ?? null,
+                    'correo'   => $user['acudiente_correo'] ?? null,
+                ],
             ];
 
             // ── Redirigir al inicio ────────────────────────────────

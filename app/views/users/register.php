@@ -114,6 +114,11 @@
                                 <option value="tutor">Tutor(a)</option>
                             </select>
                         </div>
+                        <div class="space-y-1.5">
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputCorreoAcudiente">Correo electrónico del acudiente</label>
+                            <input class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
+                                   id="inputCorreoAcudiente" name="txtcorreo_acudiente" placeholder="Ej. correo@ejemplo.com" type="email" />
+                        </div>
                         <div class="flex items-start gap-3 py-2 mt-2">
                             <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="checkDatos" name="checkDatos" type="checkbox"/>
                             <label class="text-body-sm text-tertiary" for="checkDatos">
@@ -182,6 +187,7 @@
                     const inputAcudiente = document.getElementById('inputAcudiente');
                     const inputCedula = document.getElementById('inputCedula');
                     const inputRelacion = document.getElementById('inputRelacion');
+                    const inputCorreoAcudiente = document.getElementById('inputCorreoAcudiente');
                     
                     if (value === 'si') {
                         sectionSi.classList.remove('hidden');
@@ -190,6 +196,7 @@
                         inputAcudiente.setAttribute('required', 'required');
                         inputCedula.setAttribute('required', 'required');
                         inputRelacion.setAttribute('required', 'required');
+                        inputCorreoAcudiente.setAttribute('required', 'required');
                     } else {
                         sectionSi.classList.add('hidden');
                         sectionNo.classList.remove('hidden');
@@ -197,6 +204,7 @@
                         inputAcudiente.removeAttribute('required');
                         inputCedula.removeAttribute('required');
                         inputRelacion.removeAttribute('required');
+                        inputCorreoAcudiente.removeAttribute('required');
                     }
                 }
             </script>

@@ -41,7 +41,12 @@ class ControllerUsers extends Controller
                 'grado'           => $user['grado'],
                 'estado'          => $user['estado'],
                 'rol'             => 'paciente',
-                'datos_acudiente' => isset($user['datos_acudiente']) ? json_decode($user['datos_acudiente'], true) : null,
+                'acudiente' => [
+                    'nombre'   => $user['acudiente_nombre'] ?? null,
+                    'cedula'   => $user['acudiente_cedula'] ?? null,
+                    'relacion' => $user['acudiente_relacion'] ?? null,
+                    'correo'   => $user['acudiente_correo'] ?? null,
+                ],
             ];
             // Redirigir a inicio o calendario donde ahora tiene todo desbloqueado
             $this->redirect('pages/index');
@@ -120,15 +125,16 @@ class ControllerUsers extends Controller
 
         // ── Política de datos clínicos ────────────────────────────
         $aceptaPolitica = $_POST['acepta_politica'] ?? 'no';
-        $datosAcudiente = null;
+        $nombreAcudiente = '';
+        $cedulaAcudiente = '';
+        $relacionAcudiente = '';
+        $correoAcudiente = '';
 
         if ($aceptaPolitica === 'si') {
-            $datosAcudiente = [
-                'nombre_acudiente' => trim($_POST['txtacudiente'] ?? ''),
-                'cedula'           => trim($_POST['txtcedula']    ?? ''),
-                'relacion'         => $_POST['txtrelacion']       ?? '',
-                'acepta_checkbox'  => isset($_POST['checkDatos']) ? true : false,
-            ];
+            $nombreAcudiente = trim($_POST['txtacudiente'] ?? '');
+            $cedulaAcudiente = trim($_POST['txtcedula']    ?? '');
+            $relacionAcudiente = $_POST['txtrelacion']       ?? '';
+            $correoAcudiente = trim($_POST['txtcorreo_acudiente'] ?? '');
         }
 
         // ── Persistencia ─────────────────────────────────────────
@@ -138,26 +144,35 @@ class ControllerUsers extends Controller
             $email,
             $password,
             $aceptaPolitica,
-            $datosAcudiente
+            $nombreAcudiente,
+            $cedulaAcudiente,
+            $relacionAcudiente,
+            $correoAcudiente
         );
 
         if ($userId) {
-            require_once dirname(__DIR__) . '/models/OtpModel.php';
-            require_once dirname(__DIR__, 2) . '/core/MailService.php';
-
-            $otpModel = new OtpModel();
-            $codigoOtp = $otpModel->generateOtp($userId);
-
-            $mailService = new MailService();
-            $mailService->sendOtpEmail($email, $nombre, $codigoOtp);
-
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
-            $_SESSION['temp_user_id'] = $userId;
-            $_SESSION['temp_user_email'] = $email;
 
-            $this->redirect('users/verifyOtp');
+            // Autenticar al usuario inmediatamente
+            $user = $this->userModel->findById((int)$userId);
+            $_SESSION['user'] = [
+                'id'              => $user['id_usuario'],
+                'nombre'          => $user['nombre'],
+                'correo'          => $user['correo_electronico'],
+                'grado'           => $user['grado'] ?? null,
+                'estado'          => $user['estado'],
+                'rol'             => 'paciente',
+                'acudiente' => [
+                    'nombre'   => $user['acudiente_nombre'] ?? null,
+                    'cedula'   => $user['acudiente_cedula'] ?? null,
+                    'relacion' => $user['acudiente_relacion'] ?? null,
+                    'correo'   => $user['acudiente_correo'] ?? null,
+                ],
+            ];
+
+            $this->redirect('pages/index');
             return;
         }
 
@@ -203,7 +218,12 @@ class ControllerUsers extends Controller
                     'grado'           => $user['grado'] ?? null,
                     'estado'          => $user['estado'],
                     'rol'             => 'paciente',
-                    'datos_acudiente' => isset($user['datos_acudiente']) ? json_decode($user['datos_acudiente'], true) : null,
+                    'acudiente' => [
+                        'nombre'   => $user['acudiente_nombre'] ?? null,
+                        'cedula'   => $user['acudiente_cedula'] ?? null,
+                        'relacion' => $user['acudiente_relacion'] ?? null,
+                        'correo'   => $user['acudiente_correo'] ?? null,
+                    ],
                 ];
 
                 $this->redirect('pages/index');

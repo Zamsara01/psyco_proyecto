@@ -120,14 +120,19 @@
                                    id="inputCedula" name="txtcedula" placeholder="Ej. 1234567890" type="text" />
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputRelacion">Relación con el estudiante</label>
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputRelacionModal">Relación con el estudiante</label>
                             <select class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md outline-none" 
-                                    id="inputRelacion" name="txtrelacion">
+                                    id="inputRelacionModal" name="txtrelacion">
                                 <option value="" disabled selected>Selecciona una relación</option>
                                 <option value="padre">Padre</option>
                                 <option value="madre">Madre</option>
                                 <option value="tutor">Tutor(a)</option>
                             </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputCorreoAcudienteModal">Correo electrónico del acudiente</label>
+                            <input class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md outline-none" 
+                                   id="inputCorreoAcudienteModal" name="txtcorreo_acudiente" placeholder="Ej. correo@ejemplo.com" type="email" />
                         </div>
                         <div class="flex items-start gap-3 py-2 mt-2">
                             <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="checkDatos" name="checkDatos" type="checkbox"/>
@@ -190,7 +195,8 @@
         const checkDatos = document.getElementById('checkDatos');
         const inputAcudiente = document.getElementById('inputAcudiente');
         const inputCedula = document.getElementById('inputCedula');
-        const inputRelacion = document.getElementById('inputRelacion');
+        const inputRelacionModal = document.getElementById('inputRelacionModal');
+        const inputCorreoAcudienteModal = document.getElementById('inputCorreoAcudienteModal');
         
         if (value === 'si') {
             sectionSi.classList.remove('hidden');
@@ -198,14 +204,16 @@
             checkDatos.setAttribute('required', 'required');
             inputAcudiente.setAttribute('required', 'required');
             inputCedula.setAttribute('required', 'required');
-            inputRelacion.setAttribute('required', 'required');
+            inputRelacionModal.setAttribute('required', 'required');
+            inputCorreoAcudienteModal.setAttribute('required', 'required');
         } else {
             sectionSi.classList.add('hidden');
             sectionNo.classList.remove('hidden');
             checkDatos.removeAttribute('required');
             inputAcudiente.removeAttribute('required');
             inputCedula.removeAttribute('required');
-            inputRelacion.removeAttribute('required');
+            inputRelacionModal.removeAttribute('required');
+            inputCorreoAcudienteModal.removeAttribute('required');
         }
     }
 </script>

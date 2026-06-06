@@ -8,7 +8,8 @@
  *
  * Columnas reales (según psycoLomejor.sql):
  *   id_usuario, grado, nombre, correo_electronico, contrasena,
- *   acepta_politica, datos_acudiente (JSON), estado, fecha_registro
+ *   acepta_politica, estado, fecha_registro, acudiente_nombre, 
+ *   acudiente_cedula, acudiente_relacion, acudiente_correo
  */
 class UserModel extends Model
 {
@@ -31,7 +32,7 @@ class UserModel extends Model
     public function findById(int $id): ?array
     {
         $stmt = $this->db->prepare(
-            'SELECT id_usuario, grado, nombre, correo_electronico, estado, fecha_registro, datos_acudiente, avatar_url, google_id
+            'SELECT id_usuario, grado, nombre, correo_electronico, estado, fecha_registro, avatar_url, google_id, acudiente_nombre, acudiente_cedula, acudiente_relacion, acudiente_correo
              FROM usuarios WHERE id_usuario = ?'
         );
         $stmt->execute([$id]);
@@ -69,7 +70,10 @@ class UserModel extends Model
      * @param string      $email          Correo electrónico
      * @param string      $password       Contraseña en texto plano (se hashea aquí)
      * @param string      $aceptaPolitica 'si' o 'no'
-     * @param array|null  $datosAcudiente Array con nombre, cedula, relacion (cuando acepta_politica = 'si')
+     * @param string      $nombreAcudiente
+     * @param string      $cedulaAcudiente
+     * @param string      $relacionAcudiente
+     * @param string      $correoAcudiente
      * @return int  ID del usuario insertado
      */
     public function create(
@@ -78,19 +82,19 @@ class UserModel extends Model
         string $email,
         string $password,
         string $aceptaPolitica = 'no',
-        ?array $datosAcudiente = null
+        string $nombreAcudiente = '',
+        string $cedulaAcudiente = '',
+        string $relacionAcudiente = '',
+        string $correoAcudiente = ''
     ): int {
         $hash    = password_hash($password, PASSWORD_BCRYPT);
-        $jsonAcu = ($aceptaPolitica === 'si' && $datosAcudiente)
-                   ? json_encode($datosAcudiente, JSON_UNESCAPED_UNICODE)
-                   : null;
 
         $sql = 'INSERT INTO usuarios
-                    (grado, nombre, correo_electronico, contrasena, acepta_politica, datos_acudiente)
-                VALUES (?, ?, ?, ?, ?, ?)';
+                    (grado, nombre, correo_electronico, contrasena, acepta_politica, acudiente_nombre, acudiente_cedula, acudiente_relacion, acudiente_correo)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$grado, $nombre, $email, $hash, $aceptaPolitica, $jsonAcu]);
+        $stmt->execute([$grado, $nombre, $email, $hash, $aceptaPolitica, $nombreAcudiente, $cedulaAcudiente, $relacionAcudiente, $correoAcudiente]);
 
         return (int) $this->db->lastInsertId();
     }
