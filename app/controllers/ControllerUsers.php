@@ -134,10 +134,19 @@ class ControllerUsers extends Controller
         $correoAcudiente = '';
 
         if ($aceptaPolitica === 'si') {
-            $nombreAcudiente = trim($_POST['txtacudiente'] ?? '');
-            $cedulaAcudiente = trim($_POST['txtcedula']    ?? '');
+            $nombreAcudiente   = trim($_POST['txtacudiente'] ?? '');
+            $cedulaAcudiente   = trim($_POST['txtcedula']    ?? '');
             $relacionAcudiente = $_POST['txtrelacion']       ?? '';
-            $correoAcudiente = trim($_POST['txtcorreo_acudiente'] ?? '');
+            $correoAcudiente   = trim($_POST['txtcorreo_acudiente'] ?? '');
+
+            // ── Validar que la cédula sea solo numérica ─────────────
+            if ($cedulaAcudiente !== '' && !ctype_digit($cedulaAcudiente)) {
+                $this->layout = 'tailwind';
+                $this->render('users/register', [
+                    'error' => '❌ La cédula del acudiente solo puede contener números. Por favor, corrígela e intenta de nuevo.'
+                ]);
+                return;
+            }
         }
 
         // ── Persistencia ─────────────────────────────────────────

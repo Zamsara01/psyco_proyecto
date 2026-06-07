@@ -100,9 +100,16 @@
                                    id="inputAcudiente" name="txtacudiente" placeholder="Ej. María López" type="text" />
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputCedula">Número de cédula</label>
+                            <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputCedula">Número de cédula del acudiente</label>
                             <input class="w-full h-12 bg-surface-container-low border border-slate-200 rounded-lg px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md" 
-                                   id="inputCedula" name="txtcedula" placeholder="Ej. 1234567890" type="text" />
+                                   id="inputCedula" name="txtcedula" placeholder="Ej. 1234567890"
+                                   type="tel" inputmode="numeric" pattern="[0-9]+"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                   title="Solo se permiten números" />
+                            <p id="cedulaError" class="hidden text-xs text-red-500 font-medium flex items-center gap-1 mt-1">
+                                <span class="material-symbols-outlined text-[14px]">error</span>
+                                La cédula solo puede contener números.
+                            </p>
                         </div>
                         <div class="space-y-1.5">
                             <label class="text-label-md font-label-md text-on-surface-variant block uppercase tracking-wider" for="inputRelacion">Relación con el estudiante</label>
