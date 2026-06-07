@@ -15,7 +15,7 @@
 
         <!-- Logo -->
         <div class="flex justify-center mb-6">
-            <img src="<?= URL_BASE ?>public/img/psyco.png" alt="PSYCO Logo" class="h-[560px] w-auto drop-shadow-md">
+            <img src="<?= URL_BASE ?>public/img/psyco.png" alt="PSYCO Logo" class="h-[560px]">
         </div>
 
         <!-- Título principal -->
