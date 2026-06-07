@@ -71,6 +71,94 @@ class PsicologoModel extends Model
     }
 
     /**
+     * Obtiene psicólogos activos que tienen disponibilidad en un día de la semana dado.
+     *
+     * @param string $diaSemana Nombre del día en español: 'Lunes', 'Martes', etc.
+     * @return array
+     */
+    public function getPsicologosDisponiblesPorDia(string $diaSemana): array
+    {
+        $sql = "
+            SELECT DISTINCT
+                p.id_psicologo,
+                p.nombre,
+                p.foto_perfil,
+                e.nombre AS especialidad
+            FROM psicologos p
+            JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+            JOIN disponibilidad_psicologos d ON p.id_psicologo = d.id_psicologo
+            WHERE p.estado = 'activo'
+              AND d.dia_semana = ?
+              AND d.activo = 1
+            ORDER BY p.nombre
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$diaSemana]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            if (empty($row['foto_perfil'])) {
+                $row['foto_perfil'] = 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre']) . '&background=F97316&color=fff&size=128';
+            }
+        }
+        return $rows;
+    }
+
+    /**
+     * Devuelve los slots horarios disponibles (cada hora) para un psicólogo en una fecha concreta.
+     * Excluye las horas ya reservadas con estado pendiente o completada.
+     *
+     * @param int    $idPsicologo
+     * @param string $fecha       Formato YYYY-MM-DD
+     * @param string $diaSemana   Nombre del día en español
+     * @return array Array de strings 'HH:MM'
+     */
+    public function getHorasDisponibles(int $idPsicologo, string $fecha, string $diaSemana): array
+    {
+        // 1. Obtener bloques de disponibilidad del día
+        $sqlDispo = "
+            SELECT hora_inicio, hora_fin
+            FROM disponibilidad_psicologos
+            WHERE id_psicologo = ?
+              AND dia_semana = ?
+              AND activo = 1
+        ";
+        $stmt = $this->db->prepare($sqlDispo);
+        $stmt->execute([$idPsicologo, $diaSemana]);
+        $bloques = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($bloques)) return [];
+
+        // 2. Obtener horas ya reservadas ese día
+        $sqlOcupadas = "
+            SELECT hora FROM citas
+            WHERE id_psicologo = ?
+              AND fecha = ?
+              AND estado IN ('pendiente', 'completada')
+        ";
+        $stmt = $this->db->prepare($sqlOcupadas);
+        $stmt->execute([$idPsicologo, $fecha]);
+        $horasOcupadas = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'hora');
+        // Normalizar a HH:MM
+        $horasOcupadas = array_map(fn($h) => substr($h, 0, 5), $horasOcupadas);
+
+        // 3. Generar slots por hora dentro de cada bloque
+        $slots = [];
+        foreach ($bloques as $bloque) {
+            $inicio = strtotime($bloque['hora_inicio']);
+            $fin    = strtotime($bloque['hora_fin']);
+            for ($t = $inicio; $t < $fin; $t += 3600) {
+                $slot = date('H:i', $t);
+                if (!in_array($slot, $horasOcupadas)) {
+                    $slots[] = $slot;
+                }
+            }
+        }
+        sort($slots);
+        return array_unique($slots);
+    }
+
+    /**
      * Verifica credenciales de un psicólogo.
      * 
      * @param string $email Correo electrónico
