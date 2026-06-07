@@ -22,7 +22,13 @@
 
             <!-- Calendar Days Header -->
             <div class="calendar-grid text-center font-label-md text-slate-400 mb-4">
-                <div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div><div>DOM</div>
+                <div>LUN</div>
+                <div>MAR</div>
+                <div>MIÉ</div>
+                <div>JUE</div>
+                <div>VIE</div>
+                <div>SÁB</div>
+                <div>DOM</div>
             </div>
 
             <!-- Calendar Days Grid -->
@@ -55,9 +61,9 @@
                 </div>
                 <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">psychology</span>
             </div>
-            
+
             <div class="bg-white rounded-xl p-1 border border-slate-100 shadow-sm flex overflow-hidden">
-                <img class="w-1/3 object-cover rounded-l-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY"/>
+                <img class="w-1/3 object-cover rounded-l-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY" />
                 <div class="p-4 w-2/3 flex flex-col justify-center">
                     <h4 class="font-bold text-orange-600">Nuevos Recursos</h4>
                     <p class="text-body-sm text-slate-500">Guía de meditación guiada disponible ahora.</p>
@@ -73,7 +79,7 @@
                 <h3 class="font-headline-md text-on-surface" id="selected-date-display">Selecciona un día</h3>
                 <p class="text-body-sm text-slate-500" id="psico-count">Haz clic en un día para ver disponibilidad</p>
             </div>
-            
+
             <!-- Lista dinámica de psicólogos -->
             <div class="p-6 flex-grow flex flex-col gap-6 overflow-y-auto hide-scrollbar max-h-[614px]" id="psicologos-panel">
                 <!-- Relleno por JavaScript -->
@@ -127,8 +133,8 @@
         const nextBtn = document.getElementById('next-month-btn');
 
         const today = new Date();
-        today.setHours(0,0,0,0);
-        
+        today.setHours(0, 0, 0, 0);
+
         let currentYear = today.getFullYear();
         let currentMonth = today.getMonth();
         let selectedDate = new Date(today);
@@ -168,7 +174,7 @@
         function renderCalendar() {
             monthSelect.value = currentMonth;
             yearSelect.value = currentYear;
-            
+
             // Disable past months if current year is selected
             Array.from(monthSelect.options).forEach(opt => {
                 if (currentYear === today.getFullYear() && parseInt(opt.value) < today.getMonth()) {
@@ -177,7 +183,7 @@
                     opt.disabled = false;
                 }
             });
-            
+
             if (currentYear === today.getFullYear() && currentMonth === today.getMonth()) {
                 prevBtn.disabled = true;
                 prevBtn.style.opacity = '0.3';
@@ -201,52 +207,52 @@
             let html = '';
             const firstDay = new Date(currentYear, currentMonth, 1);
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            
+
             let startDayOffset = firstDay.getDay() - 1;
             if (startDayOffset === -1) startDayOffset = 6;
-            
+
             const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
-            
+
             for (let i = 0; i < startDayOffset; i++) {
                 const dayNum = prevMonthDays - startDayOffset + 1 + i;
                 html += `<div class="h-16 flex items-center justify-center text-slate-300">${dayNum}</div>`;
             }
-            
+
             for (let i = 1; i <= daysInMonth; i++) {
                 const dateObj = new Date(currentYear, currentMonth, i);
                 const isPast = dateObj < today;
-                
+
                 const isSelected = selectedDate && dateObj.getTime() === selectedDate.getTime();
                 const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
                 const diaNombreBD = diasSemanaMap[dateObj.getDay()];
-                
+
                 // Formatear fecha a YYYY-MM-DD
                 const mFormat = String(currentMonth + 1).padStart(2, '0');
                 const dFormat = String(i).padStart(2, '0');
                 const dateString = `${currentYear}-${mFormat}-${dFormat}`;
-                
+
                 // 1. Verificar si hay al menos un psicólogo disponible este día
                 const hayDisponibilidad = psicologosData.some(p => p.disponibilidad.some(d => d.dia === diaNombreBD));
-                
+
                 // 2. Determinar color del punto (solo si hay disponibilidad y no es un día pasado)
                 let dotHtml = '';
                 if (!isPast && hayDisponibilidad) {
                     const totalCitas = citasData[dateString] || 0;
                     let colorClass = '';
-                    
+
                     if (totalCitas >= 5) {
-                        colorClass = 'bg-red-500';      // Completamente ocupado
+                        colorClass = 'bg-red-500'; // Completamente ocupado
                     } else if (totalCitas >= 1) {
-                        colorClass = 'bg-yellow-500';   // Disponibilidad parcial
+                        colorClass = 'bg-yellow-500'; // Disponibilidad parcial
                     } else {
-                        colorClass = 'bg-green-500';    // Totalmente libre
+                        colorClass = 'bg-green-500'; // Totalmente libre
                     }
-                    
+
                     dotHtml = `<div class="absolute bottom-2 w-1.5 h-1.5 rounded-full ${colorClass}"></div>`;
                 }
 
                 let classes = 'h-16 flex flex-col items-center justify-center rounded-xl relative transition-all ';
-                
+
                 if (isPast) {
                     classes += ' text-slate-300 bg-slate-50 opacity-50 cursor-not-allowed';
                 } else {
@@ -259,22 +265,22 @@
                         classes += ' border border-slate-100 hover:border-orange-200';
                     }
                 }
-                
+
                 html += `
                 <div class="${classes}" data-day="${i}" data-month="${currentMonth}" data-year="${currentYear}">
                     <span class="font-bold ${isSelected ? '' : (isPast ? 'text-slate-400' : (isWeekend ? '' : 'text-slate-700'))}">${i}</span>
                     ${dotHtml}
                 </div>`;
             }
-            
+
             const totalCells = startDayOffset + daysInMonth;
             const remainingCells = (7 - (totalCells % 7)) % 7;
             for (let i = 1; i <= remainingCells; i++) {
                 html += `<div class="h-16 flex items-center justify-center text-slate-300">${i}</div>`;
             }
-            
+
             calendarGrid.innerHTML = html;
-            
+
             const dayButtons = document.querySelectorAll('.day-btn');
             dayButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -282,15 +288,15 @@
                     const m = parseInt(this.dataset.month);
                     const y = parseInt(this.dataset.year);
                     selectedDate = new Date(y, m, d);
-                    
+
                     renderCalendar();
                     updateDisplay();
                 });
             });
         }
-        
+
         // Mapeo de getDay() (0=Domingo..6=Sábado) → nombre en BD
-        const diasSemanaMap = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        const diasSemanaMap = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
         function updateDisplay() {
             if (!selectedDate) return;
@@ -343,10 +349,16 @@
                 const mFormat = String(selectedDate.getMonth() + 1).padStart(2, '0');
                 const dFormat = String(selectedDate.getDate()).padStart(2, '0');
                 const dateString = `${selectedDate.getFullYear()}-${mFormat}-${dFormat}`;
-                
+
                 const turnosText = turnos.map(t => `${t.inicio.slice(0,5)} – ${t.fin.slice(0,5)}`).join(' y ');
                 const hoverClasses = isPaciente && selectedDate >= today ? 'cursor-pointer hover:bg-orange-50 p-3 -mx-3 rounded-xl transition-colors' : '';
-                const clickAttr = isPaciente && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id_psicologo}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
+                const clickAttr = isPaciente && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
+
+                const agendarBadge = (isPaciente && selectedDate >= today)
+                    ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-orange-500 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 mt-1">
+                        <span class="material-symbols-outlined text-[13px]">event_available</span> Agendar cita
+                       </span>`
+                    : '';
 
                 html += `
                 <div class="flex flex-col gap-3 ${hoverClasses}" ${clickAttr}>
@@ -360,11 +372,13 @@
                         <div class="flex flex-col overflow-hidden">
                             <span class="font-bold text-slate-800 truncate">${p.nombre}</span>
                             <span class="text-sm text-orange-600 truncate">${p.especialidad}</span>
+                            ${agendarBadge}
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2 px-1">${turnosHtml}</div>
                     <div class="h-px bg-slate-50 mt-1"></div>
                 </div>`;
+
             });
 
             psicologosPanel.innerHTML = html;
@@ -395,23 +409,31 @@
     });
 
     // ─── Modal Agendar Cita (Específico del Calendario) ───────────────────
-    let agendarData = { fecha: '', idPsicologo: null, hora: null };
+    let agendarData = {
+        fecha: '',
+        idPsicologo: null,
+        hora: null
+    };
 
     function abrirModalAgendar(fecha, idPsicologo, nombre, especialidad, foto, jornada) {
-        agendarData = { fecha, idPsicologo, hora: null };
-        
+        agendarData = {
+            fecha,
+            idPsicologo,
+            hora: null
+        };
+
         document.getElementById('agendarModalFecha').textContent = cbFormatFechaSoloDia(fecha);
         document.getElementById('agendarModalJornada').textContent = jornada ? `Jornada: ${jornada}` : 'Sin jornada definida';
         document.getElementById('agendarModalNombre').textContent = nombre;
         document.getElementById('agendarModalEspecialidad').textContent = especialidad;
         document.getElementById('agendarModalFoto').src = foto;
-        
+
         document.getElementById('agendarModalBtn').disabled = true;
         document.getElementById('agendarModalError').classList.add('hidden');
         document.getElementById('agendarModalMotivo').value = '';
-        
+
         const grid = document.getElementById('agendarModalHoras');
-        grid.innerHTML = '<div class="col-span-3 text-center py-4 text-slate-400"><div class="w-6 h-6 border-3 border-orange-200 border-t-orange-500 rounded-full animate-spin mx-auto"></div></div>';
+        grid.innerHTML = '<div class="col-span-3 flex justify-center py-6"><div class="w-6 h-6 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>';
 
         const m = document.getElementById('agendarCitaModal');
         m.classList.remove('hidden');
@@ -431,22 +453,30 @@
     async function cargarHorasDisponibles(fecha, idPsicologo) {
         const grid = document.getElementById('agendarModalHoras');
         try {
-            const res = await fetch(`${window.URL_BASE || '/'}chat_bot/horasDisponibles?fecha=${fecha}&id_psicologo=${idPsicologo}`);
+            const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+            const url  = BASE + 'chat_bot/horasDisponibles?fecha=' + fecha + '&id_psicologo=' + idPsicologo;
+            console.log('[Agendar] Cargando horas:', url);
+            const res  = await fetch(url);
             const data = await res.json();
-            
+            console.log('[Agendar] Respuesta:', data);
+
             if (!data.ok || !data.horas || data.horas.length === 0) {
-                grid.innerHTML = '<div class="col-span-3 text-center py-4 text-slate-500 text-sm">No hay horas disponibles este día.</div>';
+                grid.innerHTML = `<div class="col-span-3 text-center py-6">
+                    <span class="material-symbols-outlined text-slate-300 text-4xl block mb-2">schedule</span>
+                    <p class="text-slate-500 text-sm">No hay horas disponibles este día.</p>
+                </div>`;
                 return;
             }
 
             grid.innerHTML = data.horas.map(h => `
                 <button onclick="seleccionarHoraAgendar('${h}', this)"
-                    class="hora-agendar-btn py-2 text-sm font-semibold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-95">
+                    class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-95">
                     ${h}
                 </button>
             `).join('');
         } catch (e) {
-            grid.innerHTML = '<div class="col-span-3 text-center py-4 text-red-500 text-sm">Error al cargar horarios.</div>';
+            console.error('[Agendar] Error:', e);
+            grid.innerHTML = `<div class="col-span-3 text-center py-4 text-red-500 text-sm">Error al cargar horarios: ${e.message}</div>`;
         }
     }
 
@@ -457,7 +487,7 @@
         });
         btn.classList.add('border-orange-500', 'bg-orange-500', 'text-white');
         btn.classList.remove('border-slate-200', 'text-slate-600');
-        
+
         agendarData.hora = hora;
         document.getElementById('agendarModalBtn').disabled = false;
     }
@@ -467,15 +497,18 @@
         const motivo = document.getElementById('agendarModalMotivo').value.trim();
         const errEl = document.getElementById('agendarModalError');
         const btn = document.getElementById('agendarModalBtn');
-        
+
         errEl.classList.add('hidden');
         btn.disabled = true;
         btn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Procesando...';
 
         try {
-            const res = await fetch(`${window.URL_BASE || '/'}chat_bot/guardarCita`, {
+            const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+            const res = await fetch(BASE + `chat_bot/guardarCita`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     id_psicologo: agendarData.idPsicologo,
                     fecha: agendarData.fecha,
@@ -486,7 +519,7 @@
                 })
             });
             const data = await res.json();
-            
+
             if (data.ok) {
                 cerrarModalAgendar();
                 if (typeof openSuccessCitaModal === 'function') openSuccessCitaModal();
@@ -505,7 +538,7 @@
 
     function cbFormatFechaSoloDia(fecha) {
         const [y, m, d] = fecha.split('-');
-        const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         return `${parseInt(d)} de ${meses[parseInt(m)-1]}. ${y}`;
     }
 </script>
