@@ -183,4 +183,29 @@ class CitaModel extends Model
             $notasCifradas
         ]);
     }
+
+    /**
+     * Termina una cita que está en proceso, actualizando duración y notas.
+     */
+    public function terminarCita(int $idCita, int $duracionMinutos, string $notasSesion): bool
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        
+        $notasCifradas = EncryptionService::encrypt($notasSesion);
+        
+        $sql = "
+            UPDATE citas 
+            SET estado = 'completada', 
+                duracion_minutos = ?, 
+                notas_sesion = ?
+            WHERE id_cita = ? AND estado = 'en proceso'
+        ";
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            $duracionMinutos,
+            $notasCifradas,
+            $idCita
+        ]);
+    }
 }

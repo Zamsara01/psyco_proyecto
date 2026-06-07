@@ -49,7 +49,7 @@ CREATE TABLE `citas` (
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   `duracion_minutos` int(11) NOT NULL DEFAULT 60,
-  `estado` enum('pendiente','completada','cancelada') NOT NULL DEFAULT 'pendiente',
+  `estado` enum('pendiente','en proceso','completada','cancelada') NOT NULL DEFAULT 'pendiente',
   `motivo_consulta` text DEFAULT NULL,
   `notas_sesion` text DEFAULT NULL,
   `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp()

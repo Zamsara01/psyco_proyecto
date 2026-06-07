@@ -110,7 +110,7 @@ class ControllerChat_bot extends Controller
             exit;
         }
 
-        $idUsuario = (int)($_SESSION['user']['id_usuario'] ?? 0);
+        $idUsuario = (int)($_SESSION['user']['id'] ?? 0);
         if ($idUsuario < 1) {
             echo json_encode(['ok' => false, 'error' => 'Sesión inválida.']);
             exit;
@@ -132,6 +132,46 @@ class ControllerChat_bot extends Controller
                 echo json_encode(['ok' => true, 'mensaje' => '¡Cita agendada con éxito!']);
             } else {
                 echo json_encode(['ok' => false, 'error' => 'No se pudo guardar la cita.']);
+            }
+        } catch (\Exception $e) {
+            echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+        }
+        exit;
+    }
+    // ────────────────────────────────────────────────────────────────
+    // API: POST /chat_bot/terminarCita
+    // Body JSON: { id_cita, duracion_minutos, notas_sesion }
+    // ────────────────────────────────────────────────────────────────
+    public function terminarCita(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (empty($_SESSION['user'])) {
+            http_response_code(401);
+            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
+            exit;
+        }
+
+        $body = json_decode(file_get_contents('php://input'), true);
+
+        $idCita  = (int)($body['id_cita'] ?? 0);
+        $duracion = (int)($body['duracion_minutos'] ?? 0);
+        $notas   = trim($body['notas_sesion'] ?? '');
+
+        if ($idCita < 1 || $duracion < 1) {
+            echo json_encode(['ok' => false, 'error' => 'Datos inválidos.']);
+            exit;
+        }
+
+        try {
+            require_once dirname(__DIR__) . '/models/CitaModel.php';
+            $model = new CitaModel();
+            $ok = $model->terminarCita($idCita, $duracion, $notas);
+
+            if ($ok) {
+                echo json_encode(['ok' => true, 'mensaje' => 'Cita terminada exitosamente.']);
+            } else {
+                echo json_encode(['ok' => false, 'error' => 'No se pudo terminar la cita o no estaba en proceso.']);
             }
         } catch (\Exception $e) {
             echo json_encode(['ok' => false, 'error' => $e->getMessage()]);

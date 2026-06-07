@@ -195,6 +195,21 @@
     </div>
 </div>
 
+<!-- ══════════════ MODAL DE ÉXITO EXTERNO ══════════════ -->
+<div id="successCitaModal" class="fixed inset-0 z-[60] hidden items-center justify-center" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeSuccessCitaModal()"></div>
+    <div class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300 z-10 text-center">
+        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-green-500 text-[44px]">check_circle</span>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800 mb-2">¡Cita creada con éxito!</h3>
+        <p class="text-slate-500 mb-6">Hemos registrado tu cita correctamente.</p>
+        <button onclick="closeSuccessCitaModal()" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] shadow-md shadow-orange-200">
+            Aceptar
+        </button>
+    </div>
+</div>
+
 <style>
     @keyframes slideUp {
         from { transform: translateY(60px); opacity: 0; }
@@ -229,6 +244,25 @@ function closeChatbotModal() {
     m.classList.add('hidden');
     m.classList.remove('flex');
     document.body.style.overflow = '';
+}
+
+function openSuccessCitaModal() {
+    const m = document.getElementById('successCitaModal');
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+    // Pequeño efecto de entrada
+    setTimeout(() => {
+        m.querySelector('.relative').classList.remove('scale-95');
+        m.querySelector('.relative').classList.add('scale-100');
+    }, 10);
+}
+
+function closeSuccessCitaModal() {
+    const m = document.getElementById('successCitaModal');
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+    m.querySelector('.relative').classList.remove('scale-100');
+    m.querySelector('.relative').classList.add('scale-95');
 }
 
 function cbGoToStep(n) {
@@ -383,10 +417,14 @@ async function cbConfirmarCita() {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                fecha:            CB.fecha,
+                id_cita:          null,
+                id_usuario:       null, // El backend usará el de la sesión
                 id_psicologo:     CB.psicologoId,
+                fecha:            CB.fecha,
                 hora:             CB.hora,
+                estado:           'pendiente',
                 motivo_consulta:  motivo,
+                fecha_creacion:   new Date().toISOString().slice(0, 19).replace('T', ' ')
             })
         });
         const data = await res.json();
@@ -426,7 +464,14 @@ async function cbConfirmarCita() {
                 </div>
             </div>` : ''}
         `;
-        cbGoToStep(4);
+        
+        // Cerrar chatbot modal y abrir success modal
+        closeChatbotModal();
+        openSuccessCitaModal();
+        
+        // Opcional: resetear estado del chatbot para la próxima vez
+        cbReset();
+
     } catch (e) {
         errMsg.textContent = e.message;
         errEl.classList.remove('hidden');
@@ -466,4 +511,29 @@ window.URL_BASE = '<?= URL_BASE ?>';
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeChatbotModal();
 });
+
+// ─── Terminar Cita en proceso ─────────────────────────────────────────
+async function cbTerminarCita(id_cita, duracion_minutos, notas_sesion) {
+    try {
+        const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+        const res = await fetch(BASE + 'chat_bot/terminarCita', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_cita: id_cita,
+                duracion_minutos: duracion_minutos,
+                notas_sesion: notas_sesion
+            })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            console.log('Cita terminada con éxito:', data.mensaje);
+            // Lógica adicional para actualizar UI si es necesario
+        } else {
+            console.error('Error al terminar cita:', data.error);
+        }
+    } catch (e) {
+        console.error('Excepción al terminar cita:', e);
+    }
+}
 </script>
