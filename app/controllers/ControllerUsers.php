@@ -158,7 +158,7 @@ class ControllerUsers extends Controller
             require_once dirname(__DIR__, 2) . '/core/MailService.php';
 
             $otpModel = new OtpModel();
-            $codigoOtp = $otpModel->generateOtp($userId);
+            $codigoOtp = $otpModel->generateOtp($email, 'register');
 
             $mailService = new MailService();
             $mailService->sendOtpEmail($email, $nombre, $codigoOtp);
@@ -187,19 +187,19 @@ class ControllerUsers extends Controller
         }
 
         $userId = $_SESSION['temp_user_id'] ?? null;
-        $email = $_SESSION['temp_user_email'] ?? '';
+        $email  = $_SESSION['temp_user_email'] ?? '';
 
-        if (!$userId) {
+        if (!$userId || !$email) {
             $this->redirect('users/login');
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $codigo = trim($_POST['codigo'] ?? '');
-            
+
             require_once dirname(__DIR__) . '/models/OtpModel.php';
             $otpModel = new OtpModel();
-            $resultado = $otpModel->verifyOtp((int)$userId, $codigo);
+            $resultado = $otpModel->verifyOtp($email, $codigo, 'register');
 
             if ($resultado['status']) {
                 // Eliminar sesión temporal
@@ -227,17 +227,16 @@ class ControllerUsers extends Controller
                 return;
             } else {
                 $_SESSION['otp_error'] = $resultado['message'];
-                // Redirigir de vuelta a la página actual para que el modal se vuelva a mostrar con el error
-                $this->redirect(isset($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH) : 'users/register');
+                $this->redirect('users/register');
                 return;
             }
         }
 
-        // Si entran por GET y hay temp_user_id, solo redigir al inicio o registro para forzar el modal.
+        // Si entran por GET y hay temp_user_id, redirigir a registro para forzar el modal.
         $this->redirect('users/register');
     }
 
-    /** POST /users/resendOtp — reenvia el código */
+    /** POST /users/resendOtp — reenvía el código */
     public function resendOtp(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -245,16 +244,16 @@ class ControllerUsers extends Controller
         }
 
         $userId = $_SESSION['temp_user_id'] ?? null;
-        $email = $_SESSION['temp_user_email'] ?? '';
+        $email  = $_SESSION['temp_user_email'] ?? '';
 
         if ($userId && $email) {
             require_once dirname(__DIR__) . '/models/OtpModel.php';
             require_once dirname(__DIR__, 2) . '/core/MailService.php';
 
             $user = $this->userModel->findById((int)$userId);
-            
+
             $otpModel = new OtpModel();
-            $codigoOtp = $otpModel->generateOtp($userId);
+            $codigoOtp = $otpModel->generateOtp($email, 'register');
 
             $mailService = new MailService();
             $mailService->sendOtpEmail($email, $user['nombre'], $codigoOtp);
@@ -262,7 +261,7 @@ class ControllerUsers extends Controller
             $_SESSION['otp_success'] = 'Se ha enviado un nuevo código a tu correo.';
         }
 
-        $this->redirect(isset($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH) : 'users/register');
+        $this->redirect('users/register');
     }
 
     /** GET /users/list */
