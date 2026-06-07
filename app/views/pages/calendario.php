@@ -86,9 +86,10 @@
             <div class="p-6 bg-slate-50 rounded-b-2xl">
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php if ($_SESSION['user']['rol'] === 'paciente'): ?>
-                        <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150">
-                            Confirmar Cita
-                        </button>
+                        <p class="text-sm text-slate-500 text-center font-medium">
+                            <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
+                            Haz clic en un psicólogo arriba para agendar tu cita
+                        </p>
                     <?php else: ?>
                         <!-- Si es psicólogo, no tiene sentido que agende citas para sí mismo por este medio -->
                         <button class="w-full bg-slate-200 text-slate-500 font-bold py-4 rounded-xl cursor-not-allowed" disabled>
@@ -111,6 +112,7 @@
 <script>
     const psicologosData = <?= $psicologosJson ?? '[]' ?>;
     const citasData = <?= $citasJson ?? '{}' ?>;
+    const isPaciente = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'paciente') ? 'true' : 'false' ?>;
 </script>
 
 <script>
@@ -337,8 +339,17 @@
                     </span>`
                 ).join('');
 
+                // Formatear fecha para el chatbot
+                const mFormat = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                const dFormat = String(selectedDate.getDate()).padStart(2, '0');
+                const dateString = `${selectedDate.getFullYear()}-${mFormat}-${dFormat}`;
+                
+                const turnosText = turnos.map(t => `${t.inicio.slice(0,5)} – ${t.fin.slice(0,5)}`).join(' y ');
+                const hoverClasses = isPaciente && selectedDate >= today ? 'cursor-pointer hover:bg-orange-50 p-3 -mx-3 rounded-xl transition-colors' : '';
+                const clickAttr = isPaciente && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id_psicologo}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
+
                 html += `
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 ${hoverClasses}" ${clickAttr}>
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-100 shrink-0">
                             <img class="w-full h-full object-cover rounded-full"
@@ -351,8 +362,8 @@
                             <span class="text-sm text-orange-600 truncate">${p.especialidad}</span>
                         </div>
                     </div>
-                    <div class="flex flex-wrap gap-2">${turnosHtml}</div>
-                    <div class="h-px bg-slate-50"></div>
+                    <div class="flex flex-wrap gap-2 px-1">${turnosHtml}</div>
+                    <div class="h-px bg-slate-50 mt-1"></div>
                 </div>`;
             });
 
@@ -382,4 +393,170 @@
         renderCalendar();
         updateDisplay();
     });
+
+    // ─── Modal Agendar Cita (Específico del Calendario) ───────────────────
+    let agendarData = { fecha: '', idPsicologo: null, hora: null };
+
+    function abrirModalAgendar(fecha, idPsicologo, nombre, especialidad, foto, jornada) {
+        agendarData = { fecha, idPsicologo, hora: null };
+        
+        document.getElementById('agendarModalFecha').textContent = cbFormatFechaSoloDia(fecha);
+        document.getElementById('agendarModalJornada').textContent = jornada ? `Jornada: ${jornada}` : 'Sin jornada definida';
+        document.getElementById('agendarModalNombre').textContent = nombre;
+        document.getElementById('agendarModalEspecialidad').textContent = especialidad;
+        document.getElementById('agendarModalFoto').src = foto;
+        
+        document.getElementById('agendarModalBtn').disabled = true;
+        document.getElementById('agendarModalError').classList.add('hidden');
+        document.getElementById('agendarModalMotivo').value = '';
+        
+        const grid = document.getElementById('agendarModalHoras');
+        grid.innerHTML = '<div class="col-span-3 text-center py-4 text-slate-400"><div class="w-6 h-6 border-3 border-orange-200 border-t-orange-500 rounded-full animate-spin mx-auto"></div></div>';
+
+        const m = document.getElementById('agendarCitaModal');
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+
+        cargarHorasDisponibles(fecha, idPsicologo);
+    }
+
+    function cerrarModalAgendar() {
+        const m = document.getElementById('agendarCitaModal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    async function cargarHorasDisponibles(fecha, idPsicologo) {
+        const grid = document.getElementById('agendarModalHoras');
+        try {
+            const res = await fetch(`${window.URL_BASE || '/'}chat_bot/horasDisponibles?fecha=${fecha}&id_psicologo=${idPsicologo}`);
+            const data = await res.json();
+            
+            if (!data.ok || !data.horas || data.horas.length === 0) {
+                grid.innerHTML = '<div class="col-span-3 text-center py-4 text-slate-500 text-sm">No hay horas disponibles este día.</div>';
+                return;
+            }
+
+            grid.innerHTML = data.horas.map(h => `
+                <button onclick="seleccionarHoraAgendar('${h}', this)"
+                    class="hora-agendar-btn py-2 text-sm font-semibold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-95">
+                    ${h}
+                </button>
+            `).join('');
+        } catch (e) {
+            grid.innerHTML = '<div class="col-span-3 text-center py-4 text-red-500 text-sm">Error al cargar horarios.</div>';
+        }
+    }
+
+    function seleccionarHoraAgendar(hora, btn) {
+        document.querySelectorAll('.hora-agendar-btn').forEach(b => {
+            b.classList.remove('border-orange-500', 'bg-orange-500', 'text-white');
+            b.classList.add('border-slate-200', 'text-slate-600');
+        });
+        btn.classList.add('border-orange-500', 'bg-orange-500', 'text-white');
+        btn.classList.remove('border-slate-200', 'text-slate-600');
+        
+        agendarData.hora = hora;
+        document.getElementById('agendarModalBtn').disabled = false;
+    }
+
+    async function confirmarCitaModal() {
+        if (!agendarData.hora) return;
+        const motivo = document.getElementById('agendarModalMotivo').value.trim();
+        const errEl = document.getElementById('agendarModalError');
+        const btn = document.getElementById('agendarModalBtn');
+        
+        errEl.classList.add('hidden');
+        btn.disabled = true;
+        btn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Procesando...';
+
+        try {
+            const res = await fetch(`${window.URL_BASE || '/'}chat_bot/guardarCita`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_psicologo: agendarData.idPsicologo,
+                    fecha: agendarData.fecha,
+                    hora: agendarData.hora,
+                    estado: 'pendiente',
+                    motivo_consulta: motivo,
+                    fecha_creacion: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                })
+            });
+            const data = await res.json();
+            
+            if (data.ok) {
+                cerrarModalAgendar();
+                if (typeof openSuccessCitaModal === 'function') openSuccessCitaModal();
+                else alert('¡Cita agendada con éxito!');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                throw new Error(data.error || 'Error al guardar la cita');
+            }
+        } catch (e) {
+            errEl.textContent = e.message;
+            errEl.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = 'Confirmar Cita';
+        }
+    }
+
+    function cbFormatFechaSoloDia(fecha) {
+        const [y, m, d] = fecha.split('-');
+        const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+        return `${parseInt(d)} de ${meses[parseInt(m)-1]}. ${y}`;
+    }
 </script>
+
+<!-- ══════════ MODAL AGENDAR CITA (CALENDARIO) ══════════ -->
+<div id="agendarCitaModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="cerrarModalAgendar()"></div>
+    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 z-10 p-7 transform transition-transform">
+        <button onclick="cerrarModalAgendar()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 text-slate-400 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined">event_available</span>
+            </div>
+            <div>
+                <h3 class="font-bold text-slate-800 text-lg leading-tight">Agendar Cita</h3>
+                <p id="agendarModalFecha" class="text-xs text-orange-500 font-semibold"></p>
+                <p id="agendarModalJornada" class="text-xs text-slate-500"></p>
+            </div>
+        </div>
+
+        <!-- Info Psicólogo -->
+        <div class="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl mb-5 border border-slate-100">
+            <img id="agendarModalFoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+            <div class="min-w-0 flex-1">
+                <p id="agendarModalNombre" class="font-bold text-slate-800 text-sm truncate"></p>
+                <p id="agendarModalEspecialidad" class="text-xs text-slate-500 truncate"></p>
+            </div>
+        </div>
+
+        <!-- Selector de horas -->
+        <div class="mb-5">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Horarios Disponibles</label>
+            <div id="agendarModalHoras" class="grid grid-cols-3 gap-2 min-h-[48px]">
+                <!-- Llenado por JS -->
+            </div>
+        </div>
+
+        <!-- Motivo -->
+        <div class="mb-5">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Motivo de consulta <span class="font-normal text-slate-400">(Opcional)</span></label>
+            <textarea id="agendarModalMotivo" rows="2" placeholder="Ej: Ansiedad, estrés..." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors resize-none"></textarea>
+        </div>
+
+        <div id="agendarModalError" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 font-medium"></div>
+
+        <button id="agendarModalBtn" onclick="confirmarCitaModal()" disabled
+            class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-md shadow-orange-200 hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            Confirmar Cita
+        </button>
+    </div>
+</div>

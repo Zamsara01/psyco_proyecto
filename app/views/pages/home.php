@@ -30,16 +30,50 @@
 
         <!-- CTAs -->
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <button onclick="openRegisterModal()"
-               class="inline-flex items-center justify-center gap-2 h-12 px-8 bg-primary text-on-primary font-bold rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-[0.98] text-body-md">
-                <span class="material-symbols-outlined text-[20px]">person_add</span>
-                Crear cuenta
-            </button>
-            <button onclick="openLoginModal()"
-               class="inline-flex items-center justify-center gap-2 h-12 px-8 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary/5 transition-all active:scale-[0.98] text-body-md">
-                <span class="material-symbols-outlined text-[20px]">login</span>
-                Iniciar sesión
-            </button>
+            <?php 
+            $rol = $_SESSION['user']['rol'] ?? null;
+            if ($rol === 'paciente'): ?>
+                <!-- Opciones para Paciente -->
+                <button onclick="openChatbotModal()"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-200 hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                    Gestionar Citas
+                </button>
+                <a href="<?= URL_BASE ?>citas/misCitas"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-6 border-2 border-orange-200 text-orange-600 font-bold rounded-xl hover:bg-orange-50 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">event_note</span>
+                    Mis Citas
+                </a>
+                <a href="<?= URL_BASE ?>citas/misRecursos"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-6 border-2 border-orange-200 text-orange-600 font-bold rounded-xl hover:bg-orange-50 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                    Mis Recursos
+                </a>
+            <?php elseif ($rol === 'psicologo'): ?>
+                <!-- Opciones para Psicóloga -->
+                <a href="<?= URL_BASE ?>panel_psicologas"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-200 hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Ir a Mi Panel
+                </a>
+                <a href="<?= URL_BASE ?>calendario"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-6 border-2 border-orange-200 text-orange-600 font-bold rounded-xl hover:bg-orange-50 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                    Calendario
+                </a>
+            <?php else: ?>
+                <!-- Opciones para Invitado -->
+                <button onclick="openRegisterModal()"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-8 bg-primary text-on-primary font-bold rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">person_add</span>
+                    Crear cuenta
+                </button>
+                <button onclick="openLoginModal()"
+                   class="inline-flex items-center justify-center gap-2 h-12 px-8 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary/5 transition-all active:scale-[0.98] text-body-md">
+                    <span class="material-symbols-outlined text-[20px]">login</span>
+                    Iniciar sesión
+                </button>
+            <?php endif; ?>
         </div>
     </div>
 </section>

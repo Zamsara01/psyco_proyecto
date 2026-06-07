@@ -488,8 +488,47 @@ ALTER TABLE `psicologos`
 --
 ALTER TABLE `recordatorios`
   ADD CONSTRAINT `fk_recordatorios_cita` FOREIGN KEY (`id_cita`) REFERENCES `citas` (`id_cita`);
+
+-- --------------------------------------------------------
+-- Estructura de tabla para la tabla `notas_paciente`
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `notas_paciente` (
+  `id_nota` int(11) NOT NULL AUTO_INCREMENT,
+  `id_psicologo` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `contenido` text NOT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_nota`),
+  KEY `fk_nota_psicologo` (`id_psicologo`),
+  KEY `fk_nota_usuario` (`id_usuario`),
+  CONSTRAINT `fk_nota_psicologo` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
+  CONSTRAINT `fk_nota_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+-- Estructura de tabla para la tabla `recursos_acompanamiento`
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `recursos_acompanamiento` (
+  `id_recurso` int(11) NOT NULL AUTO_INCREMENT,
+  `id_psicologo` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `url_video` varchar(512) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_recurso`),
+  KEY `fk_recurso_psicologo` (`id_psicologo`),
+  KEY `fk_recurso_usuario` (`id_usuario`),
+  CONSTRAINT `fk_recurso_psicologo` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
+  CONSTRAINT `fk_recurso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -54,6 +54,9 @@ $content = $content ?? '';
         <!-- Modal del Chatbot (global) -->
         <?php require __DIR__ . '/../partials/chatbot_modal.php'; ?>
 
+        <!-- Modal: Requiere inicio de sesión (global) -->
+        <?php require __DIR__ . '/../partials/login_required_modal.php'; ?>
+
         <!-- Footer global -->
         <footer class="bg-white border-t border-slate-100 py-4 px-6 text-center mt-auto">
             <p class="text-body-sm text-on-surface-variant">

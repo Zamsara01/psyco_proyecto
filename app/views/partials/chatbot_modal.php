@@ -1,3 +1,35 @@
+<?php
+$cb_tieneCitaPendiente = false;
+$cb_tieneCitaAlguna = false;
+$cb_citasPendientesJSON = '[]';
+
+if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente') {
+    if (!class_exists('CitaModel', false)) {
+        require_once dirname(__DIR__, 2) . '/models/CitaModel.php';
+    }
+    $cb_citaModel = new CitaModel();
+    $cb_citasUser = $cb_citaModel->getCitasUsuario((int)$_SESSION['user']['id']);
+    $pendientes = [];
+    if (!empty($cb_citasUser)) {
+        $cb_tieneCitaAlguna = true;
+        foreach ($cb_citasUser as $c) {
+            if ($c['estado'] === 'pendiente' && $c['fecha'] >= date('Y-m-d')) {
+                $cb_tieneCitaPendiente = true;
+                $pendientes[] = [
+                    'id_cita' => $c['id_cita'],
+                    'fecha' => $c['fecha'],
+                    'hora' => substr($c['hora'], 0, 5),
+                    'id_psicologo' => $c['id_psicologo'],
+                    'psicologo_nombre' => $c['psicologo_nombre'],
+                    'especialidad' => $c['especialidad'],
+                    'foto_perfil' => $c['foto_perfil']
+                ];
+            }
+        }
+    }
+    $cb_citasPendientesJSON = json_encode($pendientes);
+}
+?>
 <!-- ═══════════════════════════════════════════════════════════
      MODAL DEL CHATBOT — se incluye en el layout global
      Se abre con: openChatbotModal()
@@ -40,28 +72,32 @@
                 </button>
                 
                 <!-- Cancelar Cita -->
-                <button class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all active:scale-[0.97] duration-150 w-full opacity-60 cursor-not-allowed">
-                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mb-3">
+                <button onclick="cbGoToCancelList()" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">cancel</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-500 text-center">Cancelar Cita</span>
+                    <span class="text-sm font-semibold text-slate-700 text-center">Cancelar Cita</span>
                 </button>
                 
                 <!-- Reprogramar -->
-                <button class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all active:scale-[0.97] duration-150 w-full opacity-60 cursor-not-allowed">
-                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mb-3">
+                <button onclick="cbGoToReprogramList()" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">sync</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-500 text-center">Reprogramar</span>
+                    <span class="text-sm font-semibold text-slate-700 text-center">Reprogramar</span>
                 </button>
                 
                 <!-- Recursos -->
-                <button class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all active:scale-[0.97] duration-150 w-full opacity-60 cursor-not-allowed">
-                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mb-3">
+                <button onclick="window.location.href='<?= URL_BASE ?>citas/misRecursos'" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">auto_stories</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-500 text-center">Recursos</span>
+                    <span class="text-sm font-semibold text-slate-700 text-center">Recursos</span>
                 </button>
+
             </div>
             <div class="h-4"></div>
         </div>
@@ -185,6 +221,54 @@
             </div>
         </div>
 
+        <!-- ══════════════ PASO 5: LISTA DE CITAS PENDIENTES ══════════════ -->
+        <div id="cbStep5" class="cb-step hidden">
+            <div class="mb-5">
+                <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-500 transition-colors mb-4">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span> Volver
+                </button>
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[20px]" id="cbStep5Icon">list</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800" id="cbStep5Title">Selecciona una cita</h3>
+                        <p class="text-xs text-orange-500 font-medium" id="cbStep5Subtitle"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cbCitasPendientesList" class="space-y-3 mb-5 max-h-[300px] overflow-y-auto pr-1">
+                <!-- Citas insertadas por JS -->
+            </div>
+        </div>
+
+        <!-- ══════════════ PASO 6: CONFIRMAR CANCELACIÓN ══════════════ -->
+        <div id="cbStep6" class="cb-step hidden">
+            <div class="text-center py-6">
+                <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-5">
+                    <span class="material-symbols-outlined text-red-500 text-[44px]">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">¿Cancelar cita?</h3>
+                <p class="text-sm text-slate-500 mb-6">Esta acción no se puede deshacer.</p>
+
+                <div id="cbCancelResumen" class="bg-red-50 border border-red-100 rounded-2xl p-5 text-left space-y-3 mb-6">
+                    <!-- Resumen a cancelar -->
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button onclick="cbConfirmarCancelacion()" id="cbBtnCancelar"
+                        class="w-full py-3 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600 transition-colors shadow-sm">
+                        Sí, cancelar cita
+                    </button>
+                    <button onclick="cbGoToStep(5)" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-colors">
+                        Volver
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
         <!-- ══════════════ LOADING OVERLAY ══════════════ -->
         <div id="cbLoading" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm rounded-t-[32px] flex items-center justify-center z-20">
             <div class="flex flex-col items-center gap-3">
@@ -229,7 +313,11 @@ const CB = {
     psicologoId: null,
     psicologoNombre: '',
     hora: null,
+    idCitaEditar: null
 };
+
+const cbCitasPendientes = <?= $cb_citasPendientesJSON ?>;
+let cbCancelId = null;
 
 // ─── Navegación ───────────────────────────────────────────────────────
 function openChatbotModal() {
@@ -237,6 +325,7 @@ function openChatbotModal() {
     m.classList.remove('hidden');
     m.classList.add('flex');
     document.body.style.overflow = 'hidden';
+    cbReset(); // Reiniciar estado al abrir
 }
 
 function closeChatbotModal() {
@@ -265,12 +354,129 @@ function closeSuccessCitaModal() {
     m.querySelector('.relative').classList.add('scale-95');
 }
 
+// ─── Agendamiento Directo (Desde Calendario) ─────────────────────────
+function openChatbotForPsicologo(fecha, idPsicologo, nombrePsicologo) {
+    const m = document.getElementById('chatbotModal');
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    
+    cbReset(); // Limpiar estado anterior
+    
+    CB.fecha = fecha;
+    const fechaInput = document.getElementById('cbFecha');
+    if (fechaInput) fechaInput.value = fecha;
+    
+    // Saltamos al paso 2 (Seleccionar Hora para este psicólogo)
+    cbSeleccionarPsicologo(idPsicologo, nombrePsicologo);
+}
+
 function cbGoToStep(n) {
     document.querySelectorAll('.cb-step').forEach(el => el.classList.add('hidden'));
     document.getElementById('cbStep' + n).classList.remove('hidden');
 }
 
-function cbGoToStep1() { cbGoToStep(1); }
+function cbGoToStep1() { 
+    CB.idCitaEditar = null; // Si entra por agendar, limpiamos edit
+    cbGoToStep(1); 
+}
+
+// ─── Cancelar y Reprogramar ───────────────────────────────────────────
+function cbGoToCancelList() {
+    cbRenderCitasPendientes('cancelar');
+    cbGoToStep(5);
+}
+
+function cbGoToReprogramList() {
+    cbRenderCitasPendientes('reprogramar');
+    cbGoToStep(5);
+}
+
+function cbRenderCitasPendientes(accion) {
+    const container = document.getElementById('cbCitasPendientesList');
+    document.getElementById('cbStep5Title').textContent = accion === 'cancelar' ? 'Cancelar Cita' : 'Reprogramar Cita';
+    document.getElementById('cbStep5Subtitle').textContent = 'Selecciona la cita que deseas ' + accion;
+    
+    if (cbCitasPendientes.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-3">
+                    <span class="material-symbols-outlined text-[32px] text-slate-300">event_busy</span>
+                </div>
+                <p class="text-slate-600 font-medium">No tienes citas pendientes</p>
+                <p class="text-slate-400 text-sm mt-1">Actualmente no hay citas próximas para ${accion}.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = cbCitasPendientes.map(c => `
+        <button onclick="${accion === 'cancelar' ? `cbPrepararCancelacion(${c.id_cita})` : `cbPrepararReprogramacion(${c.id_cita})`}" 
+            class="w-full text-left p-4 bg-white border-2 border-slate-100 rounded-2xl hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.98] group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-slate-500 group-hover:text-orange-500">event</span>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="font-bold text-slate-800 text-sm mb-1">${c.fecha} a las ${c.hora}</p>
+                <p class="text-xs text-slate-500 truncate">Psic. ${c.psicologo_nombre}</p>
+            </div>
+        </button>
+    `).join('');
+}
+
+function cbPrepararCancelacion(idCita) {
+    cbCancelId = idCita;
+    const c = cbCitasPendientes.find(x => x.id_cita === idCita);
+    document.getElementById('cbCancelResumen').innerHTML = `
+        <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Psicólogo:</span>
+            <span class="font-bold text-slate-800 text-right">${c.psicologo_nombre}</span>
+        </div>
+        <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Fecha:</span>
+            <span class="font-bold text-slate-800 text-right">${c.fecha}</span>
+        </div>
+        <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Hora:</span>
+            <span class="font-bold text-slate-800 text-right">${c.hora}</span>
+        </div>
+    `;
+    cbGoToStep(6);
+}
+
+async function cbConfirmarCancelacion() {
+    if (!cbCancelId) return;
+    cbShowLoading(true);
+    try {
+        const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+        const res = await fetch(BASE + 'citas/cancelar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_cita: cbCancelId })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error);
+        
+        cbShowLoading(false);
+        closeChatbotModal();
+        
+        const m = document.getElementById('successCitaModal');
+        m.querySelector('h3').textContent = '¡Cita cancelada!';
+        m.querySelector('p').textContent = 'Tu cita ha sido cancelada exitosamente.';
+        openSuccessCitaModal();
+        
+        setTimeout(() => location.reload(), 1500);
+        
+    } catch (e) {
+        cbShowLoading(false);
+        alert('Error: ' + e.message);
+    }
+}
+
+function cbPrepararReprogramacion(idCita) {
+    CB.idCitaEditar = idCita;
+    cbGoToStep(1);
+}
 
 // ─── Buscar psicólogos disponibles ────────────────────────────────────
 async function cbBuscarPsicologos() {
@@ -413,70 +619,58 @@ async function cbConfirmarCita() {
 
     try {
         const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
-        const res  = await fetch(BASE + 'chat_bot/guardarCita', {
+        
+        let endpoint = 'chat_bot/guardarCita';
+        let bodyData = {
+            id_cita:          null,
+            id_usuario:       null, 
+            id_psicologo:     CB.psicologoId,
+            fecha:            CB.fecha,
+            hora:             CB.hora,
+            estado:           'pendiente',
+            motivo_consulta:  motivo,
+            fecha_creacion:   new Date().toISOString().slice(0, 19).replace('T', ' ')
+        };
+
+        if (CB.idCitaEditar) {
+            endpoint = 'citas/editar';
+            bodyData = {
+                id_cita: CB.idCitaEditar,
+                fecha: CB.fecha,
+                hora: CB.hora,
+                id_psicologo: CB.psicologoId
+            };
+        }
+
+        const res  = await fetch(BASE + endpoint, {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id_cita:          null,
-                id_usuario:       null, // El backend usará el de la sesión
-                id_psicologo:     CB.psicologoId,
-                fecha:            CB.fecha,
-                hora:             CB.hora,
-                estado:           'pendiente',
-                motivo_consulta:  motivo,
-                fecha_creacion:   new Date().toISOString().slice(0, 19).replace('T', ' ')
-            })
+            body: JSON.stringify(bodyData)
         });
         const data = await res.json();
 
         if (!data.ok) throw new Error(data.error || 'Error al guardar');
 
-        // Mostrar resumen
-        const resumen = document.getElementById('cbResumen');
-        resumen.innerHTML = `
-            <div class="flex items-center gap-3 pb-3 border-b border-orange-100">
-                <span class="material-symbols-outlined text-orange-400 text-[20px]">person</span>
-                <div>
-                    <p class="text-xs text-slate-400">Psicólogo</p>
-                    <p class="font-semibold text-slate-700 text-sm">${escHtml(CB.psicologoNombre)}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 pb-3 border-b border-orange-100">
-                <span class="material-symbols-outlined text-orange-400 text-[20px]">calendar_month</span>
-                <div>
-                    <p class="text-xs text-slate-400">Fecha</p>
-                    <p class="font-semibold text-slate-700 text-sm">${cbFormatFecha(CB.fecha)} · ${CB.diaSemana}</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-orange-400 text-[20px]">schedule</span>
-                <div>
-                    <p class="text-xs text-slate-400">Hora</p>
-                    <p class="font-semibold text-slate-700 text-sm">${CB.hora}</p>
-                </div>
-            </div>
-            ${motivo ? `
-            <div class="flex items-start gap-3 pt-3 border-t border-orange-100">
-                <span class="material-symbols-outlined text-orange-400 text-[20px] mt-0.5">notes</span>
-                <div>
-                    <p class="text-xs text-slate-400">Motivo</p>
-                    <p class="text-sm text-slate-600">${escHtml(motivo)}</p>
-                </div>
-            </div>` : ''}
-        `;
-        
-        // Cerrar chatbot modal y abrir success modal
+        cbShowLoading(false);
         closeChatbotModal();
-        openSuccessCitaModal();
-        
-        // Opcional: resetear estado del chatbot para la próxima vez
-        cbReset();
 
+        const m = document.getElementById('successCitaModal');
+        if (CB.idCitaEditar) {
+            m.querySelector('h3').textContent = '¡Cita reprogramada!';
+            m.querySelector('p').textContent = 'Tu cita ha sido reprogramada exitosamente.';
+        } else {
+            m.querySelector('h3').textContent = '¡Cita agendada!';
+            m.querySelector('p').textContent = 'Hemos registrado tu cita correctamente.';
+        }
+        openSuccessCitaModal();
+
+        if (CB.idCitaEditar) {
+            setTimeout(() => location.reload(), 1500);
+        }
     } catch (e) {
+        cbShowLoading(false);
         errMsg.textContent = e.message;
         errEl.classList.remove('hidden');
-    } finally {
-        cbShowLoading(false);
     }
 }
 

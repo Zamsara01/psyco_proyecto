@@ -208,4 +208,133 @@ class CitaModel extends Model
             $idCita
         ]);
     }
+
+    /**
+     * Obtiene todas las citas de un usuario (paciente) ordenadas por fecha desc.
+     */
+    public function getCitasUsuario(int $idUsuario): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $sql = "
+            SELECT 
+                c.id_cita, c.fecha, c.hora, c.estado, c.motivo_consulta,
+                p.nombre AS psicologo_nombre, p.foto_perfil, e.nombre AS especialidad,
+                p.id_psicologo
+            FROM citas c
+            JOIN psicologos p ON c.id_psicologo = p.id_psicologo
+            JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+            WHERE c.id_usuario = ?
+            ORDER BY c.fecha DESC, c.hora DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idUsuario]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = 'Sin motivo especificado';
+            }
+            // Foto fallback
+            if (empty($row['foto_perfil'])) {
+                $row['foto_perfil'] = 'https://ui-avatars.com/api/?name=' . urlencode($row['psicologo_nombre']) . '&background=F97316&color=fff&size=128';
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Cancela una cita (solo si pertenece al usuario y está pendiente).
+     */
+    public function cancelarCita(int $idCita, int $idUsuario): bool
+    {
+        $sql = "UPDATE citas SET estado = 'cancelada' WHERE id_cita = ? AND id_usuario = ? AND estado = 'pendiente'";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idCita, $idUsuario]);
+    }
+
+    /**
+     * Edita fecha, hora y/o psicólogo de una cita pendiente,
+     * SOLO si el nuevo slot está libre.
+     */
+    public function editarCita(int $idCita, int $idUsuario, string $nuevaFecha, string $nuevaHora, int $nuevoIdPsicologo): bool|string
+    {
+        // Verificar que la cita pertenece al usuario y está pendiente
+        $stmtCheck = $this->db->prepare("SELECT id_cita FROM citas WHERE id_cita = ? AND id_usuario = ? AND estado = 'pendiente'");
+        $stmtCheck->execute([$idCita, $idUsuario]);
+        if (!$stmtCheck->fetch()) {
+            return 'La cita no existe o no se puede editar.';
+        }
+
+        // Verificar disponibilidad del nuevo slot (excluyendo la cita actual)
+        $stmtOcupada = $this->db->prepare("
+            SELECT id_cita FROM citas 
+            WHERE id_psicologo = ? AND fecha = ? AND hora = ? AND estado IN ('pendiente','completada','en proceso') AND id_cita != ?
+        ");
+        $stmtOcupada->execute([$nuevoIdPsicologo, $nuevaFecha, $nuevaHora . ':00', $idCita]);
+        if ($stmtOcupada->fetch()) {
+            return 'El horario seleccionado no está disponible para ese psicólogo.';
+        }
+
+        $sql = "UPDATE citas SET fecha = ?, hora = ?, id_psicologo = ? WHERE id_cita = ? AND id_usuario = ?";
+        $stmt = $this->db->prepare($sql);
+        $ok = $stmt->execute([$nuevaFecha, $nuevaHora . ':00', $nuevoIdPsicologo, $idCita, $idUsuario]);
+        return $ok ? true : 'Error al actualizar la cita.';
+    }
+
+    /**
+     * Busca pacientes por nombre o correo (para psicólogas).
+     */
+    public function buscarPacientes(string $query, int $idPsicologo): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $like = '%' . $query . '%';
+        $sql = "
+            SELECT DISTINCT
+                u.id_usuario, u.nombre, u.correo_electronico, u.grado,
+                COUNT(c.id_cita) AS total_citas,
+                MAX(c.fecha) AS ultima_cita
+            FROM usuarios u
+            JOIN citas c ON u.id_usuario = c.id_usuario
+            WHERE c.id_psicologo = ?
+              AND (u.nombre LIKE ? OR u.correo_electronico LIKE ?)
+            GROUP BY u.id_usuario
+            ORDER BY u.nombre
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo, $like, $like]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Obtiene el historial completo de citas de un usuario con una psicóloga.
+     */
+    public function getHistorialPaciente(int $idUsuario, int $idPsicologo): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $sql = "
+            SELECT c.id_cita, c.fecha, c.hora, c.estado, c.motivo_consulta, c.notas_sesion, c.duracion_minutos
+            FROM citas c
+            WHERE c.id_usuario = ? AND c.id_psicologo = ?
+            ORDER BY c.fecha DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idUsuario, $idPsicologo]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                if (!empty($row['notas_sesion'])) $row['notas_sesion'] = EncryptionService::decrypt($row['notas_sesion']);
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = '⚠️ [Error]';
+                $row['notas_sesion'] = '⚠️ [Error]';
+            }
+        }
+        return $results;
+    }
 }
+

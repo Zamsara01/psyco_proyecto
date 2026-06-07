@@ -176,7 +176,29 @@ class PsicologoModel extends Model
         if ($row && password_verify($password, $row['contrasena'])) {
             return $row;
         }
-        
         return null;
     }
+
+    /**
+     * Obtiene todos los psicólogos activos (para dropdown de edición de citas).
+     */
+    public function getAllActivos(): array
+    {
+        $sql = "
+            SELECT p.id_psicologo, p.nombre, p.foto_perfil, e.nombre AS especialidad
+            FROM psicologos p
+            JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+            WHERE p.estado = 'activo'
+            ORDER BY p.nombre
+        ";
+        $stmt = $this->db->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as &$row) {
+            if (empty($row['foto_perfil'])) {
+                $row['foto_perfil'] = 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre']) . '&background=F97316&color=fff&size=128';
+            }
+        }
+        return $rows;
+    }
 }
+
