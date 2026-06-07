@@ -46,6 +46,11 @@ $content = $content ?? '';
         <!-- Modal de Registro (global) -->
         <?php require __DIR__ . '/../partials/register_modal.php'; ?>
 
+        <!-- Modal OTP (solo si hay verificación pendiente) -->
+        <?php if (isset($_SESSION['temp_user_id'])): ?>
+            <?php require __DIR__ . '/../partials/otp_modal.php'; ?>
+        <?php endif; ?>
+
         <!-- Modal del Chatbot (global) -->
         <?php require __DIR__ . '/../partials/chatbot_modal.php'; ?>
 
