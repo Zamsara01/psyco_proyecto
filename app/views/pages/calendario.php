@@ -91,17 +91,14 @@
 
             <div class="p-6 bg-slate-50 rounded-b-2xl">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <?php if ($_SESSION['user']['rol'] === 'paciente'): ?>
-                        <p class="text-sm text-slate-500 text-center font-medium">
-                            <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
+                    <p class="text-sm text-slate-500 text-center font-medium">
+                        <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
+                        <?php if ($_SESSION['user']['rol'] === 'psicologo'): ?>
+                            Selecciona un psicólogo y una hora para agendar una cita
+                        <?php else: ?>
                             Haz clic en un psicólogo arriba para agendar tu cita
-                        </p>
-                    <?php else: ?>
-                        <!-- Si es psicólogo, no tiene sentido que agende citas para sí mismo por este medio -->
-                        <button class="w-full bg-slate-200 text-slate-500 font-bold py-4 rounded-xl cursor-not-allowed" disabled>
-                            Modo Psicóloga (Agendamiento Deshabilitado)
-                        </button>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </p>
                 <?php else: ?>
                     <button type="button" onclick="openLoginModal()" class="w-full bg-orange-100 text-orange-600 font-bold py-4 rounded-xl shadow-sm hover:bg-orange-200 transition-colors active:scale-95 duration-150">
                         Inicia sesión para agendar
@@ -118,7 +115,9 @@
 <script>
     const psicologosData = <?= $psicologosJson ?? '[]' ?>;
     const citasData = <?= $citasJson ?? '{}' ?>;
-    const isPaciente = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'paciente') ? 'true' : 'false' ?>;
+    const isPaciente  = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'paciente')  ? 'true' : 'false' ?>;
+    const isPsicologo = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'psicologo') ? 'true' : 'false' ?>;
+    const canSchedule = isPaciente || isPsicologo;
 </script>
 
 <script>
@@ -351,10 +350,10 @@
                 const dateString = `${selectedDate.getFullYear()}-${mFormat}-${dFormat}`;
 
                 const turnosText = turnos.map(t => `${t.inicio.slice(0,5)} – ${t.fin.slice(0,5)}`).join(' y ');
-                const hoverClasses = isPaciente && selectedDate >= today ? 'cursor-pointer hover:bg-orange-50 p-3 -mx-3 rounded-xl transition-colors' : '';
-                const clickAttr = isPaciente && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
+                const hoverClasses = canSchedule && selectedDate >= today ? 'cursor-pointer hover:bg-orange-50 p-3 -mx-3 rounded-xl transition-colors' : '';
+                const clickAttr = canSchedule && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
 
-                const agendarBadge = (isPaciente && selectedDate >= today)
+                const agendarBadge = (canSchedule && selectedDate >= today)
                     ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-orange-500 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 mt-1">
                         <span class="material-symbols-outlined text-[13px]">event_available</span> Agendar cita
                        </span>`
@@ -432,6 +431,18 @@
         document.getElementById('agendarModalError').classList.add('hidden');
         document.getElementById('agendarModalMotivo').value = '';
 
+        if (isPsicologo) {
+            document.getElementById('agendarModalIdUsuario').value = '';
+            const buscador = document.getElementById('agendarModalBuscador');
+            if (buscador) buscador.value = '';
+            const txt = document.getElementById('agendarModalPacienteNombreTxt');
+            if (txt) txt.textContent = '';
+            const sel = document.getElementById('agendarModalPacienteSeleccionado');
+            if (sel) sel.classList.add('hidden');
+            const res = document.getElementById('agendarModalResultados');
+            if (res) res.classList.add('hidden');
+        }
+
         const grid = document.getElementById('agendarModalHoras');
         grid.innerHTML = '<div class="col-span-3 flex justify-center py-6"><div class="w-6 h-6 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>';
 
@@ -494,6 +505,18 @@
 
     async function confirmarCitaModal() {
         if (!agendarData.hora) return;
+        
+        let idUsuario = null;
+        if (isPsicologo) {
+            idUsuario = document.getElementById('agendarModalIdUsuario').value;
+            if (!idUsuario) {
+                const errEl = document.getElementById('agendarModalError');
+                errEl.textContent = "Selecciona un paciente para la cita.";
+                errEl.classList.remove('hidden');
+                return;
+            }
+        }
+
         const motivo = document.getElementById('agendarModalMotivo').value.trim();
         const errEl = document.getElementById('agendarModalError');
         const btn = document.getElementById('agendarModalBtn');
@@ -504,19 +527,33 @@
 
         try {
             const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
-            const res = await fetch(BASE + `chat_bot/guardarCita`, {
+            let url = BASE + 'chat_bot/guardarCita';
+            let bodyData = {
+                id_psicologo: agendarData.idPsicologo,
+                fecha: agendarData.fecha,
+                hora: agendarData.hora,
+                estado: 'pendiente',
+                motivo_consulta: motivo,
+                fecha_creacion: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            };
+
+            if (isPsicologo) {
+                url = BASE + 'panel_psicologas/agendarCita';
+                bodyData = {
+                    id_usuario: parseInt(idUsuario),
+                    id_psicologo: agendarData.idPsicologo,
+                    fecha: agendarData.fecha,
+                    hora: agendarData.hora,
+                    motivo_consulta: motivo
+                };
+            }
+
+            const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    id_psicologo: agendarData.idPsicologo,
-                    fecha: agendarData.fecha,
-                    hora: agendarData.hora,
-                    estado: 'pendiente',
-                    motivo_consulta: motivo,
-                    fecha_creacion: new Date().toISOString().slice(0, 19).replace('T', ' ')
-                })
+                body: JSON.stringify(bodyData)
             });
             const data = await res.json();
 
@@ -540,6 +577,158 @@
         const [y, m, d] = fecha.split('-');
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         return `${parseInt(d)} de ${meses[parseInt(m)-1]}. ${y}`;
+    }
+
+    // ─── Lógica Buscador Pacientes (Psicólogos) ───────────────────────────
+    let debounceTimerBuscador;
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputBuscador = document.getElementById('agendarModalBuscador');
+        if (!inputBuscador) return;
+
+        inputBuscador.addEventListener('input', () => {
+            clearTimeout(debounceTimerBuscador);
+            const q = inputBuscador.value.trim();
+            const lista = document.getElementById('agendarModalResultados');
+            if (q.length < 2) { lista.classList.add('hidden'); return; }
+
+            debounceTimerBuscador = setTimeout(async () => {
+                const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+                const res  = await fetch(BASE + 'panel_psicologas/buscarTodosLosPacientes?q=' + encodeURIComponent(q));
+                const data = await res.json();
+                if (!data.ok || !data.pacientes.length) {
+                    lista.innerHTML = '<p class="px-4 py-3 text-sm text-slate-400">Sin resultados.</p>';
+                    lista.classList.remove('hidden');
+                    return;
+                }
+                lista.innerHTML = data.pacientes.map(p => `
+                    <button type="button" onclick="seleccionarPacienteBuscador(${p.id_usuario}, '${p.nombre.replace(/'/g, "\\'")}', '${p.correo_electronico.replace(/'/g, "\\'")}')"
+                        class="w-full text-left px-4 py-2.5 hover:bg-orange-50 transition-colors border-b border-slate-100 last:border-0">
+                        <p class="text-sm font-bold text-slate-800">${p.nombre}</p>
+                        <p class="text-xs text-slate-400">${p.correo_electronico} · Grado ${p.grado}</p>
+                    </button>`).join('');
+                lista.classList.remove('hidden');
+            }, 350);
+        });
+    });
+
+    function seleccionarPacienteBuscador(id, nombre, correo) {
+        document.getElementById('agendarModalIdUsuario').value = id;
+        document.getElementById('agendarModalBuscador').value = nombre + ' — ' + correo;
+        document.getElementById('agendarModalPacienteNombreTxt').textContent = nombre;
+        document.getElementById('agendarModalPacienteSeleccionado').classList.remove('hidden');
+        document.getElementById('agendarModalResultados').classList.add('hidden');
+    }
+
+    // ─── Modal Crear Paciente ─────────────────────────────────────────────
+    function abrirModalCrearPaciente() {
+        resetModalCrearPaciente();
+        const m = document.getElementById('modalCrearPaciente');
+        if (m) {
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            cerrarModalAgendar(); // Cerramos el de agendar temporalmente
+        }
+    }
+    
+    function cerrarModalCrearPaciente() {
+        const m = document.getElementById('modalCrearPaciente');
+        if (m) {
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function resetModalCrearPaciente() {
+        ['cpGrado','cpNombre','cpCorreo','cpContrasena','cpContrasena2',
+         'cpAcudNombre','cpAcudCedula','cpAcudRelacion','cpAcudCorreo'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        const errCont = document.getElementById('cpError');
+        const succCont = document.getElementById('cpSuccess');
+        if (errCont) errCont.classList.add('hidden');
+        if (succCont) succCont.classList.add('hidden');
+    }
+
+    async function guardarNuevoPaciente() {
+        const btn = document.getElementById('btnGuardarPaciente');
+        const errEl = document.getElementById('cpErrorMsg');
+        const errCont = document.getElementById('cpError');
+        const succEl = document.getElementById('cpSuccessMsg');
+        const succCont = document.getElementById('cpSuccess');
+
+        errCont.classList.add('hidden');
+        succCont.classList.add('hidden');
+
+        const grado      = document.getElementById('cpGrado').value;
+        const nombre     = document.getElementById('cpNombre').value.trim();
+        const correo     = document.getElementById('cpCorreo').value.trim();
+        const contrasena = document.getElementById('cpContrasena').value;
+        const contrasena2= document.getElementById('cpContrasena2').value;
+        const acudNombre = document.getElementById('cpAcudNombre').value.trim();
+        const acudCedula = document.getElementById('cpAcudCedula').value.trim();
+        const acudRelacion = document.getElementById('cpAcudRelacion').value;
+        const acudCorreo = document.getElementById('cpAcudCorreo').value.trim();
+
+        if (!grado || !nombre || !correo || !contrasena) {
+            errEl.textContent = 'Grado, nombre, correo y contraseña son obligatorios.';
+            errCont.classList.remove('hidden'); return;
+        }
+        if (contrasena !== contrasena2) {
+            errEl.textContent = 'Las contraseñas no coinciden.';
+            errCont.classList.remove('hidden'); return;
+        }
+        if (acudCedula && !/^\d+$/.test(acudCedula)) {
+            errEl.textContent = 'La cédula del acudiente solo puede contener números.';
+            errCont.classList.remove('hidden'); return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span> Registrando...';
+
+        try {
+            const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+            const res  = await fetch(BASE + 'panel_psicologas/crearPaciente', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    grado, nombre, correo_electronico: correo, contrasena,
+                    acudiente_nombre: acudNombre, acudiente_cedula: acudCedula,
+                    acudiente_relacion: acudRelacion, acudiente_correo: acudCorreo
+                })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                succEl.textContent = data.mensaje;
+                succCont.classList.remove('hidden');
+                
+                // Set the newly created user in the booking modal!
+                if (isPsicologo) {
+                    seleccionarPacienteBuscador(data.id_usuario, nombre, correo);
+                }
+
+                setTimeout(() => {
+                    cerrarModalCrearPaciente();
+                    const m = document.getElementById('agendarCitaModal');
+                    if (m) {
+                        m.classList.remove('hidden');
+                        m.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    }
+                }, 1500);
+            } else {
+                errEl.textContent = data.error;
+                errCont.classList.remove('hidden');
+            }
+        } catch(e) {
+            errEl.textContent = 'Error de conexión.';
+            errCont.classList.remove('hidden');
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">person_check</span> Registrar Paciente';
     }
 </script>
 
@@ -571,6 +760,29 @@
             </div>
         </div>
 
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'psicologo'): ?>
+        <!-- Buscador de paciente -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Paciente <span class="text-red-400">*</span></label>
+                <button type="button" onclick="abrirModalCrearPaciente()" class="text-xs font-bold text-orange-600 hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">person_add</span> Crear Paciente
+                </button>
+            </div>
+            <div class="relative">
+                <input type="text" id="agendarModalBuscador" placeholder="Buscar por nombre o correo..." autocomplete="off"
+                    class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors pr-10">
+                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">search</span>
+            </div>
+            <div id="agendarModalResultados" class="hidden mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden max-h-40 overflow-y-auto z-20 relative"></div>
+            <input type="hidden" id="agendarModalIdUsuario">
+            <p id="agendarModalPacienteSeleccionado" class="hidden mt-2 text-xs font-semibold text-orange-600 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                <span id="agendarModalPacienteNombreTxt"></span>
+            </p>
+        </div>
+        <?php endif; ?>
+
         <!-- Selector de horas -->
         <div class="mb-5">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Horarios Disponibles</label>
@@ -593,3 +805,112 @@
         </button>
     </div>
 </div>
+
+<?php if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'psicologo'): ?>
+<!-- ══════════ MODAL: CREAR PACIENTE ══════════ -->
+<div id="modalCrearPaciente" class="fixed inset-0 z-[70] hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalCrearPaciente()"></div>
+    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
+        <button onclick="cerrarModalCrearPaciente()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 text-slate-400 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="flex items-center gap-3 mb-6">
+            <div class="p-3 bg-blue-100 rounded-2xl">
+                <span class="material-symbols-outlined text-blue-500 text-2xl">person_add</span>
+            </div>
+            <div>
+                <h3 class="font-black text-slate-800 text-xl">Nuevo Paciente</h3>
+                <p class="text-sm text-slate-400">Registrar paciente rápido</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Datos básicos -->
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">Datos del Paciente</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Grado <span class="text-red-400">*</span></label>
+                    <select id="cpGrado" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors bg-white">
+                        <option value="">Seleccionar</option>
+                        <?php foreach(['6','7','8','9','10','11'] as $g): ?>
+                        <option value="<?= $g ?>">Grado <?= $g ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nombre Completo <span class="text-red-400">*</span></label>
+                    <input type="text" id="cpNombre" placeholder="Nombre del paciente"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo Electrónico <span class="text-red-400">*</span></label>
+                <input type="email" id="cpCorreo" placeholder="correo@ejemplo.com"
+                    class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Contraseña <span class="text-red-400">*</span></label>
+                    <input type="password" id="cpContrasena" placeholder="Contraseña inicial"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Confirmar Contraseña <span class="text-red-400">*</span></label>
+                    <input type="password" id="cpContrasena2" placeholder="Repetir contraseña"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+            </div>
+
+            <!-- Datos acudiente -->
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mt-2">Datos del Acudiente <span class="font-normal text-slate-300">(opcional)</span></p>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nombre Acudiente</label>
+                    <input type="text" id="cpAcudNombre" placeholder="Nombre completo"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Cédula</label>
+                    <input type="text" id="cpAcudCedula" placeholder="Solo números"
+                        inputmode="numeric" pattern="[0-9]*"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Relación</label>
+                    <select id="cpAcudRelacion" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors bg-white">
+                        <option value="">Seleccionar</option>
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Tutor legal">Tutor legal</option>
+                        <option value="Hermano/a">Hermano/a</option>
+                        <option value="Abuelo/a">Abuelo/a</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo Acudiente</label>
+                    <input type="email" id="cpAcudCorreo" placeholder="correo@ejemplo.com"
+                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+            </div>
+        </div>
+
+        <div id="cpError" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] shrink-0">error</span>
+            <span id="cpErrorMsg"></span>
+        </div>
+        <div id="cpSuccess" class="hidden mt-4 p-3 bg-green-50 border border-green-200 rounded-xl text-sm text-green-700 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] shrink-0">check_circle</span>
+            <span id="cpSuccessMsg"></span>
+        </div>
+
+        <button onclick="guardarNuevoPaciente()" id="btnGuardarPaciente"
+            class="w-full mt-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all active:scale-[0.98] shadow-md shadow-blue-200 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[20px]">person_check</span>
+            Registrar Paciente
+        </button>
+    </div>
+</div>
+<?php endif; ?>

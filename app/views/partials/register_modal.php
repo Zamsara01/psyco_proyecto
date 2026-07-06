@@ -173,8 +173,7 @@
 
             <footer class="mt-8 text-center border-t border-slate-100 pt-6">
                 <p class="text-body-md text-tertiary">
-                    ¿Ya tienes una cuenta? 
-                    <button type="button" onclick="closeRegisterModal(); openLoginModal();" class="text-orange-600 font-bold hover:underline bg-transparent border-none cursor-pointer">Inicia sesión</button>
+                    <button type="button" onclick="closeRegisterModal(); openLoginModal();" class="text-orange-600 font-bold hover:underline bg-transparent border-none cursor-pointer transition-colors">¿Ya tienes cuenta? Inicia sesión aquí</button>
                 </p>
             </footer>
         </div>

@@ -58,7 +58,7 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                 <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-200">
                     <span class="material-symbols-outlined text-white text-[32px]">smart_toy</span>
                 </div>
-                <h2 id="chatbotTitle" class="text-xl font-bold text-slate-800 mb-1">Hola, ¿en qué te puedo ayudar?</h2>
+                <h2 id="chatbotTitle" class="text-xl font-bold text-slate-800 mb-1">Hola, estamos aquí para ti. ¿En qué podemos ayudarte?</h2>
                 <p class="text-sm text-slate-500">Selecciona una de las opciones para comenzar.</p>
             </div>
             

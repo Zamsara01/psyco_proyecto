@@ -29,8 +29,8 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
     </div>
 
     <!-- ── Navegación ───────────────────────────────────────── -->
-    <nav class="flex-grow py-5 px-3 space-y-1 overflow-y-auto">
-
+    <nav class="flex-grow py-5 px-3 flex flex-col overflow-hidden">
+        <div class="space-y-1">
         <?php if ($rol === null): ?>
         <!-- ════════════ SIDEBAR INVITADO ════════════ -->
 
@@ -44,17 +44,29 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
             <!-- Calendario — bloqueado -->
             <button onclick="openLoginRequiredModal('Calendario')"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 hover:bg-slate-50 relative">
-                <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300">calendar_month</span>
+                <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300 group-hover:text-slate-400">calendar_month</span>
                 Calendario
-                <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300">lock</span>
+                <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300 group-hover:text-slate-400">lock</span>
+                
+                <!-- Tooltip -->
+                <div class="absolute left-full ml-3 top-1/2 -translate-y-1/2 w-max px-3 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none hidden md:block">
+                    Inicia sesión para acceder
+                    <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-slate-800"></div>
+                </div>
             </button>
 
             <!-- Chatbot — bloqueado -->
             <button onclick="openLoginRequiredModal('Chatbot de Citas')"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 hover:bg-slate-50">
-                <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300">forum</span>
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 hover:bg-slate-50 relative">
+                <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300 group-hover:text-slate-400">forum</span>
                 Chatbot
-                <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300">lock</span>
+                <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300 group-hover:text-slate-400">lock</span>
+                
+                <!-- Tooltip -->
+                <div class="absolute left-full ml-3 top-1/2 -translate-y-1/2 w-max px-3 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none hidden md:block">
+                    Inicia sesión para acceder
+                    <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-slate-800"></div>
+                </div>
             </button>
 
         <?php elseif ($rol === 'paciente'): ?>
@@ -139,6 +151,13 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Mi Panel
             </a>
 
+            <!-- Recursos -->
+            <a href="<?= URL_BASE ?>panel_psicologas/recursos"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('panel_psicologas/recursos') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">folder_open</span>
+                Recursos
+            </a>
+
             <!-- Búsquedas Específicas -->
             <button onclick="openBusquedaModal()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 hover:text-orange-600 hover:bg-orange-50/60">
@@ -147,6 +166,20 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
             </button>
 
         <?php endif; ?>
+        </div>
+
+        <!-- Relleno funcional inferior -->
+        <div class="mt-auto pt-8 pb-2 px-1 hidden sm:block">
+            <div class="bg-gradient-to-b from-orange-50/50 to-orange-50/80 rounded-2xl p-4 border border-orange-100 text-center relative overflow-hidden">
+                <div class="absolute -top-4 -right-4 w-12 h-12 bg-orange-100 rounded-full blur-xl opacity-50"></div>
+                <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-orange-200 rounded-full blur-xl opacity-50"></div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <span class="material-symbols-outlined text-orange-400 text-[32px] mb-2 drop-shadow-sm">spa</span>
+                    <p class="text-xs text-orange-800 font-semibold mb-1">Un espacio para ti</p>
+                    <p class="text-[10px] text-orange-600/90 leading-tight">Estamos aquí para escucharte y acompañarte.</p>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- ── Footer de Usuario ─────────────────────────────────── -->

@@ -99,6 +99,26 @@ class UserModel extends Model
         return (int) $this->db->lastInsertId();
     }
 
+    /**
+     * Busca usuarios por nombre o correo (para psicólogos al agendar citas).
+     * No requiere que el usuario tenga citas previas.
+     */
+    public function buscarTodos(string $query): array
+    {
+        $like = '%' . $query . '%';
+        $sql = "
+            SELECT id_usuario, nombre, correo_electronico, grado
+            FROM usuarios
+            WHERE (nombre LIKE ? OR correo_electronico LIKE ?)
+              AND estado = 'activo'
+            ORDER BY nombre
+            LIMIT 20
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$like, $like]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /** Comprueba si un correo ya está registrado */
     public function emailExists(string $email): bool
     {

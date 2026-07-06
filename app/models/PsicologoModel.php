@@ -200,5 +200,48 @@ class PsicologoModel extends Model
         }
         return $rows;
     }
+
+    /**
+     * Obtiene todos los bloques de disponibilidad activos de una psicóloga.
+     */
+    public function getDisponibilidad(int $idPsicologo): array
+    {
+        $sql = "SELECT id_disponibilidad, dia_semana, hora_inicio, hora_fin 
+                FROM disponibilidad_psicologos 
+                WHERE id_psicologo = ? AND activo = 1
+                ORDER BY FIELD(dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'), hora_inicio";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Agrega un nuevo bloque de disponibilidad para una psicóloga.
+     */
+    public function addDisponibilidad(int $idPsicologo, string $dia, string $inicio, string $fin): bool
+    {
+        // Verificar si ya existe exactamente el mismo bloque activo para evitar duplicados
+        $sqlCheck = "SELECT id_disponibilidad FROM disponibilidad_psicologos 
+                     WHERE id_psicologo = ? AND dia_semana = ? AND hora_inicio = ? AND hora_fin = ? AND activo = 1";
+        $stmt = $this->db->prepare($sqlCheck);
+        $stmt->execute([$idPsicologo, $dia, $inicio, $fin]);
+        if ($stmt->fetch()) {
+            return false;
+        }
+
+        $sql = "INSERT INTO disponibilidad_psicologos (id_psicologo, dia_semana, hora_inicio, hora_fin, activo) VALUES (?, ?, ?, ?, 1)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idPsicologo, $dia, $inicio, $fin]);
+    }
+
+    /**
+     * Elimina (desactiva) un bloque de disponibilidad.
+     */
+    public function deleteDisponibilidad(int $idPsicologo, int $idDisponibilidad): bool
+    {
+        $sql = "UPDATE disponibilidad_psicologos SET activo = 0 WHERE id_disponibilidad = ? AND id_psicologo = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idDisponibilidad, $idPsicologo]);
+    }
 }
 

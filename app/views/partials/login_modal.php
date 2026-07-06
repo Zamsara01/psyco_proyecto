@@ -29,8 +29,8 @@
             <div class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden">
                 <img alt="PSYCO Logo" class="w-full h-full object-contain" src="<?= URL_BASE ?>public/img/psyco.png"/>
             </div>
-            <h2 id="loginModalTitle" class="font-headline-md text-headline-md text-on-surface text-center">Bienvenido de nuevo</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-1">Inicia sesión para gestionar tus citas y recursos.</p>
+            <h2 id="loginModalTitle" class="font-headline-md text-headline-md text-on-surface text-center">Nos alegra verte de nuevo</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-1">Este es un espacio para acompañarte. Inicia sesión para continuar.</p>
         </div>
 
         <!-- Mensaje de error -->
@@ -123,8 +123,8 @@
             </div>
             <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
                 <a href="#" class="text-primary hover:underline font-body-sm">Olvidé mi contraseña</a>
-                <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-orange-600 font-semibold hover:text-orange-700 font-body-sm bg-transparent border-none cursor-pointer">
-                    ¿No tienes cuenta? Regístrate
+                <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-orange-600 font-semibold hover:text-orange-700 font-body-sm bg-transparent border-none cursor-pointer transition-colors">
+                    ¿No tienes cuenta? Regístrate aquí
                 </button>
             </div>
         </div>

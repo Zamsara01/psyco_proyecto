@@ -286,6 +286,45 @@ class CitaModel extends Model
     }
 
     /**
+     * Crea una cita siendo el psicólogo quien agenda (desde su panel).
+     * Valida que el slot esté libre antes de insertar.
+     *
+     * @return true|string  true si OK, mensaje de error si falla
+     */
+    public function insertCitaPorPsicologo(array $data): bool|string
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+
+        // Verificar que el slot no esté ocupado
+        $stmtCheck = $this->db->prepare("
+            SELECT id_cita FROM citas
+            WHERE id_psicologo = ? AND fecha = ? AND hora = ?
+              AND estado IN ('pendiente', 'completada', 'en proceso')
+        ");
+        $hora = (strlen($data['hora']) === 5) ? $data['hora'] . ':00' : $data['hora'];
+        $stmtCheck->execute([$data['id_psicologo'], $data['fecha'], $hora]);
+        if ($stmtCheck->fetch()) {
+            return 'El horario seleccionado ya está ocupado. Elige otra hora.';
+        }
+
+        $motivoCifrado = EncryptionService::encrypt($data['motivo_consulta'] ?? '');
+
+        $sql = "
+            INSERT INTO citas (id_usuario, id_psicologo, fecha, hora, motivo_consulta, estado)
+            VALUES (?, ?, ?, ?, ?, 'pendiente')
+        ";
+        $stmt = $this->db->prepare($sql);
+        $ok = $stmt->execute([
+            $data['id_usuario'],
+            $data['id_psicologo'],
+            $data['fecha'],
+            $hora,
+            $motivoCifrado,
+        ]);
+        return $ok ? true : 'Error al insertar la cita en la base de datos.';
+    }
+
+    /**
      * Busca pacientes por nombre o correo (para psicólogas).
      */
     public function buscarPacientes(string $query, int $idPsicologo): array
