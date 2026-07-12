@@ -171,12 +171,18 @@ class ControllerPanel_psicologas extends Controller
         $idPsicologo = (int)$_SESSION['user']['id'];
 
         require_once dirname(__DIR__) . '/models/RecursoModel.php';
-        $model    = new RecursoModel();
-        $recursos = $model->getRecursosByPsicologo($idPsicologo);
+        require_once dirname(__DIR__) . '/models/UserModel.php';
+        
+        $model     = new RecursoModel();
+        $recursos  = $model->getRecursosByPsicologo($idPsicologo);
+        
+        $userModel = new UserModel();
+        $pacientes = $userModel->getActivePatientsWithDisorder();
 
         $this->layout = 'tailwind';
         $this->render('pages/recursos_psicologa', [
-            'recursos' => $recursos,
+            'recursos'  => $recursos,
+            'pacientes' => $pacientes,
         ]);
     }
 
@@ -195,7 +201,15 @@ class ControllerPanel_psicologas extends Controller
         $titulo      = trim($_POST['titulo']      ?? '');
         $descripcion = trim($_POST['descripcion'] ?? '');
         $destino     = trim($_POST['destino']     ?? 'todos'); // 'especifico' | 'todos'
-        $idUsuario   = $destino === 'especifico' ? ((int)($_POST['id_usuario'] ?? 0) ?: null) : null;
+        
+        $idUsuarios  = [];
+        if ($destino === 'especifico') {
+            if (isset($_POST['id_usuarios']) && is_array($_POST['id_usuarios'])) {
+                $idUsuarios = array_map('intval', $_POST['id_usuarios']);
+            } elseif (!empty($_POST['id_usuario'])) {
+                $idUsuarios = [(int)$_POST['id_usuario']];
+            }
+        }
 
         $tiposValidos = ['video', 'mensaje', 'imagen'];
         if (!in_array($tipo, $tiposValidos, true) || !$titulo) {
@@ -213,34 +227,104 @@ class ControllerPanel_psicologas extends Controller
                 exit;
             }
         } elseif ($tipo === 'imagen') {
-            if (empty($_FILES['imagen']['tmp_name'])) {
+            // Verificar que llegó el archivo
+            if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] === UPLOAD_ERR_NO_FILE) {
                 echo json_encode(['ok' => false, 'error' => 'Debes seleccionar una imagen.']);
                 exit;
             }
-            $file    = $_FILES['imagen'];
-            $ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            $allowed = ['jpg','jpeg','png','gif','webp'];
-            if (!in_array($ext, $allowed)) {
-                echo json_encode(['ok' => false, 'error' => 'Formato de imagen no permitido (jpg, png, gif, webp).']);
+
+            $file = $_FILES['imagen'];
+
+            // Decodificar código de error de PHP
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                $errMsgs = [
+                    UPLOAD_ERR_INI_SIZE   => 'La imagen supera el límite del servidor (máx. permitido por configuración).',
+                    UPLOAD_ERR_FORM_SIZE  => 'La imagen supera el límite del formulario.',
+                    UPLOAD_ERR_PARTIAL    => 'La imagen se subió de forma parcial. Inténtalo de nuevo.',
+                    UPLOAD_ERR_NO_TMP_DIR => 'Error del servidor: falta directorio temporal para subidas.',
+                    UPLOAD_ERR_CANT_WRITE => 'Error del servidor: no se pudo escribir la imagen en el disco.',
+                    UPLOAD_ERR_EXTENSION  => 'Una extensión de PHP bloqueó la subida del archivo.',
+                ];
+                $msg = $errMsgs[$file['error']] ?? "Error al subir la imagen (código PHP: {$file['error']}).";
+                echo json_encode(['ok' => false, 'error' => $msg]);
                 exit;
             }
+
+            // Validar que sea un archivo subido legítimamente
+            if (empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+                echo json_encode(['ok' => false, 'error' => 'El archivo de imagen no es válido.']);
+                exit;
+            }
+
+            // Validar extensión
+            $ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            if (!in_array($ext, $allowed, true)) {
+                echo json_encode(['ok' => false, 'error' => 'Formato de imagen no permitido. Usa JPG, PNG, GIF o WebP.']);
+                exit;
+            }
+
+            // Validar tamaño (5 MB)
             if ($file['size'] > 5 * 1024 * 1024) {
                 echo json_encode(['ok' => false, 'error' => 'La imagen no puede superar 5 MB.']);
                 exit;
             }
-            if (!is_dir(self::UPLOADS_DIR)) mkdir(self::UPLOADS_DIR, 0755, true);
-            $nombre = uniqid('img_', true) . '.' . $ext;
-            if (!move_uploaded_file($file['tmp_name'], self::UPLOADS_DIR . $nombre)) {
-                echo json_encode(['ok' => false, 'error' => 'Error al guardar la imagen en el servidor.']);
+
+            // Validar MIME type real con finfo para mayor seguridad
+            if (function_exists('finfo_open')) {
+                $finfo    = finfo_open(FILEINFO_MIME_TYPE);
+                $mimeReal = finfo_file($finfo, $file['tmp_name']);
+                finfo_close($finfo);
+                $mimesPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!in_array($mimeReal, $mimesPermitidos, true)) {
+                    echo json_encode(['ok' => false, 'error' => 'El archivo no es una imagen válida.']);
+                    exit;
+                }
+            }
+
+            // Crear directorio si no existe
+            if (!is_dir(self::UPLOADS_DIR)) {
+                if (!mkdir(self::UPLOADS_DIR, 0775, true)) {
+                    echo json_encode(['ok' => false, 'error' => 'No se pudo crear el directorio de subidas en el servidor.']);
+                    exit;
+                }
+            }
+
+            // Verificar permisos de escritura
+            if (!is_writable(self::UPLOADS_DIR)) {
+                echo json_encode(['ok' => false, 'error' => 'El directorio de imágenes no tiene permisos de escritura. Contacta al administrador.']);
                 exit;
             }
+
+            $nombre   = uniqid('img_', true) . '.' . $ext;
+            $destPath = self::UPLOADS_DIR . $nombre;
+
+            if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+                echo json_encode(['ok' => false, 'error' => 'Error al mover la imagen al servidor. Verifica los permisos del directorio de uploads.']);
+                exit;
+            }
+
             $imagenRuta = 'public/uploads/recursos/' . $nombre;
         }
         // tipo === 'mensaje' no requiere campos extra además de descripcion
 
         require_once dirname(__DIR__) . '/models/RecursoModel.php';
         $model = new RecursoModel();
-        $ok    = $model->createRecurso($idPsicologo, $idUsuario, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion);
+        
+        if ($destino === 'todos') {
+            $ok = $model->createRecurso($idPsicologo, null, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion);
+        } else {
+            if (empty($idUsuarios)) {
+                echo json_encode(['ok' => false, 'error' => 'Debes seleccionar al menos un paciente.']);
+                exit;
+            }
+            $ok = true;
+            foreach ($idUsuarios as $idU) {
+                if (!$model->createRecurso($idPsicologo, $idU, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion)) {
+                    $ok = false;
+                }
+            }
+        }
 
         echo json_encode($ok
             ? ['ok' => true,  'mensaje' => 'Recurso publicado correctamente.']

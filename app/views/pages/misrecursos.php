@@ -46,16 +46,17 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <?php foreach ($videos as $r):
-                $embedUrl = getYoutubeEmbed($r['url_video'] ?? '');
-                $esYoutube = str_contains($embedUrl, 'youtube.com/embed');
+                $url = $r['url_video'] ?? '';
+                $esYoutube = preg_match('/(?:youtu\.be\/|youtube\.com\/)/i', $url);
             ?>
-            <div class="bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-red-200 hover:shadow-md transition-all group">
+            <div class="bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-red-200 hover:shadow-md transition-all flex flex-col group">
                 <?php if ($esYoutube): ?>
-                <div class="relative aspect-video bg-slate-900">
-                    <iframe src="<?= htmlspecialchars($embedUrl) ?>"
-                        class="absolute inset-0 w-full h-full" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen title="<?= htmlspecialchars($r['titulo']) ?>"></iframe>
+                <!-- Esqueleto oEmbed -->
+                <div class="oembed-video-placeholder relative aspect-video bg-slate-100 flex items-center justify-center border-b border-slate-100 transition-all" data-url="<?= htmlspecialchars($url) ?>" data-title="<?= htmlspecialchars($r['titulo']) ?>">
+                    <div class="flex flex-col items-center gap-2 text-slate-400">
+                        <span class="material-symbols-outlined animate-spin text-[32px]">progress_activity</span>
+                        <span class="text-xs font-semibold">Cargando video...</span>
+                    </div>
                 </div>
                 <?php else: ?>
                 <a href="<?= htmlspecialchars($r['url_video']) ?>" target="_blank" rel="noopener"
@@ -91,14 +92,14 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
                 <p class="text-xs text-slate-500">Material visual de apoyo</p>
             </div>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <?php foreach ($imagenes as $r): ?>
             <div class="group relative bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-emerald-200 hover:shadow-md transition-all cursor-pointer"
                  onclick="verImagen('<?= URL_BASE . htmlspecialchars($r['imagen_ruta'] ?? '') ?>', '<?= htmlspecialchars(addslashes($r['titulo'])) ?>')">
                 <img src="<?= URL_BASE . htmlspecialchars($r['imagen_ruta'] ?? '') ?>"
                      alt="<?= htmlspecialchars($r['titulo']) ?>"
-                     class="w-full h-40 object-cover">
-                <div class="p-3">
+                     class="w-full h-64 sm:h-72 object-cover">
+                <div class="p-4">
                     <p class="text-sm font-bold text-slate-700 truncate"><?= htmlspecialchars($r['titulo']) ?></p>
                     <p class="text-xs text-slate-400 mt-0.5"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
                 </div>
@@ -204,5 +205,67 @@ function cerrarLb() {
     const lb = document.getElementById('lb');
     lb.classList.add('hidden');
     lb.classList.remove('flex');
+}
+
+// ── Renderizado asíncrono de YouTube oEmbed ─────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    const placeholders = document.querySelectorAll('.oembed-video-placeholder');
+    
+    // Configuración para Intersection Observer (lazy load)
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                obs.unobserve(el);
+                loadOEmbed(el, BASE);
+            }
+        });
+    }, { rootMargin: '100px' }); // Cargar 100px antes de que entre a pantalla
+
+    placeholders.forEach(el => observer.observe(el));
+});
+
+async function loadOEmbed(el, BASE) {
+    const url = el.getAttribute('data-url');
+    const title = el.getAttribute('data-title');
+    
+    try {
+        const res = await fetch(BASE + 'api/oembed/youtube?link=' + encodeURIComponent(url));
+        const json = await res.json();
+        
+        if (json.ok) {
+            // El DTO devuelve html con el iframe configurado
+            // Modificamos el HTML devuelto para asegurar que el iframe ocupa el 100% de nuestro contenedor
+            let html = json.data.html;
+            html = html.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="100%"');
+            
+            el.innerHTML = html;
+            
+            // Añadir estilos al iframe inyectado
+            const iframe = el.querySelector('iframe');
+            if (iframe) {
+                iframe.className = 'absolute inset-0 w-full h-full';
+            }
+            
+            // Quitar animación de carga y clases previas
+            el.className = 'relative aspect-video bg-slate-900 border-b border-slate-100';
+            
+        } else {
+            throw new Error(json.error);
+        }
+    } catch (e) {
+        // Fallback en caso de error
+        el.className = 'relative aspect-video bg-gradient-to-br from-red-50 to-orange-50 border-b border-slate-100 flex items-center justify-center';
+        el.innerHTML = `
+            <div class="text-center p-4">
+                <span class="material-symbols-outlined text-[48px] text-red-300 mb-2 block">broken_image</span>
+                <p class="text-xs text-red-600 font-semibold mb-2">No se pudo incrustar el video</p>
+                <a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="inline-block bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-red-200 transition-colors">
+                    Ver en YouTube
+                </a>
+            </div>
+        `;
+    }
 }
 </script>

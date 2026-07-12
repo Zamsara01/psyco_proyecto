@@ -69,12 +69,16 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                         class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors">
                 </div>
 
-                <!-- Campo dinámico según tipo -->
                 <div id="campoVideo" class="mb-4">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">URL del Video *</label>
                     <input type="url" id="recursoUrl" placeholder="https://youtube.com/watch?v=..."
                         class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors">
-                    <p class="text-xs text-slate-400 mt-1">YouTube, Vimeo y otros reproductores</p>
+                    <p class="text-xs text-slate-400 mt-1">YouTube (con previsualización) y otros reproductores</p>
+
+                    <!-- Previsualización oEmbed -->
+                    <div id="youtubePreviewContainer" class="hidden mt-3 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 transition-all">
+                        <!-- Contenido dinámico inyectado por JS -->
+                    </div>
                 </div>
 
                 <div id="campoImagen" class="mb-4 hidden">
@@ -114,22 +118,54 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                     <input type="hidden" id="recursoDestino" value="todos">
                 </div>
 
-                <!-- Buscador de paciente (solo si destino = especifico) -->
+                <!-- Selector de múltiples pacientes -->
                 <div id="selectorPaciente" class="mb-5 hidden">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Buscar paciente</label>
-                    <div class="relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-[18px]">search</span>
-                        <input type="text" id="buscarPacienteRec" placeholder="Nombre o correo..."
-                            oninput="buscarPacienteRecurso(this.value)"
-                            class="w-full pl-9 pr-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition-colors">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Seleccionar Pacientes</label>
+                    
+                    <!-- Controles de búsqueda y filtrado -->
+                    <div class="space-y-2 mb-3">
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-[18px]">search</span>
+                            <input type="text" id="buscarPacienteRec" placeholder="Buscar por nombre o correo..."
+                                oninput="filtrarYMostrarPacientes()"
+                                class="w-full pl-9 pr-4 py-2 border-2 border-slate-200 rounded-xl text-xs focus:outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- Filtro de Trastorno -->
+                            <select id="filtroTrastorno" onchange="filtrarYMostrarPacientes()"
+                                class="border-2 border-slate-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-orange-400 transition-colors bg-white text-slate-600 font-medium">
+                                <option value="">Todos los trastornos</option>
+                                <option value="Ansiedad">Ansiedad</option>
+                                <option value="Depresión">Depresión</option>
+                                <option value="Estrés">Estrés</option>
+                                <option value="Autoestima">Autoestima</option>
+                                <option value="Duelo">Duelo</option>
+                                <option value="Académico / Concentración">Académico / Concentración</option>
+                                <option value="Adaptación / Conducta">Adaptación / Conducta</option>
+                                <option value="Otros">Otros</option>
+                                <option value="Sin especificar">Sin especificar</option>
+                            </select>
+                            
+                            <!-- Ordenación -->
+                            <select id="ordenarPacientes" onchange="filtrarYMostrarPacientes()"
+                                class="border-2 border-slate-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-orange-400 transition-colors bg-white text-slate-600 font-medium">
+                                <option value="AZ">Nombre (A-Z)</option>
+                                <option value="ZA">Nombre (Z-A)</option>
+                            </select>
+                        </div>
                     </div>
-                    <div id="resultadosBusqRec" class="hidden mt-1 bg-white border border-slate-100 rounded-xl shadow-lg max-h-44 overflow-y-auto z-20"></div>
-                    <input type="hidden" id="recursoIdUsuario" value="">
-                    <div id="pacienteSeleccionadoRec" class="hidden mt-2 flex items-center gap-2 bg-indigo-50 border border-indigo-100 rounded-xl p-2.5">
-                        <span class="material-symbols-outlined text-indigo-500 text-[18px]">person_check</span>
-                        <span id="nombrePacienteRec" class="text-xs font-semibold text-indigo-700 flex-1 truncate"></span>
-                        <button onclick="limpiarPacienteRec()" class="text-slate-400 hover:text-red-500">
-                            <span class="material-symbols-outlined text-[16px]">close</span>
+                    
+                    <!-- Lista de Pacientes -->
+                    <div id="pacientesListContainer" class="max-h-56 overflow-y-auto border-2 border-slate-100 rounded-xl p-2 space-y-1 bg-slate-50/50">
+                        <!-- Se genera dinámicamente con JS -->
+                    </div>
+                    
+                    <!-- Resumen de selección -->
+                    <div class="flex items-center justify-between mt-2 text-xs font-semibold text-slate-500">
+                        <span id="pacientesSeleccionadosCount">0 pacientes seleccionados</span>
+                        <button type="button" onclick="limpiarSeleccionPacientes()" class="text-indigo-600 hover:text-indigo-800 hover:underline">
+                            Limpiar selección
                         </button>
                     </div>
                 </div>
@@ -228,6 +264,94 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
 
 <script>
 const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+const ALL_PATIENTS = <?= json_encode($pacientes ?? []) ?>;
+const selectedPatientIds = new Set();
+
+const DISORDER_BADGES = {
+    'Ansiedad': 'bg-red-50 text-red-600 border border-red-200',
+    'Depresión': 'bg-blue-50 text-blue-600 border border-blue-200',
+    'Estrés': 'bg-amber-50 text-amber-600 border border-amber-200',
+    'Autoestima': 'bg-pink-50 text-pink-600 border border-pink-200',
+    'Duelo': 'bg-purple-50 text-purple-600 border border-purple-200',
+    'Académico / Concentración': 'bg-indigo-50 text-indigo-600 border border-indigo-200',
+    'Adaptación / Conducta': 'bg-teal-50 text-teal-600 border border-teal-200',
+    'Otros': 'bg-gray-50 text-gray-600 border border-gray-200',
+    'Sin especificar': 'bg-slate-50 text-slate-500 border border-slate-200'
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    filtrarYMostrarPacientes();
+});
+
+function filtrarYMostrarPacientes() {
+    const q = document.getElementById('buscarPacienteRec').value.toLowerCase().trim();
+    const trastornoFiltro = document.getElementById('filtroTrastorno').value;
+    const orden = document.getElementById('ordenarPacientes').value;
+    
+    // Filtrar
+    let filtered = ALL_PATIENTS.filter(p => {
+        const matchesQuery = p.nombre.toLowerCase().includes(q) || p.correo_electronico.toLowerCase().includes(q);
+        const matchesTrastorno = trastornoFiltro === "" || p.trastorno === trastornoFiltro;
+        return matchesQuery && matchesTrastorno;
+    });
+    
+    // Ordenar
+    filtered.sort((a, b) => {
+        const comp = a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' });
+        return orden === 'AZ' ? comp : -comp;
+    });
+    
+    // Renderizar
+    const container = document.getElementById('pacientesListContainer');
+    if (filtered.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No se encontraron pacientes</p>';
+        return;
+    }
+    
+    container.innerHTML = filtered.map(p => {
+        const isChecked = selectedPatientIds.has(p.id_usuario) ? 'checked' : '';
+        const badgeClass = DISORDER_BADGES[p.trastorno] || 'bg-slate-50 text-slate-500 border border-slate-200';
+        
+        return `
+            <label class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 rounded-lg cursor-pointer transition-colors select-none">
+                <input type="checkbox" value="${p.id_usuario}" ${isChecked} 
+                    onchange="togglePatientSelection(this)"
+                    class="paciente-checkbox w-4 h-4 text-orange-500 focus:ring-orange-400 border-slate-300 rounded transition-all">
+                <div class="w-7 h-7 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold shrink-0 font-sans">
+                    ${escRec(p.nombre.charAt(0).toUpperCase())}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs font-semibold text-slate-800 truncate">${escRec(p.nombre)}</p>
+                    <p class="text-[10px] text-slate-400 truncate">Grado ${escRec(p.grado)} • ${escRec(p.correo_electronico)}</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-medium shrink-0 ${badgeClass}">
+                    ${escRec(p.trastorno)}
+                </span>
+            </label>
+        `;
+    }).join('');
+}
+
+function togglePatientSelection(checkbox) {
+    const id = parseInt(checkbox.value, 10);
+    if (checkbox.checked) {
+        selectedPatientIds.add(id);
+    } else {
+        selectedPatientIds.delete(id);
+    }
+    actualizarResumenSeleccion();
+}
+
+function actualizarResumenSeleccion() {
+    const count = selectedPatientIds.size;
+    document.getElementById('pacientesSeleccionadosCount').textContent = `${count} paciente(s) seleccionado(s)`;
+}
+
+function limpiarSeleccionPacientes() {
+    selectedPatientIds.clear();
+    document.querySelectorAll('.paciente-checkbox').forEach(cb => cb.checked = false);
+    actualizarResumenSeleccion();
+}
 
 // ── Tipo selector ──────────────────────────────────────────────────
 const tipoStyles = {
@@ -262,47 +386,6 @@ function seleccionarDestino(dest) {
     document.getElementById('selectorPaciente').classList.toggle('hidden', esTodos);
 }
 
-// ── Búsqueda de paciente ───────────────────────────────────────────
-let timBusq = null;
-function buscarPacienteRecurso(q) {
-    clearTimeout(timBusq);
-    if (q.trim().length < 2) { document.getElementById('resultadosBusqRec').classList.add('hidden'); return; }
-    timBusq = setTimeout(async () => {
-        const res = await fetch(BASE + 'panel_psicologas/buscarTodosLosPacientes?q=' + encodeURIComponent(q));
-        const data = await res.json();
-        const cont = document.getElementById('resultadosBusqRec');
-        if (!data.ok || !data.pacientes.length) {
-            cont.innerHTML = '<p class="p-3 text-xs text-slate-400 text-center">Sin resultados</p>';
-            cont.classList.remove('hidden');
-            return;
-        }
-        cont.innerHTML = data.pacientes.map(p => `
-            <div onclick="elegirPacienteRec(${p.id_usuario}, '${escRec(p.nombre)}')"
-                 class="flex items-center gap-3 px-3 py-2.5 hover:bg-orange-50 cursor-pointer transition-colors">
-                <div class="w-7 h-7 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold shrink-0">
-                    ${escRec(p.nombre.charAt(0).toUpperCase())}
-                </div>
-                <div class="min-w-0">
-                    <p class="text-sm font-semibold text-slate-800 truncate">${escRec(p.nombre)}</p>
-                    <p class="text-xs text-slate-400 truncate">${escRec(p.correo_electronico)}</p>
-                </div>
-            </div>`).join('');
-        cont.classList.remove('hidden');
-    }, 300);
-}
-
-function elegirPacienteRec(id, nombre) {
-    document.getElementById('recursoIdUsuario').value = id;
-    document.getElementById('nombrePacienteRec').textContent = nombre;
-    document.getElementById('pacienteSeleccionadoRec').classList.remove('hidden');
-    document.getElementById('resultadosBusqRec').classList.add('hidden');
-    document.getElementById('buscarPacienteRec').value = '';
-}
-function limpiarPacienteRec() {
-    document.getElementById('recursoIdUsuario').value = '';
-    document.getElementById('pacienteSeleccionadoRec').classList.add('hidden');
-}
-
 // ── Preview imagen ────────────────────────────────────────────────
 function previewImagen(input) {
     const prev = document.getElementById('imagenPreview');
@@ -324,18 +407,26 @@ async function publicarRecurso() {
     const titulo  = document.getElementById('recursoTitulo').value.trim();
     const desc    = document.getElementById('recursoDescripcion').value.trim();
     const destino = document.getElementById('recursoDestino').value;
-    const idUsu   = document.getElementById('recursoIdUsuario').value;
 
     if (!titulo) { mostrarErrPub('El título es obligatorio.'); return; }
     if (tipo === 'mensaje' && !desc) { mostrarErrPub('El mensaje no puede estar vacío.'); return; }
-    if (destino === 'especifico' && !idUsu) { mostrarErrPub('Selecciona un paciente específico.'); return; }
+    
+    if (destino === 'especifico' && selectedPatientIds.size === 0) {
+        mostrarErrPub('Selecciona al menos un paciente.');
+        return;
+    }
 
     const fd = new FormData();
     fd.append('tipo', tipo);
     fd.append('titulo', titulo);
     fd.append('descripcion', desc);
     fd.append('destino', destino);
-    if (idUsu) fd.append('id_usuario', idUsu);
+    
+    if (destino === 'especifico') {
+        selectedPatientIds.forEach(id => {
+            fd.append('id_usuarios[]', id);
+        });
+    }
 
     if (tipo === 'video') {
         const url = document.getElementById('recursoUrl').value.trim();
@@ -378,7 +469,16 @@ function resetFormPublicar() {
     ['recursoTitulo','recursoUrl','recursoDescripcion'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('recursoImagen').value = '';
     document.getElementById('imagenPreview').classList.add('hidden');
-    limpiarPacienteRec();
+    const previewContainer = document.getElementById('youtubePreviewContainer');
+    if (previewContainer) {
+        previewContainer.classList.add('hidden');
+        previewContainer.innerHTML = '';
+    }
+    limpiarSeleccionPacientes();
+    document.getElementById('buscarPacienteRec').value = '';
+    document.getElementById('filtroTrastorno').value = '';
+    document.getElementById('ordenarPacientes').value = 'AZ';
+    filtrarYMostrarPacientes();
     seleccionarTipo('video');
     seleccionarDestino('todos');
 }
@@ -428,4 +528,80 @@ document.addEventListener('click', e => {
         document.getElementById('resultadosBusqRec').classList.add('hidden');
     }
 });
+
+// ── oEmbed Preview ────────────────────────────────────────────────
+let oembedTimeout = null;
+const urlInput = document.getElementById('recursoUrl');
+const previewContainer = document.getElementById('youtubePreviewContainer');
+const tituloInput = document.getElementById('recursoTitulo');
+
+if (urlInput) {
+    urlInput.addEventListener('input', function(e) {
+        const url = e.target.value.trim();
+        clearTimeout(oembedTimeout);
+        
+        if (!url) {
+            previewContainer.classList.add('hidden');
+            previewContainer.innerHTML = '';
+            return;
+        }
+
+        // Comprobar si parece de youtube
+        if (!url.match(/youtube\.com|youtu\.be/i)) {
+            previewContainer.classList.add('hidden');
+            return;
+        }
+
+        // Mostrar estado de carga
+        previewContainer.classList.remove('hidden');
+        previewContainer.innerHTML = `
+            <div class="p-4 flex items-center gap-3 text-slate-500">
+                <span class="material-symbols-outlined animate-spin">progress_activity</span>
+                <span class="text-sm font-medium">Buscando información del video...</span>
+            </div>
+        `;
+
+        oembedTimeout = setTimeout(async () => {
+            try {
+                const res = await fetch(BASE + 'api/oembed/youtube?link=' + encodeURIComponent(url));
+                const json = await res.json();
+
+                if (json.ok) {
+                    const dto = json.data;
+                    // Autocompletar título si está vacío
+                    if (!tituloInput.value.trim()) {
+                        tituloInput.value = dto.title;
+                    }
+
+                    // Mostrar previsualización con miniatura
+                    previewContainer.innerHTML = `
+                        <div class="relative bg-slate-900 aspect-video flex items-center justify-center">
+                            <img src="${dto.thumbnail_url}" alt="${escRec(dto.title)}" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                            <span class="material-symbols-outlined text-white text-[48px] relative z-10 drop-shadow-md">play_circle</span>
+                        </div>
+                        <div class="p-3 bg-white">
+                            <p class="text-sm font-bold text-slate-800 line-clamp-1">${escRec(dto.title)}</p>
+                            <p class="text-xs text-slate-500 mt-1">${escRec(dto.author_name || dto.provider_name)}</p>
+                        </div>
+                    `;
+                } else {
+                    // Mostrar error
+                    previewContainer.innerHTML = `
+                        <div class="p-3 bg-red-50 text-red-600 flex items-start gap-2 border-t border-red-200">
+                            <span class="material-symbols-outlined text-[18px] shrink-0">error</span>
+                            <p class="text-xs font-medium">${escRec(json.error)}</p>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                previewContainer.innerHTML = `
+                    <div class="p-3 bg-red-50 text-red-600 flex items-start gap-2 border-t border-red-200">
+                        <span class="material-symbols-outlined text-[18px] shrink-0">error</span>
+                        <p class="text-xs font-medium">Error de conexión al cargar la vista previa.</p>
+                    </div>
+                `;
+            }
+        }, 800); // 800ms debounce
+    });
+}
 </script>

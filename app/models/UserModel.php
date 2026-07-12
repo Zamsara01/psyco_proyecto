@@ -187,4 +187,59 @@ class UserModel extends Model
         // 3. No registrado
         return null;
     }
+
+    /**
+     * Obtiene los pacientes activos y clasifica su trastorno a partir del motivo de consulta
+     */
+    public function getActivePatientsWithDisorder(): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        
+        $sql = "
+            SELECT u.id_usuario, u.nombre, u.correo_electronico, u.grado,
+                   (SELECT c.motivo_consulta 
+                    FROM citas c 
+                    WHERE c.id_usuario = u.id_usuario 
+                    ORDER BY c.fecha DESC, c.hora DESC 
+                    LIMIT 1) AS motivo_consulta
+            FROM usuarios u
+            WHERE u.estado = 'activo'
+            ORDER BY u.nombre ASC
+        ";
+        $stmt = $this->db->query($sql);
+        $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($patients as &$p) {
+            $disorder = 'Sin especificar';
+            if (!empty($p['motivo_consulta'])) {
+                try {
+                    $decrypted = EncryptionService::decrypt($p['motivo_consulta']);
+                    $decryptedLower = mb_strtolower($decrypted, 'UTF-8');
+                    
+                    if (str_contains($decryptedLower, 'ansiedad')) {
+                        $disorder = 'Ansiedad';
+                    } elseif (str_contains($decryptedLower, 'depresión') || str_contains($decryptedLower, 'depresion')) {
+                        $disorder = 'Depresión';
+                    } elseif (str_contains($decryptedLower, 'estrés') || str_contains($decryptedLower, 'estres')) {
+                        $disorder = 'Estrés';
+                    } elseif (str_contains($decryptedLower, 'autoestima')) {
+                        $disorder = 'Autoestima';
+                    } elseif (str_contains($decryptedLower, 'duelo')) {
+                        $disorder = 'Duelo';
+                    } elseif (str_contains($decryptedLower, 'concentración') || str_contains($decryptedLower, 'aprendizaje') || str_contains($decryptedLower, 'lectura') || str_contains($decryptedLower, 'académico') || str_contains($decryptedLower, 'academic')) {
+                        $disorder = 'Académico / Concentración';
+                    } elseif (str_contains($decryptedLower, 'adaptación') || str_contains($decryptedLower, 'emociones') || str_contains($decryptedLower, 'ira') || str_contains($decryptedLower, 'amigos') || str_contains($decryptedLower, 'bullying') || str_contains($decryptedLower, 'conducta') || str_contains($decryptedLower, 'pares')) {
+                        $disorder = 'Adaptación / Conducta';
+                    } else {
+                        $disorder = 'Otros';
+                    }
+                } catch (\Exception $e) {
+                    // Ignore decryption error
+                }
+            }
+            $p['trastorno'] = $disorder;
+            unset($p['motivo_consulta']);
+        }
+        return $patients;
+    }
 }
