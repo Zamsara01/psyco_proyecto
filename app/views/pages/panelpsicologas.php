@@ -6,30 +6,31 @@
 ?>
 <div class="p-6 md:p-8 flex-1">
 
-    <!-- ══════════ BARRA DE ACCIONES RÁPIDAS ══════════ -->
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+<!-- ══════════ BARRA DE ACCIONES RÁPIDAS ══════════ -->
+    <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
-            <h1 class="text-2xl font-black text-slate-900">Mi Panel</h1>
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900">Mi Panel</h1>
             <p class="text-sm text-slate-500 mt-0.5">Bienvenida, <?= htmlspecialchars($_SESSION['user']['nombre'] ?? 'Psicóloga') ?> 👋</p>
         </div>
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
             <button onclick="abrirModalDisponibilidad()"
                 id="btn-disponibilidad"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-indigo-200 text-indigo-600 font-bold text-sm hover:bg-indigo-50 hover:border-indigo-400 transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-indigo-200 text-indigo-600 font-bold text-sm hover:bg-indigo-50 hover:border-indigo-400 transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">schedule</span>
-                Mi Disponibilidad
+                <span class="hidden xs:inline sm:inline">Mi Disponibilidad</span>
+                <span class="xs:hidden sm:hidden">Disponibilidad</span>
             </button>
             <button onclick="abrirModalCrearPaciente()"
                 id="btn-crear-paciente"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-orange-200 text-orange-600 font-bold text-sm hover:bg-orange-50 hover:border-orange-400 transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-orange-200 text-orange-600 font-bold text-sm hover:bg-orange-50 hover:border-orange-400 transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">person_add</span>
-                Crear Paciente
+                <span>Crear Paciente</span>
             </button>
             <button onclick="abrirModalAgendarCita()"
                 id="btn-agendar-cita"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-200 transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-200 transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
-                Agendar Cita
+                <span>Agendar Cita</span>
             </button>
         </div>
     </div>

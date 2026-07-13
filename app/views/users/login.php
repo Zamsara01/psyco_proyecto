@@ -2,11 +2,11 @@
 <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 w-full">
     <!-- Background Decorative Elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-secondary/5 blur-3xl"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#2563eb]/10 blur-3xl"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-[#16a34a]/10 blur-3xl"></div>
     </div>
     
-    <div class="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden transition-all duration-300 hover:shadow-md">
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/60 overflow-hidden transition-all duration-300 hover:shadow-xl">
         <!-- Logo Header -->
         <div class="pt-stack-lg px-stack-lg flex flex-col items-center">
             <div class="w-24 h-24 mb-stack-md flex items-center justify-center overflow-hidden">

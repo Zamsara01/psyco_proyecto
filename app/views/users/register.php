@@ -3,11 +3,11 @@
     
     <!-- Background Decorative Elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-orange-600/5 blur-3xl"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#2563eb]/10 blur-3xl"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-[#16a34a]/10 blur-3xl"></div>
     </div>
 
-    <div class="w-full max-w-xl bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100 p-8 md:p-12 relative">
+    <div class="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-xl shadow-lg overflow-hidden border border-white/60 p-8 md:p-12 relative">
         <div class="max-w-md mx-auto">
             <header class="mb-8">
                 <!-- Color Logo placed in the top left corner above the form content -->

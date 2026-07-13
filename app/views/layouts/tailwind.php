@@ -27,13 +27,19 @@ $content = $content ?? '';
     <!-- Estilos Adicionales / Utilidades -->
     <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css">
 </head>
-<body class="bg-surface text-on-surface min-h-screen flex flex-row font-body-md relative overflow-x-hidden">
+<body class="text-on-surface min-h-screen flex flex-row font-body-md relative overflow-x-hidden">
     
+    <!-- Overlay para móvil (cierra el sidebar al tocar fuera) -->
+    <div id="sidebar-overlay"
+         class="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 hidden lg:hidden"
+         onclick="closeSidebar()"
+         aria-hidden="true"></div>
+
     <!-- Sidebar unificado para vistas Tailwind -->
     <?php require __DIR__ . '/../partials/tailwind_sidebar.php'; ?>
 
-    <!-- Contenedor Principal (deja espacio para el sidebar fijo w-64) -->
-    <div class="flex-grow flex flex-col min-h-screen ml-64 w-[calc(100%-16rem)]">
+    <!-- Contenedor Principal -->
+    <div id="main-content" class="flex-grow flex flex-col min-h-screen w-full lg:ml-64 lg:w-[calc(100%-16rem)] transition-all duration-300">
         
         <!-- Contenido dinámico inyectado por el controlador -->
         <main class="flex-grow flex flex-col relative">
@@ -58,12 +64,49 @@ $content = $content ?? '';
         <?php require __DIR__ . '/../partials/login_required_modal.php'; ?>
 
         <!-- Footer global -->
-        <footer class="bg-white border-t border-slate-100 py-4 px-6 text-center mt-auto">
+        <footer class="bg-white/70 backdrop-blur-sm border-t border-slate-200/60 py-4 px-6 text-center mt-auto">
             <p class="text-body-sm text-on-surface-variant">
                 &copy; <?= date('Y') ?> <span class="font-semibold text-primary">grupo_psyco</span> — Todos los derechos reservados.
             </p>
         </footer>
     </div>
+
+<script>
+// ── Sidebar responsive ──────────────────────────────────────────
+function openSidebar() {
+    const sidebar  = document.getElementById('app-sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    if (sidebar)  sidebar.classList.remove('-translate-x-full');
+    if (overlay)  overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+    const sidebar  = document.getElementById('app-sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    if (sidebar)  sidebar.classList.add('-translate-x-full');
+    if (overlay)  overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// En pantallas grandes siempre mostrar sidebar
+function handleResize() {
+    if (window.innerWidth >= 1024) {
+        const sidebar = document.getElementById('app-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (sidebar) sidebar.classList.remove('-translate-x-full');
+        if (overlay) overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+    } else {
+        // Colapsar en móvil si se reduce la ventana
+        const sidebar = document.getElementById('app-sidebar');
+        if (sidebar) sidebar.classList.add('-translate-x-full');
+    }
+}
+
+window.addEventListener('resize', handleResize);
+// Inicializar estado
+handleResize();
+</script>
 
 </body>
 </html>

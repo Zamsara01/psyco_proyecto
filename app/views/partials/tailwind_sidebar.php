@@ -18,14 +18,19 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
     : 'text-slate-600 hover:text-orange-600 hover:bg-orange-50/60 font-medium';
 ?>
 
-<aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-100 shadow-sm flex flex-col z-40 transition-transform duration-300">
+<aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/80 backdrop-blur-md border-r border-white/50 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
 
     <!-- ── Logo ─────────────────────────────────────────────── -->
-    <div class="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
-        <a href="<?= URL_BASE ?>" class="flex items-center gap-3">
-            <img alt="PSYCO Logo" class="h-8 w-auto object-contain" src="<?= URL_BASE ?>public/img/psyco.png"/>
-            <span class="text-xl font-bold text-orange-600 hover:text-orange-700 transition-colors">PSYCO</span>
+    <div class="h-16 flex items-center px-4 border-b border-slate-100 shrink-0">
+        <a href="<?= URL_BASE ?>" class="flex items-center gap-3 flex-1 min-w-0">
+            <img alt="PSYCO Logo" class="h-8 w-auto object-contain shrink-0" src="<?= URL_BASE ?>public/img/psyco.png"/>
+            <span class="text-xl font-bold text-orange-600 hover:text-orange-700 transition-colors truncate">PSYCO</span>
         </a>
+        <!-- Botón cerrar sidebar (solo móvil) -->
+        <button onclick="closeSidebar()" aria-label="Cerrar menú"
+            class="lg:hidden ml-2 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors shrink-0">
+            <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
     </div>
 
     <!-- ── Navegación ───────────────────────────────────────── -->

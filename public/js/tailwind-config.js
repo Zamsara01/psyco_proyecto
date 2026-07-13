@@ -57,7 +57,13 @@ tailwind.config = {
                 "on-error": "#ffffff",
                 "on-error-container": "#93000a",
 
-                "surface": "#f8f9fb",
+                /* ── Logo Brand Colors ── */
+                "brand-blue":       "#2563eb",
+                "brand-blue-dark":  "#1d4ed8",
+                "brand-green":      "#16a34a",
+                "brand-green-dark": "#15803d",
+
+                "surface": "transparent",
                 "surface-dim": "#d9dadc",
                 "surface-bright": "#f8f9fb",
                 "surface-container-lowest": "#ffffff",
@@ -72,7 +78,7 @@ tailwind.config = {
                 "inverse-surface": "#2e3132",
                 "inverse-on-surface": "#f0f1f3",
                 "surface-tint": "#0c6e00",
-                "background": "#f8f9fb",
+                "background": "transparent",
                 "on-background": "#191c1e",
             },
             borderRadius: {

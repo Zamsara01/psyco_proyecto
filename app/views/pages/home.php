@@ -3,12 +3,12 @@
      ═══════════════════════════════════════════════════════════ -->
 
 <!-- ── Hero ──────────────────────────────────────────────────── -->
-<section class="relative flex-grow flex items-center justify-center py-16 sm:py-24 px-6 overflow-hidden bg-gradient-to-br from-blue-600 to-emerald-500">
+<section class="relative flex-grow flex items-center justify-center py-16 sm:py-24 px-6 overflow-hidden bg-gradient-to-br from-[#2563eb] via-[#1e88d0] to-[#16a34a]">
 
     <!-- Blobs decorativos adicionales para dar dinamismo -->
     <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="absolute top-[-20%] left-[-10%] w-[550px] h-[550px] rounded-full bg-white/10 blur-3xl"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[450px] h-[450px] rounded-full bg-emerald-400/20 blur-3xl"></div>
+        <div class="absolute top-[-20%] left-[-10%] w-[550px] h-[550px] rounded-full bg-white/15 blur-3xl"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[450px] h-[450px] rounded-full bg-green-400/20 blur-3xl"></div>
     </div>
 
     <div class="max-w-3xl mx-auto text-center relative z-10">
@@ -79,7 +79,7 @@
 </section>
 
 <!-- ── Características ───────────────────────────────────────── -->
-<section class="py-16 px-6 bg-gradient-to-b from-white to-blue-50/50">
+<section class="py-16 px-6 bg-transparent">
     <div class="max-w-5xl mx-auto">
 
         <h2 class="text-headline-sm font-headline-md text-blue-900 text-center mb-10">¿Qué ofrece PSYCO?</h2>
