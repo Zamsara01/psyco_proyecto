@@ -11,24 +11,24 @@
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
     <!-- Card -->
-    <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-[fadeInScale_0.3s_ease-out]">
+    <div class="relative z-10 w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden animate-[fadeInScale_0.3s_ease-out]">
         
         <!-- Header -->
-        <div class="pt-8 px-8 flex flex-col items-center border-b border-slate-100 pb-6">
+        <div class="pt-8 px-8 flex flex-col items-center border-b border-slate-100 dark:border-slate-700 pb-6">
             <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <span class="material-symbols-outlined text-[32px] text-primary">mark_email_read</span>
+                <span class="material-symbols-outlined text-[32px] text-primary dark:text-primary">mark_email_read</span>
             </div>
-            <h2 id="otpModalTitle" class="font-headline-sm text-headline-sm text-on-surface text-center mb-2">Verifica tu correo electrónico</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant text-center">
+            <h2 id="otpModalTitle" class="font-headline-sm text-headline-sm text-on-surface dark:text-slate-100 text-center mb-2">Verifica tu correo electrónico</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 text-center">
                 Hemos enviado un código de verificación de 6 dígitos a:
             </p>
-            <p class="font-label-lg text-label-lg text-primary text-center mt-1 font-bold">
+            <p class="font-label-lg text-label-lg text-primary dark:text-emerald-400 text-center mt-1 font-bold">
                 <?= htmlspecialchars($_SESSION['temp_user_email'] ?? '') ?>
             </p>
         </div>
 
-        <div class="p-8 bg-surface-container-lowest">
-            <p class="font-body-sm text-body-sm text-on-surface-variant text-center mb-6">
+        <div class="p-8 bg-surface-container-lowest dark:bg-slate-800">
+            <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 text-center mb-6">
                 Para completar tu registro, revisa tu correo electrónico e ingresa el código recibido.
             </p>
 
@@ -52,7 +52,7 @@
                 <div>
                     <label for="codigoOtp" class="sr-only">Código OTP</label>
                     <input id="codigoOtp" name="codigo" type="text" required 
-                           class="w-full h-14 bg-surface-container-low border border-slate-200 rounded-xl text-center text-2xl tracking-[0.5em] font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-on-surface placeholder:tracking-normal placeholder:text-lg" 
+                           class="w-full h-14 bg-surface-container-low dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-center text-2xl tracking-[0.5em] font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-on-surface dark:text-slate-100 placeholder:tracking-normal placeholder:text-lg dark:placeholder-slate-500" 
                            placeholder="000000" maxlength="6" pattern="\d{6}" autocomplete="off">
                 </div>
 
@@ -63,13 +63,13 @@
                 </button>
             </form>
 
-            <div class="mt-6 flex flex-col items-center gap-4 border-t border-slate-100 pt-6">
-                <p class="text-xs text-tertiary text-center px-4 bg-orange-50 border border-orange-100 p-2 rounded-lg text-orange-800">
+            <div class="mt-6 flex flex-col items-center gap-4 border-t border-slate-100 dark:border-slate-700 pt-6">
+                <p class="text-xs text-tertiary dark:text-slate-400 text-center px-4 bg-blue-50 dark:bg-slate-700/50 border border-blue-100 dark:border-slate-600 p-2 rounded-lg text-blue-800 dark:text-blue-300">
                     <span class="material-symbols-outlined text-[16px] inline-block align-middle mr-1">info</span>
                     Si no encuentras el mensaje en tu bandeja principal, revisa tu carpeta de spam o correo no deseado.
                 </p>
                 <form method="POST" action="<?= URL_BASE ?>users/resendOtp" class="w-full">
-                    <button type="submit" class="w-full text-primary font-label-md hover:underline bg-transparent border-none cursor-pointer flex items-center justify-center gap-1">
+                    <button type="submit" class="w-full text-primary dark:text-emerald-400 font-label-md hover:underline bg-transparent border-none cursor-pointer flex items-center justify-center gap-1">
                         <span class="material-symbols-outlined text-[18px]">send</span>
                         Reenviar código
                     </button>
@@ -77,7 +77,7 @@
             </div>
             
             <div class="mt-4 text-center">
-                <a href="<?= URL_BASE ?>users/logout" class="text-xs text-slate-400 hover:text-slate-600 hover:underline transition-colors">
+                <a href="<?= URL_BASE ?>users/logout" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:underline transition-colors">
                     Usar otro correo / Cancelar registro
                 </a>
             </div>

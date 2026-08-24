@@ -2,11 +2,11 @@
     <div class="flex items-center gap-3">
         <!-- Botón hamburguesa (solo móvil / tablet) -->
         <button onclick="openSidebar()" aria-label="Abrir menú"
-            class="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-orange-600 transition-colors active:scale-95">
+            class="lg:hidden p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors active:scale-95">
             <span class="material-symbols-outlined text-[24px]">menu</span>
         </button>
         <img alt="PSYCO Logo" class="h-8 w-auto object-contain hidden sm:block" src="<?= URL_BASE ?>public/img/psyco.png"/>
-        <a href="<?= URL_BASE ?>" class="text-xl font-bold text-orange-600 font-headline-sm hover:text-orange-700 transition-colors">
+        <a href="<?= URL_BASE ?>" class="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
             PSYCO
         </a>
     </div>
@@ -14,11 +14,11 @@
 
         <?php if (isset($_SESSION['user'])): ?>
             <!-- Sesión activa: saludo + logout -->
-            <span class="text-sm text-slate-500 font-medium hidden sm:block">
+            <span class="text-sm text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
                 Hola, <?= htmlspecialchars($_SESSION['user']['nombre'] ?? 'Usuario') ?>
             </span>
             <a href="<?= URL_BASE ?>users/logout"
-               class="p-2 rounded-full text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
+               class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
                title="Cerrar sesión">
                 <span class="material-symbols-outlined">logout</span>
             </a>
@@ -27,7 +27,7 @@
             <!-- Sin sesión: dropdown con Iniciar sesión / Registrarse -->
             <div class="relative" id="nav-guest-dropdown">
                 <button onclick="toggleNavDropdown()"
-                        class="p-2 rounded-full text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
+                        class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
                         title="Cuenta" aria-haspopup="true" aria-expanded="false" id="nav-guest-btn">
                     <span class="material-symbols-outlined">account_circle</span>
                 </button>
@@ -50,7 +50,7 @@
                     <button onclick="closeNavDropdown(); openRegisterModal();"
                        class="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 dark:text-slate-200
                               hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-left">
-                        <span class="material-symbols-outlined text-[18px] text-orange-500">person_add</span>
+                        <span class="material-symbols-outlined text-[18px] text-blue-500">person_add</span>
                         Registrarse
                     </button>
                 </div>

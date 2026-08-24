@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Dark Mode Test</title>
+    <!-- Anti-FOUC -->
+    <script>
+        (function() {
+            const saved = localStorage.getItem('psyco-theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            } else {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+    <!-- Tailwind config MUST be inline, BEFORE CDN -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fallback CSS dark mode */
+        .dark body { background-color: #0d1117 !important; color: white !important; }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white min-h-screen p-8 transition-colors duration-300">
+    <h1 class="text-2xl font-bold mb-4">Dark Mode Test</h1>
+    
+    <div id="status" class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-xl">
+        <p>HTML class: <strong id="htmlClass"></strong></p>
+        <p>localStorage: <strong id="lsValue"></strong></p>
+        <p>Tailwind dark: variant working: <strong id="twWorking" class="text-red-500">checking...</strong></p>
+    </div>
+    
+    <div class="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl mb-4">
+        <p class="text-slate-900 dark:text-slate-100">This box should be dark in dark mode</p>
+    </div>
+    
+    <button onclick="toggle()" class="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors">
+        Toggle Dark Mode
+    </button>
+    
+    <script>
+        function updateStatus() {
+            document.getElementById('htmlClass').textContent = document.documentElement.className;
+            document.getElementById('lsValue').textContent = localStorage.getItem('psyco-theme') || '(not set)';
+            
+            // Check if dark: variants are working by inspecting computed styles
+            const testEl = document.querySelector('.dark\\:bg-slate-800');
+            if (testEl) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const bg = window.getComputedStyle(testEl).backgroundColor;
+                document.getElementById('twWorking').textContent = 
+                    isDark ? (bg !== 'rgb(255, 255, 255)' ? '✅ YES - bg is: ' + bg : '❌ NO - still white: ' + bg) 
+                           : 'light mode (bg: ' + bg + ')';
+            }
+        }
+        
+        function toggle() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            if (isDark) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                localStorage.setItem('psyco-theme', 'light');
+            } else {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                localStorage.setItem('psyco-theme', 'dark');
+            }
+            setTimeout(updateStatus, 100);
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateStatus);
+    </script>
+</body>
+</html>

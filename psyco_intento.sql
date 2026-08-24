@@ -2,14 +2,15 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2026 a las 05:11:22
+-- Servidor: localhost
+-- Tiempo de generación: 10-08-2026 a las 03:28:01
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,21 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `psyco_intento`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `chatbot_interacciones`
---
-
-CREATE TABLE `chatbot_interacciones` (
-  `id_interaccion` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_opcion` int(11) NOT NULL,
-  `id_sesion` varchar(64) NOT NULL,
-  `respuesta` text DEFAULT NULL,
-  `fecha_hora` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -108,7 +94,22 @@ INSERT INTO `citas` (`id_cita`, `id_usuario`, `id_psicologo`, `fecha`, `hora`, `
 (47, 47, 2, '2026-07-01', '10:00:00', 60, 'pendiente', 'Conflictos entre pares', NULL, '2026-06-03 21:53:14'),
 (48, 48, 3, '2026-07-01', '11:00:00', 60, 'completada', 'Seguimiento mensual', NULL, '2026-06-03 21:53:14'),
 (49, 49, 1, '2026-07-02', '09:00:00', 60, 'pendiente', 'Ansiedad generalizada', NULL, '2026-06-03 21:53:14'),
-(50, 50, 2, '2026-07-02', '10:00:00', 60, 'pendiente', 'Primer acercamiento', NULL, '2026-06-03 21:53:14');
+(50, 50, 2, '2026-07-02', '10:00:00', 60, 'pendiente', 'Primer acercamiento', NULL, '2026-06-03 21:53:14'),
+(51, 65, 1, '2026-07-02', '15:00:00', 60, 'pendiente', 'v1:xLMuS1TDNhW16UEN:dPwETF6n993YSMtjJz/Dxg==:GZPW2TnKl1A=', '', '2026-06-07 09:20:56'),
+(52, 66, 3, '2026-07-02', '13:00:00', 60, 'pendiente', 'v1:uXOgbJoyl5k3qRBF:e7eYGKOFgRy3dO+ltZUEZA==:Z2D9KV9CcJl6', '', '2026-06-07 11:28:58'),
+(53, 65, 4, '2026-08-03', '11:00:00', 60, 'cancelada', 'v1:gvjCmWuayzZSpHEx:NFJS2pj1bV7MBN5IDpGRSw==:SB2IsjKIMgbh', '', '2026-06-07 11:32:06'),
+(54, 65, 4, '2026-06-18', '11:00:00', 60, 'pendiente', 'v1:oT141Of49lUDHgLA:OVB5asbTAfwtBkd7xIFzug==:hojJ8eIJRfw2rDsyAMUQjQ==', '', '2026-06-07 13:56:47'),
+(55, 65, 1, '2026-09-07', '14:00:00', 60, 'cancelada', 'v1:XuJ0RqfemhuN/Tad:hRXmEs4bMVQbqtSmq5hfFg==:KSld', '', '2026-06-07 14:41:59'),
+(56, 65, 4, '2026-06-16', '12:00:00', 60, 'pendiente', 'v1:1bUlEiQZ3DNQahXf:u9jZjfXyBuOQBAiLXKQCYw==:dXAN', '', '2026-06-07 14:43:13'),
+(57, 65, 1, '2026-06-09', '14:00:00', 60, 'pendiente', 'v1:qzc3/eVPyPQk5fOD:/GM8gRV44H+vOJ6gYXNKJw==:oa3VWs1C22xH', '', '2026-06-07 18:55:30'),
+(58, 65, 1, '2026-07-17', '08:00:00', 60, 'pendiente', 'v1:KH6r0FEhBJaV6RAj:RtkqIPqaRMKZuFIh7rwVRA==:0g==', '', '2026-07-05 22:02:48'),
+(59, 65, 1, '2026-07-17', '09:00:00', 60, 'pendiente', 'v1:V1ffX3AHYwCJTDr2:yI2/cvMt64oBVcK7fKCpYA==:GQ==', '', '2026-07-05 22:02:56'),
+(60, 65, 1, '2026-07-17', '10:00:00', 60, 'pendiente', 'v1:LX+cfeKTb9ixupgK:fSzhoBIS0sAeKRy45OYInw==:Dg==', '', '2026-07-05 22:03:55'),
+(61, 65, 1, '2030-05-01', '08:00:00', 60, 'pendiente', 'v1:2N/44Ovb4kO+p+sd:jC2jZctKWK/KfPKIjkl7yA==:cGTZyhOgShpG', '', '2026-07-05 22:04:51'),
+(62, 65, 1, '2030-03-01', '08:00:00', 60, 'pendiente', 'v1:O6tBpZJXsrZVs/Ry:HgJLLaUgdFdAFursk+2sBg==:OA==', '', '2026-07-05 22:05:10'),
+(63, 65, 1, '2030-03-01', '09:00:00', 60, 'pendiente', 'v1:jsvEpxjkc8oTjmB+:8QUljVfQIsB/NnkNvnrspQ==:tw==', '', '2026-07-05 22:05:25'),
+(64, 73, 1, '2026-08-13', '09:00:00', 60, 'pendiente', 'v1:8XQuEf2BOnATCQU7:jaGknSoDlb3AbkPd0eY2wA==:bZdzYUdXi5wyBuHgm5m6xmlLywWI4KQ=', '', '2026-07-16 19:06:32'),
+(65, 73, 1, '2027-03-10', '08:00:00', 60, 'pendiente', 'v1:uqdYExJ6kEJUporg:vwWohuT1BU68Grfd4/EOmw==:F8WEv+RviudT8fqMzbbn637R52InYsvGvhG9tMcL', '', '2026-07-16 19:07:33');
 
 -- --------------------------------------------------------
 
@@ -133,7 +134,7 @@ INSERT INTO `disponibilidad_psicologos` (`id_disponibilidad`, `id_psicologo`, `d
 (1, 1, 'Lunes', '08:00:00', '12:00:00', 1),
 (2, 1, 'Lunes', '14:00:00', '18:00:00', 1),
 (3, 1, 'Martes', '08:00:00', '12:00:00', 1),
-(4, 1, 'Martes', '14:00:00', '18:00:00', 1),
+(4, 1, 'Martes', '14:00:00', '18:00:00', 0),
 (5, 1, 'Miércoles', '08:00:00', '12:00:00', 1),
 (6, 1, 'Miércoles', '14:00:00', '18:00:00', 1),
 (7, 1, 'Jueves', '08:00:00', '12:00:00', 1),
@@ -159,7 +160,8 @@ INSERT INTO `disponibilidad_psicologos` (`id_disponibilidad`, `id_psicologo`, `d
 (27, 4, 'Jueves', '10:00:00', '14:00:00', 1),
 (28, 4, 'Jueves', '15:00:00', '18:00:00', 1),
 (29, 4, 'Viernes', '10:00:00', '14:00:00', 1),
-(30, 4, 'Viernes', '15:00:00', '18:00:00', 1);
+(30, 4, 'Viernes', '15:00:00', '18:00:00', 1),
+(31, 1, 'Martes', '06:25:00', '17:08:00', 1);
 
 -- --------------------------------------------------------
 
@@ -185,27 +187,59 @@ INSERT INTO `especialidades` (`id_especialidad`, `nombre`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `opciones_chatbot`
+-- Estructura de tabla para la tabla `notas_paciente`
 --
 
-CREATE TABLE `opciones_chatbot` (
-  `id_opcion` int(11) NOT NULL,
-  `id_opcion_padre` int(11) DEFAULT NULL,
-  `texto_opcion` varchar(255) NOT NULL,
-  `respuesta` text DEFAULT NULL,
-  `orden` int(11) NOT NULL DEFAULT 0,
-  `activo` tinyint(1) NOT NULL DEFAULT 1
+CREATE TABLE `notas_paciente` (
+  `id_nota` int(11) NOT NULL,
+  `id_psicologo` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `contenido` text NOT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `opciones_chatbot`
+-- Volcado de datos para la tabla `notas_paciente`
 --
 
-INSERT INTO `opciones_chatbot` (`id_opcion`, `id_opcion_padre`, `texto_opcion`, `respuesta`, `orden`, `activo`) VALUES
-(1, NULL, 'Agendar una cita', 'Selecciona una de las siguientes opciones para agendar tu cita.', 1, 1),
-(2, NULL, 'Ver mis citas', 'Aquí puedes consultar el estado de tus citas.', 2, 1),
-(3, NULL, 'Cancelar una cita', 'Selecciona la cita que deseas cancelar.', 3, 1),
-(4, NULL, 'Información y contacto', 'Para más información comunícate con orientación.', 4, 1);
+INSERT INTO `notas_paciente` (`id_nota`, `id_psicologo`, `id_usuario`, `titulo`, `contenido`, `fecha_creacion`) VALUES
+(1, 1, 65, 'toma aguita de coco', 'hazlo we', '2026-06-07 10:57:06'),
+(2, 1, 65, 'has ejercicio', 'atun con leche', '2026-06-07 11:33:55'),
+(3, 1, 65, 'toma aguita de coco', 'aere', '2026-07-13 19:13:33'),
+(4, 1, 65, 'esto es un ejemplo de nota despues de la consulta', 'espero que el sitio web les este gustando :)', '2026-07-16 19:10:01');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `otp_codes`
+--
+
+CREATE TABLE `otp_codes` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `code_hash` varchar(64) NOT NULL COMMENT 'SHA-256 hash del código OTP',
+  `type` enum('register','login_psicologa') NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Intentos de verificación',
+  `status` enum('active','used','expired','blocked') NOT NULL DEFAULT 'active',
+  `expires_at` datetime NOT NULL COMMENT 'Expiración: created_at + 7 minutos',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `otp_codes`
+--
+
+INSERT INTO `otp_codes` (`id`, `email`, `code_hash`, `type`, `attempts`, `status`, `expires_at`, `created_at`) VALUES
+(3, 'dreamdinosaurio@gmail.com', '6a70ad30970a1e7f4844469f64eaf09255bac4f9d0117b520670dca69b95fac3', 'register', 0, 'used', '2026-06-07 02:27:41', '2026-06-06 19:17:41'),
+(4, 'ImposingLemming@gmail.com', 'da25dd78946c54219e5feba48b72ff90bbf1ed9fb90d3a727c905d9a1d7f3a5b', 'register', 0, 'used', '2026-06-07 18:33:06', '2026-06-07 11:23:06'),
+(5, 'thechosedone001@gmail.com', '94569be2c444d975994bfabcbed4e9347e8f4b172bc6cbd091d666bed4d5f6c0', 'register', 1, 'expired', '2026-06-07 21:17:01', '2026-06-07 14:07:01'),
+(6, 'thechosedone001@gmail.com', '315a1dbef913d706acb13cd21cf05365cd3eb391fddda701c25624fbce5fe6fc', 'register', 0, 'expired', '2026-06-07 21:18:51', '2026-06-07 14:08:51'),
+(7, 'thechosedone001@gmail.com', 'fede82901253d4dafcd4f2d35639a8fefea4216a29b13224982647fd603fb293', 'register', 0, 'active', '2026-06-07 21:22:49', '2026-06-07 14:12:49'),
+(8, 'pankeiks1.5v2@gmail.com', 'b49f2950d57e6d7c784db949f93d17ee709096325d04d332daaa9c639ef2d520', 'register', 0, 'used', '2026-06-07 21:57:03', '2026-06-07 14:47:03'),
+(9, 'yocezapatal@gmail.com', 'a05404a42c39972cd2338c4c7506ba554fe10710b8342a611a79191712a19142', 'register', 0, 'used', '2026-06-08 02:16:16', '2026-06-07 19:06:16'),
+(10, 'testuser@example.com', 'c02f6e8aa09b5abdeac64cc32d376cd27287002aa1dde34991ab8e7c8e3d4c64', 'register', 0, 'active', '2026-07-12 17:48:18', '2026-07-12 10:38:18'),
+(11, 'thechosedone002@gmail.com', '4713abdcb373c734d3c5e28d921caadb52c631a0299995d662501ac86a7de848', 'register', 0, 'used', '2026-07-17 02:14:05', '2026-07-16 19:04:05');
 
 -- --------------------------------------------------------
 
@@ -254,6 +288,37 @@ CREATE TABLE `recordatorios` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `recursos_acompanamiento`
+--
+
+CREATE TABLE `recursos_acompanamiento` (
+  `id_recurso` int(11) NOT NULL,
+  `id_psicologo` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `tipo` enum('video','mensaje','imagen') NOT NULL DEFAULT 'video',
+  `url_video` varchar(512) DEFAULT NULL,
+  `imagen_ruta` varchar(512) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `recursos_acompanamiento`
+--
+
+INSERT INTO `recursos_acompanamiento` (`id_recurso`, `id_psicologo`, `id_usuario`, `titulo`, `tipo`, `url_video`, `imagen_ruta`, `descripcion`, `fecha_creacion`) VALUES
+(1, 1, 65, 'alejandro lopez', 'mensaje', NULL, NULL, 'pepinillo azul', '2026-07-09 17:47:44'),
+(2, 1, 65, 'apa', 'imagen', NULL, 'public/uploads/recursos/img_6a502cc1d62df9.99468438.png', '', '2026-07-09 18:20:33'),
+(3, 1, NULL, 'apa', 'video', 'https://youtube.com/shorts/dOu4IjPKZUM?si=d1a17FiHuRrAKnRj', NULL, '', '2026-07-09 18:36:06'),
+(6, 1, NULL, 'respira', 'mensaje', NULL, NULL, 'toma aire de vez en cuando', '2026-07-16 19:11:11'),
+(7, 1, 65, 'has mas ejercicio', 'mensaje', NULL, NULL, 'esto ayuda a la salud mental', '2026-07-16 19:11:42'),
+(8, 1, 65, 'ejemplo imagen 1234', 'imagen', NULL, 'public/uploads/recursos/img_6a59736c44ea54.10092166.png', '123456789', '2026-07-16 19:12:28'),
+(9, 1, 65, 'musica relajante', 'video', 'https://youtu.be/F02iMCEEQWs', NULL, 'para el estres', '2026-07-16 19:13:32');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -265,85 +330,86 @@ CREATE TABLE `usuarios` (
   `contrasena` varchar(255) DEFAULT NULL COMMENT 'Hash bcrypt de la contraseña; NULL para usuarios OAuth',
   `acepta_politica` enum('si','no') NOT NULL DEFAULT 'no',
   `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
+  `email_verified_at` datetime DEFAULT NULL COMMENT 'Timestamp de verificación OTP; NULL = email no verificado',
   `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `acudiente_nombre` text NOT NULL,
-  `acudiente_cedula` text NOT NULL,
-  `acudiente_relacion` text NOT NULL,
+  `acudiente_nombre` text DEFAULT NULL,
+  `acudiente_cedula` text DEFAULT NULL,
+  `acudiente_relacion` text DEFAULT NULL,
   `acudiente_correo` text DEFAULT NULL,
+  `observaciones_psicologicas` text DEFAULT NULL,
   `google_id` varchar(100) DEFAULT NULL,
-  `avatar_url` varchar(512) DEFAULT NULL COMMENT 'URL de la foto de perfil de Google'
+  `avatar_url` varchar(512) DEFAULT NULL COMMENT 'URL de la foto de perfil de Google',
+  `verificado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `grado`, `nombre`, `correo_electronico`, `contrasena`, `acepta_politica`, `estado`, `fecha_registro`, `acudiente_nombre`, `acudiente_cedula`, `acudiente_relacion`, `acudiente_correo`, `google_id`, `avatar_url`) VALUES
-(1, '8', 'David Bedoya Zuluaga', 'pepito1234@gmail.com', '$2y$10$j5ciKLa3LHomxSTgEUOV7.MS5K6ROBoXuJe5IJkO398h6ZuprUviu', 'no', 'activo', '2026-06-03 18:11:08', NULL, NULL, NULL),
-(2, '6', 'Valentina Torres', 'valentina.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(3, '7', 'Santiago Gómez', 'santiago.gomez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(4, '8', 'Isabella Ramírez', 'isabella.ramirez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(5, '9', 'Sebastián López', 'sebastian.lopez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(6, '10', 'Camila Martínez', 'camila.martinez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(7, '11', 'Mateo Rodríguez', 'mateo.rodriguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(8, '6', 'Luciana Hernández', 'luciana.hernandez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(9, '7', 'Nicolás García', 'nicolas.garcia@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(10, '8', 'Sofía Vargas', 'sofia.vargas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(11, '9', 'Diego Morales', 'diego.morales@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(12, '10', 'Mariana Jiménez', 'mariana.jimenez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(13, '11', 'Alejandro Pérez', 'alejandro.perez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(14, '6', 'Gabriela Sánchez', 'gabriela.sanchez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(15, '7', 'Andrés Castro', 'andres.castro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(16, '8', 'Daniela Ruiz', 'daniela.ruiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(17, '9', 'Felipe Flores', 'felipe.flores@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(18, '10', 'Natalia Cruz', 'natalia.cruz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(19, '11', 'Julián Torres', 'julian.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(20, '6', 'Valeria Moreno', 'valeria.moreno@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(21, '7', 'Samuel Ortiz', 'samuel.ortiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(22, '8', 'Melissa Gutiérrez', 'melissa.gutierrez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(23, '9', 'Tomás Herrera', 'tomas.herrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(24, '10', 'Laura Medina', 'laura.medina@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(25, '11', 'Ricardo Aguilar', 'ricardo.aguilar@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(26, '6', 'Paola Reyes', 'paola.reyes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(27, '7', 'Emilio Vega', 'emilio.vega@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(28, '8', 'Carolina Ríos', 'carolina.rios@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(29, '9', 'Javier Sandoval', 'javier.sandoval@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(30, '10', 'Ana Delgado', 'ana.delgado@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(31, '11', 'Pablo Mendoza', 'pablo.mendoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(32, '6', 'Adriana Rojas', 'adriana.rojas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(33, '7', 'Cristian Navarro', 'cristian.navarro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(34, '8', 'Lorena Espinoza', 'lorena.espinoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(35, '9', 'Esteban Fuentes', 'esteban.fuentes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(36, '10', 'Verónica Paredes', 'veronica.paredes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(37, '11', 'Mauricio Silva', 'mauricio.silva@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(38, '6', 'Alejandra Ibáñez', 'alejandra.ibanez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(39, '7', 'Hernán Cabrera', 'hernan.cabrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(40, '8', 'Pilar Guerrero', 'pilar.guerrero@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(41, '9', 'Rodrigo Campos', 'rodrigo.campos@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(42, '10', 'Mónica Peña', 'monica.pena@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(43, '11', 'Gustavo Bravo', 'gustavo.bravo@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(44, '6', 'Diana Lozano', 'diana.lozano@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(45, '7', 'Iván Contreras', 'ivan.contreras@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(46, '8', 'Rebeca Acosta', 'rebeca.acosta@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(47, '9', 'Leonel Miranda', 'leonel.miranda@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(48, '10', 'Ximena Pacheco', 'ximena.pacheco@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(49, '11', 'Arturo Domínguez', 'arturo.dominguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(50, '6', 'Fernanda Varela', 'fernanda.varela@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(51, '7', 'Oswaldo Figueroa', 'oswaldo.figueroa@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', '2026-06-03 21:53:14', NULL, NULL, NULL),
-(52, '10', 'pepito lopez muñoz', 'aguaconpimienta1234@gmail.com', '$2y$10$BpUV0ZYVzoGSQJSjgUzdkOLemKTbqPnMqwaw3P0lMqYZF0s87PyQi', 'no', 'activo', '2026-06-04 16:57:48', NULL, NULL, NULL),
-(53, '11', 'rodrigo di paul', 'frtghbggtyh@gmail.com', '$2y$10$RlU2ZSbU.wF5a1R8wPoOl.eW.trFib/4gRhcq26lDJPDSuuPn6mB2', 'no', 'activo', '2026-06-04 17:47:31', NULL, NULL, NULL);
+INSERT INTO `usuarios` (`id_usuario`, `grado`, `nombre`, `correo_electronico`, `contrasena`, `acepta_politica`, `estado`, `email_verified_at`, `fecha_registro`, `acudiente_nombre`, `acudiente_cedula`, `acudiente_relacion`, `acudiente_correo`, `observaciones_psicologicas`, `google_id`, `avatar_url`, `verificado`) VALUES
+(1, '8', 'David Bedoya Zuluaga', 'pepito1234@gmail.com', '$2y$10$j5ciKLa3LHomxSTgEUOV7.MS5K6ROBoXuJe5IJkO398h6ZuprUviu', 'no', 'activo', NULL, '2026-06-03 18:11:08', '', '', '', NULL, NULL, NULL, NULL, 0),
+(2, '6', 'Valentina Torres', 'valentina.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Carlos Torres', '12345678', 'padre', NULL, NULL, NULL, NULL, 0),
+(3, '7', 'Santiago Gómez', 'santiago.gomez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(4, '8', 'Isabella Ramírez', 'isabella.ramirez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Ana Ramírez', '23456789', 'madre', NULL, NULL, NULL, NULL, 0),
+(5, '9', 'Sebastián López', 'sebastian.lopez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(6, '10', 'Camila Martínez', 'camila.martinez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Luis Martínez', '34567890', 'padre', NULL, NULL, NULL, NULL, 0),
+(7, '11', 'Mateo Rodríguez', 'mateo.rodriguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(8, '6', 'Luciana Hernández', 'luciana.hernandez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Rosa Hernández', '45678901', 'madre', NULL, NULL, NULL, NULL, 0),
+(9, '7', 'Nicolás García', 'nicolas.garcia@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(10, '8', 'Sofía Vargas', 'sofia.vargas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Jorge Vargas', '56789012', 'padre', NULL, NULL, NULL, NULL, 0),
+(11, '9', 'Diego Morales', 'diego.morales@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(12, '10', 'Mariana Jiménez', 'mariana.jimenez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Pedro Jiménez', '67890123', 'padre', NULL, NULL, NULL, NULL, 0),
+(13, '11', 'Alejandro Pérez', 'alejandro.perez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(14, '6', 'Gabriela Sánchez', 'gabriela.sanchez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'María Sánchez', '78901234', 'madre', NULL, NULL, NULL, NULL, 0),
+(15, '7', 'Andrés Castro', 'andres.castro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(16, '8', 'Daniela Ruiz', 'daniela.ruiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Fernando Ruiz', '89012345', 'padre', NULL, NULL, NULL, NULL, 0),
+(17, '9', 'Felipe Flores', 'felipe.flores@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(18, '10', 'Natalia Cruz', 'natalia.cruz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Roberto Cruz', '90123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(19, '11', 'Julián Torres', 'julian.torres@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(20, '6', 'Valeria Moreno', 'valeria.moreno@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Gloria Moreno', '01234567', 'madre', NULL, NULL, NULL, NULL, 0),
+(21, '7', 'Samuel Ortiz', 'samuel.ortiz@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(22, '8', 'Melissa Gutiérrez', 'melissa.gutierrez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Hugo Gutiérrez', '11234567', 'padre', NULL, NULL, NULL, NULL, 0),
+(23, '9', 'Tomás Herrera', 'tomas.herrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(24, '10', 'Laura Medina', 'laura.medina@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Álvaro Medina', '22345678', 'padre', NULL, NULL, NULL, NULL, 0),
+(25, '11', 'Ricardo Aguilar', 'ricardo.aguilar@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(26, '6', 'Paola Reyes', 'paola.reyes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Claudia Reyes', '33456789', 'madre', NULL, NULL, NULL, NULL, 0),
+(27, '7', 'Emilio Vega', 'emilio.vega@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(28, '8', 'Carolina Ríos', 'carolina.rios@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Mauricio Ríos', '44567890', 'padre', NULL, NULL, NULL, NULL, 0),
+(29, '9', 'Javier Sandoval', 'javier.sandoval@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(30, '10', 'Ana Delgado', 'ana.delgado@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Ernesto Delgado', '55678901', 'padre', NULL, NULL, NULL, NULL, 0),
+(31, '11', 'Pablo Mendoza', 'pablo.mendoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(32, '6', 'Adriana Rojas', 'adriana.rojas@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Beatriz Rojas', '66789012', 'madre', NULL, NULL, NULL, NULL, 0),
+(33, '7', 'Cristian Navarro', 'cristian.navarro@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(34, '8', 'Lorena Espinoza', 'lorena.espinoza@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Rodrigo Espinoza', '77890123', 'padre', NULL, NULL, NULL, NULL, 0),
+(35, '9', 'Esteban Fuentes', 'esteban.fuentes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(36, '10', 'Verónica Paredes', 'veronica.paredes@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Gustavo Paredes', '88901234', 'padre', NULL, NULL, NULL, NULL, 0),
+(37, '11', 'Mauricio Silva', 'mauricio.silva@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(38, '6', 'Alejandra Ibáñez', 'alejandra.ibanez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Patricia Ibáñez', '99012345', 'madre', NULL, NULL, NULL, NULL, 0),
+(39, '7', 'Hernán Cabrera', 'hernan.cabrera@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(40, '8', 'Pilar Guerrero', 'pilar.guerrero@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Francisco Guerrero', '10123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(41, '9', 'Rodrigo Campos', 'rodrigo.campos@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(42, '10', 'Mónica Peña', 'monica.pena@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Jaime Peña', '20123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(43, '11', 'Gustavo Bravo', 'gustavo.bravo@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(44, '6', 'Diana Lozano', 'diana.lozano@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Héctor Lozano', '30123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(45, '7', 'Iván Contreras', 'ivan.contreras@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(46, '8', 'Rebeca Acosta', 'rebeca.acosta@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Silvia Acosta', '40123456', 'madre', NULL, NULL, NULL, NULL, 0),
+(47, '9', 'Leonel Miranda', 'leonel.miranda@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(48, '10', 'Ximena Pacheco', 'ximena.pacheco@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Omar Pacheco', '50123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(49, '11', 'Arturo Domínguez', 'arturo.dominguez@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(50, '6', 'Fernanda Varela', 'fernanda.varela@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'si', 'activo', NULL, '2026-06-03 21:53:14', 'Raúl Varela', '60123456', 'padre', NULL, NULL, NULL, NULL, 0),
+(51, '7', 'Oswaldo Figueroa', 'oswaldo.figueroa@estudiante.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'no', 'activo', NULL, '2026-06-03 21:53:14', '', '', '', NULL, NULL, NULL, NULL, 0),
+(52, '10', 'pepito lopez muñoz', 'aguaconpimienta1234@gmail.com', '$2y$10$BpUV0ZYVzoGSQJSjgUzdkOLemKTbqPnMqwaw3P0lMqYZF0s87PyQi', 'no', 'activo', NULL, '2026-06-04 16:57:48', '', '', '', NULL, NULL, NULL, NULL, 0),
+(53, '11', 'rodrigo di paul', 'frtghbggtyh@gmail.com', '$2y$10$RlU2ZSbU.wF5a1R8wPoOl.eW.trFib/4gRhcq26lDJPDSuuPn6mB2', 'no', 'activo', NULL, '2026-06-04 17:47:31', '', '', '', NULL, NULL, NULL, NULL, 0),
+(65, '6', 'David Bedoya Zuluaga', 'dreamdinosaurio@gmail.com', '$2y$10$KGx1x3n86G8FRglyCqzxsuecL0zl5mMPcu6C0zJwRn83tas3pr2na', 'no', 'activo', NULL, '2026-06-06 19:17:41', '', '', '', '', NULL, '117995303306757950122', 'https://lh3.googleusercontent.com/a/ACg8ocIc_A8kixt34puB4L49-MxsusKlWXVRYA7hTpEhwpKcrFL0oO4c=s96-c', 1),
+(66, '8', 'andrey perez blandon', 'ImposingLemming@gmail.com', '$2y$10$9MAn3DY09WEqrTDFkp9Z7OQwHcdXC.vjKgSFzPAEpNBMXL0UdtHPa', 'no', 'activo', NULL, '2026-06-07 11:23:06', '', '', '', '', NULL, NULL, NULL, 1),
+(70, '8', 'aradir', 'pankeiks1.5v2@gmail.com', '$2y$10$k.GQ7LiRJdu9mWSssWJTruaiIknnkW.mkMMfi/XEKBj6RHPq3f256', 'si', 'activo', NULL, '2026-06-07 14:47:03', 'Luis Felipe II de francia', '098767890', 'padre', 'donpepo1234@gmail.com', NULL, NULL, NULL, 1),
+(71, '6', 'Yoce Zapata :D', 'yocezapatal@gmail.com', '$2y$10$wFzsmVClsIDw.9I26QObk.3464Korm3xHTVPvaAcXkEQVEftok6SG', 'no', 'activo', NULL, '2026-06-07 19:06:16', '', '', '', '', NULL, NULL, NULL, 1),
+(72, '10', 'Test User', 'testuser@example.com', '$2y$10$NXBCaN3wMk34QLlNz7yeHOkFLyNBH8d7t1SnkVEjUGF3qonFe87RO', 'si', 'activo', NULL, '2026-07-12 10:38:18', 'Guardian Name', '123456789', 'padre', 'guardian@example.com', NULL, NULL, NULL, 0),
+(73, '8', 'pepito gustavo perez perez', 'thechosedone002@gmail.com', '$2y$10$pOqX4Nhs7bLaD1jLw19KF.je44MgaREUVFjlT.qYmxJxq4.QRawiS', 'no', 'activo', NULL, '2026-07-16 19:04:05', '', '', '', '', NULL, NULL, NULL, 1);
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `chatbot_interacciones`
---
-ALTER TABLE `chatbot_interacciones`
-  ADD PRIMARY KEY (`id_interaccion`),
-  ADD KEY `fk_interaccion_usuario` (`id_usuario`),
-  ADD KEY `fk_interaccion_opcion` (`id_opcion`);
 
 --
 -- Indices de la tabla `citas`
@@ -367,11 +433,20 @@ ALTER TABLE `especialidades`
   ADD PRIMARY KEY (`id_especialidad`);
 
 --
--- Indices de la tabla `opciones_chatbot`
+-- Indices de la tabla `notas_paciente`
 --
-ALTER TABLE `opciones_chatbot`
-  ADD PRIMARY KEY (`id_opcion`),
-  ADD KEY `fk_opcion_padre` (`id_opcion_padre`);
+ALTER TABLE `notas_paciente`
+  ADD PRIMARY KEY (`id_nota`),
+  ADD KEY `id_psicologo` (`id_psicologo`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `otp_codes`
+--
+ALTER TABLE `otp_codes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_email_status` (`email`,`status`),
+  ADD KEY `idx_expires` (`expires_at`);
 
 --
 -- Indices de la tabla `psicologos`
@@ -389,6 +464,14 @@ ALTER TABLE `recordatorios`
   ADD KEY `fk_recordatorios_cita` (`id_cita`);
 
 --
+-- Indices de la tabla `recursos_acompanamiento`
+--
+ALTER TABLE `recursos_acompanamiento`
+  ADD PRIMARY KEY (`id_recurso`),
+  ADD KEY `id_psicologo` (`id_psicologo`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -402,22 +485,16 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `chatbot_interacciones`
---
-ALTER TABLE `chatbot_interacciones`
-  MODIFY `id_interaccion` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `disponibilidad_psicologos`
 --
 ALTER TABLE `disponibilidad_psicologos`
-  MODIFY `id_disponibilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_disponibilidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidades`
@@ -426,10 +503,16 @@ ALTER TABLE `especialidades`
   MODIFY `id_especialidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `opciones_chatbot`
+-- AUTO_INCREMENT de la tabla `notas_paciente`
 --
-ALTER TABLE `opciones_chatbot`
-  MODIFY `id_opcion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `notas_paciente`
+  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `otp_codes`
+--
+ALTER TABLE `otp_codes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `psicologos`
@@ -444,21 +527,20 @@ ALTER TABLE `recordatorios`
   MODIFY `id_recordatorio` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `recursos_acompanamiento`
+--
+ALTER TABLE `recursos_acompanamiento`
+  MODIFY `id_recurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `chatbot_interacciones`
---
-ALTER TABLE `chatbot_interacciones`
-  ADD CONSTRAINT `fk_interaccion_opcion` FOREIGN KEY (`id_opcion`) REFERENCES `opciones_chatbot` (`id_opcion`),
-  ADD CONSTRAINT `fk_interaccion_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
 -- Filtros para la tabla `citas`
@@ -474,6 +556,13 @@ ALTER TABLE `disponibilidad_psicologos`
   ADD CONSTRAINT `fk_disp_psicologo` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`);
 
 --
+-- Filtros para la tabla `notas_paciente`
+--
+ALTER TABLE `notas_paciente`
+  ADD CONSTRAINT `notas_paciente_ibfk_1` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notas_paciente_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `psicologos`
 --
 ALTER TABLE `psicologos`
@@ -485,46 +574,14 @@ ALTER TABLE `psicologos`
 ALTER TABLE `recordatorios`
   ADD CONSTRAINT `fk_recordatorios_cita` FOREIGN KEY (`id_cita`) REFERENCES `citas` (`id_cita`);
 
--- --------------------------------------------------------
--- Estructura de tabla para la tabla `notas_paciente`
--- --------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `notas_paciente` (
-  `id_nota` int(11) NOT NULL AUTO_INCREMENT,
-  `id_psicologo` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `titulo` varchar(255) NOT NULL,
-  `contenido` text NOT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_nota`),
-  KEY `fk_nota_psicologo` (`id_psicologo`),
-  KEY `fk_nota_usuario` (`id_usuario`),
-  CONSTRAINT `fk_nota_psicologo` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
-  CONSTRAINT `fk_nota_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
--- Estructura de tabla para la tabla `recursos_acompanamiento`
--- --------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `recursos_acompanamiento` (
-  `id_recurso` int(11) NOT NULL AUTO_INCREMENT,
-  `id_psicologo` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `titulo` varchar(255) NOT NULL,
-  `url_video` varchar(512) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_recurso`),
-  KEY `fk_recurso_psicologo` (`id_psicologo`),
-  KEY `fk_recurso_usuario` (`id_usuario`),
-  CONSTRAINT `fk_recurso_psicologo` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
-  CONSTRAINT `fk_recurso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+--
+-- Filtros para la tabla `recursos_acompanamiento`
+--
+ALTER TABLE `recursos_acompanamiento`
+  ADD CONSTRAINT `recursos_acompanamiento_ibfk_1` FOREIGN KEY (`id_psicologo`) REFERENCES `psicologos` (`id_psicologo`) ON DELETE CASCADE,
+  ADD CONSTRAINT `recursos_acompanamiento_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

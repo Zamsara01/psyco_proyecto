@@ -14,12 +14,12 @@
          onclick="closeLoginModal()"></div>
 
     <!-- Card -->
-    <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden
+    <div class="relative z-10 w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden
                 animate-[fadeInScale_0.2s_ease-out]">
 
         <!-- Botón cerrar -->
         <button onclick="closeLoginModal()"
-                class="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors focus:outline-none"
+                class="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-200 transition-colors focus:outline-none"
                 aria-label="Cerrar">
             <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
@@ -29,8 +29,8 @@
             <div class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden">
                 <img alt="PSYCO Logo" class="w-full h-full object-contain" src="<?= URL_BASE ?>public/img/psyco.png"/>
             </div>
-            <h2 id="loginModalTitle" class="font-headline-md text-headline-md text-on-surface text-center">Nos alegra verte de nuevo</h2>
-            <p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-1">Este es un espacio para acompañarte. Inicia sesión para continuar.</p>
+            <h2 id="loginModalTitle" class="font-headline-md text-headline-md text-on-surface dark:text-slate-100 text-center">Nos alegra verte de nuevo</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 text-center mt-1">Este es un espacio para acompañarte. Inicia sesión para continuar.</p>
         </div>
 
         <!-- Mensaje de error -->
@@ -50,8 +50,8 @@
                 <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">mail</span>
                     <input id="loginEmail" name="txtEmail" type="email" placeholder="ejemplo@correo.com" required
-                           class="w-full pl-10 pr-4 h-11 bg-surface-container-low border border-slate-200 rounded-lg
-                                  focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md outline-none"/>
+                           class="w-full pl-10 pr-4 h-11 bg-surface-container-low dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg
+                                  focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md dark:text-slate-100 dark:placeholder-slate-400 outline-none"/>
                 </div>
             </div>
 
@@ -61,8 +61,8 @@
                 <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">lock</span>
                     <input id="loginPassword" name="txtPassword" type="password" placeholder="••••••••" required
-                           class="w-full pl-10 pr-12 h-11 bg-surface-container-low border border-slate-200 rounded-lg
-                                  focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md outline-none"/>
+                           class="w-full pl-10 pr-12 h-11 bg-surface-container-low dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg
+                                  focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-body-md dark:text-slate-100 dark:placeholder-slate-400 outline-none"/>
                     <button type="button"
                             onclick="const p=document.getElementById('loginPassword'); p.type=p.type==='password'?'text':'password'; this.innerText=p.type==='password'?'visibility_off':'visibility';"
                             class="material-symbols-outlined absolute right-3 text-on-surface-variant hover:text-on-surface transition-colors focus:outline-none text-[20px]">
@@ -85,17 +85,17 @@
                     <div class="mt-6 flex flex-col gap-4">
                 <!-- Divisor con botón Google OAuth -->
                 <div class="flex items-center gap-4">
-                    <div class="h-[1px] flex-grow bg-slate-200"></div>
-                    <span class="text-body-sm font-medium text-tertiary">O regístrate con</span>
-                    <div class="h-[1px] flex-grow bg-slate-200"></div>
+                    <div class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-600"></div>
+                    <span class="text-body-sm font-medium text-tertiary dark:text-slate-400">O regístrate con</span>
+                    <div class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-600"></div>
                 </div>
 
                 <!-- Botón Google -->
                 <a id="btnGoogleRegister"
                    href="<?= URL_BASE ?>auth/google"
                    class="w-full flex items-center justify-center gap-3
-                          bg-white border border-slate-200
-                          hover:bg-slate-50 hover:border-slate-300
+                          bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600
+                          hover:bg-slate-50 dark:hover:bg-slate-600 hover:border-slate-300
                           active:scale-[0.98] transition-all duration-200
                           py-3 px-4 rounded-lg shadow-sm">
 
@@ -107,7 +107,7 @@
                         <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.34 5.7C13.42 14.62 18.27 10.75 24 10.75z"/>
                     </svg>
 
-                    <span class="text-body-md text-on-surface font-semibold">
+                    <span class="text-body-md text-on-surface dark:text-slate-200 font-semibold">
                         Continuar con Google
                     </span>
                 </a>
@@ -117,13 +117,13 @@
         <!-- Footer del modal -->
         <div class="px-8 pb-7 pt-4 flex flex-col gap-3">
             <div class="flex items-center gap-3">
-                <div class="h-px flex-grow bg-slate-200"></div>
-                <span class="text-label-md text-on-surface-variant">o</span>
-                <div class="h-px flex-grow bg-slate-200"></div>
+                <div class="h-px flex-grow bg-slate-200 dark:bg-slate-600"></div>
+                <span class="text-label-md text-on-surface-variant dark:text-slate-400">o</span>
+                <div class="h-px flex-grow bg-slate-200 dark:bg-slate-600"></div>
             </div>
             <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
                 <a href="#" class="text-primary hover:underline font-body-sm">Olvidé mi contraseña</a>
-                <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-orange-600 font-semibold hover:text-orange-700 font-body-sm bg-transparent border-none cursor-pointer transition-colors">
+                <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-blue-600 font-semibold hover:text-blue-700 font-body-sm bg-transparent border-none cursor-pointer transition-colors">
                     ¿No tienes cuenta? Regístrate aquí
                 </button>
             </div>

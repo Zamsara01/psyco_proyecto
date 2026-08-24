@@ -20,15 +20,15 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
 
     <!-- Encabezado -->
     <div class="mb-8">
-        <h1 class="text-2xl font-black text-slate-900">Recursos de Acompañamiento</h1>
-        <p class="text-slate-500 text-sm mt-1">Contenido personalizado de tu psicóloga para apoyar tu proceso</p>
+        <h1 class="text-2xl font-black text-slate-900 dark:text-slate-100">Recursos de Acompañamiento</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Contenido personalizado de tu psicóloga para apoyar tu proceso</p>
     </div>
 
     <?php if (empty($recursos) && empty($notas)): ?>
-    <div class="bg-slate-50 rounded-3xl p-12 text-center border-2 border-dashed border-slate-200">
-        <span class="material-symbols-outlined text-[56px] text-slate-300 block mb-3">folder_open</span>
-        <p class="text-slate-500 font-semibold">Aún no tienes recursos asignados</p>
-        <p class="text-slate-400 text-sm mt-1">Tu psicóloga agregará recursos aquí cuando los considere útiles para tu proceso</p>
+    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-12 text-center border-2 border-dashed border-slate-200 dark:border-slate-700">
+        <span class="material-symbols-outlined text-[56px] text-slate-300 dark:text-slate-600 block mb-3">folder_open</span>
+        <p class="text-slate-500 dark:text-slate-400 font-semibold">Aún no tienes recursos asignados</p>
+        <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Tu psicóloga agregará recursos aquí cuando los considere útiles para tu proceso</p>
     </div>
     <?php else: ?>
 
@@ -36,12 +36,12 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
     <?php if (!empty($videos)): ?>
     <section class="mb-10">
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[20px]">play_circle</span>
             </div>
             <div>
-                <h2 class="font-bold text-slate-800 text-lg">Videos Recomendados</h2>
-                <p class="text-xs text-slate-500">Seleccionados especialmente para ti</p>
+                <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Videos Recomendados</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Seleccionados especialmente para ti</p>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -49,29 +49,29 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
                 $url = $r['url_video'] ?? '';
                 $esYoutube = preg_match('/(?:youtu\.be\/|youtube\.com\/)/i', $url);
             ?>
-            <div class="bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-red-200 hover:shadow-md transition-all flex flex-col group">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 overflow-hidden hover:border-red-200 dark:hover:border-red-500 hover:shadow-md transition-all flex flex-col group">
                 <?php if ($esYoutube): ?>
                 <!-- Esqueleto oEmbed -->
-                <div class="oembed-video-placeholder relative aspect-video bg-slate-100 flex items-center justify-center border-b border-slate-100 transition-all" data-url="<?= htmlspecialchars($url) ?>" data-title="<?= htmlspecialchars($r['titulo']) ?>">
-                    <div class="flex flex-col items-center gap-2 text-slate-400">
+                <div class="oembed-video-placeholder relative aspect-video bg-slate-100 dark:bg-slate-700 flex items-center justify-center border-b border-slate-100 dark:border-slate-700 transition-all" data-url="<?= htmlspecialchars($url) ?>" data-title="<?= htmlspecialchars($r['titulo']) ?>">
+                    <div class="flex flex-col items-center gap-2 text-slate-400 dark:text-slate-500">
                         <span class="material-symbols-outlined animate-spin text-[32px]">progress_activity</span>
                         <span class="text-xs font-semibold">Cargando video...</span>
                     </div>
                 </div>
                 <?php else: ?>
                 <a href="<?= htmlspecialchars($r['url_video']) ?>" target="_blank" rel="noopener"
-                   class="flex items-center justify-center h-40 bg-gradient-to-br from-red-50 to-orange-50 hover:from-red-100 transition-colors">
+                   class="flex items-center justify-center h-40 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 hover:from-red-100 dark:hover:from-red-900/40 transition-colors">
                     <span class="material-symbols-outlined text-[56px] text-red-400 group-hover:scale-110 transition-transform">play_circle</span>
                 </a>
                 <?php endif; ?>
                 <div class="p-4">
-                    <h3 class="font-bold text-slate-800 mb-1 truncate"><?= htmlspecialchars($r['titulo']) ?></h3>
+                    <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-1 truncate"><?= htmlspecialchars($r['titulo']) ?></h3>
                     <?php if (!empty($r['descripcion'])): ?>
-                    <p class="text-xs text-slate-500 line-clamp-2 mb-2"><?= htmlspecialchars($r['descripcion']) ?></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-2"><?= htmlspecialchars($r['descripcion']) ?></p>
                     <?php endif; ?>
                     <div class="flex items-center justify-between mt-2">
-                        <p class="text-xs text-slate-400">Por <strong><?= htmlspecialchars($r['psicologo_nombre']) ?></strong></p>
-                        <p class="text-xs text-slate-400"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Por <strong><?= htmlspecialchars($r['psicologo_nombre']) ?></strong></p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
                     </div>
                 </div>
             </div>
@@ -84,24 +84,24 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
     <?php if (!empty($imagenes)): ?>
     <section class="mb-10">
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[20px]">image</span>
             </div>
             <div>
-                <h2 class="font-bold text-slate-800 text-lg">Imágenes Compartidas</h2>
-                <p class="text-xs text-slate-500">Material visual de apoyo</p>
+                <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Imágenes Compartidas</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Material visual de apoyo</p>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <?php foreach ($imagenes as $r): ?>
-            <div class="group relative bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-emerald-200 hover:shadow-md transition-all cursor-pointer"
+            <div class="group relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 overflow-hidden hover:border-emerald-200 dark:hover:border-emerald-500 hover:shadow-md transition-all cursor-pointer"
                  onclick="verImagen('<?= URL_BASE . htmlspecialchars($r['imagen_ruta'] ?? '') ?>', '<?= htmlspecialchars(addslashes($r['titulo'])) ?>')">
                 <img src="<?= URL_BASE . htmlspecialchars($r['imagen_ruta'] ?? '') ?>"
                      alt="<?= htmlspecialchars($r['titulo']) ?>"
                      class="w-full h-64 sm:h-72 object-cover">
                 <div class="p-4">
-                    <p class="text-sm font-bold text-slate-700 truncate"><?= htmlspecialchars($r['titulo']) ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
+                    <p class="text-sm font-bold text-slate-700 dark:text-slate-200 truncate"><?= htmlspecialchars($r['titulo']) ?></p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
                 </div>
                 <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-all">
                     <span class="material-symbols-outlined text-white text-[36px] opacity-0 group-hover:opacity-100 transition-all drop-shadow-lg">zoom_in</span>
@@ -116,29 +116,29 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
     <?php if (!empty($mensajes)): ?>
     <section class="mb-10">
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
             </div>
             <div>
-                <h2 class="font-bold text-slate-800 text-lg">Mensajes de tu Psicóloga</h2>
-                <p class="text-xs text-slate-500">Orientaciones y mensajes personalizados</p>
+                <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Mensajes de tu Psicóloga</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Orientaciones y mensajes personalizados</p>
             </div>
         </div>
         <div class="space-y-4">
             <?php foreach ($mensajes as $r): ?>
-            <div class="bg-gradient-to-br from-purple-50 to-violet-50 border-2 border-purple-100 rounded-2xl p-5 hover:border-purple-200 hover:shadow-md transition-all">
+            <div class="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 border-2 border-purple-100 dark:border-purple-800/50 rounded-2xl p-5 hover:border-purple-200 dark:hover:border-purple-500/50 hover:shadow-md transition-all">
                 <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 font-bold text-sm shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-purple-200 dark:bg-purple-900/50 flex items-center justify-center text-purple-700 dark:text-purple-400 font-bold text-sm shrink-0">
                         <?= strtoupper(mb_substr($r['psicologo_nombre'], 0, 1)) ?>
                     </div>
                     <div>
-                        <p class="text-sm font-semibold text-purple-800"><?= htmlspecialchars($r['psicologo_nombre']) ?></p>
-                        <p class="text-xs text-purple-400"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
+                        <p class="text-sm font-semibold text-purple-800 dark:text-purple-300"><?= htmlspecialchars($r['psicologo_nombre']) ?></p>
+                        <p class="text-xs text-purple-400 dark:text-purple-500"><?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
                     </div>
                 </div>
-                <h4 class="font-bold text-slate-800 mb-2"><?= htmlspecialchars($r['titulo']) ?></h4>
+                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2"><?= htmlspecialchars($r['titulo']) ?></h4>
                 <?php if (!empty($r['descripcion'])): ?>
-                <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($r['descripcion']) ?></p>
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($r['descripcion']) ?></p>
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
@@ -150,30 +150,30 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
     <?php if (!empty($notas)): ?>
     <section>
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
             </div>
             <div>
-                <h2 class="font-bold text-slate-800 text-lg">Notas de tu Psicóloga</h2>
-                <p class="text-xs text-slate-500">Recomendaciones y notas de sesión</p>
+                <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Notas de tu Psicóloga</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Recomendaciones y notas de sesión</p>
             </div>
         </div>
         <div class="space-y-4">
             <?php foreach ($notas as $nota): ?>
-            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-100 rounded-2xl p-5 hover:border-amber-200 hover:shadow-md transition-all">
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-amber-100 dark:border-amber-800/50 rounded-2xl p-5 hover:border-amber-200 dark:hover:border-amber-500/50 hover:shadow-md transition-all">
                 <div class="flex items-start justify-between gap-4 mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 font-bold text-sm shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-amber-200 dark:bg-amber-900/50 flex items-center justify-center text-amber-700 dark:text-amber-400 font-bold text-sm shrink-0">
                             <?= strtoupper(mb_substr($nota['psicologo_nombre'], 0, 1)) ?>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-amber-800"><?= htmlspecialchars($nota['psicologo_nombre']) ?></p>
-                            <p class="text-xs text-amber-400"><?= date('d M Y, H:i', strtotime($nota['fecha_creacion'])) ?></p>
+                            <p class="text-sm font-semibold text-amber-800 dark:text-amber-300"><?= htmlspecialchars($nota['psicologo_nombre']) ?></p>
+                            <p class="text-xs text-amber-400 dark:text-amber-500"><?= date('d M Y, H:i', strtotime($nota['fecha_creacion'])) ?></p>
                         </div>
                     </div>
                 </div>
-                <h4 class="font-bold text-slate-800 mb-2"><?= htmlspecialchars($nota['titulo']) ?></h4>
-                <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($nota['contenido']) ?></p>
+                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2"><?= htmlspecialchars($nota['titulo']) ?></h4>
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($nota['contenido']) ?></p>
             </div>
             <?php endforeach; ?>
         </div>
@@ -249,19 +249,19 @@ async function loadOEmbed(el, BASE) {
             }
             
             // Quitar animación de carga y clases previas
-            el.className = 'relative aspect-video bg-slate-900 border-b border-slate-100';
+            el.className = 'relative aspect-video bg-slate-900 border-b border-slate-100 dark:border-slate-700';
             
         } else {
             throw new Error(json.error);
         }
     } catch (e) {
         // Fallback en caso de error
-        el.className = 'relative aspect-video bg-gradient-to-br from-red-50 to-orange-50 border-b border-slate-100 flex items-center justify-center';
+        el.className = 'relative aspect-video bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-b border-slate-100 dark:border-slate-700 flex items-center justify-center';
         el.innerHTML = `
             <div class="text-center p-4">
-                <span class="material-symbols-outlined text-[48px] text-red-300 mb-2 block">broken_image</span>
-                <p class="text-xs text-red-600 font-semibold mb-2">No se pudo incrustar el video</p>
-                <a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="inline-block bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-red-200 transition-colors">
+                <span class="material-symbols-outlined text-[48px] text-red-300 dark:text-red-600 mb-2 block">broken_image</span>
+                <p class="text-xs text-red-600 dark:text-red-400 font-semibold mb-2">No se pudo incrustar el video</p>
+                <a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="inline-block bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
                     Ver en YouTube
                 </a>
             </div>

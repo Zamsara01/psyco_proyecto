@@ -41,29 +41,29 @@
         <!-- Interactive Grid Buttons -->
         <div class="grid grid-cols-2 gap-4 md:gap-6">
             <!-- Agenda Cita -->
-            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-orange-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
-                <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-blue-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
+                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined !text-3xl">calendar_month</span>
                 </div>
                 <span class="font-headline-sm text-slate-800 text-center">Agenda Cita</span>
             </button>
             <!-- Cancelar Cita -->
-            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-orange-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
-                <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-blue-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
+                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined !text-3xl">cancel</span>
                 </div>
                 <span class="font-headline-sm text-slate-800 text-center">Cancelar Cita</span>
             </button>
             <!-- Reprogramar -->
-            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-orange-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
-                <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-blue-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
+                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined !text-3xl">sync</span>
                 </div>
                 <span class="font-headline-sm text-slate-800 text-center">Reprogramar</span>
             </button>
             <!-- Recursos de ayuda -->
-            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-orange-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
-                <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+            <button class="group flex flex-col items-center justify-center p-6 bg-white border border-slate-100 rounded-[24px] shadow-sm hover:shadow-md hover:border-blue-200 transition-all active:scale-[0.98] duration-150 text-left w-full">
+                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined !text-3xl">auto_stories</span>
                 </div>
                 <span class="font-headline-sm text-slate-800 text-center text-balance">Recursos de ayuda</span>

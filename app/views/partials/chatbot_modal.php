@@ -40,62 +40,62 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
     <div id="chatbotBackdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeChatbotModal()"></div>
 
     <!-- Drawer Inferior -->
-    <div id="chatbotDrawer" class="relative w-full max-w-3xl mx-auto bg-white rounded-t-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.15)] p-6 md:p-8 transform transition-transform duration-300 max-h-[92vh] overflow-y-auto">
+    <div id="chatbotDrawer" class="relative w-full max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-t-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.15)] p-6 md:p-8 transform transition-transform duration-300 max-h-[92vh] overflow-y-auto">
         
         <!-- Botón cerrar -->
-        <button onclick="closeChatbotModal()" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors focus:outline-none z-10">
+        <button onclick="closeChatbotModal()" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors focus:outline-none z-10">
             <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
 
         <!-- Handle visual -->
         <div class="flex justify-center mb-6">
-            <div class="w-10 h-1.5 bg-slate-200 rounded-full cursor-pointer" onclick="closeChatbotModal()"></div>
+            <div class="w-10 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full cursor-pointer" onclick="closeChatbotModal()"></div>
         </div>
         
-        <!-- ══════════════ PASO 0: MENÚ INICIAL ══════════════ -->
+        <!-- ──════════════ PASO 0: MENÚ INICIAL ════════════── -->
         <div id="cbStep0" class="cb-step">
             <div class="mb-8 text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-200">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-100 dark:shadow-none">
                     <span class="material-symbols-outlined text-white text-[32px]">smart_toy</span>
                 </div>
-                <h2 id="chatbotTitle" class="text-xl font-bold text-slate-800 mb-1">Hola, estamos aquí para ti. ¿En qué podemos ayudarte?</h2>
-                <p class="text-sm text-slate-500">Selecciona una de las opciones para comenzar.</p>
+                <h2 id="chatbotTitle" class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-1">Hola, estamos aquí para ti. ¿En qué podemos ayudarte?</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Selecciona una de las opciones para comenzar.</p>
             </div>
             
             <div class="grid grid-cols-2 gap-3 md:gap-4">
                 <!-- Agendar Cita -->
-                <button onclick="cbGoToStep1()" class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                <button onclick="cbGoToStep1()" class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">calendar_month</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-700 text-center">Agendar Cita</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Agendar Cita</span>
                 </button>
                 
                 <!-- Cancelar Cita -->
                 <button onclick="cbGoToCancelList()" 
-                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">cancel</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-700 text-center">Cancelar Cita</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Cancelar Cita</span>
                 </button>
                 
                 <!-- Reprogramar -->
                 <button onclick="cbGoToReprogramList()" 
-                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">sync</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-700 text-center">Reprogramar</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Reprogramar</span>
                 </button>
                 
                 <!-- Recursos -->
                 <button onclick="window.location.href='<?= URL_BASE ?>citas/misRecursos'" 
-                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.97] duration-150 w-full">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-3 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">auto_stories</span>
                     </div>
-                    <span class="text-sm font-semibold text-slate-700 text-center">Recursos</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Recursos</span>
                 </button>
 
             </div>
@@ -105,30 +105,30 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
         <!-- ══════════════ PASO 1: SELECCIONAR FECHA ══════════════ -->
         <div id="cbStep1" class="cb-step hidden">
             <div class="mb-6">
-                <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-500 transition-colors mb-4">
+                <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 transition-colors mb-4">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span> Volver
                 </button>
                 <div class="flex items-center gap-3 mb-1">
-                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                    <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center">
                         <span class="material-symbols-outlined text-[20px]">calendar_month</span>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-800">Agendar Cita</h3>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Agendar Cita</h3>
                 </div>
-                <p class="text-sm text-slate-500 pl-12">Selecciona la fecha para tu cita</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 pl-12">Selecciona la fecha para tu cita</p>
             </div>
 
-            <div class="bg-slate-50 rounded-2xl p-5 mb-5">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Fecha de la cita</label>
+            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-5 mb-5">
+                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Fecha de la cita</label>
                 <input 
                     type="date" 
                     id="cbFecha" 
                     min="<?= date('Y-m-d', strtotime('+1 day')) ?>"
-                    class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-800 font-medium focus:outline-none focus:border-orange-400 transition-colors text-base"
+                    class="w-full bg-white border-2 border-slate-200 dark:bg-slate-800 dark:border-slate-600 rounded-xl px-4 py-3 text-slate-800 dark:text-slate-100 font-medium focus:outline-none focus:border-blue-400 transition-colors text-base"
                 >
             </div>
 
             <button onclick="cbBuscarPsicologos()" id="cbBtnBuscar"
-                class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] shadow-md shadow-orange-200 flex items-center justify-center gap-2">
+                class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all active:scale-[0.98] shadow-md shadow-blue-100 flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">search</span>
                 Ver psicólogos disponibles
             </button>
@@ -142,16 +142,16 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
         <!-- ══════════════ PASO 2: SELECCIONAR PSICÓLOGO ══════════════ -->
         <div id="cbStep2" class="cb-step hidden">
             <div class="mb-5">
-                <button onclick="cbGoToStep(1)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-500 transition-colors mb-4">
+                <button onclick="cbGoToStep(1)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 transition-colors mb-4">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span> Cambiar fecha
                 </button>
                 <div class="flex items-center gap-3 mb-1">
-                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                    <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center">
                         <span class="material-symbols-outlined text-[20px]">group</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-slate-800">Psicólogos disponibles</h3>
-                        <p id="cbFechaLabel" class="text-xs text-orange-500 font-medium"></p>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Psicólogos disponibles</h3>
+                        <p id="cbFechaLabel" class="text-xs text-blue-500 font-medium"></p>
                     </div>
                 </div>
             </div>
@@ -165,16 +165,16 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
         <!-- ══════════════ PASO 3: SELECCIONAR HORA ══════════════ -->
         <div id="cbStep3" class="cb-step hidden">
             <div class="mb-5">
-                <button onclick="cbGoToStep(2)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-500 transition-colors mb-4">
+                <button onclick="cbGoToStep(2)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 transition-colors mb-4">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span> Cambiar psicólogo
                 </button>
                 <div class="flex items-center gap-3 mb-1">
-                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                    <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center">
                         <span class="material-symbols-outlined text-[20px]">schedule</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-slate-800">Horas disponibles</h3>
-                        <p id="cbPsicologoLabel" class="text-xs text-orange-500 font-medium"></p>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Horas disponibles</h3>
+                        <p id="cbPsicologoLabel" class="text-xs text-blue-500 font-medium"></p>
                     </div>
                 </div>
             </div>
@@ -184,14 +184,14 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
             </div>
 
             <!-- Motivo de consulta -->
-            <div class="bg-slate-50 rounded-2xl p-4 mb-5">
-                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Motivo de consulta <span class="text-slate-400 font-normal">(opcional)</span></label>
+            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 mb-5">
+                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Motivo de consulta <span class="text-slate-400 dark:text-slate-500 font-normal">(opcional)</span></label>
                 <textarea id="cbMotivo" rows="3" placeholder="Ej: Ansiedad, dificultades emocionales..."
-                    class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-700 text-sm focus:outline-none focus:border-orange-400 transition-colors resize-none"></textarea>
+                    class="w-full bg-white border-2 border-slate-200 dark:bg-slate-800 dark:border-slate-600 rounded-xl px-4 py-3 text-slate-700 dark:text-slate-100 text-sm focus:outline-none focus:border-blue-400 transition-colors resize-none"></textarea>
             </div>
 
             <button onclick="cbConfirmarCita()" id="cbBtnConfirmar" disabled
-                class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] shadow-md shadow-orange-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all active:scale-[0.98] shadow-md shadow-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">check_circle</span>
                 Confirmar cita
             </button>
@@ -208,14 +208,14 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                 <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
                     <span class="material-symbols-outlined text-green-500 text-[44px]">check_circle</span>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">¡Cita agendada!</h3>
-                <p class="text-sm text-slate-500 mb-6">Tu cita ha sido registrada exitosamente.</p>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">¡Cita agendada!</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Tu cita ha sido registrada exitosamente.</p>
 
-                <div id="cbResumen" class="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 rounded-2xl p-5 text-left space-y-3 mb-6">
+                <div id="cbResumen" class="bg-gradient-to-br from-blue-50/60 to-emerald-50/70 border border-blue-100 dark:from-blue-900/20 dark:to-emerald-900/20 dark:border-blue-800/50 rounded-2xl p-5 text-left space-y-3 mb-6">
                     <!-- Resumen insertado por JS -->
                 </div>
 
-                <button onclick="cbReset()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-colors">
+                <button onclick="cbReset()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors">
                     Volver al menú principal
                 </button>
             </div>
@@ -224,16 +224,16 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
         <!-- ══════════════ PASO 5: LISTA DE CITAS PENDIENTES ══════════════ -->
         <div id="cbStep5" class="cb-step hidden">
             <div class="mb-5">
-                <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-orange-500 transition-colors mb-4">
+                <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 transition-colors mb-4">
                     <span class="material-symbols-outlined text-[18px]">arrow_back</span> Volver
                 </button>
                 <div class="flex items-center gap-3 mb-1">
-                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                    <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center">
                         <span class="material-symbols-outlined text-[20px]" id="cbStep5Icon">list</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-slate-800" id="cbStep5Title">Selecciona una cita</h3>
-                        <p class="text-xs text-orange-500 font-medium" id="cbStep5Subtitle"></p>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100" id="cbStep5Title">Selecciona una cita</h3>
+                        <p class="text-xs text-blue-500 font-medium" id="cbStep5Subtitle"></p>
                     </div>
                 </div>
             </div>
@@ -249,10 +249,10 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                 <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-5">
                     <span class="material-symbols-outlined text-red-500 text-[44px]">warning</span>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">¿Cancelar cita?</h3>
-                <p class="text-sm text-slate-500 mb-6">Esta acción no se puede deshacer.</p>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">¿Cancelar cita?</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Esta acción no se puede deshacer.</p>
 
-                <div id="cbCancelResumen" class="bg-red-50 border border-red-100 rounded-2xl p-5 text-left space-y-3 mb-6">
+                <div id="cbCancelResumen" class="bg-red-50 border border-red-100 dark:bg-red-900/20 dark:border-red-900/50 rounded-2xl p-5 text-left space-y-3 mb-6">
                     <!-- Resumen a cancelar -->
                 </div>
 
@@ -261,7 +261,7 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                         class="w-full py-3 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600 transition-colors shadow-sm">
                         Sí, cancelar cita
                     </button>
-                    <button onclick="cbGoToStep(5)" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-colors">
+                    <button onclick="cbGoToStep(5)" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors">
                         Volver
                     </button>
                 </div>
@@ -270,10 +270,10 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
 
 
         <!-- ══════════════ LOADING OVERLAY ══════════════ -->
-        <div id="cbLoading" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm rounded-t-[32px] flex items-center justify-center z-20">
+        <div id="cbLoading" class="hidden absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-t-[32px] flex items-center justify-center z-20">
             <div class="flex flex-col items-center gap-3">
-                <div class="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div>
-                <p class="text-sm text-slate-500 font-medium">Consultando disponibilidad...</p>
+                <div class="w-10 h-10 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Consultando disponibilidad...</p>
             </div>
         </div>
     </div>
@@ -282,13 +282,13 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
 <!-- ══════════════ MODAL DE ÉXITO EXTERNO ══════════════ -->
 <div id="successCitaModal" class="fixed inset-0 z-[60] hidden items-center justify-center" role="dialog" aria-modal="true">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeSuccessCitaModal()"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300 z-10 text-center">
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300 z-10 text-center">
         <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
             <span class="material-symbols-outlined text-green-500 text-[44px]">check_circle</span>
         </div>
-        <h3 class="text-2xl font-bold text-slate-800 mb-2">¡Cita creada con éxito!</h3>
-        <p class="text-slate-500 mb-6">Hemos registrado tu cita correctamente.</p>
-        <button onclick="closeSuccessCitaModal()" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] shadow-md shadow-orange-200">
+        <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">¡Cita creada con éxito!</h3>
+        <p class="text-slate-500 dark:text-slate-400 mb-6">Hemos registrado tu cita correctamente.</p>
+        <button onclick="closeSuccessCitaModal()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all active:scale-[0.98] shadow-md shadow-blue-100">
             Aceptar
         </button>
     </div>
@@ -400,11 +400,11 @@ function cbRenderCitasPendientes(accion) {
     if (cbCitasPendientes.length === 0) {
         container.innerHTML = `
             <div class="text-center py-8">
-                <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-3">
-                    <span class="material-symbols-outlined text-[32px] text-slate-300">event_busy</span>
+                <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center mx-auto mb-3">
+                    <span class="material-symbols-outlined text-[32px] text-slate-300 dark:text-slate-500">event_busy</span>
                 </div>
-                <p class="text-slate-600 font-medium">No tienes citas pendientes</p>
-                <p class="text-slate-400 text-sm mt-1">Actualmente no hay citas próximas para ${accion}.</p>
+                <p class="text-slate-600 dark:text-slate-300 font-medium">No tienes citas pendientes</p>
+                <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Actualmente no hay citas próximas para ${accion}.</p>
             </div>
         `;
         return;
@@ -412,13 +412,13 @@ function cbRenderCitasPendientes(accion) {
 
     container.innerHTML = cbCitasPendientes.map(c => `
         <button onclick="${accion === 'cancelar' ? `cbPrepararCancelacion(${c.id_cita})` : `cbPrepararReprogramacion(${c.id_cita})`}" 
-            class="w-full text-left p-4 bg-white border-2 border-slate-100 rounded-2xl hover:border-orange-300 hover:bg-orange-50/40 transition-all active:scale-[0.98] group flex items-start gap-4">
-            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-orange-500">event</span>
+            class="w-full text-left p-4 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.98] group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700/50 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400">event</span>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="font-bold text-slate-800 text-sm mb-1">${c.fecha} a las ${c.hora}</p>
-                <p class="text-xs text-slate-500 truncate">Psic. ${c.psicologo_nombre}</p>
+                <p class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">${c.fecha} a las ${c.hora}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Psic. ${c.psicologo_nombre}</p>
             </div>
         </button>
     `).join('');
@@ -429,16 +429,16 @@ function cbPrepararCancelacion(idCita) {
     const c = cbCitasPendientes.find(x => x.id_cita === idCita);
     document.getElementById('cbCancelResumen').innerHTML = `
         <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Psicólogo:</span>
-            <span class="font-bold text-slate-800 text-right">${c.psicologo_nombre}</span>
+            <span class="text-slate-500 dark:text-slate-400">Psicólogo:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${c.psicologo_nombre}</span>
         </div>
         <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Fecha:</span>
-            <span class="font-bold text-slate-800 text-right">${c.fecha}</span>
+            <span class="text-slate-500 dark:text-slate-400">Fecha:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${c.fecha}</span>
         </div>
         <div class="flex justify-between text-sm">
-            <span class="text-slate-500">Hora:</span>
-            <span class="font-bold text-slate-800 text-right">${c.hora}</span>
+            <span class="text-slate-500 dark:text-slate-400">Hora:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${c.hora}</span>
         </div>
     `;
     cbGoToStep(6);
@@ -533,14 +533,14 @@ function cbRenderPsicologos(lista, fecha, dia) {
 
     container.innerHTML = lista.map(p => `
         <button onclick="cbSeleccionarPsicologo(${p.id_psicologo}, '${escHtml(p.nombre)}')"
-            class="w-full flex items-center gap-4 p-4 bg-white border-2 border-slate-100 rounded-2xl hover:border-orange-300 hover:bg-orange-50/30 transition-all active:scale-[0.99] text-left group">
+            class="w-full flex items-center gap-4 p-4 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/30 dark:hover:bg-blue-900/30 transition-all active:scale-[0.99] text-left group">
             <img src="${escHtml(p.foto_perfil)}" alt="${escHtml(p.nombre)}"
-                class="w-12 h-12 rounded-xl object-cover shrink-0 ring-2 ring-orange-100 group-hover:ring-orange-300 transition-all">
+                class="w-12 h-12 rounded-xl object-cover shrink-0 ring-2 ring-blue-100 dark:ring-blue-900/50 group-hover:ring-blue-300 transition-all">
             <div class="flex-1 min-w-0">
-                <p class="font-semibold text-slate-800 truncate">${escHtml(p.nombre)}</p>
-                <p class="text-xs text-slate-500 truncate">${escHtml(p.especialidad)}</p>
+                <p class="font-semibold text-slate-800 dark:text-slate-100 truncate">${escHtml(p.nombre)}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">${escHtml(p.especialidad)}</p>
             </div>
-            <span class="material-symbols-outlined text-slate-300 group-hover:text-orange-400 transition-colors">chevron_right</span>
+            <span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-blue-400 transition-colors">chevron_right</span>
         </button>
     `).join('');
 }
@@ -576,7 +576,7 @@ function cbRenderHoras(horas) {
     const container = document.getElementById('cbHorasList');
     if (!horas || horas.length === 0) {
         container.innerHTML = `
-            <div class="col-span-3 text-center py-6 text-slate-400">
+            <div class="col-span-3 text-center py-6 text-slate-400 dark:text-slate-500">
                 <span class="material-symbols-outlined text-[40px] block mb-2">event_busy</span>
                 <p class="text-sm">No hay horas disponibles este día para este psicólogo.</p>
             </div>`;
@@ -586,7 +586,7 @@ function cbRenderHoras(horas) {
     container.innerHTML = horas.map(h => `
         <button onclick="cbSeleccionarHora('${h}', this)"
             data-hora="${h}"
-            class="hora-btn py-2.5 px-3 border-2 border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-[0.97]">
+            class="hora-btn py-2.5 px-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-all active:scale-[0.97]">
             ${h}
         </button>
     `).join('');
@@ -595,12 +595,12 @@ function cbRenderHoras(horas) {
 function cbSeleccionarHora(hora, btn) {
     // Quitar selección anterior
     document.querySelectorAll('.hora-btn').forEach(b => {
-        b.classList.remove('border-orange-500', 'bg-orange-500', 'text-white');
-        b.classList.add('border-slate-200', 'text-slate-600');
+        b.classList.remove('border-blue-500', 'bg-blue-500', 'text-white', 'dark:border-blue-500', 'dark:bg-blue-500', 'dark:text-white', 'hover:text-blue-600', 'dark:hover:text-blue-400');
+        b.classList.add('border-slate-200', 'text-slate-600', 'dark:border-slate-700', 'dark:text-slate-300', 'hover:text-blue-600', 'dark:hover:text-blue-400');
     });
     // Marcar seleccionada
-    btn.classList.remove('border-slate-200', 'text-slate-600');
-    btn.classList.add('border-orange-500', 'bg-orange-500', 'text-white');
+    btn.classList.remove('border-slate-200', 'text-slate-600', 'dark:border-slate-700', 'dark:text-slate-300', 'hover:text-blue-600', 'dark:hover:text-blue-400');
+    btn.classList.add('border-blue-500', 'bg-blue-500', 'text-white', 'dark:border-blue-500', 'dark:bg-blue-500', 'dark:text-white');
 
     CB.hora = hora;
     document.getElementById('cbBtnConfirmar').disabled = false;

@@ -8,7 +8,7 @@ $userName    = $_SESSION['user']['nombre'] ?? '';
     <!-- Logo -->
     <div class="flex items-center gap-3">
         <img alt="PSYCO Logo" class="h-8 w-auto object-contain" src="<?= URL_BASE ?>public/img/psyco.png"/>
-        <a href="<?= URL_BASE ?>" class="text-xl font-bold text-orange-600 font-headline-sm hover:text-orange-700 transition-colors">
+        <a href="<?= URL_BASE ?>" class="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
             PSYCO
         </a>
     </div>
