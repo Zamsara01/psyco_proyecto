@@ -1,0 +1,31 @@
+{
+  "name": "psyco_proyecto-davidbackend1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/tailwindcss -i ./public/css/tailwind-input.css -o ./public/css/tailwind.css --minify",
+    "dev": "./node_modules/.bin/tailwindcss -i ./public/css/tailwind-input.css -o ./public/css/tailwind.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zamsara01/psyco_proyecto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Zamsara01/psyco_proyecto/issues"
+  },
+  "homepage": "https://github.com/Zamsara01/psyco_proyecto#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/forms": "^0.5.11",
+    "tailwindcss": "^4.3.3"
+  }
+}

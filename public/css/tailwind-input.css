@@ -1,0 +1,264 @@
+/* ─────────────────────────────────────────────────────────────────
+   Tailwind v4 — Archivo de entrada
+   Compilar:    npm run build
+   Watch/dev:   npm run dev
+   Salida:      public/css/tailwind.css
+   ───────────────────────────────────────────────────────────────── */
+
+@import "tailwindcss";
+
+/* ── Plugin: forms ── */
+@plugin "@tailwindcss/forms";
+
+/* ─────────────────────────────────────────────────────────────────
+   Dark mode por clase (equivale a darkMode: "class" en v3)
+   ───────────────────────────────────────────────────────────────── */
+@variant dark (&:where(.dark, .dark *));
+
+/* ─────────────────────────────────────────────────────────────────
+   Tokens de diseño — equivalente al theme.extend de v3
+   ───────────────────────────────────────────────────────────────── */
+@theme {
+    /* ── Paleta principal ── */
+    --color-primary:                  #0c6e00;
+    --color-primary-container:        #46b033;
+    --color-on-primary:               #ffffff;
+    --color-on-primary-container:     #043c00;
+    --color-inverse-primary:          #73de5b;
+    --color-primary-fixed:            #8ffb74;
+    --color-primary-fixed-dim:        #73de5b;
+    --color-on-primary-fixed:         #012200;
+    --color-on-primary-fixed-variant: #075300;
+
+    /* ── Secundario ── */
+    --color-secondary:                  #455e90;
+    --color-secondary-container:        #adc6ff;
+    --color-on-secondary:               #ffffff;
+    --color-on-secondary-container:     #385283;
+    --color-secondary-fixed:            #d8e2ff;
+    --color-secondary-fixed-dim:        #adc6ff;
+    --color-on-secondary-fixed:         #001a41;
+    --color-on-secondary-fixed-variant: #2c4676;
+
+    /* ── Terciario ── */
+    --color-tertiary:                  #605e59;
+    --color-tertiary-container:        #9d9a94;
+    --color-on-tertiary:               #ffffff;
+    --color-on-tertiary-container:     #34322e;
+    --color-tertiary-fixed:            #e7e2db;
+    --color-tertiary-fixed-dim:        #cac6bf;
+    --color-on-tertiary-fixed:         #1d1b17;
+    --color-on-tertiary-fixed-variant: #494742;
+
+    /* ── Error ── */
+    --color-error:             #ba1a1a;
+    --color-error-container:   #ffdad6;
+    --color-on-error:          #ffffff;
+    --color-on-error-container:#93000a;
+
+    /* ── Logo Brand ── */
+    --color-brand-blue:       #2563eb;
+    --color-brand-blue-dark:  #1d4ed8;
+    --color-brand-green:      #16a34a;
+    --color-brand-green-dark: #15803d;
+
+    /* ── Superficie / Fondo ── */
+    --color-surface:                   transparent;
+    --color-surface-dim:               #d9dadc;
+    --color-surface-bright:            #f8f9fb;
+    --color-surface-container-lowest:  #ffffff;
+    --color-surface-container-low:     #f3f4f6;
+    --color-surface-container:         #edeef0;
+    --color-surface-container-high:    #e7e8ea;
+    --color-surface-container-highest: #e1e2e4;
+    --color-on-surface:                #191c1e;
+    --color-on-surface-variant:        #584237;
+    --color-outline:                   #8c7164;
+    --color-outline-variant:           #e0c0b1;
+    --color-inverse-surface:           #2e3132;
+    --color-inverse-on-surface:        #f0f1f3;
+    --color-surface-tint:              #0c6e00;
+    --color-background:                transparent;
+    --color-on-background:             #191c1e;
+
+    /* ── Tipografía ── */
+    --font-family-headline-lg: "Plus Jakarta Sans", sans-serif;
+    --font-family-headline-md: "Plus Jakarta Sans", sans-serif;
+    --font-family-headline-sm: "Plus Jakarta Sans", sans-serif;
+    --font-family-body-lg:     "Plus Jakarta Sans", sans-serif;
+    --font-family-body-md:     "Plus Jakarta Sans", sans-serif;
+    --font-family-body-sm:     "Plus Jakarta Sans", sans-serif;
+    --font-family-label-md:    "Plus Jakarta Sans", sans-serif;
+
+    --font-size-headline-lg: 32px;
+    --font-size-headline-md: 24px;
+    --font-size-headline-sm: 20px;
+    --font-size-body-lg:     18px;
+    --font-size-body-md:     16px;
+    --font-size-body-sm:     14px;
+    --font-size-label-md:    12px;
+
+    --line-height-headline-lg: 1.2;
+    --line-height-headline-md: 1.3;
+    --line-height-headline-sm: 1.4;
+    --line-height-body-lg:     1.6;
+    --line-height-body-md:     1.5;
+    --line-height-body-sm:     1.5;
+    --line-height-label-md:    1;
+
+    /* ── Espaciado personalizado ── */
+    --spacing-unit:             8px;
+    --spacing-stack-sm:         8px;
+    --spacing-stack-md:         16px;
+    --spacing-gutter:           16px;
+    --spacing-container-margin: 24px;
+    --spacing-stack-lg:         32px;
+
+    /* ── Border radius ── */
+    --radius:    0.25rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Safelist — clases usadas dinámicamente (PHP/JS) que el
+   scanner no detecta en el HTML estático
+   ───────────────────────────────────────────────────────────────── */
+@source inline("{bg,text,border}-{surface,surface-dim,surface-bright,surface-container-lowest,surface-container-low,surface-container,surface-container-high,surface-container-highest,primary,primary-container,secondary,secondary-container,tertiary,tertiary-container,error,error-container,inverse-surface,background}");
+@source inline("{text}-{on-surface,on-surface-variant,on-primary,on-primary-container,on-secondary,on-secondary-container,on-tertiary,on-tertiary-container,on-error,on-error-container,on-background,inverse-on-surface,primary,secondary,tertiary,error,outline,outline-variant}");
+@source inline("{border}-{outline,outline-variant,primary}");
+@source inline("{font}-{body-md,body-lg,body-sm,headline-lg,headline-md,headline-sm,label-md}");
+@source inline("{text}-{headline-lg,headline-md,headline-sm,body-lg,body-md,body-sm,label-md}");
+@source inline("overflow-x-hidden");
+
+/* ─────────────────────────────────────────────────────────────────
+   ESTILOS BASE DEL PROYECTO
+   ───────────────────────────────────────────────────────────────── */
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #eff6ff;
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.13)  0%,
+            rgba(37, 99, 235, 0.05) 40%,
+            rgba(22, 163, 74, 0.06) 60%,
+            rgba(22, 163, 74, 0.16) 100%
+        );
+    background-attachment: fixed;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+    background-color: #0d1117;
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.08)  0%,
+            rgba(15, 23, 42, 0.95)  40%,
+            rgba(15, 23, 42, 0.95)  60%,
+            rgba(22, 163, 74, 0.06) 100%
+        );
+}
+
+#main-content {
+    background: transparent;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.bg-pattern {
+    background-color: transparent;
+    background-image: radial-gradient(rgba(37, 99, 235, 0.15) 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+}
+
+.drawer-blur {
+    backdrop-filter: blur(8px);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar        { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track  { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb  { background: #e1e2e4; border-radius: 10px; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+
+.form-input-focus:focus {
+    outline: none;
+    border-color: #0c6e00;
+    box-shadow: 0 0 0 2px rgba(12, 110, 0, 0.1);
+}
+
+/* ── Sidebar ── */
+#app-sidebar { will-change: transform; }
+
+@media (max-width: 1023px) {
+    #main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* ── Tablas ── */
+.overflow-x-auto { -webkit-overflow-scrolling: touch; }
+
+@media (max-width: 640px) {
+    .table-hide-sm { display: none; }
+}
+
+/* ── Botones de acción ── */
+@media (max-width: 640px) {
+    .action-buttons-wrap              { flex-direction: column; width: 100%; }
+    .action-buttons-wrap > *          { width: 100%; justify-content: center; }
+}
+
+/* ── Modales mobile ── */
+@media (max-width: 640px) {
+    .modal-mobile-bottom              { align-items: flex-end !important; }
+    .modal-mobile-bottom > .modal-content {
+        border-radius: 1.5rem 1.5rem 0 0 !important;
+        max-height: 90vh;
+    }
+}
+
+.fixed.inset-0 > [class*="max-w-"] { max-width: calc(100vw - 2rem); }
+
+/* ── Calendario ── */
+@media (max-width: 640px) {
+    .calendar-grid div          { font-size: 0.75rem; }
+    #calendar-grid > div        { height: 2.8rem; }
+}
+
+/* ── Tipografía adaptativa ── */
+@media (max-width: 640px) {
+    h1.text-2xl { font-size: 1.25rem; }
+}
+
+/* ── Touch targets (WCAG) ── */
+button, a, [role="button"] { min-height: 44px; min-width: 44px; }
+.no-min-touch               { min-height: unset; min-width: unset; }
+
+/* ── Chatbot ── */
+@media (max-width: 640px) {
+    #chatbotModal .chatbot-panel {
+        max-height: 85vh;
+        border-radius: 1.5rem 1.5rem 0 0;
+        width: 100%;
+        max-width: 100%;
+    }
+}
