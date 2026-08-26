@@ -130,10 +130,13 @@ async function cargarNotasPaciente(idUsuario, nombre, btn) {
         b.querySelector('span:first-child').classList.remove('text-purple-700');
         b.querySelector('span:first-child').classList.add('text-slate-700');
     });
-    btn.classList.remove('bg-white', 'border-transparent');
-    btn.classList.add('bg-purple-50', 'border-purple-200');
-    btn.querySelector('span:first-child').classList.remove('text-slate-700');
-    btn.querySelector('span:first-child').classList.add('text-purple-700');
+    
+    if (btn) {
+        btn.classList.remove('bg-white', 'border-transparent');
+        btn.classList.add('bg-purple-50', 'border-purple-200');
+        btn.querySelector('span:first-child').classList.remove('text-slate-700');
+        btn.querySelector('span:first-child').classList.add('text-purple-700');
+    }
 
     document.getElementById('detalleNombre').textContent = nombre;
     document.getElementById('detalleInicial').textContent = nombre.charAt(0).toUpperCase();
@@ -215,8 +218,15 @@ async function guardarNotaRapida() {
         const data = await res.json();
         if (data.ok) {
             cerrarNotaRapida();
-            const btn = document.querySelector('.paciente-tab-btn.bg-purple-50');
-            if (btn) btn.click();
+            
+            // Recargar notas del paciente activo instantáneamente
+            const nombrePaciente = document.getElementById('notaRapidaPacienteNombre').textContent;
+            
+            // Intentar encontrar el botón en la lista (si es que existe en "citas de hoy")
+            const btnPaciente = document.querySelector(`.paciente-tab-btn[onclick*="${idUsuario}"]`);
+            
+            // Cargar de nuevo la vista de notas con el ID y nombre actualizados
+            cargarNotasPaciente(idUsuario, nombrePaciente, btnPaciente);
         } else {
             errEl.textContent = data.error;
             errEl.classList.remove('hidden');

@@ -2,27 +2,46 @@
 $cb_tieneCitaPendiente = false;
 $cb_tieneCitaAlguna = false;
 $cb_citasPendientesJSON = '[]';
+$cb_userRol = $_SESSION['user']['rol'] ?? '';
 
-if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente') {
+if (!empty($_SESSION['user'])) {
     if (!class_exists('CitaModel', false)) {
         require_once dirname(__DIR__, 2) . '/models/CitaModel.php';
     }
     $cb_citaModel = new CitaModel();
-    $cb_citasUser = $cb_citaModel->getCitasUsuario((int)$_SESSION['user']['id']);
     $pendientes = [];
-    if (!empty($cb_citasUser)) {
-        $cb_tieneCitaAlguna = true;
-        foreach ($cb_citasUser as $c) {
-            if ($c['estado'] === 'pendiente' && $c['fecha'] >= date('Y-m-d')) {
-                $cb_tieneCitaPendiente = true;
+
+    if ($cb_userRol === 'paciente') {
+        $cb_citasUser = $cb_citaModel->getCitasUsuario((int)$_SESSION['user']['id']);
+        if (!empty($cb_citasUser)) {
+            $cb_tieneCitaAlguna = true;
+            foreach ($cb_citasUser as $c) {
+                if ($c['estado'] === 'pendiente' && $c['fecha'] >= date('Y-m-d')) {
+                    $cb_tieneCitaPendiente = true;
+                    $pendientes[] = [
+                        'id_cita' => $c['id_cita'],
+                        'fecha' => $c['fecha'],
+                        'hora' => substr($c['hora'], 0, 5),
+                        'id_psicologo' => $c['id_psicologo'],
+                        'psicologo_nombre' => $c['psicologo_nombre'],
+                        'especialidad' => $c['especialidad'],
+                        'foto_perfil' => $c['foto_perfil']
+                    ];
+                }
+            }
+        }
+    } elseif ($cb_userRol === 'psicologo') {
+        $cb_citasPsicologa = $cb_citaModel->getCitasPendientesPsicologo((int)$_SESSION['user']['id']);
+        if (!empty($cb_citasPsicologa)) {
+            $cb_tieneCitaAlguna = true;
+            $cb_tieneCitaPendiente = true;
+            foreach ($cb_citasPsicologa as $c) {
                 $pendientes[] = [
                     'id_cita' => $c['id_cita'],
+                    'id_usuario' => $c['id_usuario'],
                     'fecha' => $c['fecha'],
                     'hora' => substr($c['hora'], 0, 5),
-                    'id_psicologo' => $c['id_psicologo'],
-                    'psicologo_nombre' => $c['psicologo_nombre'],
-                    'especialidad' => $c['especialidad'],
-                    'foto_perfil' => $c['foto_perfil']
+                    'paciente_nombre' => $c['paciente_nombre']
                 ];
             }
         }
@@ -90,7 +109,7 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                 </button>
                 
                 <!-- Recursos -->
-                <button onclick="window.location.href='<?= URL_BASE ?>citas/misRecursos'" 
+                <button onclick="window.location.href='<?= URL_BASE ?><?= ($cb_userRol === 'psicologo') ? 'panel_psicologas/recursos' : 'citas/misRecursos' ?>'" 
                     class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
                     <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-[28px]">auto_stories</span>
@@ -256,6 +275,14 @@ if (!empty($_SESSION['user']) && ($_SESSION['user']['rol'] ?? '') === 'paciente'
                     <!-- Resumen a cancelar -->
                 </div>
 
+                <?php if ($cb_userRol === 'psicologo'): ?>
+                <div class="mb-6 text-left">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Explique por qué no puede asistir a esta cita <span class="text-red-500">*</span></label>
+                    <textarea id="cbMotivoCancelacion" rows="3" class="w-full bg-white border-2 border-slate-200 dark:bg-slate-800 dark:border-slate-600 rounded-xl px-4 py-3 text-slate-700 dark:text-slate-100 text-sm focus:outline-none focus:border-red-400 dark:focus:border-red-500 transition-colors resize-none" placeholder="El paciente verá esta justificación..."></textarea>
+                    <p id="cbErrorMotivoCancelacion" class="hidden text-xs text-red-500 mt-1">Debe ingresar un motivo para cancelar.</p>
+                </div>
+                <?php endif; ?>
+
                 <div class="flex flex-col gap-3">
                     <button onclick="cbConfirmarCancelacion()" id="cbBtnCancelar"
                         class="w-full py-3 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600 transition-colors shadow-sm">
@@ -317,6 +344,7 @@ const CB = {
 };
 
 const cbCitasPendientes = <?= $cb_citasPendientesJSON ?>;
+const cbUserRol = '<?= $cb_userRol ?>';
 let cbCancelId = null;
 
 // ─── Navegación ───────────────────────────────────────────────────────
@@ -418,7 +446,7 @@ function cbRenderCitasPendientes(accion) {
             </div>
             <div class="flex-1 min-w-0">
                 <p class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">${c.fecha} a las ${c.hora}</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Psic. ${c.psicologo_nombre}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">${cbUserRol === 'psicologo' ? 'Paciente: ' + c.paciente_nombre : 'Psic. ' + c.psicologo_nombre}</p>
             </div>
         </button>
     `).join('');
@@ -429,8 +457,8 @@ function cbPrepararCancelacion(idCita) {
     const c = cbCitasPendientes.find(x => x.id_cita === idCita);
     document.getElementById('cbCancelResumen').innerHTML = `
         <div class="flex justify-between text-sm">
-            <span class="text-slate-500 dark:text-slate-400">Psicólogo:</span>
-            <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${c.psicologo_nombre}</span>
+            <span class="text-slate-500 dark:text-slate-400">${cbUserRol === 'psicologo' ? 'Paciente' : 'Psicólogo'}:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${cbUserRol === 'psicologo' ? c.paciente_nombre : c.psicologo_nombre}</span>
         </div>
         <div class="flex justify-between text-sm">
             <span class="text-slate-500 dark:text-slate-400">Fecha:</span>
@@ -441,18 +469,36 @@ function cbPrepararCancelacion(idCita) {
             <span class="font-bold text-slate-800 dark:text-slate-100 text-right">${c.hora}</span>
         </div>
     `;
+    
+    if (cbUserRol === 'psicologo') {
+        document.getElementById('cbMotivoCancelacion').value = '';
+        document.getElementById('cbErrorMotivoCancelacion').classList.add('hidden');
+    }
+    
     cbGoToStep(6);
 }
 
 async function cbConfirmarCancelacion() {
     if (!cbCancelId) return;
+    
+    let motivoCancelacion = '';
+    if (cbUserRol === 'psicologo') {
+        motivoCancelacion = document.getElementById('cbMotivoCancelacion').value.trim();
+        if (!motivoCancelacion) {
+            document.getElementById('cbErrorMotivoCancelacion').classList.remove('hidden');
+            return;
+        }
+        document.getElementById('cbErrorMotivoCancelacion').classList.add('hidden');
+    }
+    
     cbShowLoading(true);
     try {
         const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
-        const res = await fetch(BASE + 'citas/cancelar', {
+        const endpoint = cbUserRol === 'psicologo' ? 'citas/cancelarPsicologa' : 'citas/cancelar';
+        const res = await fetch(BASE + endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_cita: cbCancelId })
+            body: JSON.stringify({ id_cita: cbCancelId, motivo: motivoCancelacion })
         });
         const data = await res.json();
         if (!data.ok) throw new Error(data.error);

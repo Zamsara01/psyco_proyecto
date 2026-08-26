@@ -1,7 +1,7 @@
 <?php
 /**
  * Vista: Panel Psicólogas
- * Variables: $stats[], $citasRecientes[], $citasHoy[], $pacientesHoy[]
+ * Variables: $stats[], $citasRecientes[], $citasHoy[], $pacientesHoy[], $citaEnProceso
  */
 ?>
 <div class="p-6 md:p-8 flex-1">
@@ -13,6 +13,25 @@
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Bienvenida, <?= htmlspecialchars($_SESSION['user']['nombre'] ?? 'Psicóloga') ?> 👋</p>
         </div>
         <div class="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
+
+            <?php if ($citaEnProceso): ?>
+            <!-- Botón Finalizar Reunión ACTIVO -->
+            <button id="btn-finalizar-reunion" onclick="finalizarReunion()"
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold text-sm hover:from-red-600 hover:to-rose-700 shadow-md shadow-red-100 dark:shadow-none transition-all active:scale-95 animate-pulse-subtle">
+                <span class="material-symbols-outlined text-[20px]">call_end</span>
+                <span>Finalizar Reunión</span>
+                <span id="reunion-timer" class="font-mono text-xs bg-white/20 px-1.5 py-0.5 rounded-md">00:00</span>
+            </button>
+            <?php else: ?>
+            <!-- Botón Finalizar Reunión INACTIVO -->
+            <button disabled
+                title="No hay ninguna cita en proceso"
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-slate-200 text-slate-400 font-bold text-sm cursor-not-allowed dark:border-slate-700 dark:text-slate-600">
+                <span class="material-symbols-outlined text-[20px]">call_end</span>
+                <span>Finalizar Reunión</span>
+            </button>
+            <?php endif; ?>
+
             <button onclick="abrirModalDisponibilidad()"
                 id="btn-disponibilidad"
                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-indigo-200 text-indigo-600 font-bold text-sm hover:bg-indigo-50 hover:border-indigo-400 dark:border-indigo-800 dark:text-indigo-400 dark:hover:bg-indigo-900/50 dark:hover:border-indigo-600 transition-all active:scale-95">
@@ -77,9 +96,16 @@
 
     <!-- ══════════ TABLA DE PACIENTES RECIENTES ══════════ -->
     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden mb-8">
-        <div class="p-6 border-b border-slate-50 bg-slate-50/30 dark:border-slate-700 dark:bg-slate-800/50 flex justify-between items-center">
+        <div class="p-6 border-b border-slate-50 bg-slate-50/30 dark:border-slate-700 dark:bg-slate-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Citas Recientes de mis Pacientes</h2>
-            <span class="text-xs text-slate-400 dark:text-slate-500"><?= count($citasRecientes) ?> registros</span>
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <select id="filtroCitasRecientes" onchange="ordenarCitasRecientes(this.value)" class="text-sm border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-1.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors cursor-pointer">
+                    <option value="cercana">Cita más cercana</option>
+                    <option value="az">Nombre (A - Z)</option>
+                    <option value="za">Nombre (Z - A)</option>
+                </select>
+                <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0"><?= count($citasRecientes) ?> registros</span>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -94,7 +120,7 @@
                         <th class="px-5 py-3.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                <tbody id="tbody-citas-recientes" class="divide-y divide-slate-100 dark:divide-slate-700">
                     <?php if (empty($citasRecientes)): ?>
                     <tr><td colspan="6" class="px-6 py-10 text-center text-slate-400 dark:text-slate-500 text-sm">No hay citas registradas.</td></tr>
                     <?php else: ?>
@@ -112,8 +138,8 @@
                             ];
                             $estadoColor = $colores[$cita['estado']] ?? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
                         ?>
-                        <tr class="hover:bg-blue-50/20 dark:hover:bg-slate-700/50 transition-colors">
-                            <td class="px-5 py-4 text-sm font-medium text-slate-400 dark:text-slate-500"><?= $i + 1 ?></td>
+                        <tr class="cita-row hover:bg-blue-50/20 dark:hover:bg-slate-700/50 transition-colors" data-nombre="<?= htmlspecialchars($cita['paciente_nombre']) ?>" data-fecha="<?= $cita['fecha'] ?> <?= $cita['hora'] ?>">
+                            <td class="px-5 py-4 text-sm font-medium text-slate-400 dark:text-slate-500 cita-index"><?= $i + 1 ?></td>
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
@@ -132,7 +158,13 @@
                             </td>
                             <td class="px-5 py-4 text-sm text-slate-600 dark:text-slate-300"><?= $fechaF ?> <span class="text-slate-400 dark:text-slate-500">· <?= substr($cita['hora'],0,5) ?></span></td>
                             <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400 max-w-[200px] truncate">
-                                <?= htmlspecialchars($cita['notas_sesion'] ? substr($cita['notas_sesion'], 0, 50) . (strlen($cita['notas_sesion']) > 50 ? '…' : '') : '—') ?>
+                                <?php if (!empty($cita['notas_sesion'])): ?>
+                                    <?= htmlspecialchars(substr($cita['notas_sesion'], 0, 50) . (strlen($cita['notas_sesion']) > 50 ? '…' : '')) ?>
+                                <?php else: ?>
+                                    <a href="#notas-pacientes-section" onclick="seleccionarPacienteNotas(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>', null)" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold hover:underline inline-flex items-center gap-1 transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">visibility</span> Ver notas
+                                    </a>
+                                <?php endif; ?>
                             </td>
                             <td class="px-5 py-4 text-center">
                                 <button onclick="abrirNotaRapida(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>')"
@@ -184,17 +216,16 @@
             </div>
         </div>
 
-        <!-- Notas para los Pacientes de Hoy -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <!-- Notas para los Pacientes de Hoy / Buscados -->
+        <div id="notas-pacientes-section" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 scroll-mt-24">
             <h3 class="font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center gap-2">
                 <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">sticky_note_2</span>
-                <a href="<?= URL_BASE ?>panel_psicologas/notasPacientes"
-                   class="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Notas para Pacientes de Hoy</a>
-                <span class="ml-auto text-xs text-slate-400 dark:text-slate-500 font-normal"><?= count($pacientesHoy) ?> paciente(s)</span>
+                <span id="titulo-seccion-notas" class="hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">Notas de Pacientes</span>
+                <span class="ml-auto text-xs text-slate-400 dark:text-slate-500 font-normal"><?= count($pacientesHoy) ?> paciente(s) hoy</span>
             </h3>
 
             <?php if (empty($pacientesHoy)): ?>
-                <div class="p-6 text-center text-slate-400 border border-dashed border-slate-200 dark:text-slate-500 dark:border-slate-700 rounded-xl text-sm">
+                <div id="empty-notas-msg" class="p-6 text-center text-slate-400 border border-dashed border-slate-200 dark:text-slate-500 dark:border-slate-700 rounded-xl text-sm mb-4">
                     No hay pacientes programados para hoy.
                 </div>
             <?php else: ?>
@@ -211,15 +242,17 @@
                     </button>
                     <?php endforeach; ?>
                 </div>
-
-                <!-- Notas del paciente seleccionado -->
-                <div id="notasPacienteContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
-                    <div class="text-center py-6 text-slate-400 dark:text-slate-500 text-sm">
-                        <div class="w-6 h-6 border-3 border-purple-200 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
-                        Cargando notas...
-                    </div>
-                </div>
             <?php endif; ?>
+
+            <!-- Notas del paciente seleccionado -->
+            <div id="notasPacienteContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                <?php if (!empty($pacientesHoy)): ?>
+                <div class="text-center py-6 text-slate-400 dark:text-slate-500 text-sm">
+                    <div class="w-6 h-6 border-3 border-purple-200 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
+                    Cargando notas...
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
@@ -271,8 +304,17 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
         b.classList.remove('border-purple-500','bg-purple-500','text-white');
         b.classList.add('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
     });
-    btn.classList.add('border-purple-500','bg-purple-500','text-white');
-    btn.classList.remove('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
+    
+    if (btn) {
+        btn.classList.add('border-purple-500','bg-purple-500','text-white');
+        btn.classList.remove('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
+    }
+
+    const emptyMsg = document.getElementById('empty-notas-msg');
+    if (emptyMsg) emptyMsg.classList.add('hidden');
+
+    const tituloSeccion = document.getElementById('titulo-seccion-notas');
+    if (tituloSeccion) tituloSeccion.textContent = `Notas de: ${nombre}`;
 
     const container = document.getElementById('notasPacienteContainer');
     container.innerHTML = `<div class="flex justify-center py-4"><div class="w-6 h-6 border-3 border-purple-200 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin"></div></div>`;
@@ -339,9 +381,15 @@ async function guardarNotaRapida() {
         const data = await res.json();
         if (data.ok) {
             cerrarNotaRapida();
-            // Recargar notas del paciente activo
-            const btn = document.querySelector('.paciente-notas-btn.bg-purple-500');
-            if (btn) btn.click();
+            
+            // Recargar notas del paciente activo instantáneamente
+            const nombrePaciente = document.getElementById('notaRapidaPacienteNombre').textContent;
+            
+            // Intentar encontrar el botón en la lista (si es que existe en "citas de hoy")
+            const btnPaciente = document.querySelector(`.paciente-notas-btn[onclick*="${idUsuario}"]`);
+            
+            // Cargar de nuevo la vista de notas con el ID y nombre actualizados
+            seleccionarPacienteNotas(idUsuario, nombrePaciente, btnPaciente);
         } else {
             errEl.textContent = data.error;
             errEl.classList.remove('hidden');
@@ -357,8 +405,114 @@ function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
+// ─── Ordenar Citas Recientes ─────────────────────────────────────
+function ordenarCitasRecientes(criterio) {
+    const tbody = document.getElementById('tbody-citas-recientes');
+    if (!tbody) return;
+    const rows = Array.from(tbody.querySelectorAll('.cita-row'));
+    if (rows.length === 0) return;
+
+    rows.sort((a, b) => {
+        if (criterio === 'cercana') {
+            // Ordenar por fecha y hora (ascendente, las más antiguas o próximas primero)
+            return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
+        } else if (criterio === 'az') {
+            return a.dataset.nombre.localeCompare(b.dataset.nombre);
+        } else if (criterio === 'za') {
+            return b.dataset.nombre.localeCompare(a.dataset.nombre);
+        }
+    });
+
+    // Re-insertar filas en el nuevo orden
+    rows.forEach((row, index) => {
+        tbody.appendChild(row);
+        const indexCell = row.querySelector('.cita-index');
+        if (indexCell) indexCell.textContent = index + 1;
+    });
+}
+
+// Inicializar orden por defecto (más cercana)
+window.addEventListener('DOMContentLoaded', () => {
+    ordenarCitasRecientes('cercana');
+});
+
 window.URL_BASE = '<?= URL_BASE ?>';
+
+// ─── Finalizar Reunión ────────────────────────────────────────
+<?php if ($citaEnProceso): ?>
+const CITA_EN_PROCESO_ID = <?= (int)$citaEnProceso['id_cita'] ?>;
+const CITA_INICIO_TIMESTAMP = Date.now(); // Empezamos a contar desde que carga el panel
+let reunionTimerInterval = null;
+
+function formatTime(segundos) {
+    const m = String(Math.floor(segundos / 60)).padStart(2, '0');
+    const s = String(segundos % 60).padStart(2, '0');
+    return `${m}:${s}`;
+}
+
+// Iniciar timer visible
+(function startReunionTimer() {
+    const timerEl = document.getElementById('reunion-timer');
+    if (!timerEl) return;
+    reunionTimerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - CITA_INICIO_TIMESTAMP) / 1000);
+        timerEl.textContent = formatTime(elapsed);
+    }, 1000);
+})();
+
+async function finalizarReunion() {
+    const duracionSegundos = Math.floor((Date.now() - CITA_INICIO_TIMESTAMP) / 1000);
+    const duracionMinutos  = Math.max(1, Math.round(duracionSegundos / 60));
+
+    if (!confirm(`¿Deseas finalizar la reunión? Duración registrada: ${duracionMinutos} minuto(s).`)) return;
+
+    try {
+        const res  = await fetch(BASE + 'chat_bot/terminarCita', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_cita: CITA_EN_PROCESO_ID, duracion_minutos: duracionMinutos, notas_sesion: '' })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+            clearInterval(reunionTimerInterval);
+            // Mostrar modal de resultado
+            document.getElementById('reunion-result-minutos').textContent = duracionMinutos;
+            const modal = document.getElementById('modalReunionFinalizada');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            alert('Error al finalizar: ' + (data.error || 'Intente nuevamente.'));
+        }
+    } catch(e) {
+        alert('Error de conexión: ' + e.message);
+    }
+}
+<?php else: ?>
+function finalizarReunion() {}
+<?php endif; ?>
 </script>
+
+<?php if ($citaEnProceso): ?>
+<!-- Modal: Reunión Finalizada -->
+<div id="modalReunionFinalizada" class="fixed inset-0 z-[70] hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-sm mx-4 z-10 p-8 text-center">
+        <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-emerald-500 text-[44px]">check_circle</span>
+        </div>
+        <h3 class="text-xl font-black text-slate-900 dark:text-slate-100 mb-2">¡Reunión finalizada!</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mb-2">La sesión ha sido registrada correctamente.</p>
+        <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl py-4 px-6 mb-6">
+            <p class="text-4xl font-black text-emerald-600 dark:text-emerald-400" id="reunion-result-minutos">0</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">minuto(s) de sesión</p>
+        </div>
+        <button onclick="location.reload()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all active:scale-[0.98] shadow-md">
+            Volver al panel
+        </button>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- ══════════ MODAL: AGENDAR CITA ══════════ -->
 <div id="modalAgendarCita" class="fixed inset-0 z-[60] hidden items-center justify-center">

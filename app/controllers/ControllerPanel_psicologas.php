@@ -28,6 +28,7 @@ class ControllerPanel_psicologas extends Controller
         $citasRecientes = $citaModel->getCitasRecientes($idPsicologo, 15);
         $citasHoy       = $citaModel->getCitasHoy($idPsicologo);
         $pacientesHoy   = $notaModel->getNotasParaPacientesDeHoy($idPsicologo);
+        $citaEnProceso  = $citaModel->getCitaEnProceso($idPsicologo);
 
         $this->layout = 'tailwind';
         $this->render('pages/panelpsicologas', [
@@ -35,6 +36,7 @@ class ControllerPanel_psicologas extends Controller
             'citasRecientes' => $citasRecientes,
             'citasHoy'       => $citasHoy,
             'pacientesHoy'   => $pacientesHoy,
+            'citaEnProceso'  => $citaEnProceso,
         ]);
     }
 

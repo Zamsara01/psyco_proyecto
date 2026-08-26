@@ -136,7 +136,7 @@
 
                     <!-- Sección No -->
                     <div id="section_politica_no" class="hidden pt-2">
-                        <p class="text-body-sm text-orange-800 bg-orange-50 p-3 rounded-lg border border-orange-200">
+                        <p class="text-body-sm text-blue-800 bg-blue-50 p-3 rounded-lg border border-blue-200">
                             La psicóloga encargada aún puede tomar apuntes sobre la cita en presencial o por formatos físicos o de papelería por motivos de logística en la psicología.
                         </p>
                     </div>
@@ -219,7 +219,7 @@
             <footer class="mt-8 text-center">
                 <p class="text-body-md text-tertiary">
                     ¿Ya tienes una cuenta? 
-                    <a class="text-orange-600 font-bold hover:underline" href="<?= URL_BASE ?>users/login">Inicia sesión</a>
+                    <a class="text-blue-600 font-bold hover:underline" href="<?= URL_BASE ?>users/login">Inicia sesión</a>
                 </p>
             </footer>
         </div>

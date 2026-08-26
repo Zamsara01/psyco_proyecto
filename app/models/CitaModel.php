@@ -305,6 +305,25 @@ class CitaModel extends Model
     }
 
     /**
+     * Obtiene la cita activa en estado 'en proceso' de la psicóloga (si existe).
+     */
+    public function getCitaEnProceso(int $idPsicologo): ?array
+    {
+        $sql = "
+            SELECT c.id_cita, c.fecha, c.hora, u.nombre AS paciente_nombre
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            WHERE c.id_psicologo = ? AND c.estado = 'en proceso'
+            ORDER BY c.fecha DESC, c.hora DESC
+            LIMIT 1
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res ?: null;
+    }
+
+    /**
      * Obtiene todas las citas de un usuario (paciente) ordenadas por fecha desc.
      */
     public function getCitasUsuario(int $idUsuario): array
@@ -349,6 +368,59 @@ class CitaModel extends Model
         $sql = "UPDATE citas SET estado = 'cancelada' WHERE id_cita = ? AND id_usuario = ? AND estado = 'pendiente'";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$idCita, $idUsuario]);
+    }
+
+    /**
+     * Cancela una cita desde el panel de la psicóloga (solo si le pertenece y está pendiente).
+     */
+    public function cancelarCitaPsicologa(int $idCita, int $idPsicologo): bool
+    {
+        $sql = "UPDATE citas SET estado = 'cancelada' WHERE id_cita = ? AND id_psicologo = ? AND estado = 'pendiente'";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idCita, $idPsicologo]);
+    }
+
+    /**
+     * Obtiene la información necesaria de una cita antes de cancelarla.
+     */
+    public function getCitaInfoParaCancelacion(int $idCita, int $idPsicologo): ?array
+    {
+        $sql = "SELECT id_usuario, fecha, hora FROM citas WHERE id_cita = ? AND id_psicologo = ? AND estado = 'pendiente'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idCita, $idPsicologo]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res ?: null;
+    }
+
+    /**
+     * Obtiene las citas pendientes de una psicóloga (hoy o futuras).
+     */
+    public function getCitasPendientesPsicologo(int $idPsicologo): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $sql = "
+            SELECT 
+                c.id_cita, c.fecha, c.hora, c.estado, c.motivo_consulta,
+                u.nombre AS paciente_nombre, u.id_usuario
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            WHERE c.id_psicologo = ? AND c.estado = 'pendiente' AND c.fecha >= CURRENT_DATE()
+            ORDER BY c.fecha ASC, c.hora ASC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = 'Sin motivo especificado';
+            }
+        }
+        return $results;
     }
 
     /**

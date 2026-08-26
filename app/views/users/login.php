@@ -21,7 +21,7 @@
                 <div id="googleErrorModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="document.getElementById('googleErrorModal').classList.add('hidden')"></div>
                     <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 text-center animate-[fadeInScale_0.2s_ease-out]">
-                        <span class="material-symbols-outlined text-[48px] text-orange-500 mb-4">warning</span>
+                        <span class="material-symbols-outlined text-[48px] text-blue-500 mb-4">warning</span>
                         <h2 class="font-headline-sm text-headline-sm text-on-surface mb-2">Correo no registrado</h2>
                         <p class="font-body-md text-body-md text-on-surface-variant mb-6 text-left">
                             Este correo no está registrado. Si sientes que te pudiste equivocar de correo vuelve a login, en caso de que no tengas creada una cuenta puedes crearla registrándote.
@@ -108,7 +108,7 @@
                 <a class="font-body-sm text-body-sm text-primary hover:underline transition-all" href="#">
                     Olvidé mi contraseña
                 </a>
-                <a class="font-body-sm text-body-sm text-orange-600 font-semibold hover:text-orange-700 transition-all" href="<?= URL_BASE ?>users/register">
+                <a class="font-body-sm text-body-sm text-blue-600 font-semibold hover:text-blue-700 transition-all" href="<?= URL_BASE ?>users/register">
                     ¿No tienes una cuenta? Regístrate
                 </a>
             </div>

@@ -1,27 +1,27 @@
 <main class="pt-8 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 relative z-10 w-full">
     <!-- Left Section: Interactive Calendar -->
     <section class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60">
             <div class="flex items-center justify-between mb-8">
                 <div class="flex flex-col">
                     <div class="flex items-center gap-1" id="calendar-month-year">
-                        <select id="month-select" class="font-headline-md text-on-surface bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-orange-600 transition-colors cursor-pointer"></select>
-                        <select id="year-select" class="font-headline-md text-on-surface bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-orange-600 transition-colors cursor-pointer"></select>
+                        <select id="month-select" class="font-headline-md text-on-surface dark:text-slate-100 bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"></select>
+                        <select id="year-select" class="font-headline-md text-on-surface dark:text-slate-100 bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"></select>
                     </div>
-                    <p class="text-body-sm text-on-tertiary-fixed-variant">Selecciona un día para ver disponibilidad</p>
+                    <p class="text-body-sm text-on-tertiary-fixed-variant dark:text-slate-400">Selecciona un día para ver disponibilidad</p>
                 </div>
                 <div class="flex gap-2">
-                    <button id="prev-month-btn" class="p-2 rounded-lg border border-slate-200 transition-all hover:bg-slate-50">
-                        <span class="material-symbols-outlined text-orange-600">chevron_left</span>
+                    <button id="prev-month-btn" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 transition-all hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">chevron_left</span>
                     </button>
-                    <button id="next-month-btn" class="p-2 rounded-lg border border-slate-200 transition-all hover:bg-slate-50">
-                        <span class="material-symbols-outlined text-orange-600">chevron_right</span>
+                    <button id="next-month-btn" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 transition-all hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">chevron_right</span>
                     </button>
                 </div>
             </div>
 
             <!-- Calendar Days Header -->
-            <div class="calendar-grid text-center font-label-md text-slate-400 mb-4">
+            <div class="calendar-grid text-center font-label-md text-slate-400 dark:text-slate-500 mb-4">
                 <div>LUN</div>
                 <div>MAR</div>
                 <div>MIÉ</div>
@@ -36,25 +36,25 @@
             </div>
 
             <!-- Legend -->
-            <div class="mt-8 flex flex-wrap gap-6 border-t border-slate-100 pt-6">
+            <div class="mt-8 flex flex-wrap gap-6 border-t border-slate-100 dark:border-slate-700/60 pt-6">
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span class="text-body-sm text-slate-600">Totalmente libre</span>
+                    <span class="text-body-sm text-slate-600 dark:text-slate-400">Totalmente libre</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <span class="text-body-sm text-slate-600">Disponibilidad parcial</span>
+                    <span class="text-body-sm text-slate-600 dark:text-slate-400">Disponibilidad parcial</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <span class="text-body-sm text-slate-600">Completamente ocupado</span>
+                    <span class="text-body-sm text-slate-600 dark:text-slate-400">Completamente ocupado</span>
                 </div>
             </div>
         </div>
 
         <!-- Bento Featured Psychology Insight -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-orange-600 rounded-xl p-6 text-white overflow-hidden relative group">
+            <div class="bg-blue-600 rounded-xl p-6 text-white overflow-hidden relative group">
                 <div class="relative z-10">
                     <h3 class="font-headline-sm mb-2">Consejo del día</h3>
                     <p class="text-body-sm opacity-90 leading-relaxed">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
@@ -62,11 +62,11 @@
                 <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">psychology</span>
             </div>
 
-            <div class="bg-white rounded-xl p-1 border border-slate-100 shadow-sm flex overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-1 border border-slate-100 dark:border-slate-700/60 shadow-sm flex overflow-hidden">
                 <img class="w-1/3 object-cover rounded-l-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY" />
                 <div class="p-4 w-2/3 flex flex-col justify-center">
-                    <h4 class="font-bold text-orange-600">Nuevos Recursos</h4>
-                    <p class="text-body-sm text-slate-500">Guía de meditación guiada disponible ahora.</p>
+                    <h4 class="font-bold text-blue-600 dark:text-blue-400">Nuevos Recursos</h4>
+                    <p class="text-body-sm text-slate-500 dark:text-slate-400">Guía de meditación guiada disponible ahora.</p>
                 </div>
             </div>
         </div>
@@ -74,24 +74,24 @@
 
     <!-- Right Section: Day Details Panel -->
     <aside class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
-        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 flex flex-col h-full sticky top-24">
-            <div class="p-6 border-b border-slate-50">
-                <h3 class="font-headline-md text-on-surface" id="selected-date-display">Selecciona un día</h3>
-                <p class="text-body-sm text-slate-500" id="psico-count">Haz clic en un día para ver disponibilidad</p>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
+            <div class="p-6 border-b border-slate-50 dark:border-slate-700/60">
+                <h3 class="font-headline-md text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
+                <p class="text-body-sm text-slate-500 dark:text-slate-400" id="psico-count">Haz clic en un día para ver disponibilidad</p>
             </div>
 
             <!-- Lista dinámica de psicólogos -->
             <div class="p-6 flex-grow flex flex-col gap-6 overflow-y-auto hide-scrollbar max-h-[614px]" id="psicologos-panel">
                 <!-- Relleno por JavaScript -->
-                <div class="flex flex-col items-center justify-center h-40 text-slate-400 gap-3">
-                    <span class="material-symbols-outlined text-5xl text-slate-300">calendar_month</span>
+                <div class="flex flex-col items-center justify-center h-40 text-slate-400 dark:text-slate-500 gap-3">
+                    <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600">calendar_month</span>
                     <p class="text-sm text-center">Selecciona un día en el calendario para ver la disponibilidad</p>
                 </div>
             </div>
 
-            <div class="p-6 bg-slate-50 rounded-b-2xl">
+            <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-b-2xl">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <p class="text-sm text-slate-500 text-center font-medium">
+                    <p class="text-sm text-slate-500 dark:text-slate-400 text-center font-medium">
                         <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
                         <?php if ($_SESSION['user']['rol'] === 'psicologo'): ?>
                             Selecciona un psicólogo y una hora para agendar una cita
@@ -100,7 +100,7 @@
                         <?php endif; ?>
                     </p>
                 <?php else: ?>
-                    <button type="button" onclick="openLoginModal()" class="w-full bg-orange-100 text-orange-600 font-bold py-4 rounded-xl shadow-sm hover:bg-orange-200 transition-colors active:scale-95 duration-150">
+                    <button type="button" onclick="openLoginModal()" class="w-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-4 rounded-xl shadow-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 duration-150">
                         Inicia sesión para agendar
                     </button>
                 <?php endif; ?>
@@ -253,21 +253,21 @@
                 let classes = 'h-16 flex flex-col items-center justify-center rounded-xl relative transition-all ';
 
                 if (isPast) {
-                    classes += ' text-slate-300 bg-slate-50 opacity-50 cursor-not-allowed';
+                    classes += ' text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-slate-800/30 opacity-50 cursor-not-allowed';
                 } else {
                     classes += ' cursor-pointer day-btn';
                     if (isSelected) {
-                        classes += ' border-2 border-orange-500 bg-orange-50 text-orange-600 selected-day';
+                        classes += ' border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 selected-day';
                     } else if (isWeekend) {
-                        classes += ' bg-slate-50 text-slate-500 hover:border hover:border-orange-200';
+                        classes += ' bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:border hover:border-blue-200 dark:hover:border-blue-500/50';
                     } else {
-                        classes += ' border border-slate-100 hover:border-orange-200';
+                        classes += ' border border-slate-100 dark:border-slate-700/60 hover:border-blue-200 dark:hover:border-blue-500/50';
                     }
                 }
 
                 html += `
                 <div class="${classes}" data-day="${i}" data-month="${currentMonth}" data-year="${currentYear}">
-                    <span class="font-bold ${isSelected ? '' : (isPast ? 'text-slate-400' : (isWeekend ? '' : 'text-slate-700'))}">${i}</span>
+                    <span class="font-bold ${isSelected ? '' : (isPast ? 'text-slate-400 dark:text-slate-500' : (isWeekend ? '' : 'text-slate-700 dark:text-slate-200'))}">${i}</span>
                     ${dotHtml}
                 </div>`;
             }
@@ -324,8 +324,8 @@
             // Generar HTML del panel
             if (disponibles.length === 0) {
                 psicologosPanel.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-40 text-slate-400 gap-3">
-                        <span class="material-symbols-outlined text-5xl text-slate-300">event_busy</span>
+                    <div class="flex flex-col items-center justify-center h-40 text-slate-400 dark:text-slate-500 gap-3">
+                        <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600">event_busy</span>
                         <p class="text-sm text-center">No hay psicólogos disponibles para este día.</p>
                     </div>`;
                 return;
@@ -338,7 +338,7 @@
 
                 const turnosHtml = turnos.map(t =>
                     `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                            text-sm font-medium bg-orange-50 text-orange-600 border border-orange-100">
+                            text-sm font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/30">
                         <span class="material-symbols-outlined text-[15px]">schedule</span>
                         ${t.inicio} – ${t.fin}
                     </span>`
@@ -350,11 +350,11 @@
                 const dateString = `${selectedDate.getFullYear()}-${mFormat}-${dFormat}`;
 
                 const turnosText = turnos.map(t => `${t.inicio.slice(0,5)} – ${t.fin.slice(0,5)}`).join(' y ');
-                const hoverClasses = canSchedule && selectedDate >= today ? 'cursor-pointer hover:bg-orange-50 p-3 -mx-3 rounded-xl transition-colors' : '';
+                const hoverClasses = canSchedule && selectedDate >= today ? 'cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700/50 p-3 -mx-3 rounded-xl transition-colors' : '';
                 const clickAttr = canSchedule && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
 
                 const agendarBadge = (canSchedule && selectedDate >= today)
-                    ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-orange-500 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 mt-1">
+                    ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-500/30 rounded-full px-2 py-0.5 mt-1">
                         <span class="material-symbols-outlined text-[13px]">event_available</span> Agendar cita
                        </span>`
                     : '';
@@ -362,20 +362,20 @@
                 html += `
                 <div class="flex flex-col gap-3 ${hoverClasses}" ${clickAttr}>
                     <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-100 shrink-0">
+                        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-blue-100 dark:border-slate-700 shrink-0">
                             <img class="w-full h-full object-cover rounded-full"
                                  src="${p.foto_perfil}"
                                  alt="${p.nombre}"
-                                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=F97316&color=fff'"/>
+                                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=3b82f6&color=fff'"/>
                         </div>
                         <div class="flex flex-col overflow-hidden">
-                            <span class="font-bold text-slate-800 truncate">${p.nombre}</span>
-                            <span class="text-sm text-orange-600 truncate">${p.especialidad}</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-100 truncate">${p.nombre}</span>
+                            <span class="text-sm text-blue-600 dark:text-blue-400 truncate">${p.especialidad}</span>
                             ${agendarBadge}
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2 px-1">${turnosHtml}</div>
-                    <div class="h-px bg-slate-50 mt-1"></div>
+                    <div class="h-px bg-slate-50 dark:bg-slate-700/50 mt-1"></div>
                 </div>`;
 
             });
@@ -444,7 +444,7 @@
         }
 
         const grid = document.getElementById('agendarModalHoras');
-        grid.innerHTML = '<div class="col-span-3 flex justify-center py-6"><div class="w-6 h-6 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>';
+        grid.innerHTML = '<div class="col-span-3 flex justify-center py-6"><div class="w-6 h-6 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div>';
 
         const m = document.getElementById('agendarCitaModal');
         m.classList.remove('hidden');
@@ -481,7 +481,7 @@
 
             grid.innerHTML = data.horas.map(h => `
                 <button onclick="seleccionarHoraAgendar('${h}', this)"
-                    class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 transition-all active:scale-95">
+                    class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 transition-all active:scale-95">
                     ${h}
                 </button>
             `).join('');
@@ -493,10 +493,10 @@
 
     function seleccionarHoraAgendar(hora, btn) {
         document.querySelectorAll('.hora-agendar-btn').forEach(b => {
-            b.classList.remove('border-orange-500', 'bg-orange-500', 'text-white');
+            b.classList.remove('border-blue-500', 'bg-blue-500', 'text-white');
             b.classList.add('border-slate-200', 'text-slate-600');
         });
-        btn.classList.add('border-orange-500', 'bg-orange-500', 'text-white');
+        btn.classList.add('border-blue-500', 'bg-blue-500', 'text-white');
         btn.classList.remove('border-slate-200', 'text-slate-600');
 
         agendarData.hora = hora;
@@ -602,7 +602,7 @@
                 }
                 lista.innerHTML = data.pacientes.map(p => `
                     <button type="button" onclick="seleccionarPacienteBuscador(${p.id_usuario}, '${p.nombre.replace(/'/g, "\\'")}', '${p.correo_electronico.replace(/'/g, "\\'")}')"
-                        class="w-full text-left px-4 py-2.5 hover:bg-orange-50 transition-colors border-b border-slate-100 last:border-0">
+                        class="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors border-b border-slate-100 last:border-0">
                         <p class="text-sm font-bold text-slate-800">${p.nombre}</p>
                         <p class="text-xs text-slate-400">${p.correo_electronico} · Grado ${p.grado}</p>
                     </button>`).join('');
@@ -735,28 +735,28 @@
 <!-- ══════════ MODAL AGENDAR CITA (CALENDARIO) ══════════ -->
 <div id="agendarCitaModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="cerrarModalAgendar()"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 z-10 p-7 transform transition-transform">
-        <button onclick="cerrarModalAgendar()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 text-slate-400 transition-colors">
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-md mx-4 z-10 p-7 transform transition-transform border border-slate-100 dark:border-slate-700/60">
+        <button onclick="cerrarModalAgendar()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-400 dark:text-slate-500 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
 
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined">event_available</span>
             </div>
             <div>
-                <h3 class="font-bold text-slate-800 text-lg leading-tight">Agendar Cita</h3>
-                <p id="agendarModalFecha" class="text-xs text-orange-500 font-semibold"></p>
-                <p id="agendarModalJornada" class="text-xs text-slate-500"></p>
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg leading-tight">Agendar Cita</h3>
+                <p id="agendarModalFecha" class="text-xs text-blue-500 dark:text-blue-400 font-semibold"></p>
+                <p id="agendarModalJornada" class="text-xs text-slate-500 dark:text-slate-400"></p>
             </div>
         </div>
 
         <!-- Info Psicólogo -->
-        <div class="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl mb-5 border border-slate-100">
-            <img id="agendarModalFoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+        <div class="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl mb-5 border border-slate-100 dark:border-slate-700/60">
+            <img id="agendarModalFoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
             <div class="min-w-0 flex-1">
-                <p id="agendarModalNombre" class="font-bold text-slate-800 text-sm truncate"></p>
-                <p id="agendarModalEspecialidad" class="text-xs text-slate-500 truncate"></p>
+                <p id="agendarModalNombre" class="font-bold text-slate-800 dark:text-slate-100 text-sm truncate"></p>
+                <p id="agendarModalEspecialidad" class="text-xs text-slate-500 dark:text-slate-400 truncate"></p>
             </div>
         </div>
 
@@ -764,19 +764,19 @@
         <!-- Buscador de paciente -->
         <div class="mb-5">
             <div class="flex items-center justify-between mb-2">
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Paciente <span class="text-red-400">*</span></label>
-                <button type="button" onclick="abrirModalCrearPaciente()" class="text-xs font-bold text-orange-600 hover:underline flex items-center gap-1">
+                <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Paciente <span class="text-red-400">*</span></label>
+                <button type="button" onclick="abrirModalCrearPaciente()" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
                     <span class="material-symbols-outlined text-[14px]">person_add</span> Crear Paciente
                 </button>
             </div>
             <div class="relative">
                 <input type="text" id="agendarModalBuscador" placeholder="Buscar por nombre o correo..." autocomplete="off"
-                    class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors pr-10">
-                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">search</span>
+                    class="w-full bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors pr-10 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-500 text-[20px]">search</span>
             </div>
-            <div id="agendarModalResultados" class="hidden mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden max-h-40 overflow-y-auto z-20 relative"></div>
+            <div id="agendarModalResultados" class="hidden mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 rounded-xl shadow-lg overflow-hidden max-h-40 overflow-y-auto z-20 relative"></div>
             <input type="hidden" id="agendarModalIdUsuario">
-            <p id="agendarModalPacienteSeleccionado" class="hidden mt-2 text-xs font-semibold text-orange-600 flex items-center gap-1">
+            <p id="agendarModalPacienteSeleccionado" class="hidden mt-2 text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">
                 <span class="material-symbols-outlined text-[16px]">check_circle</span>
                 <span id="agendarModalPacienteNombreTxt"></span>
             </p>
@@ -785,7 +785,7 @@
 
         <!-- Selector de horas -->
         <div class="mb-5">
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Horarios Disponibles</label>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Horarios Disponibles</label>
             <div id="agendarModalHoras" class="grid grid-cols-3 gap-2 min-h-[48px]">
                 <!-- Llenado por JS -->
             </div>
@@ -793,14 +793,14 @@
 
         <!-- Motivo -->
         <div class="mb-5">
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Motivo de consulta <span class="font-normal text-slate-400">(Opcional)</span></label>
-            <textarea id="agendarModalMotivo" rows="2" placeholder="Ej: Ansiedad, estrés..." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors resize-none"></textarea>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Motivo de consulta <span class="font-normal text-slate-400 dark:text-slate-500">(Opcional)</span></label>
+            <textarea id="agendarModalMotivo" rows="2" placeholder="Ej: Ansiedad, estrés..." class="w-full bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors resize-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"></textarea>
         </div>
 
         <div id="agendarModalError" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 font-medium"></div>
 
         <button id="agendarModalBtn" onclick="confirmarCitaModal()" disabled
-            class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-md shadow-orange-200 hover:from-orange-600 hover:to-orange-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            class="w-full py-3.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl shadow-md shadow-blue-200 hover:from-blue-600 hover:to-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
             Confirmar Cita
         </button>
     </div>
@@ -810,27 +810,27 @@
 <!-- ══════════ MODAL: CREAR PACIENTE ══════════ -->
 <div id="modalCrearPaciente" class="fixed inset-0 z-[70] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalCrearPaciente()"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
-        <button onclick="cerrarModalCrearPaciente()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 text-slate-400 transition-colors">
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto border border-slate-100 dark:border-slate-700/60">
+        <button onclick="cerrarModalCrearPaciente()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-400 dark:text-slate-500 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="flex items-center gap-3 mb-6">
-            <div class="p-3 bg-blue-100 rounded-2xl">
-                <span class="material-symbols-outlined text-blue-500 text-2xl">person_add</span>
+            <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-2xl">
+                <span class="material-symbols-outlined text-blue-500 dark:text-blue-400 text-2xl">person_add</span>
             </div>
             <div>
-                <h3 class="font-black text-slate-800 text-xl">Nuevo Paciente</h3>
-                <p class="text-sm text-slate-400">Registrar paciente rápido</p>
+                <h3 class="font-black text-slate-800 dark:text-slate-100 text-xl">Nuevo Paciente</h3>
+                <p class="text-sm text-slate-400 dark:text-slate-500">Registrar paciente rápido</p>
             </div>
         </div>
 
         <div class="space-y-4">
             <!-- Datos básicos -->
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">Datos del Paciente</p>
+            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/60 pb-2">Datos del Paciente</p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Grado <span class="text-red-400">*</span></label>
-                    <select id="cpGrado" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors bg-white">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Grado <span class="text-red-400">*</span></label>
+                    <select id="cpGrado" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100">
                         <option value="">Seleccionar</option>
                         <?php foreach(['6','7','8','9','10','11'] as $g): ?>
                         <option value="<?= $g ?>">Grado <?= $g ?></option>
@@ -838,48 +838,48 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nombre Completo <span class="text-red-400">*</span></label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nombre Completo <span class="text-red-400">*</span></label>
                     <input type="text" id="cpNombre" placeholder="Nombre del paciente"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo Electrónico <span class="text-red-400">*</span></label>
+                <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Correo Electrónico <span class="text-red-400">*</span></label>
                 <input type="email" id="cpCorreo" placeholder="correo@ejemplo.com"
-                    class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                    class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Contraseña <span class="text-red-400">*</span></label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Contraseña <span class="text-red-400">*</span></label>
                     <input type="password" id="cpContrasena" placeholder="Contraseña inicial"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Confirmar Contraseña <span class="text-red-400">*</span></label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Confirmar Contraseña <span class="text-red-400">*</span></label>
                     <input type="password" id="cpContrasena2" placeholder="Repetir contraseña"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
             </div>
 
             <!-- Datos acudiente -->
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mt-2">Datos del Acudiente <span class="font-normal text-slate-300">(opcional)</span></p>
+            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/60 pb-2 mt-2">Datos del Acudiente <span class="font-normal text-slate-300 dark:text-slate-600">(opcional)</span></p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nombre Acudiente</label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nombre Acudiente</label>
                     <input type="text" id="cpAcudNombre" placeholder="Nombre completo"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Cédula</label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Cédula</label>
                     <input type="text" id="cpAcudCedula" placeholder="Solo números"
                         inputmode="numeric" pattern="[0-9]*"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Relación</label>
-                    <select id="cpAcudRelacion" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors bg-white">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Relación</label>
+                    <select id="cpAcudRelacion" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100">
                         <option value="">Seleccionar</option>
                         <option value="Padre">Padre</option>
                         <option value="Madre">Madre</option>
@@ -890,9 +890,9 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo Acudiente</label>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Correo Acudiente</label>
                     <input type="email" id="cpAcudCorreo" placeholder="correo@ejemplo.com"
-                        class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
             </div>
         </div>

@@ -60,7 +60,7 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
                 </div>
                 <?php else: ?>
                 <a href="<?= htmlspecialchars($r['url_video']) ?>" target="_blank" rel="noopener"
-                   class="flex items-center justify-center h-40 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 hover:from-red-100 dark:hover:from-red-900/40 transition-colors">
+                   class="flex items-center justify-center h-40 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-900/40 hover:from-red-100 dark:hover:from-red-900/40 transition-colors">
                     <span class="material-symbols-outlined text-[56px] text-red-400 group-hover:scale-110 transition-transform">play_circle</span>
                 </a>
                 <?php endif; ?>
@@ -150,7 +150,7 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
     <?php if (!empty($notas)): ?>
     <section>
         <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
             </div>
             <div>
@@ -160,15 +160,15 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         </div>
         <div class="space-y-4">
             <?php foreach ($notas as $nota): ?>
-            <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-amber-100 dark:border-amber-800/50 rounded-2xl p-5 hover:border-amber-200 dark:hover:border-amber-500/50 hover:shadow-md transition-all">
+            <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-900/40 border-2 border-yellow-100 dark:border-yellow-800/50 rounded-2xl p-5 hover:border-yellow-200 dark:hover:border-yellow-500/50 hover:shadow-md transition-all">
                 <div class="flex items-start justify-between gap-4 mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-amber-200 dark:bg-amber-900/50 flex items-center justify-center text-amber-700 dark:text-amber-400 font-bold text-sm shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-yellow-200 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-700 dark:text-yellow-400 font-bold text-sm shrink-0">
                             <?= strtoupper(mb_substr($nota['psicologo_nombre'], 0, 1)) ?>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-amber-800 dark:text-amber-300"><?= htmlspecialchars($nota['psicologo_nombre']) ?></p>
-                            <p class="text-xs text-amber-400 dark:text-amber-500"><?= date('d M Y, H:i', strtotime($nota['fecha_creacion'])) ?></p>
+                            <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-300"><?= htmlspecialchars($nota['psicologo_nombre']) ?></p>
+                            <p class="text-xs text-yellow-400 dark:text-yellow-500"><?= date('d M Y, H:i', strtotime($nota['fecha_creacion'])) ?></p>
                         </div>
                     </div>
                 </div>
@@ -254,18 +254,19 @@ async function loadOEmbed(el, BASE) {
         } else {
             throw new Error(json.error);
         }
-    } catch (e) {
+} catch (e) {
         // Fallback en caso de error
-        el.className = 'relative aspect-video bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border-b border-slate-100 dark:border-slate-700 flex items-center justify-center';
+        el.className = 'relative aspect-video bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-900/40 border-b border-slate-100 dark:border-slate-700 flex items-center justify-center';
         el.innerHTML = `
             <div class="text-center p-4">
                 <span class="material-symbols-outlined text-[48px] text-red-300 dark:text-red-600 mb-2 block">broken_image</span>
                 <p class="text-xs text-red-600 dark:text-red-400 font-semibold mb-2">No se pudo incrustar el video</p>
-                <a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="inline-block bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
+                <a href="${url.replace(/"/g, '"')}" target="_blank" rel="noopener" class="inline-block bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
                     Ver en YouTube
                 </a>
             </div>
         `;
     }
+}
 }
 </script>

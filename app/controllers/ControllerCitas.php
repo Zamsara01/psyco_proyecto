@@ -98,6 +98,67 @@ class ControllerCitas extends Controller
     }
 
     // ────────────────────────────────────────────────────────────────
+    // API: POST /citas/cancelarPsicologa
+    // ────────────────────────────────────────────────────────────────
+    public function cancelarPsicologa(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'psicologo') {
+            http_response_code(401);
+            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
+            exit;
+        }
+
+        $body      = json_decode(file_get_contents('php://input'), true);
+        $idCita    = (int)($body['id_cita'] ?? 0);
+        $motivo    = trim($body['motivo'] ?? '');
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        if ($idCita < 1 || empty($motivo)) {
+            echo json_encode(['ok' => false, 'error' => 'Cita o motivo inválido.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/CitaModel.php';
+        $citaModel = new CitaModel();
+
+        $citaInfo = $citaModel->getCitaInfoParaCancelacion($idCita, $idPsicologo);
+        if (!$citaInfo) {
+            echo json_encode(['ok' => false, 'error' => 'No se pudo cancelar. La cita no existe o ya no está pendiente.']);
+            exit;
+        }
+
+        $ok = $citaModel->cancelarCitaPsicologa($idCita, $idPsicologo);
+
+        if ($ok) {
+            require_once dirname(__DIR__) . '/models/RecursoModel.php';
+            $recursoModel = new RecursoModel();
+            
+            $tituloMensaje = "Cancelación de Cita";
+            
+            $fechaF = date('d/m/Y', strtotime($citaInfo['fecha']));
+            $horaF = substr($citaInfo['hora'], 0, 5);
+            $contenidoMensaje = "La cita programada para el $fechaF a las $horaF ha sido cancelada.\n\nMotivo:\n$motivo";
+            
+            $recursoModel->createRecurso(
+                $idPsicologo, 
+                $citaInfo['id_usuario'], 
+                $tituloMensaje, 
+                'mensaje', 
+                null, 
+                null, 
+                $contenidoMensaje
+            );
+
+            echo json_encode(['ok' => true, 'mensaje' => 'Cita cancelada exitosamente y paciente notificado.']);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'Error al cancelar la cita en la base de datos.']);
+        }
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
     // API: POST /citas/editar
     // Body JSON: { id_cita, fecha, hora, id_psicologo }
     // ────────────────────────────────────────────────────────────────
