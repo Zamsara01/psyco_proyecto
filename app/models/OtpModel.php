@@ -154,4 +154,16 @@ class OtpModel extends Model
             ];
         }
     }
+
+    /**
+     * Elimina códigos OTP expirados de la base de datos
+     * Se recomienda ejecutar via cron cada hora
+     */
+    public function limpiarExpirados(): int
+    {
+        $sql = "DELETE FROM otp_codes WHERE expires_at < NOW()";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }

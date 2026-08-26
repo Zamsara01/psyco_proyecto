@@ -157,6 +157,101 @@ class CitaModel extends Model
     }
 
     /**
+     * Obtiene las citas pendientes de mañana para enviar recordatorios
+     * Retorna citas de todos los psicólogos (para cron job)
+     */
+    public function getCitasManana(): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $manana = date('Y-m-d', strtotime('+1 day'));
+        
+        $sql = "
+            SELECT 
+                c.id_cita, c.fecha, c.hora, c.motivo_consulta,
+                u.nombre AS paciente_nombre, u.correo_electronico AS paciente_email,
+                p.nombre AS psicologo_nombre, p.correo_electronico AS psicologo_email,
+                e.nombre AS especialidad
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            JOIN psicologos p ON c.id_psicologo = p.id_psicologo
+            JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+            WHERE c.fecha = ?
+            AND c.estado = 'pendiente'
+            AND u.estado = 'activo'
+            AND p.estado = 'activo'
+            ORDER BY c.hora ASC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$manana]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = 'Sin motivo especificado';
+            }
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Obtiene las citas pendientes que empiezan en aproximadamente 1 hora
+     * Para cron job que corre cada 15 min
+     */
+    public function getCitasEn1Hora(): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+        $ahora = new DateTime();
+        $en1Hora = clone $ahora;
+        $en1Hora->modify('+1 hour');
+        
+        // Ventana de 15 min (para cron cada 15 min)
+        $ventanaInicio = $en1Hora->format('H:i:00');
+        $en1Hora->modify('+15 minutes');
+        $ventanaFin = $en1Hora->format('H:i:00');
+        $fechaHoy = $ahora->format('Y-m-d');
+        
+        $sql = "
+            SELECT 
+                c.id_cita, c.fecha, c.hora, c.motivo_consulta,
+                u.nombre AS paciente_nombre, u.correo_electronico AS paciente_email,
+                p.nombre AS psicologo_nombre, p.correo_electronico AS psicologo_email,
+                e.nombre AS especialidad
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            JOIN psicologos p ON c.id_psicologo = p.id_psicologo
+            JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+            WHERE c.fecha = ?
+            AND c.estado = 'pendiente'
+            AND u.estado = 'activo'
+            AND p.estado = 'activo'
+            AND c.hora BETWEEN ? AND ?
+            ORDER BY c.hora ASC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$fechaHoy, $ventanaInicio, $ventanaFin]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($results as &$row) {
+            try {
+                if (!empty($row['motivo_consulta'])) {
+                    $row['motivo_consulta'] = EncryptionService::decrypt($row['motivo_consulta']);
+                }
+            } catch (\Exception $e) {
+                $row['motivo_consulta'] = 'Sin motivo especificado';
+            }
+        }
+        
+        return $results;
+    }
+
+    /**
      * Ejemplo de uso: Guardar una nueva cita aplicando cifrado
      * a los campos sensibles (motivo_consulta y notas_sesion).
      */
