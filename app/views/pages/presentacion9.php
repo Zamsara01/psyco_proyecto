@@ -99,6 +99,26 @@
         pointer-events: none;
         font-family: monospace;
     }
+    /* Etiqueta de cardinalidad flotante encima de cada entidad */
+    .cardinality-tag {
+        position: absolute;
+        top: -26px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        font-weight: 900;
+        padding: 3px 12px;
+        background: rgba(0,0,0,0.60);
+        color: #fbbf24;
+        border-radius: 20px;
+        white-space: nowrap;
+        letter-spacing: 1.5px;
+        font-family: 'Courier New', monospace;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        pointer-events: none;
+    }
 </style>
 
 <section class="min-h-screen py-6 px-4 bg-nebula flex flex-col items-center w-full relative overflow-auto">
@@ -115,11 +135,12 @@
 
         <!-- ESPECIALIDADES -->
         <div class="mer-entity" id="ent-especialidades" style="left:40px;top:380px;">
+            <div class="cardinality-tag">1 : N  →  psicólogos</div>
             <div class="entity-header" style="background:#4f46e5;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> especialidades
             </div>
             <ul>
-                <li class="pk"><span>🔑 id_especialidad</span><span class="type">int(11)</span></li>
+                <li class="pk" id="f-esp-pk"><span>🔑 id_especialidad</span><span class="type">int(11)</span></li>
                 <li><span>nombre</span><span class="type">varchar(100)</span></li>
                 <li><span>descripcion</span><span class="type">text</span></li>
             </ul>
@@ -127,12 +148,13 @@
 
         <!-- PSICOLOGOS -->
         <div class="mer-entity" id="ent-psicologos" style="left:380px;top:300px;">
+            <div class="cardinality-tag">N : 1  (esp)  ·  1 : N  (citas)</div>
             <div class="entity-header" style="background:#059669;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> psicologos
             </div>
             <ul>
-                <li class="pk"><span>🔑 id_psicologo</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_especialidad</span><span class="type">int(11)</span></li>
+                <li class="pk" id="f-psi-pk"><span>🔑 id_psicologo</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-psi-fk-esp"><span>🔗 id_especialidad</span><span class="type">int(11)</span></li>
                 <li><span>nombre</span><span class="type">varchar(100)</span></li>
                 <li><span>telefono</span><span class="type">varchar(20)</span></li>
                 <li><span>correo_electronico</span><span class="type">varchar(100)</span></li>
@@ -144,11 +166,12 @@
 
         <!-- USUARIOS -->
         <div class="mer-entity" id="ent-usuarios" style="left:880px;top:60px;">
+            <div class="cardinality-tag">1 : N  →  citas / notas / recursos</div>
             <div class="entity-header" style="background:#2563eb;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> usuarios
             </div>
             <ul>
-                <li class="pk"><span>🔑 id_usuario</span><span class="type">int(11)</span></li>
+                <li class="pk" id="f-usr-pk"><span>🔑 id_usuario</span><span class="type">int(11)</span></li>
                 <li><span>nombre</span><span class="type">varchar(100)</span></li>
                 <li><span>correo_electronico</span><span class="type">varchar(100)</span></li>
                 <li><span>grado</span><span class="type">enum</span></li>
@@ -161,13 +184,14 @@
 
         <!-- CITAS -->
         <div class="mer-entity" id="ent-citas" style="left:680px;top:420px;">
+            <div class="cardinality-tag">N : 1  (usr/psi)  ·  1 : N  (record.)</div>
             <div class="entity-header" style="background:#9333ea;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> citas
             </div>
             <ul>
-                <li class="pk"><span>🔑 id_cita</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
+                <li class="pk" id="f-cit-pk"><span>🔑 id_cita</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-cit-fk-usr"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-cit-fk-psi"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
                 <li><span>fecha</span><span class="type">date</span></li>
                 <li><span>hora</span><span class="type">time</span></li>
                 <li><span>estado</span><span class="type">enum</span></li>
@@ -178,12 +202,13 @@
 
         <!-- DISPONIBILIDAD -->
         <div class="mer-entity" id="ent-disponibilidad" style="left:200px;top:680px;">
+            <div class="cardinality-tag">N : 1  →  psicólogo</div>
             <div class="entity-header" style="background:#0d9488;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> disponibilidad_psicologos
             </div>
             <ul>
                 <li class="pk"><span>🔑 id_disponibilidad</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-dis-fk-psi"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
                 <li><span>dia_semana</span><span class="type">enum</span></li>
                 <li><span>hora_inicio</span><span class="type">time</span></li>
                 <li><span>hora_fin</span><span class="type">time</span></li>
@@ -194,13 +219,14 @@
 
         <!-- NOTAS -->
         <div class="mer-entity" id="ent-notas" style="left:640px;top:720px;">
+            <div class="cardinality-tag">N : 1  →  psicólogo / usuario</div>
             <div class="entity-header" style="background:#c026d3;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> notas_paciente
             </div>
             <ul>
                 <li class="pk"><span>🔑 id_nota</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-not-fk-psi"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-not-fk-usr"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
                 <li><span>titulo</span><span class="type">varchar(255)</span></li>
                 <li><span>contenido</span><span class="type">text</span></li>
                 <li><span>fecha_creacion</span><span class="type">datetime</span></li>
@@ -209,13 +235,14 @@
 
         <!-- RECURSOS -->
         <div class="mer-entity" id="ent-recursos" style="left:1100px;top:520px;">
+            <div class="cardinality-tag">N : 1  →  psicólogo / usuario</div>
             <div class="entity-header" style="background:#f97316;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> recursos_acompanamiento
             </div>
             <ul>
                 <li class="pk"><span>🔑 id_recurso</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-rec-fk-psi"><span>🔗 id_psicologo</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-rec-fk-usr"><span>🔗 id_usuario</span><span class="type">int(11)</span></li>
                 <li><span>titulo</span><span class="type">varchar(255)</span></li>
                 <li><span>tipo</span><span class="type">enum</span></li>
                 <li><span>descripcion</span><span class="type">text</span></li>
@@ -225,12 +252,13 @@
 
         <!-- RECORDATORIOS -->
         <div class="mer-entity" id="ent-recordatorios" style="left:900px;top:680px;">
+            <div class="cardinality-tag">N : 1  →  cita</div>
             <div class="entity-header" style="background:#f43f5e;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> recordatorios
             </div>
             <ul>
                 <li class="pk"><span>🔑 id_recordatorio</span><span class="type">int(11)</span></li>
-                <li class="fk"><span>🔗 id_cita</span><span class="type">int(11)</span></li>
+                <li class="fk" id="f-red-fk-cit"><span>🔗 id_cita</span><span class="type">int(11)</span></li>
                 <li><span>mensaje</span><span class="type">text</span></li>
                 <li><span>fecha_programada</span><span class="type">datetime</span></li>
                 <li><span>canal</span><span class="type">enum</span></li>
@@ -240,6 +268,7 @@
 
         <!-- OTP_CODES -->
         <div class="mer-entity" id="ent-otp" style="left:1400px;top:80px;">
+            <div class="cardinality-tag">autónoma  (sin FK)</div>
             <div class="entity-header" style="background:#334155;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> otp_codes
             </div>
@@ -344,41 +373,41 @@
 <script>
 // ── Conexiones SVG ──────────────────────────────────────────────────
 const merConnections = [
-    // clasifica: ESPECIALIDADES ←→ PSICOLOGOS
-    { from:'ent-especialidades', to:'rel-clasifica', color:'#a5b4fc', card1:'1', card2:null },
-    { from:'rel-clasifica', to:'ent-psicologos', color:'#a5b4fc', card1:null, card2:'N' },
+    // clasifica: especialidades.id_especialidad → rel → psicologos.id_especialidad(FK)
+    { from:'f-esp-pk',      to:'rel-clasifica',  color:'#a5b4fc', card1:'1',  card2:null },
+    { from:'rel-clasifica', to:'f-psi-fk-esp',   color:'#a5b4fc', card1:null, card2:'N'  },
 
-    // atiende: PSICOLOGOS ←→ CITAS
-    { from:'ent-psicologos', to:'rel-atiende', color:'#6ee7b7', card1:'1', card2:null },
-    { from:'rel-atiende', to:'ent-citas', color:'#6ee7b7', card1:null, card2:'N' },
+    // atiende: psicologos.id_psicologo → rel → citas.id_psicologo(FK)
+    { from:'f-psi-pk',     to:'rel-atiende',    color:'#6ee7b7', card1:'1',  card2:null },
+    { from:'rel-atiende',  to:'f-cit-fk-psi',   color:'#6ee7b7', card1:null, card2:'N'  },
 
-    // solicita: USUARIOS ←→ CITAS
-    { from:'ent-usuarios', to:'rel-solicita', color:'#93c5fd', card1:'1', card2:null },
-    { from:'rel-solicita', to:'ent-citas', color:'#93c5fd', card1:null, card2:'N' },
+    // solicita: usuarios.id_usuario → rel → citas.id_usuario(FK)
+    { from:'f-usr-pk',     to:'rel-solicita',   color:'#93c5fd', card1:'1',  card2:null },
+    { from:'rel-solicita', to:'f-cit-fk-usr',   color:'#93c5fd', card1:null, card2:'N'  },
 
-    // genera: CITAS ←→ RECORDATORIOS
-    { from:'ent-citas', to:'rel-genera', color:'#d8b4fe', card1:'1', card2:null },
-    { from:'rel-genera', to:'ent-recordatorios', color:'#d8b4fe', card1:null, card2:'N' },
+    // genera: citas.id_cita → rel → recordatorios.id_cita(FK)
+    { from:'f-cit-pk',    to:'rel-genera',      color:'#d8b4fe', card1:'1',  card2:null },
+    { from:'rel-genera',  to:'f-red-fk-cit',    color:'#d8b4fe', card1:null, card2:'N'  },
 
-    // define: PSICOLOGOS ←→ DISPONIBILIDAD
-    { from:'ent-psicologos', to:'rel-define', color:'#5eead4', card1:'1', card2:null },
-    { from:'rel-define', to:'ent-disponibilidad', color:'#5eead4', card1:null, card2:'N' },
+    // define: psicologos.id_psicologo → rel → disponibilidad.id_psicologo(FK)
+    { from:'f-psi-pk',   to:'rel-define',       color:'#5eead4', card1:'1',  card2:null },
+    { from:'rel-define', to:'f-dis-fk-psi',     color:'#5eead4', card1:null, card2:'N'  },
 
-    // escribe: PSICOLOGOS ←→ NOTAS
-    { from:'ent-psicologos', to:'rel-escribe', color:'#f0abfc', card1:'1', card2:null },
-    { from:'rel-escribe', to:'ent-notas', color:'#f0abfc', card1:null, card2:'N' },
+    // escribe: psicologos.id_psicologo → rel → notas.id_psicologo(FK)
+    { from:'f-psi-pk',    to:'rel-escribe',     color:'#f0abfc', card1:'1',  card2:null },
+    { from:'rel-escribe', to:'f-not-fk-psi',    color:'#f0abfc', card1:null, card2:'N'  },
 
-    // tiene nota: USUARIOS ←→ NOTAS
-    { from:'ent-usuarios', to:'rel-tiene-nota', color:'#bfdbfe', card1:'1', card2:null },
-    { from:'rel-tiene-nota', to:'ent-notas', color:'#bfdbfe', card1:null, card2:'N' },
+    // tiene_nota: usuarios.id_usuario → rel → notas.id_usuario(FK)
+    { from:'f-usr-pk',       to:'rel-tiene-nota', color:'#bfdbfe', card1:'1',  card2:null },
+    { from:'rel-tiene-nota', to:'f-not-fk-usr',   color:'#bfdbfe', card1:null, card2:'N'  },
 
-    // crea recurso: PSICOLOGOS ←→ RECURSOS
-    { from:'ent-psicologos', to:'rel-crea', color:'#fdba74', card1:'1', card2:null },
-    { from:'rel-crea', to:'ent-recursos', color:'#fdba74', card1:null, card2:'N' },
+    // crea_recurso: psicologos.id_psicologo → rel → recursos.id_psicologo(FK)
+    { from:'f-psi-pk',  to:'rel-crea',          color:'#fdba74', card1:'1',  card2:null },
+    { from:'rel-crea',  to:'f-rec-fk-psi',      color:'#fdba74', card1:null, card2:'N'  },
 
-    // accede: USUARIOS ←→ RECURSOS
-    { from:'ent-usuarios', to:'rel-accede', color:'#fed7aa', card1:'1', card2:null },
-    { from:'rel-accede', to:'ent-recursos', color:'#fed7aa', card1:null, card2:'N' },
+    // accede: usuarios.id_usuario → rel → recursos.id_usuario(FK)
+    { from:'f-usr-pk',   to:'rel-accede',        color:'#fcd34d', card1:'1',  card2:null },
+    { from:'rel-accede', to:'f-rec-fk-usr',      color:'#fcd34d', card1:null, card2:'N'  },
 ];
 
 function getCenter(el) {
