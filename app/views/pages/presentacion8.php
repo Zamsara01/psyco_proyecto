@@ -19,15 +19,6 @@
         background-clip: text;
         color: transparent;
     }
-    .line-animation {
-        stroke-dasharray: 8;
-        animation: dash 20s linear infinite;
-    }
-    @keyframes dash {
-        to {
-            stroke-dashoffset: -1000;
-        }
-    }
     /* Estilos para arrastrar */
     .draggable-card {
         transition: box-shadow 0.2s ease;
@@ -57,7 +48,7 @@
         <div class="flex flex-col gap-5 pt-32">
             <!-- Tabla: otp_codes -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-slate-700 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #334155;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         otp_codes
@@ -80,7 +71,7 @@
         <div class="flex flex-col gap-5 pt-8">
             <!-- Tabla: recursos_acompanamiento -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-orange-500 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #f97316;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         recursos_acompanamiento
@@ -101,7 +92,7 @@
 
             <!-- Tabla: notas_paciente -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-fuchsia-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #c026d3;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         notas_paciente
@@ -119,7 +110,7 @@
 
             <!-- Tabla: especialidades -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-indigo-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #4f46e5;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         especialidades
@@ -137,7 +128,7 @@
         <div class="flex flex-col gap-5">
             <!-- Tabla: usuarios -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-blue-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #2563eb;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         usuarios
@@ -169,7 +160,7 @@
 
             <!-- Tabla: psicologos -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-emerald-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #059669;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         psicologos
@@ -190,7 +181,7 @@
 
             <!-- Tabla: disponibilidad_psicologos -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-teal-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #0d9488;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         disponibilidad_psicologos
@@ -212,7 +203,7 @@
         <div class="flex flex-col gap-5 pt-20">
             <!-- Tabla: recordatorios -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-rose-500 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #f43f5e;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         recordatorios
@@ -231,7 +222,7 @@
             
             <!-- Tabla: citas -->
             <div class="draggable-card bg-white rounded-lg shadow-lg border border-slate-300/50 overflow-hidden relative">
-                <div class="cursor-move bg-purple-600 px-3 py-1.5 border-b border-slate-200 select-none">
+                <div class="cursor-move px-3 py-1.5 border-b border-slate-200 select-none" style="background-color: #9333ea;">
                     <h3 class="font-bold text-white text-sm flex items-center gap-1.5 pointer-events-none" style="font-family: 'Canva Sans', sans-serif;">
                         <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
                         citas
@@ -273,22 +264,22 @@
 <!-- Script para dibujar las relaciones y arrastrar -->
 <script>
     const connections = [
-        // Desde Usuarios (PK)
-        { from: 'usuarios-id_usuario', to: 'citas-id_usuario', color: '#60a5fa' }, // blue-400
-        { from: 'usuarios-id_usuario', to: 'notas-id_usuario', color: '#60a5fa' },
-        { from: 'usuarios-id_usuario', to: 'recursos-id_usuario', color: '#60a5fa' },
+        // Desde Usuarios (PK) - Amarillo de alto contraste
+        { from: 'usuarios-id_usuario', to: 'citas-id_usuario', color: '#fbbf24' }, 
+        { from: 'usuarios-id_usuario', to: 'notas-id_usuario', color: '#fbbf24' },
+        { from: 'usuarios-id_usuario', to: 'recursos-id_usuario', color: '#fbbf24' },
         
-        // Desde Psicologos (PK)
-        { from: 'psicologos-id_psicologo', to: 'citas-id_psicologo', color: '#34d399' }, // emerald-400
-        { from: 'psicologos-id_psicologo', to: 'notas-id_psicologo', color: '#34d399' },
-        { from: 'psicologos-id_psicologo', to: 'recursos-id_psicologo', color: '#34d399' },
-        { from: 'psicologos-id_psicologo', to: 'disponibilidad-id_psicologo', color: '#34d399' },
+        // Desde Psicologos (PK) - Naranja brillante
+        { from: 'psicologos-id_psicologo', to: 'citas-id_psicologo', color: '#fb923c' }, 
+        { from: 'psicologos-id_psicologo', to: 'notas-id_psicologo', color: '#fb923c' },
+        { from: 'psicologos-id_psicologo', to: 'recursos-id_psicologo', color: '#fb923c' },
+        { from: 'psicologos-id_psicologo', to: 'disponibilidad-id_psicologo', color: '#fb923c' },
         
-        // Desde Especialidades (PK)
-        { from: 'especialidades-id_especialidad', to: 'psicologos-id_especialidad', color: '#818cf8' }, // indigo-400
+        // Desde Especialidades (PK) - Rosa fuerte
+        { from: 'especialidades-id_especialidad', to: 'psicologos-id_especialidad', color: '#f472b6' }, 
         
-        // Desde Citas (PK)
-        { from: 'citas-id_cita', to: 'recordatorios-id_cita', color: '#c084fc' } // purple-400
+        // Desde Citas (PK) - Blanco
+        { from: 'citas-id_cita', to: 'recordatorios-id_cita', color: '#ffffff' } 
     ];
 
     function drawLines() {
@@ -325,22 +316,22 @@
             
             path.setAttribute('d', d);
             path.setAttribute('stroke', conn.color);
-            path.setAttribute('stroke-width', '2.5');
+            path.setAttribute('stroke-width', '4'); // Línea más gruesa
             path.setAttribute('fill', 'none');
-            path.setAttribute('class', 'opacity-70 line-animation');
+            path.setAttribute('class', 'opacity-100 drop-shadow-md'); // 100% opacidad y sombra para resaltar sobre el fondo
             svg.appendChild(path);
             
             const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle1.setAttribute('cx', startX);
             circle1.setAttribute('cy', startY);
-            circle1.setAttribute('r', '3');
+            circle1.setAttribute('r', '4');
             circle1.setAttribute('fill', conn.color);
             svg.appendChild(circle1);
             
             const circle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle2.setAttribute('cx', endX);
             circle2.setAttribute('cy', endY);
-            circle2.setAttribute('r', '3');
+            circle2.setAttribute('r', '4');
             circle2.setAttribute('fill', conn.color);
             svg.appendChild(circle2);
         });
