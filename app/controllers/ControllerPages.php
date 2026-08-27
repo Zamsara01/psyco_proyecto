@@ -22,6 +22,17 @@ class ControllerPages extends Controller
         $this->render('pages/presentacion2');
     }
 
+    public function presentacion3(): void { $this->render('pages/presentacion3'); }
+    public function presentacion4(): void { $this->render('pages/presentacion4'); }
+    public function presentacion5(): void { $this->render('pages/presentacion5'); }
+    public function presentacion6(): void { $this->render('pages/presentacion6'); }
+    public function presentacion7(): void { $this->render('pages/presentacion7'); }
+    public function presentacion8(): void { $this->render('pages/presentacion8'); }
+    public function presentacion9(): void { $this->render('pages/presentacion9'); }
+    public function presentacion10(): void { $this->render('pages/presentacion10'); }
+    public function presentacion11(): void { $this->render('pages/presentacion11'); }
+    public function presentacion12(): void { $this->render('pages/presentacion12'); }
+
     public function about(): void
     {
         $this->render('pages/about');
