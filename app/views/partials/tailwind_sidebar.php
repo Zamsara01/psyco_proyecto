@@ -46,6 +46,13 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Inicio
             </a>
 
+            <!-- Presentación -->
+            <a href="<?= URL_BASE ?>#presentacion"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+                <span class="material-symbols-outlined text-[22px] shrink-0">folder_special</span>
+                Presentación
+            </a>
+
             <!-- Calendario — bloqueado -->
             <button onclick="openLoginRequiredModal('Calendario')"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/60 relative">
@@ -426,6 +433,5 @@ function toggleMisRecursos() {
         if (chevron) chevron.style.transform = 'rotate(180deg)';
     }
 })();
-
 
 </script>

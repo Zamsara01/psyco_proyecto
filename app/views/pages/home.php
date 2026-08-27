@@ -116,3 +116,54 @@
         </div>
     </div>
 </section>
+
+<!-- ── Presentación ───────────────────────────────────────── -->
+<?php if ($rol === null): ?>
+<section id="presentacion" class="py-16 px-6 bg-slate-50 dark:bg-slate-900 flex justify-center w-full">
+    <div class="flex flex-row gap-6 w-full max-w-6xl items-stretch justify-center">
+        <!-- Tarjeta Principal (Información) -->
+        <div class="w-[70%] p-12 space-y-8 bg-gradient-to-r from-cyan-300 to-blue-500 text-center flex flex-col items-center justify-center rounded-3xl shadow-xl border-4 border-solid border-cyan-200 shrink-0">
+            <h2 class="text-7xl font-normal text-black mb-6 tracking-wide" style="font-family: Georgia, serif;">Psyco</h2>
+            
+            <div class="space-y-8 w-full max-w-lg mx-auto text-black">
+                <div>
+                    <h3 class="flex items-center justify-center gap-2 text-xl font-bold mb-2">
+                        <span>🧠</span> Integrantes
+                    </h3>
+                    <p class="font-bold text-lg leading-relaxed">Matías Arboleda · Simón Atehortúa · David Bedoya · Ayleen Martínez</p>
+                </div>
+
+                <div>
+                    <h3 class="flex items-center justify-center gap-2 text-xl font-bold mb-2">
+                        <span>🏫</span> Institución
+                    </h3>
+                    <p class="font-bold text-lg leading-relaxed">I.E. Barrio Santa Margarita Medellín<br>17 de abril de 2026</p>
+                </div>
+
+                <div>
+                    <h3 class="flex items-center justify-center gap-2 text-xl font-bold mb-2">
+                        <span>🧑‍🏫</span> Profesores
+                    </h3>
+                    <p class="font-bold text-lg leading-relaxed">Jairo Cano - Arnaldo Dominguez - Iván Castro - William Montoya</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta Secundaria (Logos pequeños) -->
+        <div class="w-[30%] bg-white p-8 flex flex-col items-center justify-center text-center space-y-8 rounded-3xl shadow-xl border-4 border-solid border-slate-200 shrink-0">
+            
+            <img src="<?= URL_BASE ?>public/img/psyco.png" alt="Psyco" class="w-32 object-contain drop-shadow-md">
+            
+            <p class="text-base font-normal text-black underline decoration-black decoration-1 underline-offset-4 px-2" style="font-family: Georgia, serif;">
+                Un sistema ordenado para un bienestar adecuado
+            </p>
+            
+            <div class="flex flex-col items-center justify-center gap-6 w-full mt-4">
+                <img src="<?= URL_BASE ?>public/img/sena.png" alt="Sena" class="h-16 w-auto object-contain">
+                <img src="<?= URL_BASE ?>public/img/logo.png" alt="Logo IE" class="h-16 w-auto object-contain">
+            </div>
+            
+        </div>
+    </div>
+</section>
+<?php endif; ?>
