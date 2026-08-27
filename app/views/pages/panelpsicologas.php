@@ -1004,14 +1004,19 @@ async function cargarDisponibilidad() {
                             ${esc(dia)}
                         </h5>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            ${bloques.map(b => `
+                            ${bloques.map(b => {
+                                const jornadaDisplay = b.jornada 
+                                    ? esc(b.jornada) 
+                                    : (esc(b.hora_inicio) + ' - ' + esc(b.hora_fin));
+                                return `
                                 <div class="flex items-center justify-between bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2 text-sm shadow-sm hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
-                                    <span class="font-semibold text-slate-600 dark:text-slate-300">${esc(b.hora_inicio)} - ${esc(b.hora_fin)}</span>
-                                    <button onclick="eliminarHorario(${b.id_disponibilidad})" class="p-1 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all active:scale-90" title="Eliminar bloque">
+                                    <span class="font-semibold text-slate-600 dark:text-slate-300">${jornadaDisplay}</span>
+                                    <button onclick="eliminarHorario(${b.id_disponibilidad})" class="p-1 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all active:scale-90" title="Eliminar jornada">
                                         <span class="material-symbols-outlined text-[18px]">delete</span>
                                     </button>
                                 </div>
-                            `).join('')}
+                            `;
+                            }).join('')}
                         </div>
                     </div>`;
             }
@@ -1031,19 +1036,10 @@ async function agregarHorarioDisponibilidad() {
     errorCont.classList.add('hidden');
 
     const dia = document.getElementById('dispDia').value;
-    const inicio = document.getElementById('dispInicio').value;
-    const fin = document.getElementById('dispFin').value;
+    const jornada = document.getElementById('dispJornada').value;
 
-    if (!dia || !inicio || !fin) {
-        errorMsg.textContent = 'Selecciona el día, hora de inicio y fin.';
-        errorCont.classList.remove('hidden');
-        return;
-    }
-
-    const tInicio = new Date(`2000-01-01T${inicio}`);
-    const tFin = new Date(`2000-01-01T${fin}`);
-    if (tInicio >= tFin) {
-        errorMsg.textContent = 'La hora de inicio debe ser anterior a la hora de fin.';
+    if (!dia || !jornada) {
+        errorMsg.textContent = 'Selecciona el día y la jornada.';
         errorCont.classList.remove('hidden');
         return;
     }
@@ -1056,13 +1052,12 @@ async function agregarHorarioDisponibilidad() {
         const res = await fetch(BASE + 'panel_psicologas/agregarDisponibilidad', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ dia_semana: dia, hora_inicio: inicio, hora_fin: fin })
+            body: JSON.stringify({ dia_semana: dia, jornada: jornada })
         });
         const data = await res.json();
         if (data.ok) {
             cargarDisponibilidad();
-            document.getElementById('dispInicio').value = '';
-            document.getElementById('dispFin').value = '';
+            document.getElementById('dispJornada').value = '';
         } else {
             errorMsg.textContent = data.error;
             errorCont.classList.remove('hidden');
@@ -1072,7 +1067,7 @@ async function agregarHorarioDisponibilidad() {
         errorCont.classList.remove('hidden');
     }
     btn.disabled = false;
-    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">add_circle</span> Agregar a mi horario';
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">add_circle</span> Agregar jornada';
 }
 
 async function eliminarHorario(idDisponibilidad) {
@@ -1115,8 +1110,8 @@ async function eliminarHorario(idDisponibilidad) {
 
         <!-- Agregar nuevo horario -->
         <div class="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/50 rounded-2xl p-4 mb-6">
-            <h4 class="text-xs font-bold text-indigo-800 dark:text-indigo-300 uppercase tracking-wider mb-3">Agregar Bloque de Horario</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+            <h4 class="text-xs font-bold text-indigo-800 dark:text-indigo-300 uppercase tracking-wider mb-3">Agregar Jornada</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Día de la Semana</label>
                     <select id="dispDia" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
@@ -1130,14 +1125,17 @@ async function eliminarHorario(idDisponibilidad) {
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Hora Inicio</label>
-                    <input type="time" id="dispInicio" step="1800"
-                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-transparent dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Hora Fin</label>
-                    <input type="time" id="dispFin" step="1800"
-                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-transparent dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Jornada (solo 1 por día)</label>
+                    <select id="dispJornada" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
+                        <option value="">Seleccionar jornada</option>
+                        <option value="07:00-13:00">07:00 - 13:00 (Mañana)</option>
+                        <option value="08:00-14:00">08:00 - 14:00 (Mañana)</option>
+                        <option value="09:00-15:00">09:00 - 15:00 (Mañana-Tarde)</option>
+                        <option value="10:00-16:00">10:00 - 16:00 (Mediodía)</option>
+                        <option value="13:00-19:00">13:00 - 19:00 (Tarde)</option>
+                        <option value="14:00-20:00">14:00 - 20:00 (Tarde)</option>
+                        <option value="15:00-21:00">15:00 - 21:00 (Tarde-Noche)</option>
+                    </select>
                 </div>
             </div>
             
@@ -1149,7 +1147,7 @@ async function eliminarHorario(idDisponibilidad) {
             <button onclick="agregarHorarioDisponibilidad()" id="btnAgregarDisp"
                 class="w-full mt-4 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
                 <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                Agregar a mi horario
+                Agregar jornada
             </button>
         </div>
 

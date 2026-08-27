@@ -206,32 +206,38 @@ class PsicologoModel extends Model
      */
     public function getDisponibilidad(int $idPsicologo): array
     {
-        $sql = "SELECT id_disponibilidad, dia_semana, hora_inicio, hora_fin 
+        $sql = "SELECT id_disponibilidad, dia_semana, jornada, hora_inicio, hora_fin 
                 FROM disponibilidad_psicologos 
                 WHERE id_psicologo = ? AND activo = 1
-                ORDER BY FIELD(dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'), hora_inicio";
+                ORDER BY FIELD(dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo')";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$idPsicologo]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Agrega un nuevo bloque de disponibilidad para una psicóloga.
+     * Agrega un nuevo bloque de disponibilidad (jornada) para una psicóloga.
+     * Solo permite 1 jornada por día.
      */
-    public function addDisponibilidad(int $idPsicologo, string $dia, string $inicio, string $fin): bool
+    public function addDisponibilidad(int $idPsicologo, string $dia, string $jornada): bool
     {
-        // Verificar si ya existe exactamente el mismo bloque activo para evitar duplicados
+        // Verificar si ya existe una jornada activa para ese día
         $sqlCheck = "SELECT id_disponibilidad FROM disponibilidad_psicologos 
-                     WHERE id_psicologo = ? AND dia_semana = ? AND hora_inicio = ? AND hora_fin = ? AND activo = 1";
+                     WHERE id_psicologo = ? AND dia_semana = ? AND activo = 1";
         $stmt = $this->db->prepare($sqlCheck);
-        $stmt->execute([$idPsicologo, $dia, $inicio, $fin]);
+        $stmt->execute([$idPsicologo, $dia]);
         if ($stmt->fetch()) {
-            return false;
+            return false; // Ya existe una jornada para ese día
         }
 
-        $sql = "INSERT INTO disponibilidad_psicologos (id_psicologo, dia_semana, hora_inicio, hora_fin, activo) VALUES (?, ?, ?, ?, 1)";
+        // Parsear jornada (formato "08:00-14:00") para mantener compatibilidad con hora_inicio/hora_fin
+        $partes = explode('-', $jornada);
+        $inicio = $partes[0] ?? '';
+        $fin = $partes[1] ?? '';
+
+        $sql = "INSERT INTO disponibilidad_psicologos (id_psicologo, dia_semana, jornada, hora_inicio, hora_fin, activo) VALUES (?, ?, ?, ?, ?, 1)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idPsicologo, $dia, $inicio, $fin]);
+        return $stmt->execute([$idPsicologo, $dia, $jornada, $inicio . ':00', $fin . ':00']);
     }
 
     /**

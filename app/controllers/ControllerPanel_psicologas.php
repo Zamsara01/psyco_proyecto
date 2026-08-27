@@ -582,7 +582,7 @@ class ControllerPanel_psicologas extends Controller
 
     // ────────────────────────────────────────────────────────────────
     // POST /panel_psicologas/agregarDisponibilidad
-    // Body JSON: { dia_semana, hora_inicio, hora_fin }
+    // Body JSON: { dia_semana, jornada }  (jornada formato "08:00-14:00")
     // ────────────────────────────────────────────────────────────────
     public function agregarDisponibilidad(): void
     {
@@ -591,23 +591,22 @@ class ControllerPanel_psicologas extends Controller
 
         $body   = json_decode(file_get_contents('php://input'), true);
         $dia    = trim($body['dia_semana'] ?? '');
-        $inicio = trim($body['hora_inicio'] ?? '');
-        $fin    = trim($body['hora_fin'] ?? '');
+        $jornada = trim($body['jornada'] ?? '');
         $idPsicologo = (int)$_SESSION['user']['id'];
 
         $diasValidos = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-        if (!in_array($dia, $diasValidos) || !$inicio || !$fin) {
+        if (!in_array($dia, $diasValidos) || !$jornada) {
             echo json_encode(['ok' => false, 'error' => 'Datos incompletos o inválidos.']);
             exit;
         }
 
-        // Basic hour/minutes validation (ensure time format HH:MM)
-        if (!preg_match('/^\d{2}:\d{2}$/', $inicio) || !preg_match('/^\d{2}:\d{2}$/', $fin)) {
-            // Check if it has seconds and strip them or validate
-            $inicio = substr($inicio, 0, 5);
-            $fin    = substr($fin, 0, 5);
+        // Validar formato jornada "HH:MM-HH:MM"
+        if (!preg_match('/^\d{2}:\d{2}-\d{2}:\d{2}$/', $jornada)) {
+            echo json_encode(['ok' => false, 'error' => 'Formato de jornada inválido. Use HH:MM-HH:MM.']);
+            exit;
         }
 
+        [$inicio, $fin] = explode('-', $jornada);
         if (strtotime($inicio) >= strtotime($fin)) {
             echo json_encode(['ok' => false, 'error' => 'La hora de inicio debe ser anterior a la hora de fin.']);
             exit;
@@ -615,12 +614,12 @@ class ControllerPanel_psicologas extends Controller
 
         require_once dirname(__DIR__) . '/models/PsicologoModel.php';
         $model = new PsicologoModel();
-        $ok    = $model->addDisponibilidad($idPsicologo, $dia, $inicio . ':00', $fin . ':00');
+        $ok    = $model->addDisponibilidad($idPsicologo, $dia, $jornada);
 
         if ($ok) {
-            echo json_encode(['ok' => true, 'mensaje' => 'Bloque de disponibilidad guardado correctamente.']);
+            echo json_encode(['ok' => true, 'mensaje' => 'Jornada guardada correctamente.']);
         } else {
-            echo json_encode(['ok' => false, 'error' => 'Este bloque de disponibilidad ya existe o entra en conflicto.']);
+            echo json_encode(['ok' => false, 'error' => 'Ya existe una jornada para ese día. Solo se permite 1 por día.']);
         }
         exit;
     }

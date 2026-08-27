@@ -1,6 +1,7 @@
 <main class="pt-8 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 relative z-10 w-full">
-    <!-- Left Section: Interactive Calendar -->
-    <section class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+    <!-- Left Section: Calendar + Carousel + Nuevos Recursos stacked -->
+    <section class="lg:col-span-12 xl:col-span-8 flex flex-col gap-6">
+        <!-- Calendar Card (Independent) -->
         <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60">
             <div class="flex items-center justify-between mb-8">
                 <div class="flex flex-col">
@@ -52,18 +53,25 @@
             </div>
         </div>
 
-        <!-- Bento Featured Psychology Insight -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-blue-600 rounded-xl p-6 text-white overflow-hidden relative group">
-                <div class="relative z-10">
-                    <h3 class="font-headline-sm mb-2">Consejo del día</h3>
-                    <p class="text-body-sm opacity-90 leading-relaxed">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
+        <!-- Carrusel + Nuevos Recursos side by side (below calendar) -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <!-- Carrusel de Consejos (square, funcional) -->
+            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60 aspect-square min-h-[200px] flex flex-col justify-center">
+                <div id="tip-carousel" class="relative h-full">
+                    <div id="tip-content" class="transition-opacity duration-500 ease-in-out h-full">
+                        <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 text-white overflow-hidden relative group h-full flex items-center justify-center">
+                            <div class="relative z-10 w-full">
+                                <p id="tip-text" class="text-body-sm opacity-90 leading-relaxed font-medium text-center">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
+                            </div>
+                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">psychology</span>
+                        </div>
+                    </div>
                 </div>
-                <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">psychology</span>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-1 border border-slate-100 dark:border-slate-700/60 shadow-sm flex overflow-hidden">
-                <img class="w-1/3 object-cover rounded-l-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY" />
+            <!-- Nuevos Recursos Card -->
+            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden aspect-square min-h-[200px]">
+                <img class="w-1/3 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY" />
                 <div class="p-4 w-2/3 flex flex-col justify-center">
                     <h4 class="font-bold text-blue-600 dark:text-blue-400">Nuevos Recursos</h4>
                     <p class="text-body-sm text-slate-500 dark:text-slate-400">Guía de meditación guiada disponible ahora.</p>
@@ -72,8 +80,8 @@
         </div>
     </section>
 
-    <!-- Right Section: Day Details Panel -->
-    <aside class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+    <!-- Right Section: Psychologist Panel only -->
+    <aside class="lg:col-span-12 xl:col-span-4 flex flex-col gap-6">
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
             <div class="p-6 border-b border-slate-50 dark:border-slate-700/60">
                 <h3 class="font-headline-md text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
@@ -90,6 +98,7 @@
             </div>
 
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-b-2xl">
+    </section>
                 <?php if (isset($_SESSION['user'])): ?>
                     <p class="text-sm text-slate-500 dark:text-slate-400 text-center font-medium">
                         <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
@@ -97,7 +106,68 @@
                             Selecciona un psicólogo y una hora para agendar una cita
                         <?php else: ?>
                             Haz clic en un psicólogo arriba para agendar tu cita
-                        <?php endif; ?>
+<?php endif; ?>
+
+<!-- Carousel JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Consejos del día para el carrusel
+    const consejos = [
+        "Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.",
+        "Respirar profundamente 3 veces al día reduce el estrés y mejora tu concentración.",
+        "Escribe 3 cosas por las que estés agradecido cada noche antes de dormir.",
+        "Camina 15 minutos al aire libre para revitalizar tu mente y cuerpo.",
+        "Desconéctate de las pantallas 30 minutos antes de dormir para mejorar tu sueño.",
+        "Habla con alguien de confianza cuando sientas que la carga es demasiado pesada.",
+        "Pequeños pasos diarios crean grandes cambios a largo plazo. Sé paciente contigo mismo.",
+        "Tu valor no depende de tu productividad. Descansar también es productivo."
+    ];
+
+    let currentTipIndex = 0;
+    const tipContent = document.getElementById('tip-content');
+
+    // Mostrar consejo
+    function showTip(index) {
+        if (!tipContent) return;
+        
+        const texto = consejos[index];
+        if (!texto) return;
+
+        // Animación de salida
+        tipContent.style.opacity = '0';
+        tipContent.style.transform = 'translateY(10px)';
+        
+        setTimeout(() => {
+            const tipText = document.getElementById('tip-text');
+            if (tipText) tipText.textContent = texto;
+
+            // Animación de entrada
+            tipContent.style.opacity = '1';
+            tipContent.style.transform = 'translateY(0)';
+        }, 200);
+    }
+
+    // Auto-rotar cada 10 segundos
+    function nextTip() {
+        currentTipIndex = (currentTipIndex + 1) % consejos.length;
+        showTip(currentTipIndex);
+    }
+
+    let autoRotate = setInterval(nextTip, 10000);
+
+    // Pausar auto-rotación al hacer hover
+    const carousel = document.getElementById('tip-carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', () => clearInterval(autoRotate));
+        carousel.addEventListener('mouseleave', () => {
+            autoRotate = setInterval(nextTip, 10000);
+        });
+    }
+
+    // Inicializar
+    showTip(0);
+});
+</script>
                     </p>
                 <?php else: ?>
                     <button type="button" onclick="openLoginModal()" class="w-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-4 rounded-xl shadow-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 duration-150">
