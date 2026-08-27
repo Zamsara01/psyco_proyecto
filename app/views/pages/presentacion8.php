@@ -1,4 +1,26 @@
 <!-- PSYCO — Presentación 8 (Modelo Relacional) -->
+<script>
+    // Ocultar sidebar y ajustar el layout al entrar a esta página
+    (function() {
+        const sidebar = document.getElementById('app-sidebar');
+        const mainContent = document.getElementById('main-content');
+        if (sidebar) {
+            sidebar.style.display = 'none';
+        }
+        if (mainContent) {
+            mainContent.style.marginLeft = '0';
+            mainContent.classList.remove('lg:ml-64');
+        }
+        // Restaurar al salir de la página
+        window.addEventListener('pagehide', () => {
+            if (sidebar) sidebar.style.display = '';
+            if (mainContent) {
+                mainContent.style.marginLeft = '';
+                mainContent.classList.add('lg:ml-64');
+            }
+        });
+    })();
+</script>
 <style>
     @keyframes nebula-flow {
         0% { background-position: 0% 50%; }
@@ -247,17 +269,15 @@
 
     </div>
 
-    <!-- Navegación pegada abajo a la izquierda/derecha usando absolute/fixed -->
-    <div class="fixed bottom-0 left-0 w-full px-6 py-6 flex justify-between items-center z-50 pointer-events-none">
-        <a href="<?= URL_BASE ?>pages/presentacion7" class="pointer-events-auto inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
-            <span class="material-symbols-outlined">arrow_back</span>
-            <span class="font-bold text-sm">Volver</span>
-        </a>
-        <a href="<?= URL_BASE ?>pages/presentacion9" class="pointer-events-auto inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
-            <span class="font-bold text-sm">Siguiente</span>
-            <span class="material-symbols-outlined">arrow_forward</span>
-        </a>
-    </div>
+    <!-- Navegación fijada en las esquinas inferiores -->
+    <a id="btn-volver-nav" href="<?= URL_BASE ?>pages/presentacion7" class="fixed bottom-6 left-6 z-[9999] inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="font-bold text-sm">Volver</span>
+    </a>
+    <a id="btn-siguiente-nav" href="<?= URL_BASE ?>pages/presentacion9" class="fixed bottom-6 right-6 z-[9999] inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
+        <span class="font-bold text-sm">Siguiente</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+    </a>
 
 </section>
 
@@ -393,4 +413,12 @@
     // Fallback observer por si hay cambios en la caja
     const observer = new ResizeObserver(drawLines);
     observer.observe(document.getElementById('grid-container'));
+
+    // Fix para que los botones sean realmente fijos (evita problemas con transformaciones CSS de los ancestros)
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnVolver = document.getElementById('btn-volver-nav');
+        const btnSiguiente = document.getElementById('btn-siguiente-nav');
+        if (btnVolver) document.body.appendChild(btnVolver);
+        if (btnSiguiente) document.body.appendChild(btnSiguiente);
+    });
 </script>
