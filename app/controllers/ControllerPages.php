@@ -12,6 +12,16 @@ class ControllerPages extends Controller
         $this->render('pages/home');
     }
 
+    public function presentacion(): void
+    {
+        $this->render('pages/presentacion');
+    }
+
+    public function presentacion2(): void
+    {
+        $this->render('pages/presentacion2');
+    }
+
     public function about(): void
     {
         $this->render('pages/about');
