@@ -30,6 +30,17 @@ class ControllerPanel_psicologas extends Controller
         $pacientesHoy   = $notaModel->getNotasParaPacientesDeHoy($idPsicologo);
         $citaEnProceso  = $citaModel->getCitaEnProceso($idPsicologo);
 
+        // Verificar si la cita está ocurriendo AHORA (dentro de su horario programado)
+        $citaOcurriendo = false;
+        if ($citaEnProceso) {
+            $fechaCita = $citaEnProceso['fecha'];
+            $horaCita = $citaEnProceso['hora'];
+            $inicioCita = strtotime("$fechaCita $horaCita");
+            $finCita = $inicioCita + (60 * 60); // Asumir 1 hora de duración por defecto
+            $ahora = time();
+            $citaOcurriendo = ($ahora >= $inicioCita && $ahora <= $finCita);
+        }
+
         $this->layout = 'tailwind';
         $this->render('pages/panelpsicologas', [
             'stats'          => $stats,
@@ -37,6 +48,7 @@ class ControllerPanel_psicologas extends Controller
             'citasHoy'       => $citasHoy,
             'pacientesHoy'   => $pacientesHoy,
             'citaEnProceso'  => $citaEnProceso,
+            'citaOcurriendo' => $citaOcurriendo,
         ]);
     }
 

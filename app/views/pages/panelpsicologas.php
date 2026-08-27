@@ -14,16 +14,25 @@
         </div>
         <div class="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
 
-            <?php if ($citaEnProceso): ?>
-            <!-- Botón Finalizar Reunión ACTIVO -->
+            <?php if ($citaEnProceso && $citaOcurriendo): ?>
+            <!-- Botón Finalizar Reunión ACTIVO (solo cuando la cita está ocurriendo AHORA) -->
             <button id="btn-finalizar-reunion" onclick="finalizarReunion()"
                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold text-sm hover:from-red-600 hover:to-rose-700 shadow-md shadow-red-100 dark:shadow-none transition-all active:scale-95 animate-pulse-subtle">
                 <span class="material-symbols-outlined text-[20px]">call_end</span>
                 <span>Finalizar Reunión</span>
                 <span id="reunion-timer" class="font-mono text-xs bg-white/20 px-1.5 py-0.5 rounded-md">00:00</span>
             </button>
+            <?php elseif ($citaEnProceso): ?>
+            <!-- Botón Finalizar Reunión VISIBLE PERO NO INTERACTUABLE (cita en proceso pero no en horario) -->
+            <button disabled
+                title="La cita aún no ha comenzado o ya terminó"
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-amber-200 text-amber-600 font-bold text-sm cursor-not-allowed dark:border-amber-800 dark:text-amber-400">
+                <span class="material-symbols-outlined text-[20px]">call_end</span>
+                <span>Finalizar Reunión</span>
+                <span class="font-mono text-xs bg-amber-100 dark:bg-amber-900/30 px-1.5 py-0.5 rounded-md">Fuera de horario</span>
+            </button>
             <?php else: ?>
-            <!-- Botón Finalizar Reunión INACTIVO -->
+            <!-- Botón Finalizar Reunión INACTIVO (sin cita en proceso) -->
             <button disabled
                 title="No hay ninguna cita en proceso"
                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-slate-200 text-slate-400 font-bold text-sm cursor-not-allowed dark:border-slate-700 dark:text-slate-600">
@@ -441,7 +450,10 @@ window.URL_BASE = '<?= URL_BASE ?>';
 // ─── Finalizar Reunión ────────────────────────────────────────
 <?php if ($citaEnProceso): ?>
 const CITA_EN_PROCESO_ID = <?= (int)$citaEnProceso['id_cita'] ?>;
-const CITA_INICIO_TIMESTAMP = Date.now(); // Empezamos a contar desde que carga el panel
+// Usar hora_inicio_real de la BD si existe, si no, usar hora programada de hoy
+const CITA_INICIO_TIMESTAMP = <?= $citaEnProceso['hora_inicio_real'] 
+    ? 'new Date("' . $citaEnProceso['fecha'] . ' ' . $citaEnProceso['hora_inicio_real'] . '").getTime()'
+    : 'new Date("' . $citaEnProceso['fecha'] . ' ' . $citaEnProceso['hora'] . '").getTime()' ?>;
 let reunionTimerInterval = null;
 
 function formatTime(segundos) {
@@ -450,13 +462,18 @@ function formatTime(segundos) {
     return `${m}:${s}`;
 }
 
-// Iniciar timer visible
+// Iniciar timer visible solo si hay hora de inicio real o programada
 (function startReunionTimer() {
     const timerEl = document.getElementById('reunion-timer');
     if (!timerEl) return;
     reunionTimerInterval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - CITA_INICIO_TIMESTAMP) / 1000);
-        timerEl.textContent = formatTime(elapsed);
+        if (elapsed >= 0) {
+            timerEl.textContent = formatTime(elapsed);
+        } else {
+            // Si la cita aún no empezó (hora futura), mostrar 00:00
+            timerEl.textContent = '00:00';
+        }
     }, 1000);
 })();
 

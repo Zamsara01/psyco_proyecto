@@ -310,7 +310,7 @@ class CitaModel extends Model
     public function getCitaEnProceso(int $idPsicologo): ?array
     {
         $sql = "
-            SELECT c.id_cita, c.fecha, c.hora, u.nombre AS paciente_nombre
+            SELECT c.id_cita, c.fecha, c.hora, c.hora_inicio_real, u.nombre AS paciente_nombre
             FROM citas c
             JOIN usuarios u ON c.id_usuario = u.id_usuario
             WHERE c.id_psicologo = ? AND c.estado = 'en proceso'
