@@ -10,11 +10,64 @@
         background-size: 300% 300%;
         animation: nebula-flow 8s ease infinite;
     }
+    .text-nebula {
+        background: linear-gradient(270deg, #10b981, #2563eb, #34d399, #3b82f6);
+        background-size: 300% 300%;
+        animation: nebula-flow 8s ease infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+    }
 </style>
 <section class="min-h-screen py-16 px-6 bg-nebula flex flex-col items-center justify-center w-full">
 
-    <!-- Tarjeta vacía -->
-    <div class="w-full max-w-6xl min-h-[60vh] bg-white rounded-3xl shadow-2xl border-4 border-solid border-slate-200 p-12 flex flex-col items-center justify-center">
+    <!-- Tarjeta Objetivo Ambiental -->
+    <div class="w-full max-w-6xl min-h-[60vh] bg-white rounded-3xl shadow-2xl border-4 border-solid border-slate-200 p-12 md:p-16 flex flex-col justify-center space-y-10">
+
+        <!-- Título -->
+        <div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
+                ◆ OBJETIVO AMBIENTAL
+            </h2>
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
+                REDUCIR EL IMPACTO AMBIENTAL MEDIANTE LA DIGITALIZACIÓN DE LA GESTIÓN DE CITAS PSICOLÓGICAS, DISMINUYENDO EL USO DE PAPEL Y RECURSOS FÍSICOS.
+            </p>
+        </div>
+
+        <hr class="border-slate-200">
+
+        <!-- ¿Por qué este objetivo? -->
+        <div class="bg-green-50 border-l-4 border-green-400 rounded-2xl p-6">
+            <h3 class="text-2xl font-extrabold text-nebula mb-3" style="font-family: 'Canva Sans', sans-serif;">¿Por qué este objetivo?</h3>
+            <p class="text-xl text-slate-700 font-semibold" style="font-family: 'Canva Sans', sans-serif;">
+                <span class="font-extrabold text-green-700">Sostenibilidad:</span> Menor uso de papel y recursos físicos mediante la digitalización.
+            </p>
+        </div>
+
+        <hr class="border-slate-200">
+
+        <!-- Componentes -->
+        <div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-8" style="font-family: 'Canva Sans', sans-serif;">
+                ◆ COMPONENTES
+            </h2>
+            <ul class="space-y-6">
+                <li class="flex items-start gap-4">
+                    <span class="text-4xl">🌱</span>
+                    <span class="text-xl md:text-2xl font-bold text-slate-700" style="font-family: 'Canva Sans', sans-serif;">Reducir el uso de papel.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <span class="text-4xl">💻</span>
+                    <span class="text-xl md:text-2xl font-bold text-slate-700" style="font-family: 'Canva Sans', sans-serif;">Digitalizar procesos.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <span class="text-4xl">♻️</span>
+                    <span class="text-xl md:text-2xl font-bold text-slate-700" style="font-family: 'Canva Sans', sans-serif;">Optimizar recursos.</span>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
     <!-- Navegación -->
