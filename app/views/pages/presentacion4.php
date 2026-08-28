@@ -30,8 +30,8 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
                 ◆ OBJETIVO ECONÓMICO
             </h2>
-            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
-                OPTIMIZAR LOS RECURSOS ECONÓMICOS Y ADMINISTRATIVOS DE LA I.E. BARRIO SANTA MARGARITA MEDIANTE LA DIGITALIZACIÓN Y AUTOMATIZACIÓN DE LOS PROCESOS RELACIONADOS CON LA GESTIÓN DE CITAS PSICOLÓGICAS.
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed" style="font-family: 'Canva Sans', sans-serif;">
+                Optimizar los recursos económicos y administrativos de la I.E Barrio Santa Margarita mediante la digitalización y automatización de los procesos relacionados con la gestión de citas psicológicas.
             </p>
         </div>
 

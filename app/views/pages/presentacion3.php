@@ -30,8 +30,8 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
                 ◆ OBJETIVO ACADÉMICO
             </h2>
-            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
-                DESARROLLAR COMPETENCIAS TÉCNICAS EN EL DISEÑO E IMPLEMENTACIÓN DE UN SISTEMA DIGITAL PARA LA GESTIÓN DE CITAS PSICOLÓGICAS.
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed" style="font-family: 'Canva Sans', sans-serif;">
+                Desarrollar competencias técnicas en el diseño e implementación de un sistema digital para la gestión de citas psicológicas.
             </p>
         </div>
 

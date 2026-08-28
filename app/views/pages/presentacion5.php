@@ -30,8 +30,8 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
                 ◆ OBJETIVO SOCIAL
             </h2>
-            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
-                GARANTIZAR EL ACCESO EQUITATIVO A LOS SERVICIOS DE ORIENTACIÓN PSICOLÓGICA MEDIANTE EL USO DE UNA PLATAFORMA DIGITAL ACCESIBLE, MEJORANDO LA ATENCIÓN Y REDUCIENDO LAS BARRERAS DE ACCESO.
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed" style="font-family: 'Canva Sans', sans-serif;">
+                Garantizar el acceso equitativo a los servicios de orientación psicológica mediante el uso de una plataforma digital accesible, mejorando la atención y reduciendo las barreras de acceso.
             </p>
         </div>
 

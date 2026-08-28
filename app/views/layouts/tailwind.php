@@ -172,5 +172,82 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<style>
+/* ── Animación global: bloques de texto cayendo del aire ───────────────── */
+@keyframes blockDrop {
+    0%   { opacity: 0; transform: translateY(-80px) rotateX(15deg); }
+    60%  { opacity: 1; transform: translateY(15px) rotateX(-5deg); }
+    80%  { transform: translateY(-5px) rotateX(2deg); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0deg); }
+}
+
+/* Aplicar la animación solo dentro de las páginas de presentación */
+section.min-h-screen .bg-white h1,
+section.min-h-screen .bg-white h2,
+section.min-h-screen .bg-white h3,
+section.min-h-screen .bg-white p,
+section.min-h-screen .bg-white li,
+section.min-h-screen > div > h2,
+section.min-h-screen .agenda-card {
+    opacity: 0;
+    animation: blockDrop 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    will-change: transform, opacity;
+}
+
+/* Escalonamiento automático para los elementos usando nth-child o nth-of-type 
+   (Asumimos un máximo de 10 elementos por tarjeta para simplificar) */
+section.min-h-screen .bg-white > *:nth-child(1),
+section.min-h-screen .bg-white > div > *:nth-child(1),
+section.min-h-screen .agenda-card:nth-child(1) { animation-delay: 0.1s; }
+
+section.min-h-screen .bg-white > *:nth-child(2),
+section.min-h-screen .bg-white > div > *:nth-child(2),
+section.min-h-screen .agenda-card:nth-child(2) { animation-delay: 0.2s; }
+
+section.min-h-screen .bg-white > *:nth-child(3),
+section.min-h-screen .bg-white > div > *:nth-child(3),
+section.min-h-screen .agenda-card:nth-child(3) { animation-delay: 0.3s; }
+
+section.min-h-screen .bg-white > *:nth-child(4),
+section.min-h-screen .bg-white > div > *:nth-child(4),
+section.min-h-screen .agenda-card:nth-child(4) { animation-delay: 0.4s; }
+
+section.min-h-screen .bg-white > *:nth-child(5),
+section.min-h-screen .bg-white > div > *:nth-child(5),
+section.min-h-screen .agenda-card:nth-child(5) { animation-delay: 0.5s; }
+
+section.min-h-screen .bg-white > *:nth-child(6),
+section.min-h-screen .bg-white > div > *:nth-child(6),
+section.min-h-screen .agenda-card:nth-child(6) { animation-delay: 0.6s; }
+
+section.min-h-screen .bg-white > *:nth-child(7),
+section.min-h-screen .bg-white > div > *:nth-child(7),
+section.min-h-screen .agenda-card:nth-child(7) { animation-delay: 0.7s; }
+
+section.min-h-screen .bg-white > *:nth-child(8),
+section.min-h-screen .bg-white > div > *:nth-child(8),
+section.min-h-screen .agenda-card:nth-child(8) { animation-delay: 0.8s; }
+
+section.min-h-screen .bg-white > *:nth-child(9),
+section.min-h-screen .bg-white > div > *:nth-child(9),
+section.min-h-screen .agenda-card:nth-child(9) { animation-delay: 0.9s; }
+
+section.min-h-screen .bg-white > *:nth-child(10),
+section.min-h-screen .bg-white > div > *:nth-child(10),
+section.min-h-screen .agenda-card:nth-child(10) { animation-delay: 1.0s; }
+
+/* Para elementos más profundos que no coincidan arriba */
+section.min-h-screen .bg-white p { animation-delay: 0.35s; }
+section.min-h-screen .bg-white h3 { animation-delay: 0.25s; }
+
+/* Evitar que SVG o imágenes se queden ocultas si no se animan directamente */
+section.min-h-screen .bg-white img,
+section.min-h-screen .bg-white svg {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+</style>
+
 </body>
 </html>

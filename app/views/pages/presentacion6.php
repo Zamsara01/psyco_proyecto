@@ -30,8 +30,8 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
                 ◆ OBJETIVO AMBIENTAL
             </h2>
-            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
-                REDUCIR EL IMPACTO AMBIENTAL MEDIANTE LA DIGITALIZACIÓN DE LA GESTIÓN DE CITAS PSICOLÓGICAS, DISMINUYENDO EL USO DE PAPEL Y RECURSOS FÍSICOS.
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed" style="font-family: 'Canva Sans', sans-serif;">
+                Reducir el impacto ambiental mediante la digitalización  de la gestión de citas psicológicas, disminuyendo el uso de papel y recursos físicos.
             </p>
         </div>
 

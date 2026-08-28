@@ -1,4 +1,20 @@
-<!-- PSYCO — Presentación 12 -->
+<?php
+// Ocultar sidebar en esta página
+$hideSidebar = true;
+?>
+<script>
+(function() {
+    const sidebar = document.getElementById('app-sidebar');
+    const mainContent = document.getElementById('main-content');
+    if (sidebar) sidebar.style.display = 'none';
+    if (mainContent) { mainContent.style.marginLeft = '0'; mainContent.classList.remove('lg:ml-64'); }
+    window.addEventListener('pagehide', () => {
+        if (sidebar) sidebar.style.display = '';
+        if (mainContent) { mainContent.style.marginLeft = ''; mainContent.classList.add('lg:ml-64'); }
+    });
+})();
+</script>
+
 <style>
     @keyframes nebula-flow {
         0% { background-position: 0% 50%; }
@@ -10,28 +26,115 @@
         background-size: 300% 300%;
         animation: nebula-flow 8s ease infinite;
     }
+    .text-nebula {
+        background: linear-gradient(270deg, #10b981, #2563eb, #34d399, #3b82f6);
+        background-size: 300% 300%;
+        animation: nebula-flow 8s ease infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+    }
+    .agenda-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.4);
+        border-radius: 16px;
+        padding: 24px 16px;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .agenda-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+        background: #ffffff;
+    }
+    .agenda-card .icon {
+        font-size: 2.5rem;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+    .agenda-card h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #1e293b;
+        font-family: 'Canva Sans', sans-serif;
+    }
 </style>
-<section class="min-h-screen py-16 px-6 bg-nebula flex flex-col items-center justify-center w-full">
 
-    <!-- Tarjeta vacía -->
-    <div class="w-full max-w-6xl min-h-[60vh] bg-white rounded-3xl shadow-2xl border-4 border-solid border-slate-200 p-12 flex flex-col items-center justify-center">
-        <h2 class="text-5xl md:text-7xl font-extrabold text-slate-800 tracking-wide text-center" style="font-family: 'Canva Sans', sans-serif;">
-            ¡Gracias por prestar atención! :)
+<section class="min-h-screen py-16 px-6 bg-nebula flex flex-col items-center justify-center w-full relative">
+    <div class="w-full max-w-6xl z-10 flex flex-col items-center">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-white tracking-wide mb-12 drop-shadow-lg uppercase text-center" style="font-family: 'Canva Sans', sans-serif;">
+            AGENDA
         </h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+            <a href="<?= URL_BASE ?>pages/presentacion2?fx=2&dir=next" class="agenda-card">
+                <span class="icon">🎯</span>
+                <h3>Objetivo General</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion3?fx=3&dir=next" class="agenda-card">
+                <span class="icon">🎓</span>
+                <h3>Objetivo Académico</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion4?fx=4&dir=next" class="agenda-card">
+                <span class="icon">💰</span>
+                <h3>Objetivo Económico</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion5?fx=5&dir=next" class="agenda-card">
+                <span class="icon">🤝</span>
+                <h3>Objetivo Social</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion6?fx=6&dir=next" class="agenda-card">
+                <span class="icon">🌱</span>
+                <h3>Objetivo Ambiental</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion7?fx=7&dir=next" class="agenda-card">
+                <span class="icon">💻</span>
+                <h3>Objetivo Técnico</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion8?fx=8&dir=next" class="agenda-card">
+                <span class="icon">📊</span>
+                <h3>Modelo Relacional</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion9?fx=9&dir=next" class="agenda-card">
+                <span class="icon">🔀</span>
+                <h3>Modelo Entidad-Relación</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion10?fx=10&dir=next" class="agenda-card">
+                <span class="icon">🏗️</span>
+                <h3>Diagrama de Clases</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion11?fx=11&dir=next" class="agenda-card">
+                <span class="icon">👤</span>
+                <h3>Casos de Uso</h3>
+            </a>
+            <a href="<?= URL_BASE ?>pages/presentacion12?fx=11&dir=next" class="agenda-card">
+                <span class="icon">🚀</span>
+                <h3>Cierre y Demo</h3>
+            </a>
+        </div>
     </div>
-
     
-
-
-
-<div class="fixed bottom-6 right-8 z-[9999] flex items-center gap-4">
-    <a id="btn-v12" href="<?= URL_BASE ?>pages/presentacion11" class="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg transition-colors">
-        <span class="material-symbols-outlined">arrow_back</span><span class="font-bold text-sm">Volver</span>
-    </a>
-</div>
+    <!-- Controles de navegación fijos -->
+    <div class="fixed bottom-6 right-8 z-[9999] flex items-center gap-4">
+        <a id="btn-v1_5" href="<?= URL_BASE ?>pages/presentacion" class="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span><span class="font-bold text-sm">Volver</span>
+        </a>
+        <a id="btn-s1_5" href="<?= URL_BASE ?>pages/presentacion2" class="inline-flex items-center gap-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 px-5 py-2.5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg transition-colors">
+            <span class="font-bold text-sm">Siguiente</span><span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+    </div>
 </section>
-<!-- TRANSICIONES DE DIAPOSITIVAS -->
 
+<!-- TRANSICIONES DE DIAPOSITIVAS -->
 <style>
 body { overflow-x: hidden; perspective: 1200px; }
 section { transform-style: preserve-3d; }
@@ -149,7 +252,7 @@ section { transform-style: preserve-3d; }
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const CURRENT_PAGE = 12;
+    const CURRENT_PAGE = 1;
     const urlParams = new URLSearchParams(window.location.search);
     const fx = urlParams.get('fx');
     const dir = urlParams.get('dir');
@@ -173,19 +276,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnS) {
         btnS.addEventListener('click', (e) => {
             e.preventDefault();
-            const fxId = CURRENT_PAGE; // Effect from N to N+1 is N
+            const fxId = CURRENT_PAGE;
             const href = btnS.getAttribute('href');
             const finalHref = href + (href.includes('?') ? '&' : '?') + `fx=${fxId}&dir=next`;
             
             if(section) section.classList.add(`fx-${fxId}-out-next`);
-            setTimeout(() => { window.location.href = finalHref; }, 550); // increased timeout to allow animations to finish
+            setTimeout(() => { window.location.href = finalHref; }, 550);
         });
     }
 
     if (btnV) {
         btnV.addEventListener('click', (e) => {
             e.preventDefault();
-            const fxId = CURRENT_PAGE - 1; // Effect from N to N-1 is N-1
+            const fxId = CURRENT_PAGE - 1; // 0
             const href = btnV.getAttribute('href');
             const finalHref = href + (href.includes('?') ? '&' : '?') + `fx=${fxId}&dir=prev`;
             
@@ -193,6 +296,23 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { window.location.href = finalHref; }, 550);
         });
     }
+
+    // Para los botones de las tarjetas también agregar la transición si se quiere, 
+    // pero como ya están hardcodeados con el href completo y el fx en la URL, 
+    // podemos capturarlos para hacer la animación de salida.
+    const cards = document.querySelectorAll('.agenda-card');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = card.getAttribute('href');
+            // Sacar el fx de la url
+            const url = new URL(href, window.location.origin);
+            const fxId = url.searchParams.get('fx') || 1;
+            
+            if(section) section.classList.add(`fx-${fxId}-out-next`);
+            setTimeout(() => { window.location.href = href; }, 550);
+        });
+    });
 });
 
 if(!document.getElementById('pfade-style')) {
@@ -202,5 +322,3 @@ if(!document.getElementById('pfade-style')) {
     document.head.appendChild(style);
 }
 </script>
-
-<!-- FIN TRANSICIONES -->

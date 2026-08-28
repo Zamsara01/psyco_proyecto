@@ -29,32 +29,72 @@
     }
     .mer-entity {
         position: absolute;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-        border: 2px solid rgba(255,255,255,0.3);
-        min-width: 160px;
         cursor: grab;
         user-select: none;
         z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-    .mer-entity:active { cursor: grabbing; z-index: 100; box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+    .mer-entity:active { cursor: grabbing; z-index: 100; }
     .mer-entity .entity-header {
-        padding: 6px 10px;
-        border-radius: 6px 6px 0 0;
+        padding: 10px 20px;
+        border-radius: 12px;
         font-weight: 800;
-        font-size: 12px;
+        font-size: 14px;
         color: white;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         font-family: 'Canva Sans', sans-serif;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        border: 2px solid rgba(255,255,255,0.4);
+        position: relative;
+        z-index: 10;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .mer-entity ul { list-style: none; padding: 0; margin: 0; font-size: 10px; }
-    .mer-entity ul li { padding: 3px 10px; display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #f1f5f9; color: #475569; }
-    .mer-entity ul li.pk { background: #fefce8; font-weight: 700; color: #1e293b; }
-    .mer-entity ul li.fk { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
-    .mer-entity ul li span.type { font-family: monospace; font-size: 8px; color: #94a3b8; }
+    .mer-entity:active .entity-header {
+        transform: scale(1.05);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+    .mer-entity ul { 
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 0; height: 0;
+        list-style: none; padding: 0; margin: 0;
+        z-index: 1;
+    }
+    .mer-attribute {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #cbd5e1;
+        border-radius: 30px;
+        padding: 6px 12px;
+        font-size: 11px;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transform: translate(-50%, -50%);
+        font-family: 'Canva Sans', sans-serif;
+        font-weight: 700;
+        color: #334155;
+        z-index: 5;
+        backdrop-filter: blur(4px);
+    }
+    .mer-attribute.pk { background: #fefce8; border-color: #fde047; color: #854d0e; }
+    .mer-attribute.fk { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+    .mer-attribute span.type { font-family: monospace; font-size: 10px; color: #94a3b8; font-weight: 500; }
+    .mer-line {
+        position: absolute;
+        top: 0; left: 0;
+        height: 2px;
+        background-color: rgba(255,255,255,0.5);
+        transform-origin: 0 50%;
+        z-index: 0;
+    }
 
     /* Rombos de relación */
     .mer-relation {
@@ -134,7 +174,7 @@
         <!-- ═══════════════ ENTIDADES ═══════════════ -->
 
         <!-- ESPECIALIDADES -->
-        <div class="mer-entity" id="ent-especialidades" style="left:40px;top:380px;">
+        <div class="mer-entity" id="ent-especialidades" style="left:190px;top:530px;">
             <div class="cardinality-tag">1 : N  →  psicólogos</div>
             <div class="entity-header" style="background:#4f46e5;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> especialidades
@@ -147,7 +187,7 @@
         </div>
 
         <!-- PSICOLOGOS -->
-        <div class="mer-entity" id="ent-psicologos" style="left:380px;top:300px;">
+        <div class="mer-entity" id="ent-psicologos" style="left:530px;top:450px;">
             <div class="cardinality-tag">N : 1  (esp)  ·  1 : N  (citas)</div>
             <div class="entity-header" style="background:#059669;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> psicologos
@@ -165,7 +205,7 @@
         </div>
 
         <!-- USUARIOS -->
-        <div class="mer-entity" id="ent-usuarios" style="left:880px;top:60px;">
+        <div class="mer-entity" id="ent-usuarios" style="left:1030px;top:210px;">
             <div class="cardinality-tag">1 : N  →  citas / notas / recursos</div>
             <div class="entity-header" style="background:#2563eb;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> usuarios
@@ -183,7 +223,7 @@
         </div>
 
         <!-- CITAS -->
-        <div class="mer-entity" id="ent-citas" style="left:680px;top:420px;">
+        <div class="mer-entity" id="ent-citas" style="left:830px;top:570px;">
             <div class="cardinality-tag">N : 1  (usr/psi)  ·  1 : N  (record.)</div>
             <div class="entity-header" style="background:#9333ea;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> citas
@@ -201,7 +241,7 @@
         </div>
 
         <!-- DISPONIBILIDAD -->
-        <div class="mer-entity" id="ent-disponibilidad" style="left:200px;top:680px;">
+        <div class="mer-entity" id="ent-disponibilidad" style="left:350px;top:830px;">
             <div class="cardinality-tag">N : 1  →  psicólogo</div>
             <div class="entity-header" style="background:#0d9488;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> disponibilidad_psicologos
@@ -218,7 +258,7 @@
         </div>
 
         <!-- NOTAS -->
-        <div class="mer-entity" id="ent-notas" style="left:640px;top:720px;">
+        <div class="mer-entity" id="ent-notas" style="left:790px;top:870px;">
             <div class="cardinality-tag">N : 1  →  psicólogo / usuario</div>
             <div class="entity-header" style="background:#c026d3;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> notas_paciente
@@ -234,7 +274,7 @@
         </div>
 
         <!-- RECURSOS -->
-        <div class="mer-entity" id="ent-recursos" style="left:1100px;top:520px;">
+        <div class="mer-entity" id="ent-recursos" style="left:1250px;top:670px;">
             <div class="cardinality-tag">N : 1  →  psicólogo / usuario</div>
             <div class="entity-header" style="background:#f97316;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> recursos_acompanamiento
@@ -251,7 +291,7 @@
         </div>
 
         <!-- RECORDATORIOS -->
-        <div class="mer-entity" id="ent-recordatorios" style="left:900px;top:680px;">
+        <div class="mer-entity" id="ent-recordatorios" style="left:1050px;top:830px;">
             <div class="cardinality-tag">N : 1  →  cita</div>
             <div class="entity-header" style="background:#f43f5e;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> recordatorios
@@ -267,7 +307,7 @@
         </div>
 
         <!-- OTP_CODES -->
-        <div class="mer-entity" id="ent-otp" style="left:1400px;top:80px;">
+        <div class="mer-entity" id="ent-otp" style="left:1550px;top:230px;">
             <div class="cardinality-tag">autónoma  (sin FK)</div>
             <div class="entity-header" style="background:#334155;">
                 <span class="material-symbols-outlined" style="font-size:14px;">table_chart</span> otp_codes
@@ -287,63 +327,63 @@
         <!-- ═══════════════ ROMBOS ═══════════════ -->
 
         <!-- clasifica: especialidades → psicologos -->
-        <div class="mer-relation" id="rel-clasifica" style="left:220px;top:355px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-clasifica" style="left:370px;top:505px;width:80px;height:80px;">
             <div class="diamond" style="background:#4f46e5;">
                 <span class="diamond-label">clasifica</span>
             </div>
         </div>
 
         <!-- atiende: psicologo → citas -->
-        <div class="mer-relation" id="rel-atiende" style="left:535px;top:375px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-atiende" style="left:685px;top:525px;width:80px;height:80px;">
             <div class="diamond" style="background:#059669;">
                 <span class="diamond-label">atiende</span>
             </div>
         </div>
 
         <!-- solicita: usuario → citas -->
-        <div class="mer-relation" id="rel-solicita" style="left:790px;top:260px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-solicita" style="left:940px;top:410px;width:80px;height:80px;">
             <div class="diamond" style="background:#2563eb;">
                 <span class="diamond-label">solicita</span>
             </div>
         </div>
 
         <!-- genera: citas → recordatorios -->
-        <div class="mer-relation" id="rel-genera" style="left:800px;top:570px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-genera" style="left:950px;top:720px;width:80px;height:80px;">
             <div class="diamond" style="background:#9333ea;">
                 <span class="diamond-label">genera</span>
             </div>
         </div>
 
         <!-- define: psicologo → disponibilidad -->
-        <div class="mer-relation" id="rel-define" style="left:300px;top:540px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-define" style="left:450px;top:690px;width:80px;height:80px;">
             <div class="diamond" style="background:#0d9488;">
                 <span class="diamond-label">define</span>
             </div>
         </div>
 
         <!-- escribe: psicologo → notas -->
-        <div class="mer-relation" id="rel-escribe" style="left:500px;top:580px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-escribe" style="left:650px;top:730px;width:80px;height:80px;">
             <div class="diamond" style="background:#c026d3;">
                 <span class="diamond-label">escribe</span>
             </div>
         </div>
 
         <!-- tiene_nota: usuario → notas -->
-        <div class="mer-relation" id="rel-tiene-nota" style="left:800px;top:750px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-tiene-nota" style="left:950px;top:900px;width:80px;height:80px;">
             <div class="diamond" style="background:#1d4ed8;">
                 <span class="diamond-label">tiene nota</span>
             </div>
         </div>
 
         <!-- crea_recurso: psicologo → recursos -->
-        <div class="mer-relation" id="rel-crea" style="left:760px;top:450px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-crea" style="left:910px;top:600px;width:80px;height:80px;">
             <div class="diamond" style="background:#f97316;">
                 <span class="diamond-label">crea recurso</span>
             </div>
         </div>
 
         <!-- accede: usuario → recursos -->
-        <div class="mer-relation" id="rel-accede" style="left:1060px;top:300px;width:80px;height:80px;">
+        <div class="mer-relation" id="rel-accede" style="left:1210px;top:450px;width:80px;height:80px;">
             <div class="diamond" style="background:#ea580c;">
                 <span class="diamond-label">accede</span>
             </div>
@@ -514,6 +554,40 @@ document.addEventListener('mouseup', e => {
     initX[dragging.id] = parseFloat(dragging.style.left);
     initY[dragging.id] = parseFloat(dragging.style.top);
     dragging = null;
+});
+
+// Convertir atributos a burbujas flotantes
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.mer-entity').forEach(entity => {
+        const ul = entity.querySelector('ul');
+        if (!ul) return;
+        const lis = ul.querySelectorAll('li');
+        const count = lis.length;
+        const radius = Math.max(110, 50 + count * 12); 
+        
+        let currentAngle = -Math.PI / 2; // Inicia desde arriba
+        const angleStep = (2 * Math.PI) / count;
+        
+        lis.forEach(li => {
+            li.classList.add('mer-attribute');
+            
+            const x = Math.cos(currentAngle) * radius;
+            const y = Math.sin(currentAngle) * radius;
+            
+            li.style.left = `${x}px`;
+            li.style.top = `${y}px`;
+            
+            const line = document.createElement('div');
+            line.className = 'mer-line';
+            const length = Math.sqrt(x*x + y*y);
+            line.style.width = `${length}px`;
+            line.style.transform = `rotate(${currentAngle}rad)`;
+            
+            ul.appendChild(line);
+            
+            currentAngle += angleStep;
+        });
+    });
 });
 
 // Fix botones — sacarlos del section para que no queden bajo la capa drag

@@ -30,8 +30,8 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-nebula tracking-wide mb-6" style="font-family: 'Canva Sans', sans-serif;">
                 ◆ OBJETIVO TÉCNICO
             </h2>
-            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed uppercase" style="font-family: 'Canva Sans', sans-serif;">
-                Desarrollar un aplicativo web funcional y seguro utilizando tecnologías como HTML, CSS, Bootstrap, JavaScript y PHP, que permita la asignación automática de citas, el registro organizado de consultas y el seguimiento eficiente de los procesos psicológicos.
+            <p class="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed" style="font-family: 'Canva Sans', sans-serif;">
+                Desarrollar un aplicativo web seguro utilizando tecnologías como HTML, Tailwind CSS, Bootstrap, JavaScript y PHP, que permita la asignación de citas, el registro organizado de consultas y el seguimiento eficiente de los procesos psicológicos.
             </p>
         </div>
 
