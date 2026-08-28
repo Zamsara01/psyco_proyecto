@@ -129,6 +129,7 @@ const USES = [
   { id:'uc-logout',   x:260, y:550, label:'Cerrar Sesión',       cat:'auth' },
 
   // Solo Estudiante
+  { id:'uc-calendario', x:550, y:20, label:'Consultar Calendario\nde Disponibilidad', cat:'patient' },
   { id:'uc-miscitas',  x:550, y:120, label:'Consultar\nMis Citas',  cat:'patient' },
   { id:'uc-solicitar', x:550, y:220, label:'Solicitar Cita',         cat:'patient' },
   { id:'uc-cancelar',  x:550, y:320, label:'Cancelar Cita',          cat:'patient' },
@@ -141,6 +142,7 @@ const USES = [
   { id:'uc-notas',     x:870, y:340, label:'Gestionar Notas\nClínicas',   cat:'psy' },
   { id:'uc-creanota',  x:870, y:450, label:'Crear Nota',               cat:'psy' },
   { id:'uc-pacientes', x:870, y:560, label:'Gestionar\nPacientes',      cat:'psy' },
+  { id:'uc-crearpaciente', x:1090, y:560, label:'Crear Paciente',      cat:'psy' },
   { id:'uc-dispon',    x:870, y:660, label:'Gestionar\nDisponibilidad',  cat:'psy' },
   { id:'uc-pub-rec',   x:870, y:760, label:'Publicar / Eliminar\nRecurso', cat:'psy' },
 
@@ -162,6 +164,7 @@ const RELS = [
   { from:'Usuario', to:'uc-logout',   type:'assoc' },
 
   // Estudiante → sus casos de uso
+  { from:'Estudiante', to:'uc-calendario', type:'assoc' },
   { from:'Estudiante', to:'uc-miscitas',  type:'assoc' },
   { from:'Estudiante', to:'uc-solicitar', type:'assoc' },
   { from:'Estudiante', to:'uc-recursos',  type:'assoc' },
@@ -186,6 +189,9 @@ const RELS = [
 
   // <<extend>>: Notas ← Crear Nota
   { from:'uc-creanota', to:'uc-notas',   type:'extend' },
+
+  // <<extend>>: Gestionar Pacientes ← Crear Paciente
+  { from:'uc-crearpaciente', to:'uc-pacientes', type:'extend' },
 ];
 
 // ─── CONSTRUCCIÓN DEL DOM ────────────────────────────────────────────────
@@ -236,9 +242,9 @@ USES.forEach(u => {
 // Límite del sistema (bounding box alrededor de todos los USES)
 const boundary = document.getElementById('uc-boundary');
 boundary.style.left   = '220px';
-boundary.style.top    = '80px';
-boundary.style.width  = '780px';
-boundary.style.height = '750px';
+boundary.style.top    = '10px';
+boundary.style.width  = '1060px';
+boundary.style.height = '850px';
 
 // ─── DRAG & DROP ────────────────────────────────────────────────────────────
 let drag = null, sx, sy;
