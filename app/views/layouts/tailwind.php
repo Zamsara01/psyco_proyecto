@@ -80,12 +80,14 @@ $content = $content ?? '';
         <!-- Modal: Requiere inicio de sesión (global) -->
         <?php require __DIR__ . '/../partials/login_required_modal.php'; ?>
 
+        <?php if (empty($hideSidebar)): ?>
         <!-- Footer global -->
         <footer class="bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm border-t border-slate-200/60 dark:border-slate-700/60 py-4 px-6 text-center mt-auto">
             <p class="text-body-sm text-on-surface-variant dark:text-slate-400">
                 &copy; <?= date('Y') ?> <span class="font-semibold text-primary dark:text-emerald-400">grupo_psyco</span> — Todos los derechos reservados.
             </p>
         </footer>
+        <?php endif; ?>
     </div>
 
 <script>
