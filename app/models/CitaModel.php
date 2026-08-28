@@ -68,11 +68,21 @@ class CitaModel extends Model
         $stmt->execute([$idPsicologo]);
         $altasMedicas = $stmt->fetchColumn();
 
+        // Citas a las que el paciente no asistió
+        $sql4 = "SELECT COUNT(*) FROM citas 
+                 WHERE id_psicologo = ? 
+                 AND asistio = 0
+                 AND estado = 'completada'";
+        $stmt = $this->db->prepare($sql4);
+        $stmt->execute([$idPsicologo]);
+        $noAsistidas = $stmt->fetchColumn();
+
         return [
-            'sesiones_mes' => $sesionesMes ?: 0,
-            'pendientes_hoy' => $pendientesHoy ?: 0,
-            'nuevos_diagnosticos' => ceil($sesionesMes / 4), // Dato estimado para demo
-            'altas_medicas' => $altasMedicas ?: 0
+            'sesiones_mes'        => $sesionesMes ?: 0,
+            'pendientes_hoy'      => $pendientesHoy ?: 0,
+            'nuevos_diagnosticos' => ceil($sesionesMes / 4),
+            'altas_medicas'       => $altasMedicas ?: 0,
+            'no_asistidas'        => $noAsistidas ?: 0,
         ];
     }
 

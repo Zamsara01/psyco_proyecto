@@ -30,8 +30,8 @@
     <!-- Tarjeta de Objetivo del Proyecto -->
     <div class="w-full max-w-6xl min-h-[60vh] bg-white rounded-3xl shadow-2xl border-4 border-solid border-slate-200 p-12 md:p-20 flex flex-col items-center justify-center text-center space-y-10">
         
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-50 text-blue-600 rounded-full mb-4">
-            <span class="material-symbols-outlined text-[40px]">target</span>
+        <div class="flex items-center justify-center mb-4">
+            <span class="text-8xl" role="img" aria-label="Diana">🎯</span>
         </div>
         
         <h2 class="text-4xl md:text-5xl font-bold text-nebula drop-shadow-sm">Objetivo General</h2>

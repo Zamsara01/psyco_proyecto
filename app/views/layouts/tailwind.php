@@ -181,6 +181,40 @@ document.addEventListener('DOMContentLoaded', () => {
     100% { opacity: 1; transform: translateY(0) rotateX(0deg); }
 }
 
+/* ── Bordes y sombras premium para cards de presentación ───────────────── */
+@keyframes nebula-border-flow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Wrapper invisible que crea el efecto de borde degradado */
+section.min-h-screen .bg-white.rounded-3xl {
+    position: relative;
+    /* Reemplaza el borde plano con una sombra multicapa */
+    border: none !important;
+    box-shadow:
+        /* Glow exterior nebula */
+        0 0 0 3px rgba(16, 185, 129, 0.35),
+        0 0 0 5px rgba(59, 130, 246, 0.2),
+        /* Sombra de profundidad */
+        0 25px 60px -10px rgba(16, 185, 129, 0.25),
+        0 15px 30px -8px rgba(59, 130, 246, 0.2),
+        /* Sombra base suave */
+        0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.4s ease;
+}
+
+/* Efecto hover: el glow se intensifica */
+section.min-h-screen .bg-white.rounded-3xl:hover {
+    box-shadow:
+        0 0 0 3px rgba(16, 185, 129, 0.55),
+        0 0 0 6px rgba(59, 130, 246, 0.3),
+        0 30px 70px -10px rgba(16, 185, 129, 0.35),
+        0 20px 40px -8px rgba(59, 130, 246, 0.25),
+        0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
 /* Aplicar la animación solo dentro de las páginas de presentación */
 section.min-h-screen .bg-white h1,
 section.min-h-screen .bg-white h2,

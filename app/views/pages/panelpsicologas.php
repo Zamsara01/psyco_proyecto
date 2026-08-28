@@ -103,6 +103,67 @@
         </div>
     </div>
 
+    <!-- ══════════ GRÁFICO DE PASTEL: Estado de Citas ══════════ -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Resumen de Citas</h2>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Distribución general de todas tus citas</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[14px]">donut_large</span>
+                Estadísticas totales
+            </span>
+        </div>
+
+        <div class="flex flex-col lg:flex-row items-center gap-8">
+            <!-- Canvas del gráfico -->
+            <div class="relative w-56 h-56 shrink-0 mx-auto lg:mx-0">
+                <canvas id="chartCitas" width="224" height="224"></canvas>
+                <!-- Número central -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span id="chartTotal" class="text-3xl font-black text-slate-800 dark:text-slate-100">
+                        <?= (int)($stats['altas_medicas'] ?? 0) + (int)($stats['no_asistidas'] ?? 0) + (int)($stats['pendientes_hoy'] ?? 0) ?>
+                    </span>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Total citas</span>
+                </div>
+            </div>
+
+            <!-- Leyenda detallada -->
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+                <!-- Asistidas -->
+                <div class="flex flex-col gap-1 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800/50">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400">Asistidas</span>
+                    </div>
+                    <span class="text-3xl font-black text-slate-800 dark:text-slate-100"><?= (int)($stats['altas_medicas'] ?? 0) ?></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Citas completadas con asistencia</span>
+                </div>
+
+                <!-- No asistidas -->
+                <div class="flex flex-col gap-1 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-2xl border border-rose-100 dark:border-rose-800/50">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-3 h-3 rounded-full bg-rose-500 shrink-0"></span>
+                        <span class="text-xs font-bold text-rose-700 dark:text-rose-400">No asistidas</span>
+                    </div>
+                    <span class="text-3xl font-black text-slate-800 dark:text-slate-100"><?= (int)($stats['no_asistidas'] ?? 0) ?></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Paciente no se presentó</span>
+                </div>
+
+                <!-- Pendientes -->
+                <div class="flex flex-col gap-1 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800/50">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-3 h-3 rounded-full bg-blue-500 shrink-0"></span>
+                        <span class="text-xs font-bold text-blue-700 dark:text-blue-400">Pendientes</span>
+                    </div>
+                    <span class="text-3xl font-black text-slate-800 dark:text-slate-100"><?= (int)($stats['pendientes_hoy'] ?? 0) ?></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Próximas por realizarse</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ══════════ TABLA DE PACIENTES RECIENTES ══════════ -->
     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden mb-8">
         <div class="p-6 border-b border-slate-50 bg-slate-50/30 dark:border-slate-700 dark:bg-slate-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -187,6 +248,26 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- ── Footer paginación ── -->
+        <div id="paginacion-footer" class="flex items-center justify-between gap-4 px-6 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/50">
+            <span id="paginacion-info" class="text-xs text-slate-400 dark:text-slate-500 font-medium"></span>
+            <div class="flex items-center gap-2">
+                <button id="btn-pag-prev"
+                    onclick="cambiarPagina(-1)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                    Anterior
+                </button>
+                <div id="paginacion-nums" class="flex items-center gap-1"></div>
+                <button id="btn-pag-next"
+                    onclick="cambiarPagina(1)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    Siguiente
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- ══════════ FILA INFERIOR: Citas Hoy + Notas Pacientes ══════════ -->
@@ -265,6 +346,63 @@
         </div>
     </div>
 </div>
+
+<!-- ══════════ CHART.JS: Gráfico de citas ══════════ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    const asistidas  = <?= (int)($stats['altas_medicas']  ?? 0) ?>;
+    const noAsistio  = <?= (int)($stats['no_asistidas']   ?? 0) ?>;
+    const pendientes = <?= (int)($stats['pendientes_hoy'] ?? 0) ?>;
+    const total = asistidas + noAsistio + pendientes;
+
+    const ctx = document.getElementById('chartCitas');
+    if (!ctx) return;
+
+    // Si no hay datos, mostrar anillo vacío decorativo
+    const datos   = total > 0 ? [asistidas, noAsistio, pendientes] : [1, 1, 1];
+    const colores = total > 0
+        ? ['#10b981', '#f43f5e', '#3b82f6']
+        : ['#e2e8f0', '#e2e8f0', '#e2e8f0'];
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Asistidas', 'No asistidas', 'Pendientes'],
+            datasets: [{
+                data: datos,
+                backgroundColor: colores,
+                borderColor: ['#ffffff', '#ffffff', '#ffffff'],
+                borderWidth: 3,
+                hoverOffset: 8,
+            }]
+        },
+        options: {
+            cutout: '72%',
+            responsive: false,
+            animation: { animateRotate: true, duration: 900 },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: total > 0,
+                    callbacks: {
+                        label: function(c) {
+                            const val = c.parsed;
+                            const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                            return ` ${c.label}: ${val} (${pct}%)`;
+                        }
+                    },
+                    backgroundColor: '#1e293b',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#f1f5f9',
+                    padding: 10,
+                    cornerRadius: 8,
+                }
+            }
+        }
+    });
+})();
+</script>
 
 <!-- ══════════ MODAL: NOTA RÁPIDA ══════════ -->
 <div id="notaRapidaModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
@@ -414,33 +552,106 @@ function esc(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ─── Ordenar Citas Recientes ─────────────────────────────────────
-function ordenarCitasRecientes(criterio) {
+// ─── Paginación de Citas Recientes ──────────────────────────────
+const FILAS_POR_PAGINA = 5;
+let paginaActual = 1;
+
+function obtenerFilasOrdenadas(criterio) {
     const tbody = document.getElementById('tbody-citas-recientes');
-    if (!tbody) return;
+    if (!tbody) return [];
     const rows = Array.from(tbody.querySelectorAll('.cita-row'));
-    if (rows.length === 0) return;
-
     rows.sort((a, b) => {
-        if (criterio === 'cercana') {
-            // Ordenar por fecha y hora (ascendente, las más antiguas o próximas primero)
-            return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
-        } else if (criterio === 'az') {
-            return a.dataset.nombre.localeCompare(b.dataset.nombre);
-        } else if (criterio === 'za') {
-            return b.dataset.nombre.localeCompare(a.dataset.nombre);
-        }
+        if (criterio === 'cercana') return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
+        if (criterio === 'az')      return a.dataset.nombre.localeCompare(b.dataset.nombre);
+        if (criterio === 'za')      return b.dataset.nombre.localeCompare(a.dataset.nombre);
+        return 0;
     });
-
-    // Re-insertar filas en el nuevo orden
-    rows.forEach((row, index) => {
-        tbody.appendChild(row);
-        const indexCell = row.querySelector('.cita-index');
-        if (indexCell) indexCell.textContent = index + 1;
-    });
+    return rows;
 }
 
-// Inicializar orden por defecto (más cercana)
+function renderPagina(rows, pagina) {
+    const total      = rows.length;
+    const totalPags  = Math.max(1, Math.ceil(total / FILAS_POR_PAGINA));
+    pagina           = Math.min(Math.max(1, pagina), totalPags);
+    paginaActual     = pagina;
+
+    const inicio = (pagina - 1) * FILAS_POR_PAGINA;
+    const fin    = inicio + FILAS_POR_PAGINA;
+
+    rows.forEach((row, i) => {
+        row.style.display = (i >= inicio && i < fin) ? '' : 'none';
+        // Renumerar solo las visibles con índice global
+        const cell = row.querySelector('.cita-index');
+        if (cell) cell.textContent = i + 1;
+    });
+
+    // Info texto
+    const infoEl = document.getElementById('paginacion-info');
+    if (infoEl) {
+        const desde = total === 0 ? 0 : inicio + 1;
+        const hasta = Math.min(fin, total);
+        infoEl.textContent = `Mostrando ${desde}–${hasta} de ${total} registros`;
+    }
+
+    // Botones anterior / siguiente
+    const btnPrev = document.getElementById('btn-pag-prev');
+    const btnNext = document.getElementById('btn-pag-next');
+    if (btnPrev) btnPrev.disabled = pagina <= 1;
+    if (btnNext) btnNext.disabled = pagina >= totalPags;
+
+    // Números de página
+    const numsEl = document.getElementById('paginacion-nums');
+    if (numsEl) {
+        numsEl.innerHTML = '';
+        // Mostrar máximo 5 botones de página centrados en la actual
+        const rango = 2;
+        const min   = Math.max(1, pagina - rango);
+        const max   = Math.min(totalPags, pagina + rango);
+
+        if (min > 1) {
+            numsEl.appendChild(crearBtnPag(1, pagina));
+            if (min > 2) numsEl.insertAdjacentHTML('beforeend', '<span class="text-slate-300 dark:text-slate-600 text-sm">…</span>');
+        }
+        for (let p = min; p <= max; p++) numsEl.appendChild(crearBtnPag(p, pagina));
+        if (max < totalPags) {
+            if (max < totalPags - 1) numsEl.insertAdjacentHTML('beforeend', '<span class="text-slate-300 dark:text-slate-600 text-sm">…</span>');
+            numsEl.appendChild(crearBtnPag(totalPags, pagina));
+        }
+    }
+}
+
+function crearBtnPag(num, activa) {
+    const btn = document.createElement('button');
+    btn.textContent = num;
+    btn.onclick     = () => cambiarPaginaA(num);
+    btn.className   = num === activa
+        ? 'w-8 h-8 rounded-xl text-sm font-black bg-blue-600 text-white shadow-sm'
+        : 'w-8 h-8 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 transition-all';
+    return btn;
+}
+
+function cambiarPagina(delta) {
+    const criterio = document.getElementById('filtroCitasRecientes')?.value || 'cercana';
+    const rows     = obtenerFilasOrdenadas(criterio);
+    renderPagina(rows, paginaActual + delta);
+}
+
+function cambiarPaginaA(num) {
+    const criterio = document.getElementById('filtroCitasRecientes')?.value || 'cercana';
+    const rows     = obtenerFilasOrdenadas(criterio);
+    renderPagina(rows, num);
+}
+
+function ordenarCitasRecientes(criterio) {
+    paginaActual = 1; // Resetear a página 1 al reordenar
+    const rows   = obtenerFilasOrdenadas(criterio);
+    // Re-insertar en el tbody ordenadas
+    const tbody  = document.getElementById('tbody-citas-recientes');
+    if (tbody) rows.forEach(r => tbody.appendChild(r));
+    renderPagina(rows, 1);
+}
+
+// Inicializar
 window.addEventListener('DOMContentLoaded', () => {
     ordenarCitasRecientes('cercana');
 });
