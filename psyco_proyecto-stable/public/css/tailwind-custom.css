@@ -1,0 +1,192 @@
+/* 
+ * Custom styles that extend Tailwind.
+ * As per instructions, "cambia el archivo md a css", 
+ * this consolidates the custom inline styles from the previous HTML prototypes.
+ */
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #eff6ff;                               /* fallback – very faint blue */
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.13)  0%,
+            rgba(37, 99, 235, 0.05) 40%,
+            rgba(22, 163, 74, 0.06) 60%,
+            rgba(22, 163, 74, 0.16) 100%
+        );
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Ensure the main content wrapper never covers the brand gradient */
+#main-content {
+    background: transparent;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.bg-pattern {
+    background-color: transparent;
+    background-image: radial-gradient(rgba(37, 99, 235, 0.15) 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+}
+
+.drawer-blur {
+    backdrop-filter: blur(8px);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e1e2e4;
+    border-radius: 10px;
+}
+
+.form-input-focus:focus {
+    outline: none;
+    border-color: #0c6e00;
+    box-shadow: 0 0 0 2px rgba(12, 110, 0, 0.1);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RESPONSIVE SIDEBAR & LAYOUT
+   ───────────────────────────────────────────────────────────────── */
+
+/* Sidebar se oculta por defecto (se aplica via JS en mobile) */
+#app-sidebar {
+    will-change: transform;
+}
+
+/* Asegurar que el contenido principal ocupe todo el ancho en móvil */
+@media (max-width: 1023px) {
+    #main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TABLAS RESPONSIVAS
+   ───────────────────────────────────────────────────────────────── */
+
+/* Envolver tablas para scroll horizontal en móvil */
+.overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* En móvil, columnas de tabla menos importantes se ocultan */
+@media (max-width: 640px) {
+    .table-hide-sm {
+        display: none;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   BOTONES DE ACCIÓN — PANEL PSICÓLOGA
+   ───────────────────────────────────────────────────────────────── */
+
+/* Los botones de acción del header se apilan en pantallas pequeñas */
+@media (max-width: 640px) {
+    .action-buttons-wrap {
+        flex-direction: column;
+        width: 100%;
+    }
+    .action-buttons-wrap > * {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MODALES — SEGURIDAD EN MÓVIL
+   ───────────────────────────────────────────────────────────────── */
+
+/* Modales en móvil: aparecen desde abajo y tienen borde redondeado arriba */
+@media (max-width: 640px) {
+    .modal-mobile-bottom {
+        align-items: flex-end !important;
+    }
+    .modal-mobile-bottom > .modal-content {
+        border-radius: 1.5rem 1.5rem 0 0 !important;
+        max-height: 90vh;
+    }
+}
+
+/* Evitar que los modales sean más anchos que la pantalla */
+.fixed.inset-0 > [class*="max-w-"] {
+    max-width: calc(100vw - 2rem);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   CALENDARIO — RESPONSIVIDAD EXTRA
+   ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    .calendar-grid div {
+        font-size: 0.75rem;
+    }
+    /* Celdas del calendario más pequeñas en móvil */
+    #calendar-grid > div {
+        height: 2.8rem;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TIPOGRAFÍA ADAPTATIVA
+   ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    h1.text-2xl {
+        font-size: 1.25rem;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TOUCH — ÁREAS TÁCTILES
+   ───────────────────────────────────────────────────────────────── */
+
+/* Mínimo 44px de alto en elementos interactivos (WCAG) */
+button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Excepción para elementos realmente pequeños/decorativos */
+.no-min-touch {
+    min-height: unset;
+    min-width: unset;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   CHATBOT — RESPONSIVIDAD
+   ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    #chatbotModal .chatbot-panel {
+        max-height: 85vh;
+        border-radius: 1.5rem 1.5rem 0 0;
+        width: 100%;
+        max-width: 100%;
+    }
+}
