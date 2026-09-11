@@ -1,0 +1,3 @@
+[2026-07-09 23:26:28] [INFO] Successfully fetched and cached YouTube oEmbed data {"url":"https:\/\/www.youtube.com\/watch?v=dQw4w9WgXcQ"}
+[2026-07-09 23:26:28] [WARNING] URL not supported by YouTube provider {"url":"https:\/\/www.example.com\/video"}
+[2026-07-09 23:26:28] [INFO] Returning cached oEmbed data {"url":"https:\/\/www.youtube.com\/watch?v=dQw4w9WgXcQ"}
