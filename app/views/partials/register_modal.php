@@ -161,7 +161,7 @@
                 <!-- Privacy Policy -->
                 <div class="flex items-start gap-3 py-2 mt-4">
                     <input class="mt-1 rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-primary focus:ring-primary" id="terms" type="checkbox" required/>
-                    <label class="text-body-sm text-tertiary dark:text-slate-400" for="terms">Acepto los <a class="text-green-600 dark:text-green-500 font-medium hover:underline" href="#">términos y condiciones generales</a>.</label>
+                    <label class="text-body-sm text-tertiary dark:text-slate-400" for="terms">Acepto los <a class="text-green-600 dark:text-green-500 font-medium hover:underline" href="<?= URL_BASE ?>pages/terminos" target="_blank">términos y condiciones generales</a>.</label>
                 </div>
 
                 <!-- Submit Button -->
