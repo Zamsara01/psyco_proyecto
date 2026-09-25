@@ -15,6 +15,7 @@ class MailService
     public function __construct() 
     {
         $this->mail = new PHPMailer(true);
+        $this->mail->CharSet = 'UTF-8';
         
         $this->mail->isSMTP();
         $this->mail->Host       = 'smtp.gmail.com'; 

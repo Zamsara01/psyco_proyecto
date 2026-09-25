@@ -271,7 +271,7 @@ class CitaModel extends Model
         ";
         
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $ok = $stmt->execute([
             $data['id_usuario'],
             $data['id_psicologo'],
             $data['fecha'],
@@ -279,6 +279,75 @@ class CitaModel extends Model
             $motivoCifrado,
             $notasCifradas
         ]);
+        
+        if ($ok) {
+            $idCita = (int)$this->db->lastInsertId();
+            $this->enviarCorreosConfirmacion($idCita);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Envía los correos de confirmación a paciente y psicólogo tras agendar
+     */
+    private function enviarCorreosConfirmacion(int $idCita): void
+    {
+        try {
+            $sql = "
+                SELECT 
+                    c.fecha, c.hora, c.motivo_consulta,
+                    u.nombre AS paciente_nombre, u.correo_electronico AS paciente_email,
+                    p.nombre AS psicologo_nombre, p.correo_electronico AS psicologo_email,
+                    e.nombre AS especialidad
+                FROM citas c
+                JOIN usuarios u ON c.id_usuario = u.id_usuario
+                JOIN psicologos p ON c.id_psicologo = p.id_psicologo
+                JOIN especialidades e ON p.id_especialidad = e.id_especialidad
+                WHERE c.id_cita = ?
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$idCita]);
+            $cita = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($cita) {
+                require_once dirname(__DIR__, 2) . '/core/MailService.php';
+                require_once dirname(__DIR__, 2) . '/app/models/RecordatorioModel.php';
+                require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+
+                $mailService = new MailService();
+                $mailService->setRecordatorioModel(new RecordatorioModel());
+                
+                $motivo = 'Sin motivo especificado';
+                if (!empty($cita['motivo_consulta'])) {
+                    try { $motivo = EncryptionService::decrypt($cita['motivo_consulta']); } catch (\Exception $e) {}
+                }
+
+                // Correo al paciente
+                $mailService->sendConfirmacionCitaEstudiante(
+                    $cita['paciente_email'],
+                    $cita['paciente_nombre'],
+                    $cita['psicologo_nombre'],
+                    $cita['fecha'],
+                    $cita['hora'],
+                    $cita['especialidad'],
+                    $idCita
+                );
+
+                // Correo al psicólogo
+                $mailService->sendConfirmacionCitaPsicologo(
+                    $cita['psicologo_email'],
+                    $cita['psicologo_nombre'],
+                    $cita['paciente_nombre'],
+                    $cita['fecha'],
+                    $cita['hora'],
+                    $motivo,
+                    $idCita
+                );
+            }
+        } catch (\Exception $e) {
+            error_log('[CitaModel] Error enviando confirmación: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -559,7 +628,13 @@ class CitaModel extends Model
             $hora,
             $motivoCifrado,
         ]);
-        return $ok ? true : 'Error al insertar la cita en la base de datos.';
+        
+        if ($ok) {
+            $idCita = (int)$this->db->lastInsertId();
+            $this->enviarCorreosConfirmacion($idCita);
+            return true;
+        }
+        return 'Error al insertar la cita en la base de datos.';
     }
 
     /**
