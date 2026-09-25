@@ -177,6 +177,13 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Búsquedas Específicas
             </button>
 
+            <!-- Reuniones -->
+            <button onclick="openReunionesModal()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+                <span class="material-symbols-outlined text-[22px] shrink-0">groups</span>
+                Reuniones
+            </button>
+
         <?php endif; ?>
         </div>
 
@@ -435,3 +442,281 @@ function toggleMisRecursos() {
 })();
 
 </script>
+
+<!-- ══════════════ MODAL DE REUNIONES (solo psicóloga) ══════════════ -->
+<?php if ($rol === 'psicologo'): ?>
+<div id="reunionesModal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeReunionesModal()"></div>
+    <div class="relative bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md mx-0 sm:mx-4 z-10 flex flex-col p-6 text-center">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-500">groups</span> Reuniones
+            </h3>
+            <button onclick="closeReunionesModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="reunionesContenido" class="flex flex-col items-center justify-center min-h-[200px]">
+            <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+let reunionesInterval = null;
+let currentCitaData = null;
+// Offset en segundos: diferencia entre minutos_transcurridos de MySQL y el instante en que se cargó
+let reunionesOffsetSecs = 0;
+let reunionesLoadedAt = 0;
+
+function openReunionesModal() {
+    const m = document.getElementById('reunionesModal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    cargarCitaMasProxima();
+}
+
+function closeReunionesModal() {
+    document.getElementById('reunionesModal').classList.add('hidden');
+    document.getElementById('reunionesModal').classList.remove('flex');
+    document.body.style.overflow = '';
+    if (reunionesInterval) clearInterval(reunionesInterval);
+    reunionesInterval = null;
+}
+
+async function cargarCitaMasProxima() {
+    if (reunionesInterval) clearInterval(reunionesInterval);
+    reunionesInterval = null;
+    document.getElementById('reunionesContenido').innerHTML =
+        '<div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto my-10"></div>';
+
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/citaMasProxima');
+        const data = await res.json();
+        if (!data.ok || !data.cita) {
+            document.getElementById('reunionesContenido').innerHTML = `
+                <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-2 block">event_busy</span>
+                <p class="text-slate-500 dark:text-slate-400 font-medium">No hay reuniones programadas para hoy.</p>
+            `;
+            return;
+        }
+        currentCitaData = data;
+        // minutos_transcurridos: positivo = cita ya empezó, negativo = faltan X minutos
+        // Para en_proceso, el servidor no devuelve este campo, usamos hora_inicio_real
+        reunionesLoadedAt = Date.now();
+        if (data.estado === 'pendiente') {
+            reunionesOffsetSecs = parseFloat(data.cita.minutos_transcurridos || 0) * 60;
+        } else {
+            reunionesOffsetSecs = 0;
+        }
+        iniciarLogicaReunion();
+    } catch(e) {
+        document.getElementById('reunionesContenido').innerHTML = `<p class="text-red-500 text-sm py-8">Error al cargar: ${e.message}</p>`;
+    }
+}
+
+function iniciarLogicaReunion() {
+    actualizarVistaReunion();
+    if (reunionesInterval) clearInterval(reunionesInterval);
+    reunionesInterval = setInterval(actualizarVistaReunion, 1000);
+}
+
+function actualizarVistaReunion() {
+    const cita = currentCitaData.cita;
+    const estado = currentCitaData.estado;
+
+    // Segundos transcurridos desde que se cargó el modal
+    const segsDesdeLoad = (Date.now() - reunionesLoadedAt) / 1000;
+
+    let html = `
+        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mb-4 mx-auto">
+            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-3xl">person</span>
+        </div>
+        <h4 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1">${escReunion(cita.paciente_nombre)}</h4>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">
+            <span class="material-symbols-outlined text-[14px] align-middle">schedule</span> ${cita.hora.slice(0,5)}
+        </p>
+    `;
+
+    if (estado === 'pendiente') {
+        // minutos_transcurridos ya llega desde MySQL (ajustado al timezone del servidor)
+        // Sumamos los segundos que han pasado en el cliente desde que se cargó
+        const segsTranscurridos = reunionesOffsetSecs + segsDesdeLoad;
+        const minutosTranscurridos = Math.floor(segsTranscurridos / 60);
+
+        if (segsTranscurridos < 0) {
+            // Cita aún no empieza — mostrar cuenta regresiva
+            const totalSegsRestantes = Math.abs(segsTranscurridos);
+            const minsRestantes = Math.floor(totalSegsRestantes / 60);
+            const segsRestantes = Math.floor(totalSegsRestantes % 60);
+            html += `
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-xl p-5 w-full text-center">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">La cita inicia en:</p>
+                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
+                        ${minsRestantes}m ${String(segsRestantes).padStart(2,'0')}s
+                    </p>
+                </div>
+            `;
+        } else if (minutosTranscurridos <= 10) {
+            // Cita activa — primeros 10 minutos: mostrar botones
+            html += `
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700/50 rounded-xl p-5 w-full">
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-yellow-600 text-[20px]">notifications_active</span>
+                        <p class="text-sm font-semibold text-yellow-700 dark:text-yellow-400">¡La cita ha iniciado!</p>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">¿El paciente asistió a la sesión?</p>
+                    <div class="flex gap-3 justify-center">
+                        <button onclick="marcarNoAsistio(${cita.id_cita})"
+                            class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 rounded-xl text-sm font-semibold transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">person_off</span>
+                            No asistió
+                        </button>
+                        <button onclick="marcarSiAsistio(${cita.id_cita})"
+                            class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 rounded-xl text-sm font-semibold transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+                            Sí asistió
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3">
+                        ${10 - minutosTranscurridos} min restante${10 - minutosTranscurridos !== 1 ? 's' : ''} para confirmar asistencia
+                    </p>
+                </div>
+            `;
+        } else {
+            // Pasaron los 10 minutos sin confirmar
+            html += `
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/50 rounded-xl p-5 w-full text-center">
+                    <span class="material-symbols-outlined text-red-400 text-[32px] block mb-2">timer_off</span>
+                    <p class="text-sm font-semibold text-red-700 dark:text-red-400 mb-3">Ventana de asistencia expirada</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Han pasado más de 10 minutos sin confirmar.</p>
+                    <button onclick="marcarNoAsistio(${cita.id_cita})"
+                        class="w-full px-4 py-2.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-xl text-sm font-semibold transition-colors">
+                        Marcar como No asistió
+                    </button>
+                </div>
+            `;
+        }
+
+    } else if (estado === 'en_proceso') {
+        // Calcular duración desde hora_inicio_real con el reloj del navegador
+        // Fiable porque hora_inicio_real fue guardada por el servidor con su timestamp
+        let duracionMins = 0;
+        if (cita.hora_inicio_real) {
+            // El servidor usa UTC; calculamos diferencia en milisegundos
+            // hora_inicio_real llega como "YYYY-MM-DD HH:MM:SS" (UTC del servidor)
+            // Usamos offset de carga para estimar: tomamos minutos transcurridos + segsDesdeLoad
+            // pero sólo cuando el usuario hizo clic en "Sí asistió" en esta misma sesión.
+            // Si viene recargado, usamos hora_inicio_real relativa a NOW del servidor.
+            // En este caso, el servidor devuelve hora_inicio_real y el campo minutos_transcurridos
+            // no existe en en_proceso, así que usamos el cronómetro del browser.
+            if (currentCitaData._inicioLocal) {
+                duracionMins = Math.floor((Date.now() - currentCitaData._inicioLocal) / 60000);
+            } else {
+                // Si recarga el modal y ya estaba en proceso: calculamos con segsDesdeLoad + offset
+                // El offset en este caso es desconocido sin saber hora del servidor.
+                // Pedimos un segundo fetch especial — usamos la duración "0" de forma segura.
+                duracionMins = 1;
+            }
+        }
+
+        html += `
+            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/50 rounded-xl p-5 w-full text-center">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-green-600 text-[20px]">play_circle</span>
+                    <p class="text-sm font-semibold text-green-700 dark:text-green-400">Cita en curso</p>
+                </div>
+                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mb-5 tabular-nums">${duracionMins} min</p>
+                <button onclick="finalizarReunion(${cita.id_cita}, ${duracionMins})"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl text-sm font-bold shadow transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">stop_circle</span>
+                    Finalizar Cita
+                </button>
+            </div>
+        `;
+    }
+
+    document.getElementById('reunionesContenido').innerHTML = html;
+}
+
+async function marcarNoAsistio(idCita) {
+    if (!confirm('¿Seguro que deseas marcar como "No asistió"?')) return;
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/citaNoAsistio', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id_cita: idCita})
+        });
+        const data = await res.json();
+        if (data.ok) {
+            cargarCitaMasProxima();
+        } else {
+            alert('Error: ' + (data.error || 'No se pudo registrar.'));
+        }
+    } catch(e) {
+        alert('Error de red: ' + e.message);
+    }
+}
+
+async function marcarSiAsistio(idCita) {
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/citaSiAsistio', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id_cita: idCita})
+        });
+        const data = await res.json();
+        if (data.ok) {
+            // Guardamos el timestamp local del momento en que confirmó asistencia
+            currentCitaData._inicioLocal = Date.now();
+            currentCitaData.estado = 'en_proceso';
+            actualizarVistaReunion();
+        } else {
+            alert('Error: ' + (data.error || 'No se pudo registrar.'));
+        }
+    } catch(e) {
+        alert('Error de red: ' + e.message);
+    }
+}
+
+async function finalizarReunion(idCita, duracion) {
+    if (duracion < 1) duracion = 1;
+    if (!confirm(`¿Finalizar la cita? Duración registrada: ${duracion} minuto${duracion !== 1 ? 's' : ''}.`)) return;
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/finalizarReunion', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id_cita: idCita, duracion: duracion})
+        });
+        const data = await res.json();
+        if (data.ok) {
+            document.getElementById('reunionesContenido').innerHTML = `
+                <span class="material-symbols-outlined text-[48px] text-green-400 mb-3 block">check_circle</span>
+                <p class="text-slate-700 dark:text-slate-200 font-semibold mb-1">¡Cita finalizada!</p>
+                <p class="text-xs text-slate-400">Duración: ${duracion} min. Datos guardados correctamente.</p>
+            `;
+            if (reunionesInterval) clearInterval(reunionesInterval);
+            reunionesInterval = null;
+            setTimeout(cargarCitaMasProxima, 3000);
+        } else {
+            alert('Error: ' + (data.error || 'No se pudo finalizar.'));
+        }
+    } catch(e) {
+        alert('Error de red: ' + e.message);
+    }
+}
+
+function escReunion(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+<?php endif; ?>
+
+

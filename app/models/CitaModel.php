@@ -334,6 +334,67 @@ class CitaModel extends Model
     }
 
     /**
+     * Obtiene la cita activa en estado 'en proceso' de HOY
+     */
+    public function getCitaEnProcesoHoy(int $idPsicologo): ?array
+    {
+        $sql = "
+            SELECT c.id_cita, c.fecha, c.hora, c.hora_inicio_real, u.nombre AS paciente_nombre
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            WHERE c.id_psicologo = ? AND c.estado = 'en proceso' AND c.fecha = CURRENT_DATE()
+            ORDER BY c.fecha DESC, c.hora DESC
+            LIMIT 1
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res ?: null;
+    }
+
+    /**
+     * Obtiene la cita pendiente más próxima de HOY.
+     * Toda la lógica de tiempo corre en MySQL para evitar desfases de zona horaria.
+     * Incluye citas cuya hora ya pasó hace menos de 2 horas (para no perderse la ventana).
+     */
+    public function getCitaProximaHoy(int $idPsicologo): ?array
+    {
+        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+
+        // Tomamos todas las citas pendientes de HOY ordenadas por hora
+        // Usamos CURRENT_DATE() y TIME(NOW()) de MySQL para evitar desfases
+        $sql = "
+            SELECT
+                c.id_cita, c.fecha, c.hora, c.motivo_consulta,
+                u.nombre AS paciente_nombre,
+                TIMESTAMPDIFF(MINUTE, CONCAT(c.fecha, ' ', c.hora), NOW()) AS minutos_transcurridos
+            FROM citas c
+            JOIN usuarios u ON c.id_usuario = u.id_usuario
+            WHERE c.id_psicologo = ?
+              AND c.fecha = CURRENT_DATE()
+              AND c.estado = 'pendiente'
+              AND TIMESTAMPDIFF(MINUTE, CONCAT(c.fecha, ' ', c.hora), NOW()) <= 120
+            ORDER BY c.hora ASC
+            LIMIT 1
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$res) return null;
+
+        try {
+            if (!empty($res['motivo_consulta'])) {
+                $res['motivo_consulta'] = EncryptionService::decrypt($res['motivo_consulta']);
+            }
+        } catch (\Exception $e) {
+            $res['motivo_consulta'] = '';
+        }
+
+        return $res;
+    }
+
+    /**
      * Obtiene todas las citas de un usuario (paciente) ordenadas por fecha desc.
      */
     public function getCitasUsuario(int $idUsuario): array
@@ -551,6 +612,37 @@ class CitaModel extends Model
             }
         }
         return $results;
+    }
+
+    /**
+     * Marca una cita como no asistida
+     */
+    public function marcarNoAsistio(int $idCita): bool
+    {
+        $sql = "UPDATE citas SET estado = 'completada', asistio = 0 WHERE id_cita = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idCita]);
+    }
+
+    /**
+     * Marca una cita como sí asistida y la pone en proceso
+     */
+    public function marcarSiAsistio(int $idCita): bool
+    {
+        $ahora = date('Y-m-d H:i:s');
+        $sql = "UPDATE citas SET estado = 'en proceso', hora_inicio_real = ? WHERE id_cita = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$ahora, $idCita]);
+    }
+
+    /**
+     * Actualiza asistencia de una cita a 1
+     */
+    public function setAsistio(int $idCita): bool
+    {
+        $sql = "UPDATE citas SET asistio = 1 WHERE id_cita = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$idCita]);
     }
 }
 

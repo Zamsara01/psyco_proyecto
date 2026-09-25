@@ -28,7 +28,7 @@ class ControllerPanel_psicologas extends Controller
         $citasRecientes = $citaModel->getCitasRecientes($idPsicologo, 15);
         $citasHoy       = $citaModel->getCitasHoy($idPsicologo);
         $pacientesHoy   = $notaModel->getNotasParaPacientesDeHoy($idPsicologo);
-        $citaEnProceso  = $citaModel->getCitaEnProceso($idPsicologo);
+        $citaEnProceso  = $citaModel->getCitaEnProcesoHoy($idPsicologo);
 
         // Verificar si la cita está ocurriendo AHORA (dentro de su horario programado)
         $citaOcurriendo = false;
@@ -650,6 +650,117 @@ class ControllerPanel_psicologas extends Controller
             echo json_encode(['ok' => true, 'mensaje' => 'Bloque de disponibilidad eliminado correctamente.']);
         } else {
             echo json_encode(['ok' => false, 'error' => 'No se pudo eliminar el bloque de disponibilidad.']);
+        }
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // GET /panel_psicologas/citaMasProxima
+    // ────────────────────────────────────────────────────────────────
+    public function citaMasProxima(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        require_once dirname(__DIR__) . '/models/CitaModel.php';
+        $model = new CitaModel();
+
+        // Primero verificamos si hay alguna en proceso de HOY
+        $enProceso = $model->getCitaEnProcesoHoy($idPsicologo);
+        if ($enProceso) {
+            echo json_encode(['ok' => true, 'cita' => $enProceso, 'estado' => 'en_proceso']);
+            exit;
+        }
+
+        // Buscar la próxima cita pendiente de hoy
+        // Todo se calcula en MySQL para evitar problemas de zona horaria
+        $cita = $model->getCitaProximaHoy($idPsicologo);
+        if ($cita) {
+            echo json_encode(['ok' => true, 'cita' => $cita, 'estado' => 'pendiente']);
+            exit;
+        }
+
+        echo json_encode(['ok' => true, 'cita' => null]);
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/citaNoAsistio
+    // ────────────────────────────────────────────────────────────────
+    public function citaNoAsistio(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+
+        $body = json_decode(file_get_contents('php://input'), true);
+        $idCita = (int)($body['id_cita'] ?? 0);
+        if ($idCita < 1) {
+            echo json_encode(['ok' => false, 'error' => 'ID inválido.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/CitaModel.php';
+        $model = new CitaModel();
+        $ok = $model->marcarNoAsistio($idCita);
+
+        echo json_encode(['ok' => $ok]);
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/citaSiAsistio
+    // ────────────────────────────────────────────────────────────────
+    public function citaSiAsistio(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+
+        $body = json_decode(file_get_contents('php://input'), true);
+        $idCita = (int)($body['id_cita'] ?? 0);
+        if ($idCita < 1) {
+            echo json_encode(['ok' => false, 'error' => 'ID inválido.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/CitaModel.php';
+        $model = new CitaModel();
+        $ok = $model->marcarSiAsistio($idCita);
+
+        echo json_encode(['ok' => $ok]);
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/finalizarReunion
+    // ────────────────────────────────────────────────────────────────
+    public function finalizarReunion(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+
+        $body = json_decode(file_get_contents('php://input'), true);
+        $idCita = (int)($body['id_cita'] ?? 0);
+        $duracion = (int)($body['duracion'] ?? 0);
+        
+        // Evitar duraciones irreales que den error de base de datos
+        if ($duracion > 180) $duracion = 180;
+        if ($duracion < 1) $duracion = 1;
+
+        if ($idCita < 1) {
+            echo json_encode(['ok' => false, 'error' => 'ID inválido.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/CitaModel.php';
+        $model = new CitaModel();
+        
+        try {
+            $ok = $model->terminarCita($idCita, $duracion, 'Cita finalizada desde panel de reuniones.');
+            $model->setAsistio($idCita);
+            echo json_encode(['ok' => $ok]);
+        } catch (Exception $e) {
+            echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
         }
         exit;
     }
