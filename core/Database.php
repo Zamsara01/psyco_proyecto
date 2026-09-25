@@ -9,7 +9,7 @@ class Database
     private static ?PDO $instance = null;
 
     // ── Credenciales ──────────────────────────────────────────────
-    private static string $host   = 'localhost';
+    private static string $host   = '127.0.0.1';
     private static string $dbname = 'psyco_intento';
     private static string $user   = 'root';
     private static string $pass   = '';

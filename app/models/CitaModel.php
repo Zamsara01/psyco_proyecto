@@ -189,6 +189,7 @@ class CitaModel extends Model
             AND c.estado = 'pendiente'
             AND u.estado = 'activo'
             AND p.estado = 'activo'
+            AND c.recordatorio_24h = 0
             ORDER BY c.hora ASC
         ";
         $stmt = $this->db->prepare($sql);
@@ -216,15 +217,6 @@ class CitaModel extends Model
     public function getCitasEn1Hora(): array
     {
         require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
-        $ahora = new DateTime();
-        $en1Hora = clone $ahora;
-        $en1Hora->modify('+1 hour');
-        
-        // Ventana de 15 min (para cron cada 15 min)
-        $ventanaInicio = $en1Hora->format('H:i:00');
-        $en1Hora->modify('+15 minutes');
-        $ventanaFin = $en1Hora->format('H:i:00');
-        $fechaHoy = $ahora->format('Y-m-d');
         
         $sql = "
             SELECT 
@@ -236,15 +228,15 @@ class CitaModel extends Model
             JOIN usuarios u ON c.id_usuario = u.id_usuario
             JOIN psicologos p ON c.id_psicologo = p.id_psicologo
             JOIN especialidades e ON p.id_especialidad = e.id_especialidad
-            WHERE c.fecha = ?
+            WHERE c.fecha = CURRENT_DATE()
+            AND CONCAT(c.fecha, ' ', c.hora) BETWEEN NOW() AND (NOW() + INTERVAL 65 MINUTE)
             AND c.estado = 'pendiente'
             AND u.estado = 'activo'
             AND p.estado = 'activo'
-            AND c.hora BETWEEN ? AND ?
+            AND c.recordatorio_1h = 0
             ORDER BY c.hora ASC
         ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$fechaHoy, $ventanaInicio, $ventanaFin]);
+        $stmt = $this->db->query($sql);
         
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -294,10 +286,12 @@ class CitaModel extends Model
      */
     public function terminarCita(int $idCita, int $duracionMinutos, string $notasSesion): bool
     {
-        require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
-        
-        $notasCifradas = EncryptionService::encrypt($notasSesion);
-        
+        $notasCifradas = '';
+        if ($notasSesion !== '') {
+            require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
+            $notasCifradas = EncryptionService::encrypt($notasSesion);
+        }
+
         $sql = "
             UPDATE citas 
             SET estado = 'completada', 
@@ -305,13 +299,15 @@ class CitaModel extends Model
                 notas_sesion = ?
             WHERE id_cita = ? AND estado = 'en proceso'
         ";
-        
+
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $stmt->execute([
             $duracionMinutos,
             $notasCifradas,
             $idCita
         ]);
+        // rowCount() = filas realmente actualizadas (0 si la cita ya no estaba 'en proceso')
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -335,15 +331,19 @@ class CitaModel extends Model
 
     /**
      * Obtiene la cita activa en estado 'en proceso' de HOY
+     * Incluye minutos_en_curso calculado completamente en MySQL.
      */
     public function getCitaEnProcesoHoy(int $idPsicologo): ?array
     {
         $sql = "
-            SELECT c.id_cita, c.fecha, c.hora, c.hora_inicio_real, u.nombre AS paciente_nombre
+            SELECT
+                c.id_cita, c.fecha, c.hora, c.hora_inicio_real,
+                u.nombre AS paciente_nombre,
+                GREATEST(1, TIMESTAMPDIFF(MINUTE, c.hora_inicio_real, NOW())) AS minutos_en_curso
             FROM citas c
             JOIN usuarios u ON c.id_usuario = u.id_usuario
             WHERE c.id_psicologo = ? AND c.estado = 'en proceso' AND c.fecha = CURRENT_DATE()
-            ORDER BY c.fecha DESC, c.hora DESC
+            ORDER BY c.hora_inicio_real ASC
             LIMIT 1
         ";
         $stmt = $this->db->prepare($sql);
@@ -643,6 +643,20 @@ class CitaModel extends Model
         $sql = "UPDATE citas SET asistio = 1 WHERE id_cita = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$idCita]);
+    }
+
+    /**
+     * Marca un recordatorio como enviado para evitar duplicados
+     */
+    public function marcarRecordatorioEnviado(int $idCita, string $tipo): void
+    {
+        if ($tipo === '24h') {
+            $sql = "UPDATE citas SET recordatorio_24h = 1 WHERE id_cita = ?";
+        } else {
+            $sql = "UPDATE citas SET recordatorio_1h = 1 WHERE id_cita = ?";
+        }
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idCita]);
     }
 }
 

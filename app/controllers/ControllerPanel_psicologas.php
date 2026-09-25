@@ -158,6 +158,7 @@ class ControllerPanel_psicologas extends Controller
         $idUsuario   = (int)($body['id_usuario'] ?? 0);
         $titulo      = trim($body['titulo']      ?? '');
         $contenido   = trim($body['contenido']   ?? '');
+        $tipoNota    = trim($body['tipo_nota']   ?? 'general');
         $idPsicologo = (int)$_SESSION['user']['id'];
 
         if ($idUsuario < 1 || !$titulo || !$contenido) {
@@ -167,13 +168,71 @@ class ControllerPanel_psicologas extends Controller
 
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
         $model = new NotaPacienteModel();
-        $ok    = $model->createNota($idPsicologo, $idUsuario, $titulo, $contenido);
+        $ok    = $model->createNota($idPsicologo, $idUsuario, $titulo, $contenido, $tipoNota);
 
         echo json_encode($ok
             ? ['ok' => true,  'mensaje' => 'Nota guardada.']
             : ['ok' => false, 'error'   => 'Error al guardar la nota.']
         );
         exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // GET /panel_psicologas/pacientesConNotas
+    // ────────────────────────────────────────────────────────────────
+    public function pacientesConNotas(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $db = Database::getInstance();
+        $sql = "
+            SELECT DISTINCT u.id_usuario, u.nombre AS paciente_nombre
+            FROM notas_paciente np
+            JOIN usuarios u ON np.id_usuario = u.id_usuario
+            WHERE np.id_psicologo = ?
+            ORDER BY u.nombre
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$idPsicologo]);
+        $pacientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['ok' => true, 'pacientes' => $pacientes]);
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // GET /panel_psicologas/imprimirHistorial?id_usuario=X
+    // ────────────────────────────────────────────────────────────────
+    public function imprimirHistorial(): void
+    {
+        $this->requirePsicologo(false);
+        $idPsicologo = (int)$_SESSION['user']['id'];
+        $idUsuario   = (int)($_GET['id_usuario'] ?? 0);
+
+        if ($idUsuario < 1) {
+            echo "ID de paciente inválido.";
+            return;
+        }
+
+        require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
+        $model = new NotaPacienteModel();
+        $notas = $model->getNotasByUsuario($idUsuario);
+
+        // Fetch patient name
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT nombre FROM usuarios WHERE id_usuario = ?");
+        $stmt->execute([$idUsuario]);
+        $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->render('pages/plantilla_historial', [
+            'paciente' => $paciente,
+            'notas'    => $notas,
+            'fecha'    => date('d/m/Y')
+        ], false);
     }
 
     // ────────────────────────────────────────────────────────────────
@@ -476,6 +535,25 @@ class ControllerPanel_psicologas extends Controller
             echo json_encode(['ok' => false, 'error' => 'La fecha es inválida o está en el pasado.']);
             exit;
         }
+        $maxFecha = date('Y-m-d', strtotime('+1 month'));
+        if ($fecha > $maxFecha) {
+            $tzLocal  = new DateTimeZone('America/Bogota');
+            $maxFmt   = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
+            echo json_encode(['ok' => false, 'error' => "Solo puedes agendar citas hasta un mes de anticipación (máximo {$maxFmt})."]);
+            exit;
+        }
+        // Si la cita es hoy, verificar que la hora no haya pasado usando la zona horaria local (UTC-5)
+        if ($fecha === date('Y-m-d')) {
+            $tzLocal        = new DateTimeZone('America/Bogota');
+            $ahoraLocal     = new DateTime('now', $tzLocal);
+            $horaActualStr  = $ahoraLocal->format('H:i:s');
+            $horaSolicitada = substr($hora, 0, 5) . ':00';
+            if ($horaSolicitada <= $horaActualStr) {
+                $ahoraFmt = $ahoraLocal->format('d/m/Y H:i');
+                echo json_encode(['ok' => false, 'error' => "No puedes agendar citas antes de la hora actual ({$ahoraFmt})."]);
+                exit;
+            }
+        }
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model     = new CitaModel();
@@ -739,26 +817,31 @@ class ControllerPanel_psicologas extends Controller
         header('Content-Type: application/json; charset=utf-8');
         $this->requirePsicologo(true);
 
-        $body = json_decode(file_get_contents('php://input'), true);
-        $idCita = (int)($body['id_cita'] ?? 0);
+        $body     = json_decode(file_get_contents('php://input'), true);
+        $idCita   = (int)($body['id_cita']  ?? 0);
         $duracion = (int)($body['duracion'] ?? 0);
-        
-        // Evitar duraciones irreales que den error de base de datos
+
+        // Evitar duraciones irreales
         if ($duracion > 180) $duracion = 180;
-        if ($duracion < 1) $duracion = 1;
+        if ($duracion < 1)   $duracion = 1;
 
         if ($idCita < 1) {
-            echo json_encode(['ok' => false, 'error' => 'ID inválido.']);
+            echo json_encode(['ok' => false, 'error' => 'ID de cita inválido.']);
             exit;
         }
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model = new CitaModel();
-        
+
         try {
-            $ok = $model->terminarCita($idCita, $duracion, 'Cita finalizada desde panel de reuniones.');
+            $ok = $model->terminarCita($idCita, $duracion, '');
+            if (!$ok) {
+                // 0 filas afectadas: la cita no estaba en 'en proceso'
+                echo json_encode(['ok' => false, 'error' => 'La cita ya fue finalizada o no estaba activa.']);
+                exit;
+            }
             $model->setAsistio($idCita);
-            echo json_encode(['ok' => $ok]);
+            echo json_encode(['ok' => true]);
         } catch (Exception $e) {
             echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
         }

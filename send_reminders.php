@@ -54,6 +54,7 @@ foreach ($citasManana as $cita) {
     
     if ($okEstudiante && $okPsicologo) {
         $enviados++;
+        $citaModel->marcarRecordatorioEnviado($cita['id_cita'], '24h');
         echo "  ✓ Cita #{$cita['id_cita']} - {$cita['paciente_nombre']} / {$cita['psicologo_nombre']}\n";
     } else {
         $fallidos++;

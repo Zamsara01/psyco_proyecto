@@ -109,6 +109,25 @@ class ControllerChat_bot extends Controller
             echo json_encode(['ok' => false, 'error' => 'No puedes agendar en fechas pasadas.']);
             exit;
         }
+        $maxFecha = date('Y-m-d', strtotime('+1 month'));
+        if ($fecha > $maxFecha) {
+            $tzLocal  = new DateTimeZone('America/Bogota');
+            $maxFmt   = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
+            echo json_encode(['ok' => false, 'error' => "Solo puedes agendar citas hasta un mes de anticipación (máximo {$maxFmt})."]);
+            exit;
+        }
+        // Si es hoy, validar que la hora no haya pasado usando la zona horaria local (UTC-5)
+        if ($fecha === date('Y-m-d')) {
+            $tzLocal        = new DateTimeZone('America/Bogota');
+            $ahoraLocal     = new DateTime('now', $tzLocal);
+            $horaActualStr  = $ahoraLocal->format('H:i:s');
+            $horaSolicitada = substr($hora, 0, 5) . ':00';
+            if ($horaSolicitada <= $horaActualStr) {
+                $ahoraFmt = $ahoraLocal->format('d/m/Y H:i');
+                echo json_encode(['ok' => false, 'error' => "No puedes agendar citas antes de la hora actual ({$ahoraFmt})."]);
+                exit;
+            }
+        }
 
         $idUsuario = (int)($_SESSION['user']['id'] ?? 0);
         if ($idUsuario < 1) {

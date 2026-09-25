@@ -50,6 +50,7 @@ foreach ($citasEn1Hora as $cita) {
     
     if ($okEstudiante && $okPsicologo) {
         $enviados++;
+        $citaModel->marcarRecordatorioEnviado($cita['id_cita'], '1h');
     } else {
         $fallidos++;
     }

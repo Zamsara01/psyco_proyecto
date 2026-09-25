@@ -65,11 +65,18 @@ class NotaPacienteModel extends Model
     /**
      * Crea una nueva nota para un paciente.
      */
-    public function createNota(int $idPsicologo, int $idUsuario, string $titulo, string $contenido): bool
+    public function createNota(int $idPsicologo, int $idUsuario, string $titulo, string $contenido, string $tipoNota = 'general'): bool
     {
-        $sql = "INSERT INTO notas_paciente (id_psicologo, id_usuario, titulo, contenido) VALUES (?, ?, ?, ?)";
+        // Add column if it doesn't exist (safety check for migration)
+        try {
+            $this->db->exec("ALTER TABLE notas_paciente ADD COLUMN tipo_nota VARCHAR(50) NOT NULL DEFAULT 'general' AFTER contenido");
+        } catch (\Exception $e) {
+            // Ignore error if column already exists
+        }
+
+        $sql = "INSERT INTO notas_paciente (id_psicologo, id_usuario, titulo, contenido, tipo_nota) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idPsicologo, $idUsuario, $titulo, $contenido]);
+        return $stmt->execute([$idPsicologo, $idUsuario, $titulo, $contenido, $tipoNota]);
     }
 
     /**

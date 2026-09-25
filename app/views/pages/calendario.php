@@ -289,7 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             for (let i = 1; i <= daysInMonth; i++) {
                 const dateObj = new Date(currentYear, currentMonth, i);
-                const isPast = dateObj < today;
+                const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+                const isDisabled = dateObj < today || dateObj > maxDate;
 
                 const isSelected = selectedDate && dateObj.getTime() === selectedDate.getTime();
                 const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
@@ -303,9 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Verificar si hay al menos un psicólogo disponible este día
                 const hayDisponibilidad = psicologosData.some(p => p.disponibilidad.some(d => d.dia === diaNombreBD));
 
-                // 2. Determinar color del punto (solo si hay disponibilidad y no es un día pasado)
+                // 2. Determinar color del punto (solo si hay disponibilidad y no es un día pasado o futuro bloqueado)
                 let dotHtml = '';
-                if (!isPast && hayDisponibilidad) {
+                if (!isDisabled && hayDisponibilidad) {
                     const totalCitas = citasData[dateString] || 0;
                     let colorClass = '';
 
@@ -322,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let classes = 'h-16 flex flex-col items-center justify-center rounded-xl relative transition-all ';
 
-                if (isPast) {
+                if (isDisabled) {
                     classes += ' text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-slate-800/30 opacity-50 cursor-not-allowed';
                 } else {
                     classes += ' cursor-pointer day-btn';
@@ -337,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 html += `
                 <div class="${classes}" data-day="${i}" data-month="${currentMonth}" data-year="${currentYear}">
-                    <span class="font-bold ${isSelected ? '' : (isPast ? 'text-slate-400 dark:text-slate-500' : (isWeekend ? '' : 'text-slate-700 dark:text-slate-200'))}">${i}</span>
+                    <span class="font-bold ${isSelected ? '' : (isDisabled ? 'text-slate-400 dark:text-slate-500' : (isWeekend ? '' : 'text-slate-700 dark:text-slate-200'))}">${i}</span>
                     ${dotHtml}
                 </div>`;
             }
@@ -549,12 +550,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            grid.innerHTML = data.horas.map(h => `
-                <button onclick="seleccionarHoraAgendar('${h}', this)"
+            // Si la fecha seleccionada es hoy, calcular la hora actual del cliente
+            const esHoy = (fecha === new Date().toISOString().slice(0, 10));
+            const ahora = new Date(); // hora local del navegador
+
+            const botonesHTML = data.horas.map(h => {
+                const [hh, mm] = h.split(':').map(Number);
+                const horaSlot = new Date(ahora);
+                horaSlot.setHours(hh, mm, 0, 0);
+                const pasada = esHoy && horaSlot <= ahora;
+
+                if (pasada) {
+                    return `<button disabled
+                        class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-100 rounded-xl text-slate-300 bg-slate-50 cursor-not-allowed relative"
+                        title="Esta hora ya pasó">
+                        ${h}
+                        <span class="block text-[9px] font-normal text-slate-300 mt-0.5">Hora pasada</span>
+                    </button>`;
+                }
+                return `<button onclick="seleccionarHoraAgendar('${h}', this)"
                     class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 transition-all active:scale-95">
                     ${h}
-                </button>
-            `).join('');
+                </button>`;
+            }).join('');
+
+            const hayDisponibles = data.horas.some(h => {
+                if (!esHoy) return true;
+                const [hh, mm] = h.split(':').map(Number);
+                const horaSlot = new Date(ahora);
+                horaSlot.setHours(hh, mm, 0, 0);
+                return horaSlot > ahora;
+            });
+
+            grid.innerHTML = botonesHTML;
+
+            if (!hayDisponibles) {
+                grid.innerHTML = `<div class="col-span-3 text-center py-6">
+                    <span class="material-symbols-outlined text-slate-300 text-4xl block mb-2">schedule</span>
+                    <p class="text-slate-500 text-sm">Todos los horarios de hoy ya pasaron.<br>Selecciona otra fecha.</p>
+                </div>`;
+            }
         } catch (e) {
             console.error('[Agendar] Error:', e);
             grid.innerHTML = `<div class="col-span-3 text-center py-4 text-red-500 text-sm">Error al cargar horarios: ${e.message}</div>`;

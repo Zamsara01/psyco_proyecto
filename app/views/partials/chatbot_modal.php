@@ -141,7 +141,9 @@ if (!empty($_SESSION['user'])) {
                 <input 
                     type="date" 
                     id="cbFecha" 
-                    min="<?= date('Y-m-d', strtotime('+1 day')) ?>"
+                    min="<?= date('Y-m-d') ?>"
+                    max="<?= date('Y-m-d', strtotime('+1 month')) ?>"
+                    onkeydown="if(event.key === 'Enter') cbBuscarPsicologos()"
                     class="w-full bg-white border-2 border-slate-200 dark:bg-slate-800 dark:border-slate-600 rounded-xl px-4 py-3 text-slate-800 dark:text-slate-100 font-medium focus:outline-none focus:border-blue-400 transition-colors text-base"
                 >
             </div>
@@ -540,8 +542,19 @@ async function cbBuscarPsicologos() {
 
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     const sel = new Date(fecha + 'T00:00:00');
-    if (sel <= hoy) {
-        errMsg.textContent = 'La fecha debe ser futura (mínimo mañana).';
+    
+    // Máximo 1 mes
+    const maxMes = new Date(hoy);
+    maxMes.setMonth(maxMes.getMonth() + 1);
+
+    if (sel < hoy) {
+        errMsg.textContent = 'La fecha no puede ser en el pasado.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+    
+    if (sel > maxMes) {
+        errMsg.textContent = 'Solo puedes agendar con un mes de anticipación.';
         errEl.classList.remove('hidden');
         return;
     }

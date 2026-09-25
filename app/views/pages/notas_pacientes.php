@@ -98,6 +98,16 @@
                     class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-400 transition-colors">
             </div>
             <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Tipo de Nota</label>
+                <select id="notaRapidaTipo" class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-400 transition-colors">
+                    <option value="general">General</option>
+                    <option value="mejora">De mejora</option>
+                    <option value="sintomas">De síntomas</option>
+                    <option value="diagnostico">De diagnóstico</option>
+                    <option value="seguimiento">De seguimiento</option>
+                </select>
+            </div>
+            <div>
                 <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Contenido</label>
                 <textarea id="notaRapidaContenido" rows="5" placeholder="Escribe la nota o recomendación para el paciente..."
                     class="w-full border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-400 transition-colors resize-none"></textarea>
@@ -201,6 +211,7 @@ async function guardarNotaRapida() {
     const idUsuario = document.getElementById('notaRapidaIdUsuario').value;
     const titulo    = document.getElementById('notaRapidaTitulo').value.trim();
     const contenido = document.getElementById('notaRapidaContenido').value.trim();
+    const tipoNota  = document.getElementById('notaRapidaTipo').value;
     const errEl     = document.getElementById('notaRapidaError');
 
     if (!titulo || !contenido) {
@@ -213,7 +224,7 @@ async function guardarNotaRapida() {
     try {
         const res  = await fetch(BASE + 'panel_psicologas/crearNota', {
             method: 'POST', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id_usuario: parseInt(idUsuario), titulo, contenido })
+            body: JSON.stringify({ id_usuario: parseInt(idUsuario), titulo, contenido, tipo_nota: tipoNota })
         });
         const data = await res.json();
         if (data.ok) {

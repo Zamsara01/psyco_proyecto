@@ -184,6 +184,13 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Reuniones
             </button>
 
+            <!-- Historial Clínico -->
+            <button onclick="openHistorialModal()"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+                <span class="material-symbols-outlined text-[22px] shrink-0">history_edu</span>
+                Historial Clínico
+            </button>
+
         <?php endif; ?>
         </div>
 
@@ -466,10 +473,10 @@ function toggleMisRecursos() {
 
 <script>
 let reunionesInterval = null;
-let currentCitaData = null;
-// Offset en segundos: diferencia entre minutos_transcurridos de MySQL y el instante en que se cargó
+let currentCitaData   = null;
+// Offset en segundos desde el origen que nos dio el servidor
 let reunionesOffsetSecs = 0;
-let reunionesLoadedAt = 0;
+let reunionesLoadedAt   = 0; // Date.now() en el momento en que se fijó el offset
 
 function openReunionesModal() {
     const m = document.getElementById('reunionesModal');
@@ -487,15 +494,15 @@ function closeReunionesModal() {
 }
 
 async function cargarCitaMasProxima() {
-    if (reunionesInterval) clearInterval(reunionesInterval);
-    reunionesInterval = null;
+    if (reunionesInterval) { clearInterval(reunionesInterval); reunionesInterval = null; }
     document.getElementById('reunionesContenido').innerHTML =
         '<div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto my-10"></div>';
 
     const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
     try {
-        const res = await fetch(BASE + 'panel_psicologas/citaMasProxima');
+        const res  = await fetch(BASE + 'panel_psicologas/citaMasProxima');
         const data = await res.json();
+
         if (!data.ok || !data.cita) {
             document.getElementById('reunionesContenido').innerHTML = `
                 <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-2 block">event_busy</span>
@@ -503,18 +510,22 @@ async function cargarCitaMasProxima() {
             `;
             return;
         }
-        currentCitaData = data;
-        // minutos_transcurridos: positivo = cita ya empezó, negativo = faltan X minutos
-        // Para en_proceso, el servidor no devuelve este campo, usamos hora_inicio_real
+
+        currentCitaData   = data;
         reunionesLoadedAt = Date.now();
+
         if (data.estado === 'pendiente') {
+            // minutos_transcurridos: positivo = ya pasó, negativo = falta tiempo
             reunionesOffsetSecs = parseFloat(data.cita.minutos_transcurridos || 0) * 60;
         } else {
-            reunionesOffsetSecs = 0;
+            // en_proceso: el servidor nos da minutos_en_curso (calculado con MySQL NOW())
+            reunionesOffsetSecs = parseFloat(data.cita.minutos_en_curso || 1) * 60;
         }
+
         iniciarLogicaReunion();
     } catch(e) {
-        document.getElementById('reunionesContenido').innerHTML = `<p class="text-red-500 text-sm py-8">Error al cargar: ${e.message}</p>`;
+        document.getElementById('reunionesContenido').innerHTML =
+            `<p class="text-red-500 text-sm py-8">Error al cargar: ${e.message}</p>`;
     }
 }
 
@@ -525,11 +536,13 @@ function iniciarLogicaReunion() {
 }
 
 function actualizarVistaReunion() {
-    const cita = currentCitaData.cita;
+    const cita   = currentCitaData.cita;
     const estado = currentCitaData.estado;
 
-    // Segundos transcurridos desde que se cargó el modal
-    const segsDesdeLoad = (Date.now() - reunionesLoadedAt) / 1000;
+    // Segundos reales que han pasado desde que fijamos el offset
+    const segsDesdeLoad   = (Date.now() - reunionesLoadedAt) / 1000;
+    const segsTotal       = reunionesOffsetSecs + segsDesdeLoad;
+    const minutosTotal    = Math.floor(segsTotal / 60);
 
     let html = `
         <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mb-4 mx-auto">
@@ -542,26 +555,22 @@ function actualizarVistaReunion() {
     `;
 
     if (estado === 'pendiente') {
-        // minutos_transcurridos ya llega desde MySQL (ajustado al timezone del servidor)
-        // Sumamos los segundos que han pasado en el cliente desde que se cargó
-        const segsTranscurridos = reunionesOffsetSecs + segsDesdeLoad;
-        const minutosTranscurridos = Math.floor(segsTranscurridos / 60);
-
-        if (segsTranscurridos < 0) {
-            // Cita aún no empieza — mostrar cuenta regresiva
-            const totalSegsRestantes = Math.abs(segsTranscurridos);
-            const minsRestantes = Math.floor(totalSegsRestantes / 60);
-            const segsRestantes = Math.floor(totalSegsRestantes % 60);
+        if (segsTotal < 0) {
+            // Cita aún no empieza — cuenta regresiva
+            const totalRest = Math.abs(segsTotal);
+            const mRest = Math.floor(totalRest / 60);
+            const sRest = Math.floor(totalRest % 60);
             html += `
                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-xl p-5 w-full text-center">
                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">La cita inicia en:</p>
                     <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
-                        ${minsRestantes}m ${String(segsRestantes).padStart(2,'0')}s
+                        ${mRest}m ${String(sRest).padStart(2,'0')}s
                     </p>
                 </div>
             `;
-        } else if (minutosTranscurridos <= 10) {
-            // Cita activa — primeros 10 minutos: mostrar botones
+        } else if (minutosTotal <= 10) {
+            // Primeros 10 minutos — botones de asistencia
+            const restantes = 10 - minutosTotal;
             html += `
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700/50 rounded-xl p-5 w-full">
                     <div class="flex items-center justify-center gap-2 mb-2">
@@ -582,7 +591,7 @@ function actualizarVistaReunion() {
                         </button>
                     </div>
                     <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3">
-                        ${10 - minutosTranscurridos} min restante${10 - minutosTranscurridos !== 1 ? 's' : ''} para confirmar asistencia
+                        ${restantes} min restante${restantes !== 1 ? 's' : ''} para confirmar asistencia
                     </p>
                 </div>
             `;
@@ -602,26 +611,9 @@ function actualizarVistaReunion() {
         }
 
     } else if (estado === 'en_proceso') {
-        // Calcular duración desde hora_inicio_real con el reloj del navegador
-        // Fiable porque hora_inicio_real fue guardada por el servidor con su timestamp
-        let duracionMins = 0;
-        if (cita.hora_inicio_real) {
-            // El servidor usa UTC; calculamos diferencia en milisegundos
-            // hora_inicio_real llega como "YYYY-MM-DD HH:MM:SS" (UTC del servidor)
-            // Usamos offset de carga para estimar: tomamos minutos transcurridos + segsDesdeLoad
-            // pero sólo cuando el usuario hizo clic en "Sí asistió" en esta misma sesión.
-            // Si viene recargado, usamos hora_inicio_real relativa a NOW del servidor.
-            // En este caso, el servidor devuelve hora_inicio_real y el campo minutos_transcurridos
-            // no existe en en_proceso, así que usamos el cronómetro del browser.
-            if (currentCitaData._inicioLocal) {
-                duracionMins = Math.floor((Date.now() - currentCitaData._inicioLocal) / 60000);
-            } else {
-                // Si recarga el modal y ya estaba en proceso: calculamos con segsDesdeLoad + offset
-                // El offset en este caso es desconocido sin saber hora del servidor.
-                // Pedimos un segundo fetch especial — usamos la duración "0" de forma segura.
-                duracionMins = 1;
-            }
-        }
+        // segsTotal ya parte de minutos_en_curso del servidor → siempre preciso
+        const mins = Math.max(1, minutosTotal);
+        const segsRestantes = Math.floor(segsTotal % 60);
 
         html += `
             <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/50 rounded-xl p-5 w-full text-center">
@@ -629,8 +621,9 @@ function actualizarVistaReunion() {
                     <span class="material-symbols-outlined text-green-600 text-[20px]">play_circle</span>
                     <p class="text-sm font-semibold text-green-700 dark:text-green-400">Cita en curso</p>
                 </div>
-                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mb-5 tabular-nums">${duracionMins} min</p>
-                <button onclick="finalizarReunion(${cita.id_cita}, ${duracionMins})"
+                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mb-1 tabular-nums">${mins} min</p>
+                <p class="text-xs text-slate-400 mb-5 tabular-nums">${String(Math.floor(segsTotal / 60)).padStart(2,'0')}:${String(segsRestantes).padStart(2,'0')}</p>
+                <button onclick="finalizarReunion(${cita.id_cita}, ${mins})"
                     class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl text-sm font-bold shadow transition-colors">
                     <span class="material-symbols-outlined text-[20px]">stop_circle</span>
                     Finalizar Cita
@@ -646,42 +639,33 @@ async function marcarNoAsistio(idCita) {
     if (!confirm('¿Seguro que deseas marcar como "No asistió"?')) return;
     const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
     try {
-        const res = await fetch(BASE + 'panel_psicologas/citaNoAsistio', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+        const res  = await fetch(BASE + 'panel_psicologas/citaNoAsistio', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id_cita: idCita})
         });
         const data = await res.json();
-        if (data.ok) {
-            cargarCitaMasProxima();
-        } else {
-            alert('Error: ' + (data.error || 'No se pudo registrar.'));
-        }
-    } catch(e) {
-        alert('Error de red: ' + e.message);
-    }
+        if (data.ok) { cargarCitaMasProxima(); }
+        else { alert('Error: ' + (data.error || 'No se pudo registrar.')); }
+    } catch(e) { alert('Error de red: ' + e.message); }
 }
 
 async function marcarSiAsistio(idCita) {
     const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
     try {
-        const res = await fetch(BASE + 'panel_psicologas/citaSiAsistio', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+        const res  = await fetch(BASE + 'panel_psicologas/citaSiAsistio', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id_cita: idCita})
         });
         const data = await res.json();
         if (data.ok) {
-            // Guardamos el timestamp local del momento en que confirmó asistencia
-            currentCitaData._inicioLocal = Date.now();
-            currentCitaData.estado = 'en_proceso';
+            // Cambiar a en_proceso y fijar offset desde 0 (acaba de iniciar)
+            currentCitaData.estado              = 'en_proceso';
+            currentCitaData.cita.minutos_en_curso = 0;
+            reunionesOffsetSecs                 = 0;
+            reunionesLoadedAt                   = Date.now();
             actualizarVistaReunion();
-        } else {
-            alert('Error: ' + (data.error || 'No se pudo registrar.'));
-        }
-    } catch(e) {
-        alert('Error de red: ' + e.message);
-    }
+        } else { alert('Error: ' + (data.error || 'No se pudo registrar.')); }
+    } catch(e) { alert('Error de red: ' + e.message); }
 }
 
 async function finalizarReunion(idCita, duracion) {
@@ -689,32 +673,107 @@ async function finalizarReunion(idCita, duracion) {
     if (!confirm(`¿Finalizar la cita? Duración registrada: ${duracion} minuto${duracion !== 1 ? 's' : ''}.`)) return;
     const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
     try {
-        const res = await fetch(BASE + 'panel_psicologas/finalizarReunion', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+        const res  = await fetch(BASE + 'panel_psicologas/finalizarReunion', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id_cita: idCita, duracion: duracion})
         });
         const data = await res.json();
         if (data.ok) {
+            if (reunionesInterval) { clearInterval(reunionesInterval); reunionesInterval = null; }
             document.getElementById('reunionesContenido').innerHTML = `
                 <span class="material-symbols-outlined text-[48px] text-green-400 mb-3 block">check_circle</span>
                 <p class="text-slate-700 dark:text-slate-200 font-semibold mb-1">¡Cita finalizada!</p>
                 <p class="text-xs text-slate-400">Duración: ${duracion} min. Datos guardados correctamente.</p>
             `;
-            if (reunionesInterval) clearInterval(reunionesInterval);
-            reunionesInterval = null;
             setTimeout(cargarCitaMasProxima, 3000);
-        } else {
-            alert('Error: ' + (data.error || 'No se pudo finalizar.'));
-        }
-    } catch(e) {
-        alert('Error de red: ' + e.message);
-    }
+        } else { alert('Error: ' + (data.error || 'No se pudo finalizar.')); }
+    } catch(e) { alert('Error de red: ' + e.message); }
 }
 
 function escReunion(str) {
     if (!str) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+
+<!-- ══════════ MODAL: HISTORIAL CLÍNICO ══════════ -->
+<div id="historialModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeHistorialModal()"></div>
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-lg mx-4 z-10 overflow-hidden flex flex-col max-h-[80vh]">
+        <div class="p-6 pb-4 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between shrink-0">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-500">history_edu</span>
+                Exportar Historial Clínico
+            </h3>
+            <button onclick="closeHistorialModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-6 overflow-y-auto" id="historialContenido">
+            <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto my-6"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openHistorialModal() {
+    const m = document.getElementById('historialModal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    cargarPacientesHistorial();
+}
+
+function closeHistorialModal() {
+    const m = document.getElementById('historialModal');
+    m.classList.add('hidden'); m.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+async function cargarPacientesHistorial() {
+    const cont = document.getElementById('historialContenido');
+    cont.innerHTML = '<div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto my-6"></div>';
+    
+    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/pacientesConNotas');
+        const data = await res.json();
+        
+        if (!data.ok || !data.pacientes || data.pacientes.length === 0) {
+            cont.innerHTML = `
+                <div class="text-center py-6">
+                    <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-2 block">folder_off</span>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">No has registrado notas para ningún paciente aún.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '<p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Selecciona un paciente para descargar e imprimir su historial clínico basado en tus notas:</p>';
+        html += '<div class="space-y-2">';
+        
+        data.pacientes.forEach(p => {
+            html += `
+                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 rounded-xl hover:border-blue-200 dark:hover:border-blue-900/50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center font-bold text-sm">
+                            ${escReunion(p.paciente_nombre).charAt(0).toUpperCase()}
+                        </div>
+                        <p class="font-semibold text-slate-700 dark:text-slate-200 text-sm">${escReunion(p.paciente_nombre)}</p>
+                    </div>
+                    <a href="${BASE}panel_psicologas/imprimirHistorial?id_usuario=${p.id_usuario}" target="_blank"
+                       class="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 shadow-sm">
+                       <span class="material-symbols-outlined text-[16px]">print</span>
+                       Generar
+                    </a>
+                </div>
+            `;
+        });
+        html += '</div>';
+        cont.innerHTML = html;
+        
+    } catch (e) {
+        cont.innerHTML = `<p class="text-red-500 text-sm py-4 text-center">Error: ${e.message}</p>`;
+    }
 }
 </script>
 <?php endif; ?>
