@@ -352,8 +352,11 @@ class CitaModel extends Model
 
     /**
      * Termina una cita que está en proceso, actualizando duración y notas.
+     *
+     * @param int    $idPsicologo  ID del psicólogo dueño de la cita — cierra IDOR: solo afecta
+     *                             filas asignadas a este psicólogo (AND id_psicologo = ?).
      */
-    public function terminarCita(int $idCita, int $duracionMinutos, string $notasSesion): bool
+    public function terminarCita(int $idCita, int $duracionMinutos, string $notasSesion, int $idPsicologo): bool
     {
         $notasCifradas = '';
         if ($notasSesion !== '') {
@@ -366,14 +369,17 @@ class CitaModel extends Model
             SET estado = 'completada', 
                 duracion_minutos = ?, 
                 notas_sesion = ?
-            WHERE id_cita = ? AND estado = 'en proceso'
+            WHERE id_cita = ?
+              AND id_psicologo = ?   -- cierra IDOR: impide que otro psicólogo finalice esta cita
+              AND estado = 'en proceso'
         ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             $duracionMinutos,
             $notasCifradas,
-            $idCita
+            $idCita,
+            $idPsicologo,  // el UPDATE solo afecta filas asignadas al psicólogo autenticado
         ]);
         // rowCount() = filas realmente actualizadas (0 si la cita ya no estaba 'en proceso')
         return $stmt->rowCount() > 0;

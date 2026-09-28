@@ -46,4 +46,40 @@ abstract class Controller
         header('Location: ' . URL_BASE . ltrim($path, '/'));
         exit;
     }
+
+    /**
+     * Guard centralizado de autenticación y autorización.
+     *
+     * Comportamiento:
+     *   • Sin sesión activa → 401 JSON  o  redirect a users/login
+     *   • Sesión con rol incorrecto → 403 JSON  o  redirect a pages/index
+     *
+     * @param string|null $rol   Rol requerido ('paciente', 'psicologo', 'administrador').
+     *                           Si es null, solo verifica que haya sesión activa.
+     * @param bool        $json  true → responde JSON y hace exit (endpoints API).
+     *                           false → redirige con header Location (vistas HTML).
+     */
+    protected function requireAuth(?string $rol = null, bool $json = false): void
+    {
+        // ── 1. Sin sesión ────────────────────────────────────────────
+        if (empty($_SESSION['user'])) {
+            if ($json) {
+                http_response_code(401);
+                echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
+                exit;
+            }
+            $this->redirect('users/login');
+        }
+
+        // ── 2. Sesión activa pero rol equivocado ─────────────────────
+        if ($rol !== null && ($_SESSION['user']['rol'] ?? '') !== $rol) {
+            if ($json) {
+                http_response_code(403);
+                echo json_encode(['ok' => false, 'error' => 'Acceso denegado.']);
+                exit;
+            }
+            http_response_code(403);
+            $this->redirect('pages/index');
+        }
+    }
 }

@@ -13,10 +13,7 @@ class ControllerCitas extends Controller
     // ────────────────────────────────────────────────────────────────
     public function misCitas(): void
     {
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'paciente') {
-            $this->redirect('users/login');
-            return;
-        }
+        $this->requireAuth('paciente'); // reemplaza chequeo inline duplicado
 
         $idUsuario = (int)$_SESSION['user']['id'];
 
@@ -41,10 +38,7 @@ class ControllerCitas extends Controller
     // ────────────────────────────────────────────────────────────────
     public function misRecursos(): void
     {
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'paciente') {
-            $this->redirect('users/login');
-            return;
-        }
+        $this->requireAuth('paciente'); // reemplaza chequeo inline duplicado
 
         $idUsuario = (int)$_SESSION['user']['id'];
 
@@ -71,11 +65,7 @@ class ControllerCitas extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'paciente') {
-            http_response_code(401);
-            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
-            exit;
-        }
+        $this->requireAuth('paciente', true); // reemplaza chequeo inline duplicado
 
         $body      = json_decode(file_get_contents('php://input'), true);
         $idCita    = (int)($body['id_cita'] ?? 0);
@@ -104,11 +94,7 @@ class ControllerCitas extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'psicologo') {
-            http_response_code(401);
-            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
-            exit;
-        }
+        $this->requireAuth('psicologo', true); // reemplaza chequeo inline duplicado
 
         $body      = json_decode(file_get_contents('php://input'), true);
         $idCita    = (int)($body['id_cita'] ?? 0);
@@ -166,11 +152,7 @@ class ControllerCitas extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'paciente') {
-            http_response_code(401);
-            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
-            exit;
-        }
+        $this->requireAuth('paciente', true); // reemplaza chequeo inline duplicado
 
         $body          = json_decode(file_get_contents('php://input'), true);
         $idCita        = (int)($body['id_cita']      ?? 0);

@@ -817,9 +817,10 @@ class ControllerPanel_psicologas extends Controller
         header('Content-Type: application/json; charset=utf-8');
         $this->requirePsicologo(true);
 
-        $body     = json_decode(file_get_contents('php://input'), true);
-        $idCita   = (int)($body['id_cita']  ?? 0);
-        $duracion = (int)($body['duracion'] ?? 0);
+        $body        = json_decode(file_get_contents('php://input'), true);
+        $idCita      = (int)($body['id_cita']  ?? 0);
+        $duracion    = (int)($body['duracion'] ?? 0);
+        $idPsicologo = (int)$_SESSION['user']['id'];  // siempre de sesión, nunca del cliente
 
         // Evitar duraciones irreales
         if ($duracion > 180) $duracion = 180;
@@ -834,9 +835,11 @@ class ControllerPanel_psicologas extends Controller
         $model = new CitaModel();
 
         try {
-            $ok = $model->terminarCita($idCita, $duracion, '');
+            // Se pasa $idPsicologo — cierra IDOR: el WHERE incluye AND id_psicologo = ?
+            // para que este psicólogo no pueda finalizar la sesión de otra colega.
+            $ok = $model->terminarCita($idCita, $duracion, '', $idPsicologo);
             if (!$ok) {
-                // 0 filas afectadas: la cita no estaba en 'en proceso'
+                // 0 filas afectadas: la cita no estaba en 'en proceso' o no pertenece a este psicólogo
                 echo json_encode(['ok' => false, 'error' => 'La cita ya fue finalizada o no estaba activa.']);
                 exit;
             }
@@ -849,19 +852,11 @@ class ControllerPanel_psicologas extends Controller
     }
 
     // ────────────────────────────────────────────────────────────────
-    // Utilidad: verificar sesión de psicóloga
+    // Alias de compatibilidad → delega al guard centralizado en Controller.
+    // Permite migrar los 22 call sites existentes sin tocarlos de golpe.
     // ────────────────────────────────────────────────────────────────
     private function requirePsicologo(bool $jsonResponse = false): void
-
     {
-        if (empty($_SESSION['user']) || ($_SESSION['user']['rol'] ?? '') !== 'psicologo') {
-            if ($jsonResponse) {
-                http_response_code(401);
-                echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
-                exit;
-            }
-            $this->redirect('users/login');
-            exit;
-        }
+        $this->requireAuth('psicologo', $jsonResponse);
     }
 }

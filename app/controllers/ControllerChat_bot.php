@@ -78,12 +78,8 @@ class ControllerChat_bot extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        // Verificar sesión
-        if (empty($_SESSION['user'])) {
-            http_response_code(401);
-            echo json_encode(['ok' => false, 'error' => 'Debes iniciar sesión para agendar una cita.']);
-            exit;
-        }
+        // Cualquier usuario autenticado puede agendar (sin restricción de rol)
+        $this->requireAuth(null, true); // reemplaza chequeo manual de sesión
 
         $body = json_decode(file_get_contents('php://input'), true);
 
@@ -165,17 +161,15 @@ class ControllerChat_bot extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_SESSION['user'])) {
-            http_response_code(401);
-            echo json_encode(['ok' => false, 'error' => 'No autorizado.']);
-            exit;
-        }
+        // Solo psicólogos. requireAuth() devuelve 401 sin sesión, 403 con rol incorrecto.
+        $this->requireAuth('psicologo', true); // migrado desde bloque manual PSYCO-SEC-02
 
         $body = json_decode(file_get_contents('php://input'), true);
 
-        $idCita  = (int)($body['id_cita'] ?? 0);
-        $duracion = (int)($body['duracion_minutos'] ?? 0);
-        $notas   = trim($body['notas_sesion'] ?? '');
+        $idCita      = (int)($body['id_cita']          ?? 0);
+        $duracion    = (int)($body['duracion_minutos']  ?? 0);
+        $notas       = trim($body['notas_sesion']       ?? '');
+        $idPsicologo = (int)$_SESSION['user']['id'];  // siempre de sesión, nunca del cliente
 
         if ($idCita < 1 || $duracion < 1) {
             echo json_encode(['ok' => false, 'error' => 'Datos inválidos.']);
@@ -185,7 +179,9 @@ class ControllerChat_bot extends Controller
         try {
             require_once dirname(__DIR__) . '/models/CitaModel.php';
             $model = new CitaModel();
-            $ok = $model->terminarCita($idCita, $duracion, $notas);
+            // Se pasa $idPsicologo al modelo — el WHERE filtra por id_psicologo,
+            // cerrando IDOR: ningún psicólogo puede cerrar la cita de otro.
+            $ok = $model->terminarCita($idCita, $duracion, $notas, $idPsicologo);
 
             if ($ok) {
                 echo json_encode(['ok' => true, 'mensaje' => 'Cita terminada exitosamente.']);

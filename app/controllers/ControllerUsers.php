@@ -273,16 +273,34 @@ class ControllerUsers extends Controller
         $this->redirect('users/register');
     }
 
-    /** GET /users/list */
+    // ─────────────────────────────────────────────────────────────────────────
+    // Alias de compatibilidad → delega al guard centralizado en Controller.
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Exige rol 'administrador'.
+     * Sin sesión → users/login.  Rol incorrecto → 403 + pages/index.
+     * La lógica real vive en Controller::requireAuth().
+     */
+    private function requireAdmin(): void
+    {
+        $this->requireAuth('administrador'); // delega al guard centralizado
+    }
+
+    /** GET /users/list — solo administradores */
     public function list(): void
     {
+        $this->requireAdmin();
+
         $users = $this->userModel->getAll();
         $this->render('users/list', ['users' => $users]);
     }
 
-    /** GET /users/edit/{id} */
+    /** GET /users/edit?id=X — solo administradores */
     public function edit(): void
     {
+        $this->requireAdmin();
+
         $id   = (int) ($_GET['id'] ?? 0);
         $user = $this->userModel->findById($id);
         $this->render('users/edit', ['user' => $user]);
