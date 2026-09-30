@@ -1,3 +1,26 @@
+<!-- Fondo exclusivo para la página del Calendario -->
+<style>
+    #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+    /* Overlay semitransparente para que las tarjetas se lean bien */
+    #main-content::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.45);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .dark #main-content::before {
+        background: rgba(0, 0, 0, 0.45);
+    }
+</style>
+
 <main class="pt-8 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 relative z-10 w-full">
     <!-- Left Section: Calendar + Carousel + Nuevos Recursos stacked -->
     <section class="lg:col-span-12 xl:col-span-8 flex flex-col gap-6">
