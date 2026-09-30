@@ -70,16 +70,16 @@
             </div>
 
             <!-- Nuevos Recursos Card (Carrusel) -->
-            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-36" id="recursos-carousel-container">
+            <a href="<?= URL_BASE ?>citas/misRecursos" class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-36 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors group cursor-pointer block" id="recursos-carousel-container">
                 <div id="recursos-carousel" class="relative w-full h-full flex items-center justify-center">
                     <div id="recursos-content" class="transition-opacity duration-500 ease-in-out w-full h-full flex items-center gap-4">
                         <div class="w-full text-center flex flex-col justify-center">
-                            <h4 class="font-bold text-blue-600 dark:text-blue-400">Nuevos Recursos</h4>
+                            <h4 class="font-bold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">Nuevos Recursos</h4>
                             <p class="text-body-sm text-slate-500 dark:text-slate-400 mt-2">Aún no tienes recursos asignados.</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${imgHtml}
                     <div class="p-2 ${txtClass} flex flex-col justify-center">
                         <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Nuevos Recursos</div>
-                        <h4 class="font-bold text-blue-600 dark:text-blue-400 text-sm md:text-base line-clamp-2">${r.titulo}</h4>
+                        <h4 class="font-bold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors text-sm md:text-base line-clamp-2">${r.titulo}</h4>
                         ${pDesc}
                     </div>
                 `;

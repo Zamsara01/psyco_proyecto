@@ -31,11 +31,13 @@ class ControllerCalendario extends Controller
 
         // Obtener recursos del usuario (si está logueado)
         $recursosJson = '[]';
-        if (isset($_SESSION['user']['id_usuario'])) {
+        if (isset($_SESSION['user']['id'])) {
             try {
                 require_once dirname(__DIR__) . '/models/RecursoModel.php';
                 $recursoModel = new RecursoModel();
-                $recursosData = $recursoModel->getRecursosByUsuario($_SESSION['user']['id_usuario']);
+                // Si es paciente, obtener sus recursos. Si es psicólogo, no tiene recursos asignados (o podemos mandar los de él)
+                // Para mantenerlo simple, obtenemos recursos para el ID de sesión.
+                $recursosData = $recursoModel->getRecursosByUsuario($_SESSION['user']['id']);
                 $recursosJson = json_encode($recursosData, JSON_UNESCAPED_UNICODE);
             } catch (\Exception $e) {
                 $recursosJson = '[]';
