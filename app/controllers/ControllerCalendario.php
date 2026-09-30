@@ -29,10 +29,24 @@ class ControllerCalendario extends Controller
             $citasJson = '{}';
         }
 
+        // Obtener recursos del usuario (si está logueado)
+        $recursosJson = '[]';
+        if (isset($_SESSION['user']['id_usuario'])) {
+            try {
+                require_once dirname(__DIR__) . '/models/RecursoModel.php';
+                $recursoModel = new RecursoModel();
+                $recursosData = $recursoModel->getRecursosByUsuario($_SESSION['user']['id_usuario']);
+                $recursosJson = json_encode($recursosData, JSON_UNESCAPED_UNICODE);
+            } catch (\Exception $e) {
+                $recursosJson = '[]';
+            }
+        }
+
         $this->layout = 'tailwind';
         $this->render('pages/calendario', [
             'psicologosJson' => $psicologosJson,
-            'citasJson'      => $citasJson
+            'citasJson'      => $citasJson,
+            'recursosJson'   => $recursosJson
         ]);
     }
 }

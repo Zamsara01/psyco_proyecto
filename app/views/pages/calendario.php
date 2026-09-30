@@ -56,7 +56,7 @@
         <!-- Carrusel + Nuevos Recursos side by side (below calendar) -->
         <div class="flex flex-col sm:flex-row gap-4">
             <!-- Carrusel de Consejos (square, funcional) -->
-            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60 aspect-square min-h-[200px] flex flex-col justify-center">
+            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60 h-36 flex flex-col justify-center">
                 <div id="tip-carousel" class="relative h-full">
                     <div id="tip-content" class="transition-opacity duration-500 ease-in-out h-full">
                         <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 text-white overflow-hidden relative group h-full flex items-center justify-center">
@@ -69,12 +69,15 @@
                 </div>
             </div>
 
-            <!-- Nuevos Recursos Card -->
-            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden aspect-square min-h-[200px]">
-                <img class="w-1/3 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ8XE1OmaOO7d76QcGyu-fpngMNPVAWd19YKle1m611F5eOjm0FbfrElMB_lIakjDtGwvu-A3LZZtgjRHkt0pkXT8Z2--LDOyvIWs51OQvNC8rBAy1RPEVbCbE-qVoMSETUa3PM56OyHoX0B4xY9X5wpKvvZVFt-zyw0zPpoUqJ56Rcmp0yL06kfI0KjzSPvOnTW4otkDpUIJPlZNUQ2pTtokTeBmUNLMku5Y1AWrAfM2PeXSSsgKET6MmlBbPAoZ1NNvVktHwdLrY" />
-                <div class="p-4 w-2/3 flex flex-col justify-center">
-                    <h4 class="font-bold text-blue-600 dark:text-blue-400">Nuevos Recursos</h4>
-                    <p class="text-body-sm text-slate-500 dark:text-slate-400">Guía de meditación guiada disponible ahora.</p>
+            <!-- Nuevos Recursos Card (Carrusel) -->
+            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-36" id="recursos-carousel-container">
+                <div id="recursos-carousel" class="relative w-full h-full flex items-center justify-center">
+                    <div id="recursos-content" class="transition-opacity duration-500 ease-in-out w-full h-full flex items-center gap-4">
+                        <div class="w-full text-center flex flex-col justify-center">
+                            <h4 class="font-bold text-blue-600 dark:text-blue-400">Nuevos Recursos</h4>
+                            <p class="text-body-sm text-slate-500 dark:text-slate-400 mt-2">Aún no tienes recursos asignados.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
     const psicologosData = <?= $psicologosJson ?? '[]' ?>;
     const citasData = <?= $citasJson ?? '{}' ?>;
+    const recursosData = <?= $recursosJson ?? '[]' ?>;
     const isPaciente  = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'paciente')  ? 'true' : 'false' ?>;
     const isPsicologo = <?= (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'psicologo') ? 'true' : 'false' ?>;
     const canSchedule = isPaciente || isPsicologo;
@@ -835,6 +839,71 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = false;
         btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">person_check</span> Registrar Paciente';
     }
+
+    // ─── Lógica para el carrusel de Recursos ─────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('recursos-carousel-container');
+        const content = document.getElementById('recursos-content');
+        if (!container || !content || typeof recursosData === 'undefined' || recursosData.length === 0) return;
+        
+        function getYouTubeThumbnail(url) {
+            if (!url) return null;
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[7].length == 11) ? `https://img.youtube.com/vi/${match[7]}/hqdefault.jpg` : null;
+        }
+
+        let recIndex = 0;
+
+        function showRecurso(index) {
+            const r = recursosData[index];
+            if (!r) return;
+
+            content.style.opacity = '0';
+            
+            setTimeout(() => {
+                let imgHtml = '';
+                if (r.tipo === 'video' && r.url_video) {
+                    const thumb = getYouTubeThumbnail(r.url_video) || 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop';
+                    imgHtml = `<img class="w-1/3 object-cover rounded-lg h-full" src="${thumb}" alt="Video" />`;
+                } else if (r.imagen_ruta) {
+                    const baseUrl = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
+                    imgHtml = `<img class="w-1/3 object-cover rounded-lg h-full" src="${baseUrl + r.imagen_ruta}" alt="Recurso" />`;
+                }
+
+                const txtClass = imgHtml ? 'w-2/3' : 'w-full text-center';
+                const pDesc = r.descripcion ? `<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-3">${r.descripcion}</p>` : '';
+
+                content.innerHTML = `
+                    ${imgHtml}
+                    <div class="p-2 ${txtClass} flex flex-col justify-center">
+                        <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Nuevos Recursos</div>
+                        <h4 class="font-bold text-blue-600 dark:text-blue-400 text-sm md:text-base line-clamp-2">${r.titulo}</h4>
+                        ${pDesc}
+                    </div>
+                `;
+                content.style.opacity = '1';
+            }, 300);
+        }
+
+        if (recursosData.length > 0) {
+            showRecurso(0);
+            if (recursosData.length > 1) {
+                let recInterval = setInterval(() => {
+                    recIndex = (recIndex + 1) % recursosData.length;
+                    showRecurso(recIndex);
+                }, 8000);
+
+                container.addEventListener('mouseenter', () => clearInterval(recInterval));
+                container.addEventListener('mouseleave', () => {
+                    recInterval = setInterval(() => {
+                        recIndex = (recIndex + 1) % recursosData.length;
+                        showRecurso(recIndex);
+                    }, 8000);
+                });
+            }
+        }
+    });
 </script>
 
 <!-- ══════════ MODAL AGENDAR CITA (CALENDARIO) ══════════ -->

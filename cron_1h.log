@@ -2197,3 +2197,1641 @@ Stack trace:
 #2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
 #3 {main}
   thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php:30
+Stack trace:
+#0 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php(30): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Model.php(13): Database::getInstance()
+#2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
+#3 {main}
+  thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
