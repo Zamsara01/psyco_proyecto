@@ -14,24 +14,22 @@ $inicial = $nombre ? strtoupper(mb_substr($nombre, 0, 1)) : '?';
 // URL actual para resaltar ítem activo
 $urlActual = $_GET['url'] ?? '';
 $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
-    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 font-semibold'
-    : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60 font-medium';
+    ? 'text-[#3a6a8a] bg-[#dce8f0] font-semibold'
+    : 'text-slate-600 hover:text-[#4a6e8a] hover:bg-[#F4F7F6]/80 font-medium';
 ?>
 
-<aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/80 dark:bg-slate-900/95 backdrop-blur-md border-r border-white/50 dark:border-slate-700/50 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+<aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
 
     <!-- ── Logo ─────────────────────────────────────────────── -->
-    <div class="h-20 flex items-center justify-center px-4 border-b border-slate-100 dark:border-slate-700/60 shrink-0 relative">
-        <a href="<?= URL_BASE ?>" class="flex items-center justify-center gap-3 min-w-0">
-            <img alt="PSYCO Logo" class="h-11 w-auto object-contain shrink-0" src="<?= URL_BASE ?>public/img/psyco.png"/>
-            <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent hover:opacity-90 transition-opacity truncate">PSYCO</span>
+    <div class="py-8 flex items-center justify-center border-b border-slate-100 dark:border-slate-700/60 shrink-0 relative">
+        <a href="<?= URL_BASE ?>" class="flex items-center justify-center w-full">
+            <img alt="PSYCO Logo" class="w-44 h-auto object-contain drop-shadow-sm" src="<?= URL_BASE ?>public/img/psyco.png"/>
         </a>
         <!-- Botón cerrar sidebar (solo móvil) -->
         <button onclick="closeSidebar()" aria-label="Cerrar menú"
-            class="lg:hidden absolute right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-500 dark:hover:text-slate-300 transition-colors shrink-0">
+            class="lg:hidden absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-500 dark:hover:text-slate-300 transition-colors shrink-0">
             <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
-
     </div>
 
     <!-- ── Navegación ───────────────────────────────────────── -->
@@ -49,7 +47,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Presentación -->
             <a href="<?= URL_BASE ?>pages/presentacion"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">folder_special</span>
                 Presentación
             </a>
@@ -101,7 +99,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Chatbot -->
             <button onclick="openChatbotModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
                 Chatbot
             </button>
@@ -109,7 +107,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
             <!-- Mis Recursos (Dropdown) -->
             <div x-data="{ open: false }" class="relative" id="misRecursosDropdown">
                 <button onclick="toggleMisRecursos()"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md w-full text-left text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 group"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md w-full text-left text-slate-600 hover:text-[#4a6e8a] hover:bg-[#F4F7F6] group"
                     aria-expanded="false" id="misRecursosBtn">
                     <span class="material-symbols-outlined text-[22px] shrink-0">folder_open</span>
                     <span class="flex-1">Citas y Recursos</span>
@@ -119,12 +117,12 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 <!-- Submenú -->
                 <div id="misRecursosMenu" class="hidden pl-4 space-y-0.5 mt-0.5">
                     <a href="<?= URL_BASE ?>citas/misCitas"
-                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misCitas') ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60' ?>">
+                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misCitas') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60' ?>">
                         <span class="material-symbols-outlined text-[18px] shrink-0">event_note</span>
                         Mis Citas
                     </a>
                     <a href="<?= URL_BASE ?>citas/misRecursos"
-                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misRecursos') ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60' ?>">
+                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misRecursos') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60' ?>">
                         <span class="material-symbols-outlined text-[18px] shrink-0">library_books</span>
                         Recursos
                     </a>
@@ -152,7 +150,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Chatbot -->
             <button onclick="openChatbotModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
                 Chatbot
             </button>
@@ -173,21 +171,21 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Búsquedas Específicas -->
             <button onclick="openBusquedaModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">manage_search</span>
                 Búsquedas Específicas
             </button>
 
             <!-- Reuniones -->
             <button onclick="openReunionesModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">groups</span>
                 Reuniones
             </button>
 
             <!-- Historial Clínico -->
             <button onclick="openHistorialModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
                 <span class="material-symbols-outlined text-[22px] shrink-0">history_edu</span>
                 Historial Clínico
             </button>
@@ -195,18 +193,6 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
         <?php endif; ?>
         </div>
 
-        <!-- Relleno funcional inferior -->
-        <div class="mt-auto pt-8 pb-2 px-1 hidden sm:block">
-            <div class="bg-gradient-to-b from-emerald-50/40 dark:from-emerald-900/20 to-teal-50/60 dark:to-slate-800/40 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-900/30 text-center relative overflow-hidden">
-                <div class="absolute -top-4 -right-4 w-12 h-12 bg-emerald-100/50 dark:bg-emerald-900/30 rounded-full blur-xl opacity-50"></div>
-                <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-blue-100/50 dark:bg-blue-900/30 rounded-full blur-xl opacity-50"></div>
-                <div class="relative z-10 flex flex-col items-center">
-                    <span class="material-symbols-outlined text-emerald-500 dark:text-emerald-400 text-[32px] mb-2 drop-shadow-sm">spa</span>
-                    <p class="text-xs text-emerald-800 dark:text-emerald-300 font-semibold mb-1">Un espacio para ti</p>
-                    <p class="text-[10px] text-emerald-600/90 dark:text-emerald-400/80 leading-tight">Estamos aquí para escucharte y acompañarte.</p>
-                </div>
-            </div>
-        </div>
     </nav>
 
     <!-- ── Footer de Usuario ─────────────────────────────────── -->
@@ -234,7 +220,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </button>
                 <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                     aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
                     <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                 </button>
             </div>
@@ -257,17 +243,17 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                     </button>
                     <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                         aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
                         <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                     </button>
                 </div>
                 <button onclick="openLoginModal()"
-                    class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all active:scale-[0.98] shadow-sm shadow-blue-100">
+                    class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-white bg-[#6B8CAE] hover:bg-[#5a7e9f] rounded-xl transition-all active:scale-[0.98] shadow-sm shadow-slate-200">
                     <span class="material-symbols-outlined text-[18px]">login</span>
                     Iniciar sesión
                 </button>
                 <button onclick="openRegisterModal()"
-                    class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-800 border-2 border-blue-200 dark:border-slate-600 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-xl transition-all active:scale-[0.98]">
+                    class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-[#4a6e8a] bg-white border-2 border-[#b5cfe0] hover:bg-[#F4F7F6] rounded-xl transition-all active:scale-[0.98]">
                     <span class="material-symbols-outlined text-[18px]">person_add</span>
                     Registrarse
                 </button>
@@ -284,7 +270,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
         <!-- Header -->
         <div class="flex items-center gap-4 p-6 border-b border-slate-100 dark:border-slate-700">
-            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#4a6e8a] dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined">manage_search</span>
             </div>
             <div class="flex-1">
@@ -369,7 +355,7 @@ function doBusqueda(q) {
 function renderBusquedaResultados(pacientes) {
     const el = document.getElementById('busquedaResultados');
     el.innerHTML = pacientes.map(p => `
-        <div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-700/50 border-2 border-slate-100 dark:border-slate-700 rounded-2xl hover:border-blue-200 dark:hover:border-blue-700 hover:bg-blue-50/20 dark:hover:bg-slate-700 transition-all cursor-pointer group"
+        <div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-700/50 border-2 border-slate-100 dark:border-slate-700 rounded-2xl hover:border-blue-200 dark:hover:border-blue-700 hover:bg-[#F4F7F6]/20 dark:hover:bg-slate-700 transition-all cursor-pointer group"
              onclick="verHistorial(${p.id_usuario}, '${escBusqueda(p.nombre)}')">
             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
                 ${escBusqueda(p.nombre.charAt(0).toUpperCase())}
@@ -379,7 +365,7 @@ function renderBusquedaResultados(pacientes) {
                 <p class="text-xs text-slate-500 dark:text-slate-400 truncate">${escBusqueda(p.correo_electronico)} · Grado ${escBusqueda(p.grado || '?')}</p>
             </div>
             <div class="text-right shrink-0">
-                <p class="text-xs font-bold text-blue-600 dark:text-blue-400">${p.total_citas} cita${p.total_citas != 1 ? 's' : ''}</p>
+                <p class="text-xs font-bold text-[#4a6e8a] dark:text-blue-400">${p.total_citas} cita${p.total_citas != 1 ? 's' : ''}</p>
                 <p class="text-[10px] text-slate-400 dark:text-slate-500">${p.ultima_cita || ''}</p>
             </div>
             <span class="material-symbols-outlined text-slate-300 dark:text-slate-500 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">chevron_right</span>
@@ -561,7 +547,7 @@ function actualizarVistaReunion() {
 
     let html = `
         <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mb-4 mx-auto">
-            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-3xl">person</span>
+            <span class="material-symbols-outlined text-[#4a6e8a] dark:text-blue-400 text-3xl">person</span>
         </div>
         <h4 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1">${escReunion(cita.paciente_nombre)}</h4>
         <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">
@@ -578,7 +564,7 @@ function actualizarVistaReunion() {
             html += `
                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-xl p-5 w-full text-center">
                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">La cita inicia en:</p>
-                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
+                    <p class="text-3xl font-bold text-[#4a6e8a] dark:text-blue-400 tabular-nums">
                         ${mRest}m ${String(sRest).padStart(2,'0')}s
                     </p>
                 </div>
@@ -770,7 +756,7 @@ async function cargarPacientesHistorial() {
             html += `
                 <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 rounded-xl hover:border-blue-200 dark:hover:border-blue-900/50 transition-colors">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center font-bold text-sm">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 text-[#4a6e8a] dark:text-blue-400 rounded-full flex items-center justify-center font-bold text-sm">
                             ${escReunion(p.paciente_nombre).charAt(0).toUpperCase()}
                         </div>
                         <p class="font-semibold text-slate-700 dark:text-slate-200 text-sm">${escReunion(p.paciente_nombre)}</p>

@@ -3,19 +3,32 @@
     /* Variables de Paletas (Con mayor saturación/tonalidad) */
     :root {
         /* Paleta 1: Salvia y Pizarra */
-        --cal-btn-main: #5C81A1; /* Más azul/fuerte que 6B8CAE */
-        --cal-btn-hover: #4A6E8C;
-        --cal-sec-el: #6F8E80;
+        /* === Colores sincronizados con miscitas.php === */
+
+        /* Botones principales → azul pizarra de miscitas */
+        --cal-btn-main: #6B8CAE;
+        --cal-btn-hover: #5a7e9f;
+
+        /* Elementos secundarios → verde salvia (tab activo de miscitas) */
+        --cal-sec-el: #8DA399;
+
+        /* Fondo general */
         --cal-bg-gen: #F4F7F6;
 
-        /* Paleta 2: Agua y Arcilla */
-        --cal-accent: #518589; /* Más saturado */
-        --cal-card-bg: #9FB9CE; /* Menos gris, más azul */
-        --cal-icon: #D68B61; /* Más vibrante */
+        /* Acento → tono btn-editar de miscitas */
+        --cal-accent: #4a6e8a;
 
-        /* Paleta 3: Bosque de Niebla */
-        --cal-active: #849E7C; /* Verde más vivo */
-        --cal-prog-bg: #C1D4C9;
+        /* Fondo de tarjetas → tono badge-pendiente de miscitas */
+        --cal-card-bg: #dce8f0;
+
+        /* Íconos → naranja cálido del avatar de miscitas */
+        --cal-icon: #E8824A;
+
+        /* Días activos/libres → verde salvia (tab active de miscitas) */
+        --cal-active: #8DA399;
+
+        /* Fondo progreso/tarjetas → tono badge-completada de miscitas */
+        --cal-prog-bg: #d8e8e2;
     }
 
     /* Fondo general */
@@ -32,8 +45,8 @@
         content: '';
         position: fixed;
         inset: 0;
-        background: var(--cal-bg-gen) !important;
-        opacity: 0.5 !important; /* Reducido para que no se vea tan opaco */
+        background: rgba(244, 247, 246, 0.55) !important;
+        opacity: 1 !important;
         pointer-events: none;
         z-index: 0;
     }
@@ -58,7 +71,7 @@
     #prev-month-btn, #next-month-btn,
     aside button {
         background-color: var(--cal-btn-main) !important;
-        border: 2px solid #000000 !important;
+        border: 2px solid #3a6a8a !important;
         box-shadow: 0px 2px 4px rgba(0,0,0,0.2) !important;
     }
     #prev-month-btn:hover, #next-month-btn:hover,
@@ -76,7 +89,7 @@
     .day-btn, .calendar-grid > div {
         background-color: var(--cal-prog-bg) !important;
         border-color: var(--cal-sec-el) !important;
-        opacity: 1 !important; /* Quitar opacidad a días pasados */
+        opacity: 1 !important;
     }
     .day-btn:hover {
         background-color: var(--cal-active) !important;
@@ -85,19 +98,19 @@
     /* Calendario: Día Seleccionado */
     .selected-day {
         background-color: var(--cal-active) !important;
-        border: 2px solid #000000 !important;
+        border: 2px solid #3a6a8a !important;
         transform: scale(1.05);
     }
     
     /* FONDOS de disponibilidad en las celdas enteras */
-    .day-btn.bg-green-500 { background-color: var(--cal-active) !important; border: 1px solid #334045 !important; }
-    .day-btn.bg-yellow-500 { background-color: var(--cal-icon) !important; border: 1px solid #334045 !important; }
-    .day-btn.bg-red-500 { background-color: var(--cal-btn-main) !important; border: 1px solid #334045 !important; }
+    .day-btn.bg-green-500 { background-color: var(--cal-active) !important; border: 1px solid #8DA399 !important; }
+    .day-btn.bg-yellow-500 { background-color: var(--cal-icon) !important; border: 1px solid #8DA399 !important; }
+    .day-btn.bg-red-500 { background-color: var(--cal-btn-main) !important; border: 1px solid #8DA399 !important; }
     
     /* Puntos de disponibilidad en la Leyenda (volverlos cuadraditos tipo tarjeta) */
-    .mt-8 .bg-green-500 { background-color: var(--cal-active) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #334045 !important;}
-    .mt-8 .bg-yellow-500 { background-color: var(--cal-icon) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #334045 !important;}
-    .mt-8 .bg-red-500 { background-color: var(--cal-btn-main) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #334045 !important;}
+    .mt-8 .bg-green-500 { background-color: var(--cal-active) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
+    .mt-8 .bg-yellow-500 { background-color: var(--cal-icon) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
+    .mt-8 .bg-red-500 { background-color: var(--cal-btn-main) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
 
 
     /* Carrusel de Consejos y Recursos */
@@ -185,26 +198,25 @@
         <!-- Carrusel + Nuevos Recursos side by side (below calendar) -->
         <div class="flex flex-col sm:flex-row gap-4">
             <!-- Carrusel de Consejos (square, funcional) -->
-            <div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60 h-36 flex flex-col justify-center">
+            <div class="flex-1 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-700/60 h-40 flex flex-col justify-center" style="background-color: var(--cal-card-bg);">
                 <div id="tip-carousel" class="relative h-full">
                     <div id="tip-content" class="transition-opacity duration-500 ease-in-out h-full">
-                        <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 text-white overflow-hidden relative group h-full flex items-center justify-center">
+                        <div class="rounded-xl p-4 overflow-hidden relative group h-full flex items-center justify-center" style="background-color: var(--cal-prog-bg); border: 1px solid var(--cal-sec-el);">
                             <div class="relative z-10 w-full">
-                                <p id="tip-text" class="text-body-sm opacity-90 leading-relaxed font-medium text-center">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
+                                <p id="tip-text" class="text-[15px] opacity-100 leading-relaxed font-medium text-center" style="color: #000000;">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
                             </div>
-                            <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl">psychology</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Nuevos Recursos Card (Carrusel) -->
-            <a href="<?= URL_BASE ?>citas/misRecursos" class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-36 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors group cursor-pointer block" id="recursos-carousel-container">
+            <a href="<?= URL_BASE ?>citas/misRecursos" class="flex-1 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-40 hover:opacity-90 transition-colors group cursor-pointer block" style="background-color: var(--cal-card-bg);" id="recursos-carousel-container">
                 <div id="recursos-carousel" class="relative w-full h-full flex items-center justify-center">
                     <div id="recursos-content" class="transition-opacity duration-500 ease-in-out w-full h-full flex items-center gap-4">
-                        <div class="w-full text-center flex flex-col justify-center">
-                            <h4 class="font-bold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">Nuevos Recursos</h4>
-                            <p class="text-body-sm text-slate-500 dark:text-slate-400 mt-2">Aún no tienes recursos asignados.</p>
+                        <div class="w-full text-center flex flex-col justify-center px-4">
+                            <h4 class="font-bold text-xs uppercase tracking-wider mb-2" style="color: #000000;">Nuevos Recursos</h4>
+                            <p class="text-[14px] leading-tight" style="color: #000000;">Aún no tienes recursos asignados.</p>
                         </div>
                     </div>
                 </div>
