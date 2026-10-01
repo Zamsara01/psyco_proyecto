@@ -31,6 +31,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
             class="lg:hidden absolute right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-500 dark:hover:text-slate-300 transition-colors shrink-0">
             <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
+
     </div>
 
     <!-- ── Navegación ───────────────────────────────────────── -->
@@ -224,12 +225,19 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </div>
             </div>
 
-            <!-- Toggle dark mode -->
-            <button onclick="toggleDarkMode()"
-                class="flex items-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors mb-2">
-                <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
-                <span id="darkModeLabel">Modo oscuro</span>
-            </button>
+            <!-- Toggle dark mode + Toggle layout (en fila) -->
+            <div class="flex items-center gap-2 mb-2">
+                <button onclick="toggleDarkMode()"
+                    class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                    <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
+                    <span id="darkModeLabel">Modo oscuro</span>
+                </button>
+                <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
+                    aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
+                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                    <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
+                </button>
+            </div>
 
             <a href="<?= URL_BASE ?>users/logout"
                class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-colors border border-slate-200 dark:border-slate-700">
@@ -240,12 +248,19 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
         <?php else: ?>
             <!-- Invitado -->
             <div class="space-y-2">
-                <!-- Toggle dark mode -->
-                <button onclick="toggleDarkMode()"
-                    class="flex items-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-                    <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
-                    <span id="darkModeLabel">Modo oscuro</span>
-                </button>
+                <!-- Toggle dark mode + Toggle layout (en fila) -->
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleDarkMode()"
+                        class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
+                        <span id="darkModeLabel">Modo oscuro</span>
+                    </button>
+                    <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
+                        aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
+                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                        <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
+                    </button>
+                </div>
                 <button onclick="openLoginModal()"
                     class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all active:scale-[0.98] shadow-sm shadow-blue-100">
                     <span class="material-symbols-outlined text-[18px]">login</span>
@@ -779,3 +794,159 @@ async function cargarPacientesHistorial() {
 <?php endif; ?>
 
 
+
+
+<!-- ══════════════ SCRIPT Y ESTILOS PARA NAVBAR MODE ══════════════ -->
+<style>
+/* ---------- NAVBAR MODE STYLES ---------- */
+body.navbar-mode {
+    flex-direction: column !important;
+}
+
+/* El sidebar se convierte en una barra horizontal fija arriba */
+body.navbar-mode #app-sidebar {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100vw !important;
+    height: 60px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    inset-block: unset !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(148,163,184,0.25) !important;
+    padding: 0 1.25rem !important;
+    gap: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+}
+
+/* Cabecera (logo) — ancho fijo, sin borde inferior */
+body.navbar-mode #app-sidebar > div:first-child {
+    border-bottom: none !important;
+    height: 60px !important;
+    min-width: max-content !important;
+    padding: 0 1rem 0 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* Botón toggle en navbar-mode: se ubica justo a la derecha del logo */
+body.navbar-mode #layoutToggleBtn {
+    position: static !important;
+    order: 2 !important;
+    margin-right: 1rem !important;
+}
+
+/* Nav — ocupa el espacio central y pone items en fila */
+body.navbar-mode #app-sidebar nav {
+    flex: 1 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: 60px !important;
+    min-width: 0 !important;
+}
+body.navbar-mode #app-sidebar nav > div.space-y-1 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.125rem !important;
+    height: 60px !important;
+    flex-wrap: nowrap !important;
+}
+body.navbar-mode #app-sidebar nav > div.space-y-1 > a,
+body.navbar-mode #app-sidebar nav > div.space-y-1 > button,
+body.navbar-mode #app-sidebar nav > div.space-y-1 > div {
+    width: auto !important;
+    height: 38px !important;
+    padding: 0 0.75rem !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    border-radius: 0.5rem !important;
+}
+
+/* Dropdown en navbar */
+body.navbar-mode #misRecursosDropdown { position: relative !important; }
+body.navbar-mode #misRecursosMenu {
+    position: absolute !important;
+    top: calc(100% + 4px) !important;
+    left: 0 !important;
+    background: white !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    min-width: 180px !important;
+    padding: 0.4rem !important;
+    z-index: 999 !important;
+}
+.dark body.navbar-mode #misRecursosMenu { background: #1e293b !important; }
+body.navbar-mode #misRecursosMenu a {
+    width: 100% !important;
+    margin: 0 !important;
+    height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Ocultar bloque decorativo inferior */
+body.navbar-mode #app-sidebar nav > div.mt-auto { display: none !important; }
+
+/* Footer (info de usuario) — al final a la derecha */
+body.navbar-mode #app-sidebar > div:last-child {
+    border-top: none !important;
+    padding: 0 !important;
+    margin-left: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-shrink: 0 !important;
+    height: 60px !important;
+}
+body.navbar-mode #app-sidebar > div:last-child > div.flex.items-center.gap-3 { display: none !important; } /* Ocultar bloque nombre/avatar */
+body.navbar-mode #app-sidebar > div:last-child button,
+body.navbar-mode #app-sidebar > div:last-child a {
+    margin: 0 !important;
+    width: auto !important;
+    padding: 0.4rem 0.75rem !important;
+    white-space: nowrap !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.8rem !important;
+}
+body.navbar-mode #app-sidebar > div:last-child .space-y-2 {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.4rem !important;
+}
+body.navbar-mode #app-sidebar > div:last-child .space-y-2 > * { margin: 0 !important; }
+
+/* Contenido principal: quitar margen izquierdo y agregar padding-top */
+body.navbar-mode #main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-top: 60px !important;
+}
+</style>
+
+<script>
+function toggleLayoutMode() {
+    const isNavbar = document.body.classList.contains('navbar-mode');
+    if (isNavbar) {
+        document.body.classList.remove('navbar-mode');
+        localStorage.setItem('psyco-layout', 'sidebar');
+        document.getElementById('layoutToggleIcon').textContent = 'dock_to_bottom';
+    } else {
+        document.body.classList.add('navbar-mode');
+        localStorage.setItem('psyco-layout', 'navbar');
+        document.getElementById('layoutToggleIcon').textContent = 'dock_to_left';
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('psyco-layout') === 'navbar') {
+        document.body.classList.add('navbar-mode');
+        const icon = document.getElementById('layoutToggleIcon');
+        if(icon) icon.textContent = 'dock_to_left';
+    }
+});
+</script>
