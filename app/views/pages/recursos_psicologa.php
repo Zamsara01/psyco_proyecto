@@ -10,11 +10,55 @@ function ytEmbed(string $url): string {
     return $url;
 }
 $tipoIcono = ['video' => 'play_circle', 'mensaje' => 'chat_bubble', 'imagen' => 'image'];
-$tipoColor = ['video' => 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400', 'mensaje' => 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400', 'imagen' => 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'];
+$tipoColor = ['video' => 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400', 'mensaje' => 'bg-[#8DA399]/20 text-[#4a6e66]', 'imagen' => 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'];
 $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
 ?>
 
-<div class="p-6 md:p-8 max-w-6xl mx-auto w-full">
+<style>
+    #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-attachment: fixed !important;
+    }
+    #main-content::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(244, 247, 246, 0.55);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+    
+    .glass-card {
+        background: rgba(255,255,255,0.88) !important;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.6) !important;
+        border-radius: 1rem !important;
+    }
+    .dark .glass-card {
+        background: rgba(30,41,59,0.88) !important;
+        border-color: rgba(255,255,255,0.1) !important;
+    }
+    
+    .primary-blue { color: #6B8CAE; }
+    .bg-primary-blue { background-color: #6B8CAE; }
+    .border-primary-blue { border-color: #6B8CAE; }
+    .hover-bg-primary-blue:hover { background-color: #5a7e9f; }
+    
+    .sage-green { color: #8DA399; }
+    .bg-sage-green { background-color: #8DA399; }
+    .border-sage-green { border-color: #8DA399; }
+    
+    .avatar-orange {
+        background: linear-gradient(135deg, #E8824A, #D96B30) !important;
+        box-shadow: 0 2px 8px rgba(232,130,74,0.35) !important;
+        color: white !important;
+    }
+</style>
+
+<div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full">
 
     <!-- Encabezado -->
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -31,10 +75,10 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
 
         <!-- ══ PANEL PUBLICAR (izquierda) ══ -->
         <div class="xl:col-span-2">
-            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 sticky top-6">
+            <div class="glass-card p-6 sticky top-6">
                 <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 bg-orange-100 dark:bg-orange-900/30 rounded-2xl">
-                        <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">add_circle</span>
+                    <div class="p-2.5 avatar-orange rounded-2xl">
+                        <span class="material-symbols-outlined text-white">add_circle</span>
                     </div>
                     <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Publicar Recurso</h2>
                 </div>
@@ -49,7 +93,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                             Video
                         </button>
                         <button type="button" onclick="seleccionarTipo('mensaje')" id="btn-tipo-mensaje"
-                            class="tipo-btn flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-purple-200 hover:bg-purple-50 hover:text-purple-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-400">
+                            class="tipo-btn flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-[#8DA399] hover:bg-[#8DA399]/10 hover:text-[#4a6e66] dark:border-slate-700 dark:text-slate-400 dark:hover:border-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-400">
                             <span class="material-symbols-outlined text-[22px]">chat_bubble</span>
                             Mensaje
                         </button>
@@ -66,13 +110,13 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                 <div class="mb-4">
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Título *</label>
                     <input type="text" id="recursoTitulo" placeholder="Ej: Técnica de respiración 4-7-8"
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
                 </div>
 
                 <div id="campoVideo" class="mb-4">
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">URL del Video *</label>
                     <input type="url" id="recursoUrl" placeholder="https://youtube.com/watch?v=..."
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
                     <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">YouTube (con previsualización) y otros reproductores</p>
 
                     <!-- Previsualización oEmbed -->
@@ -97,7 +141,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                 <div class="mb-4">
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5" id="labelDescripcion">Descripción</label>
                     <textarea id="recursoDescripcion" rows="3" placeholder="Texto adicional o mensaje para el paciente..."
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-orange-400 transition-colors resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"></textarea>
+                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"></textarea>
                 </div>
 
                 <!-- Destino -->
@@ -105,12 +149,12 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Destino</label>
                     <div class="flex gap-2">
                         <button type="button" onclick="seleccionarDestino('todos')" id="btn-dest-todos"
-                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a] dark:border-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
                             <span class="material-symbols-outlined text-[16px]">groups</span>
                             Todos mis pacientes
                         </button>
                         <button type="button" onclick="seleccionarDestino('especifico')" id="btn-dest-especifico"
-                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-indigo-200 hover:bg-indigo-50/50 dark:border-slate-700 dark:text-slate-400 dark:hover:border-indigo-700 dark:hover:bg-indigo-900/30">
+                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50 dark:border-slate-700 dark:text-slate-400 dark:hover:border-indigo-700 dark:hover:bg-indigo-900/30">
                             <span class="material-symbols-outlined text-[16px]">person</span>
                             Paciente específico
                         </button>
@@ -128,13 +172,13 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 text-[18px]">search</span>
                             <input type="text" id="buscarPacienteRec" placeholder="Buscar por nombre o correo..."
                                 oninput="filtrarYMostrarPacientes()"
-                                class="w-full pl-9 pr-4 py-2 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl text-xs focus:outline-none focus:border-orange-400 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                                class="w-full pl-9 pr-4 py-2 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
                         </div>
                         
                         <div class="grid grid-cols-2 gap-2">
                             <!-- Filtro de Trastorno -->
                             <select id="filtroTrastorno" onchange="filtrarYMostrarPacientes()"
-                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-orange-400 transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
+                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
                                 <option value="">Todos los trastornos</option>
                                 <option value="Ansiedad">Ansiedad</option>
                                 <option value="Depresión">Depresión</option>
@@ -149,7 +193,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                             
                             <!-- Ordenación -->
                             <select id="ordenarPacientes" onchange="filtrarYMostrarPacientes()"
-                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-orange-400 transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
+                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
                                 <option value="AZ">Nombre (A-Z)</option>
                                 <option value="ZA">Nombre (Z-A)</option>
                             </select>
@@ -181,7 +225,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                 </div>
 
                 <button onclick="publicarRecurso()" id="btnPublicar"
-                    class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-200 dark:shadow-orange-900/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
+                    class="w-full py-3 bg-[#6B8CAE] text-white font-bold rounded-xl hover:bg-[#5a7e9f] shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
                     <span class="material-symbols-outlined text-[20px]">publish</span>
                     Publicar
                 </button>
@@ -192,7 +236,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
         <div class="xl:col-span-3">
             <div id="listaRecursosContainer">
                 <?php if (empty($recursos)): ?>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-3xl p-12 text-center border-2 border-dashed border-slate-200 dark:border-slate-700">
+                <div class="glass-card p-12 text-center border-2 border-dashed">
                     <span class="material-symbols-outlined text-[56px] text-slate-300 dark:text-slate-600 block mb-3">folder_open</span>
                     <p class="text-slate-500 dark:text-slate-400 font-semibold">Aún no has publicado recursos</p>
                     <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Usa el panel de la izquierda para crear el primero</p>
@@ -206,7 +250,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                         $label = $tipoLabel[$tipo] ?? 'Recurso';
                         $destLabel = $r['id_usuario'] ? 'Para: '.htmlspecialchars($r['paciente_nombre'] ?? 'Paciente') : 'Todos los pacientes';
                     ?>
-<div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-slate-200 dark:hover:border-slate-600 transition-all p-5 flex gap-4 group"
+<div class="glass-card transition-all p-5 flex gap-4 group hover:shadow-md"
                              id="rec-<?= $r['id_recurso'] ?>">
                         <div class="w-11 h-11 rounded-2xl <?= $color ?> flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-[22px]"><?= $ico ?></span>
@@ -216,7 +260,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                                 <div class="min-w-0">
                                     <p class="font-bold text-slate-800 dark:text-slate-100 truncate"><?= htmlspecialchars($r['titulo']) ?></p>
                                     <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5"><?= $label ?> · <?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
-                                    <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full <?= $r['id_usuario'] ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400' ?>">
+                                    <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full <?= $r['id_usuario'] ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-indigo-100 text-[#3a6a8a] dark:bg-indigo-900/30 dark:text-indigo-400' ?>">
                                         <span class="material-symbols-outlined text-[12px]"><?= $r['id_usuario'] ? 'person' : 'groups' ?></span>
                                         <?= htmlspecialchars($destLabel) ?>
                                     </span>
@@ -273,7 +317,7 @@ const DISORDER_BADGES = {
     'Estrés': 'bg-amber-50 text-amber-600 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800',
     'Autoestima': 'bg-pink-50 text-pink-600 border border-pink-200 dark:bg-pink-900/30 dark:text-pink-400 dark:border-pink-800',
     'Duelo': 'bg-purple-50 text-purple-600 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800',
-    'Académico / Concentración': 'bg-indigo-50 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-400 dark:border-indigo-800',
+    'Académico / Concentración': 'bg-[#6B8CAE]/10 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-400 dark:border-indigo-800',
     'Adaptación / Conducta': 'bg-teal-50 text-teal-600 border border-teal-200 dark:bg-teal-900/30 dark:text-teal-400 dark:border-teal-800',
     'Otros': 'bg-gray-50 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700',
     'Sin especificar': 'bg-slate-50 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
@@ -356,7 +400,7 @@ function limpiarSeleccionPacientes() {
 // ── Tipo selector ──────────────────────────────────────────────────
 const tipoStyles = {
     video:   'border-red-300 bg-red-50 text-red-700',
-    mensaje: 'border-purple-300 bg-purple-50 text-purple-700',
+    mensaje: 'border-[#8DA399] bg-[#8DA399]/10 text-[#4a6e66]',
     imagen:  'border-emerald-300 bg-emerald-50 text-emerald-700',
 };
 const tipoInactivo = 'border-slate-200 text-slate-500';
@@ -380,9 +424,9 @@ function seleccionarDestino(dest) {
     document.getElementById('recursoDestino').value = dest;
     const esTodos = dest === 'todos';
     document.getElementById('btn-dest-todos').className = 'dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all '
-        + (esTodos ? 'border-indigo-300 bg-indigo-50 text-indigo-700' : 'border-slate-200 text-slate-500 hover:border-indigo-200 hover:bg-indigo-50/50');
+        + (esTodos ? 'border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a]' : 'border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50');
     document.getElementById('btn-dest-especifico').className = 'dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all '
-        + (!esTodos ? 'border-indigo-300 bg-indigo-50 text-indigo-700' : 'border-slate-200 text-slate-500 hover:border-indigo-200 hover:bg-indigo-50/50');
+        + (!esTodos ? 'border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a]' : 'border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50');
     document.getElementById('selectorPaciente').classList.toggle('hidden', esTodos);
 }
 

@@ -20,3 +20,4 @@ Stack trace:
 #3 {main}
   thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
 2026-10-01 01:00:01 - No hay citas para mañana.
+2026-10-02 01:00:01 - No hay citas para mañana.

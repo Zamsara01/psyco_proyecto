@@ -1,6 +1,28 @@
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+.glass-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+</style>
 <!-- Background Content (Chat Interface Preview) -->
-<main class="flex-1 relative flex flex-col p-container-margin z-0">
-    <div class="absolute inset-0 bg-pattern"></div>
+<main class="flex-1 relative flex flex-col p-container-margin z-10 relative">
+    
     <div class="max-w-2xl mx-auto w-full mt-10 space-y-6 opacity-40 select-none">
         <!-- Bot Message -->
         <div class="flex gap-4">

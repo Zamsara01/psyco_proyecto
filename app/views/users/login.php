@@ -1,3 +1,26 @@
+
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+.glass-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+</style>
 <!-- Login Card Container -->
 <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 w-full">
     <!-- Background Decorative Elements -->
@@ -108,7 +131,7 @@
                 <a class="font-body-sm text-body-sm text-primary hover:underline transition-all" href="#">
                     Olvidé mi contraseña
                 </a>
-                <a class="font-body-sm text-body-sm text-blue-600 font-semibold hover:text-blue-700 transition-all" href="<?= URL_BASE ?>users/register">
+                <a class="font-body-sm text-body-sm text-[#3a6a8a] font-semibold hover:text-blue-700 transition-all" href="<?= URL_BASE ?>users/register">
                     ¿No tienes una cuenta? Regístrate
                 </a>
             </div>

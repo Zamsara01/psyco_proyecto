@@ -1,3 +1,25 @@
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+.glass-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+</style>
 <?php
 /**
  * Vista: auth/error.php
@@ -17,10 +39,10 @@ $mensajes = [
 $reason = $reason ?? 'unknown';
 $mensaje = $mensajes[$reason] ?? $mensajes['unknown'];
 ?>
-<section class="oauth-error-wrapper">
-    <div class="oauth-error-card">
+<section class="relative z-10 p-6 md:p-8 flex items-center justify-center min-h-[80vh] w-full">
+    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-lg max-w-lg w-full text-center">
 
-        <div class="oauth-error-icon">
+        <div style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#8a4a4a;background:rgba(174,107,107,0.12);border:1px solid rgba(174,107,107,0.3);margin:0 auto 1.5rem;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round">
@@ -30,18 +52,18 @@ $mensaje = $mensajes[$reason] ?? $mensajes['unknown'];
             </svg>
         </div>
 
-        <h1 class="oauth-error-title">Error de autenticación</h1>
-        <p class="oauth-error-msg"><?= htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') ?></p>
+        <h1 class="text-2xl font-bold text-[#3a6a8a] mb-3">Error de autenticación</h1>
+        <p class="text-slate-600 leading-relaxed mb-6"><?= htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') ?></p>
 
         <?php if ($reason !== 'unknown'): ?>
             <p class="oauth-error-code">Código: <code><?= htmlspecialchars($reason, ENT_QUOTES, 'UTF-8') ?></code></p>
         <?php endif; ?>
 
-        <div class="oauth-error-actions">
-            <a href="<?= URL_BASE ?>users/login" class="btn-primary">
+        <div class="flex flex-col gap-3 mt-6">
+            <a href="<?= URL_BASE ?>users/login" class="px-6 py-3 rounded-xl font-bold text-white transition-all hover:bg-[#5a7e9f]" style="background:#6B8CAE;">
                 Volver al inicio de sesión
             </a>
-            <a href="<?= URL_BASE ?>auth/google" class="btn-google">
+            <a href="<?= URL_BASE ?>auth/google" class="px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2" style="color:#4a6e8a; background:rgba(107,140,174,0.15); border:1px solid rgba(107,140,174,0.3); hover:background:rgba(107,140,174,0.25);">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -54,85 +76,3 @@ $mensaje = $mensajes[$reason] ?? $mensajes['unknown'];
     </div>
 </section>
 
-<style>
-.oauth-error-wrapper {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-.oauth-error-card {
-    background: #fff;
-    border-radius: 1.25rem;
-    box-shadow: 0 8px 40px rgba(0,0,0,.12);
-    padding: 3rem 2.5rem;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-}
-.oauth-error-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: #fff0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: #e53e3e;
-}
-.oauth-error-icon svg { width: 32px; height: 32px; }
-.oauth-error-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a202c;
-    margin-bottom: .75rem;
-}
-.oauth-error-msg {
-    color: #4a5568;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-.oauth-error-code {
-    font-size: .8rem;
-    color: #a0aec0;
-    margin-bottom: 2rem;
-}
-.oauth-error-code code {
-    background: #f7fafc;
-    padding: .1rem .4rem;
-    border-radius: .3rem;
-}
-.oauth-error-actions {
-    display: flex;
-    flex-direction: column;
-    gap: .75rem;
-}
-.btn-primary {
-    display: block;
-    background: #667eea;
-    color: #fff;
-    padding: .75rem 1.5rem;
-    border-radius: .75rem;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background .2s;
-}
-.btn-primary:hover { background: #5a67d8; }
-.btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .6rem;
-    background: #fff;
-    border: 1.5px solid #d1d5db;
-    color: #374151;
-    padding: .75rem 1.5rem;
-    border-radius: .75rem;
-    text-decoration: none;
-    font-weight: 600;
-    transition: border-color .2s, background .2s;
-}
-.btn-google:hover { background: #f9fafb; border-color: #9ca3af; }
-</style>

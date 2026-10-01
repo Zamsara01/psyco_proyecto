@@ -1,3 +1,26 @@
+
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+.glass-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+</style>
 <!-- Main Content Canvas -->
 <main class="flex-grow py-12 px-6 flex justify-center items-center w-full z-10 relative">
     
@@ -136,7 +159,7 @@
 
                     <!-- Sección No -->
                     <div id="section_politica_no" class="hidden pt-2">
-                        <p class="text-body-sm text-blue-800 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <p class="text-body-sm text-blue-800 bg-[#dce8f0] p-3 rounded-lg border border-blue-200">
                             La psicóloga encargada aún puede tomar apuntes sobre la cita en presencial o por formatos físicos o de papelería por motivos de logística en la psicología.
                         </p>
                     </div>
@@ -219,7 +242,7 @@
             <footer class="mt-8 text-center">
                 <p class="text-body-md text-tertiary">
                     ¿Ya tienes una cuenta? 
-                    <a class="text-blue-600 font-bold hover:underline" href="<?= URL_BASE ?>users/login">Inicia sesión</a>
+                    <a class="text-[#3a6a8a] font-bold hover:underline" href="<?= URL_BASE ?>users/login">Inicia sesión</a>
                 </p>
             </footer>
         </div>

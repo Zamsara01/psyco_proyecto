@@ -1,3 +1,25 @@
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+.glass-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+</style>
 <!-- ═══════════════════════════════════════════════════════════
      PÁGINA NORMAL DE TÉRMINOS Y CONDICIONES DE USO
      Institución Educativa Barrio Santa Margarita (Medellín)

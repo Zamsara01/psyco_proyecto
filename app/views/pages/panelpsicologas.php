@@ -4,7 +4,32 @@
  * Variables: $stats[], $citasRecientes[], $citasHoy[], $pacientesHoy[], $citaEnProceso
  */
 ?>
-<div class="p-6 md:p-8 flex-1">
+<style>
+#main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+#main-content::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.55);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+
+/* Frosted card class */
+.frosted-card {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 1rem;
+}
+</style>
+<div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full">
 
 <!-- ══════════ BARRA DE ACCIONES RÁPIDAS ══════════ -->
     <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
@@ -43,20 +68,20 @@
 
             <button onclick="abrirModalDisponibilidad()"
                 id="btn-disponibilidad"
-                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-indigo-200 text-indigo-600 font-bold text-sm hover:bg-indigo-50 hover:border-indigo-400 dark:border-indigo-800 dark:text-indigo-400 dark:hover:bg-indigo-900/50 dark:hover:border-indigo-600 transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-[#6B8CAE]/30 text-[#6B8CAE] font-bold text-sm hover:bg-[#6B8CAE]/10 hover:border-indigo-400 dark:border-indigo-800 dark:text-indigo-400 dark:hover:bg-indigo-900/50 dark:hover:border-indigo-600 transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">schedule</span>
                 <span class="hidden xs:inline sm:inline">Mi Disponibilidad</span>
                 <span class="xs:hidden sm:hidden">Disponibilidad</span>
             </button>
             <button onclick="abrirModalCrearPaciente()"
                 id="btn-crear-paciente"
-                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-blue-200 text-blue-600 font-bold text-sm hover:bg-blue-50 hover:border-blue-400 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 dark:hover:border-blue-600 transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border-2 border-[#6B8CAE]/30 text-[#6B8CAE] font-bold text-sm hover:bg-[#6B8CAE]/10 hover:border-blue-400 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 dark:hover:border-blue-600 transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">person_add</span>
                 <span>Crear Paciente</span>
             </button>
             <button onclick="abrirModalAgendarCita()"
                 id="btn-agendar-cita"
-                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold text-sm hover:from-blue-700 hover:to-blue-800 shadow-md shadow-blue-100 dark:shadow-none transition-all active:scale-95">
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-[#6B8CAE] text-white font-bold text-sm hover:bg-[#5a7e9f] shadow-md shadow-[#6B8CAE]/30 dark:shadow-none transition-all active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
                 <span>Agendar Cita</span>
             </button>
@@ -67,9 +92,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
 
         <!-- Sesiones este mes -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <div class="frosted-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 rounded-xl">
+                <div class="p-3 bg-blue-100 text-[#6B8CAE] dark:bg-blue-900/50 dark:text-blue-400 rounded-xl">
                     <span class="material-symbols-outlined">clinical_notes</span>
                 </div>
                 <span class="text-xs font-bold text-slate-500 bg-slate-50 dark:text-slate-400 dark:bg-slate-700 px-2 py-1 rounded-full">Este mes</span>
@@ -79,9 +104,9 @@
         </div>
 
         <!-- Citas Pendientes -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <div class="frosted-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 rounded-xl">
+                <div class="p-3 bg-blue-100 text-[#6B8CAE] dark:bg-blue-900/50 dark:text-blue-400 rounded-xl">
                     <span class="material-symbols-outlined">pending_actions</span>
                 </div>
                 <span class="text-xs font-bold text-slate-500 bg-slate-50 dark:text-slate-400 dark:bg-slate-700 px-2 py-1 rounded-full">Próximas</span>
@@ -91,9 +116,9 @@
         </div>
 
         <!-- Sesiones Completadas -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <div class="frosted-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
-                <div class="p-3 bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400 rounded-xl">
+                <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;background:#6B8CAE;box-shadow:0 2px 8px rgba(107,140,174,0.3);" class="mb-4">
                     <span class="material-symbols-outlined">task_alt</span>
                 </div>
                 <span class="text-xs font-bold text-slate-500 bg-slate-50 dark:text-slate-400 dark:bg-slate-700 px-2 py-1 rounded-full">Este mes</span>
@@ -104,7 +129,7 @@
     </div>
 
     <!-- ══════════ GRÁFICO DE PASTEL: Estado de Citas ══════════ -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8">
+    <div class="frosted-card rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
             <div>
                 <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Resumen de Citas</h2>
@@ -165,8 +190,8 @@
     </div>
 
     <!-- ══════════ TABLA DE PACIENTES RECIENTES ══════════ -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden mb-8">
-        <div class="p-6 border-b border-slate-50 bg-slate-50/30 dark:border-slate-700 dark:bg-slate-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div class="frosted-card rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden mb-8">
+        <div class="p-6 border-b border-slate-50 bg-slate-50/30 dark:border-slate-700 /50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Citas Recientes de mis Pacientes</h2>
             <div class="flex items-center gap-3 w-full sm:w-auto">
                 <select id="filtroCitasRecientes" onchange="ordenarCitasRecientes(this.value)" class="text-sm border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-1.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors cursor-pointer">
@@ -206,13 +231,13 @@
                                 'cancelada' => 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400',
                                 'en proceso' => 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400'
                             ];
-                            $estadoColor = $colores[$cita['estado']] ?? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
+                            $estadoColor = $colores[$cita['estado']] ?? 'bg-slate-100 text-slate-600  dark:text-slate-400';
                         ?>
-                        <tr class="cita-row hover:bg-blue-50/20 dark:hover:bg-slate-700/50 transition-colors" data-nombre="<?= htmlspecialchars($cita['paciente_nombre']) ?>" data-fecha="<?= $cita['fecha'] ?> <?= $cita['hora'] ?>">
+                        <tr class="cita-row hover:bg-[#6B8CAE]/10/20 dark:hover:bg-slate-700/50 transition-colors" data-nombre="<?= htmlspecialchars($cita['paciente_nombre']) ?>" data-fecha="<?= $cita['fecha'] ?> <?= $cita['hora'] ?>">
                             <td class="px-5 py-4 text-sm font-medium text-slate-400 dark:text-slate-500 cita-index"><?= $i + 1 ?></td>
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-[#6B8CAE] dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
                                         <?= htmlspecialchars($iniciales) ?>
                                     </div>
                                     <div>
@@ -231,14 +256,14 @@
                                 <?php if (!empty($cita['notas_sesion'])): ?>
                                     <?= htmlspecialchars(substr($cita['notas_sesion'], 0, 50) . (strlen($cita['notas_sesion']) > 50 ? '…' : '')) ?>
                                 <?php else: ?>
-                                    <a href="#notas-pacientes-section" onclick="seleccionarPacienteNotas(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>', null)" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold hover:underline inline-flex items-center gap-1 transition-colors">
+                                    <a href="#notas-pacientes-section" onclick="seleccionarPacienteNotas(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>', null)" class="text-[#8DA399] hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold hover:underline inline-flex items-center gap-1 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">visibility</span> Ver notas
                                     </a>
                                 <?php endif; ?>
                             </td>
                             <td class="px-5 py-4 text-center">
                                 <button onclick="abrirNotaRapida(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>')"
-                                    class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:text-slate-500 dark:hover:text-blue-400 dark:hover:bg-blue-900/50 transition-colors" title="Agregar nota">
+                                    class="p-1.5 rounded-lg text-slate-400 hover:text-[#6B8CAE] hover:bg-[#6B8CAE]/10 dark:text-slate-500 dark:hover:text-blue-400 dark:hover:bg-blue-900/50 transition-colors" title="Agregar nota">
                                     <span class="material-symbols-outlined text-[18px]">note_add</span>
                                 </button>
                             </td>
@@ -250,19 +275,19 @@
         </div>
 
         <!-- ── Footer paginación ── -->
-        <div id="paginacion-footer" class="flex items-center justify-between gap-4 px-6 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/50">
+        <div id="paginacion-footer" class="flex items-center justify-between gap-4 px-6 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/30 /50">
             <span id="paginacion-info" class="text-xs text-slate-400 dark:text-slate-500 font-medium"></span>
             <div class="flex items-center gap-2">
                 <button id="btn-pag-prev"
                     onclick="cambiarPagina(-1)"
-                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-[#6B8CAE] dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
                     <span class="material-symbols-outlined text-[16px]">chevron_left</span>
                     Anterior
                 </button>
                 <div id="paginacion-nums" class="flex items-center gap-1"></div>
                 <button id="btn-pag-next"
                     onclick="cambiarPagina(1)"
-                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-[#6B8CAE] dark:hover:border-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
                     Siguiente
                     <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                 </button>
@@ -274,7 +299,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         <!-- Citas para Hoy -->
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <div class="frosted-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <h3 class="font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center gap-2">
                 <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">event_upcoming</span>
                 Citas para Hoy
@@ -290,9 +315,9 @@
                         $horaF = date('h:i', strtotime($c['hora']));
                         $amPm  = date('A', strtotime($c['hora']));
                     ?>
-                    <div class="flex items-center gap-4 p-3.5 rounded-xl border border-slate-100 hover:border-blue-100 hover:bg-blue-50/20 dark:border-slate-700 dark:hover:border-blue-800 dark:hover:bg-blue-900/20 transition-all">
+                    <div class="flex items-center gap-4 p-3.5 rounded-xl border border-slate-100 hover:border-blue-100 hover:bg-[#6B8CAE]/10/20 dark:border-slate-700 dark:hover:border-blue-800 dark:hover:bg-blue-900/20 transition-all">
                         <div class="text-center w-14 shrink-0">
-                            <p class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase"><?= $horaF ?></p>
+                            <p class="text-xs font-black text-[#6B8CAE] dark:text-blue-400 uppercase"><?= $horaF ?></p>
                             <p class="text-[10px] text-slate-400 dark:text-slate-500"><?= $amPm ?></p>
                         </div>
                         <div class="w-[2px] h-8 bg-blue-200 dark:bg-blue-800 shrink-0"></div>
@@ -307,10 +332,10 @@
         </div>
 
         <!-- Notas para los Pacientes de Hoy / Buscados -->
-        <div id="notas-pacientes-section" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 scroll-mt-24">
+        <div id="notas-pacientes-section" class="frosted-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 scroll-mt-24">
             <h3 class="font-bold text-slate-900 dark:text-slate-100 mb-5 flex items-center gap-2">
-                <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">sticky_note_2</span>
-                <span id="titulo-seccion-notas" class="hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">Notas de Pacientes</span>
+                <span class="material-symbols-outlined text-[#8DA399] dark:text-purple-400">sticky_note_2</span>
+                <span id="titulo-seccion-notas" class="hover:text-[#8DA399] dark:hover:text-purple-400 transition-colors cursor-pointer">Notas de Pacientes</span>
                 <span class="ml-auto text-xs text-slate-400 dark:text-slate-500 font-normal"><?= count($pacientesHoy) ?> paciente(s) hoy</span>
             </h3>
 
@@ -324,7 +349,7 @@
                     <?php foreach ($pacientesHoy as $idx => $pac): ?>
                     <button onclick="seleccionarPacienteNotas(<?= $pac['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($pac['paciente_nombre'])) ?>', this)"
                         class="paciente-notas-btn text-xs font-semibold px-3 py-1.5 rounded-full border-2 transition-all
-                               <?= $idx === 0 ? 'border-purple-500 bg-purple-500 text-white' : 'border-slate-200 text-slate-500 hover:border-purple-300 hover:text-purple-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-purple-500 dark:hover:text-purple-400' ?>">
+                               <?= $idx === 0 ? 'border-[#8DA399] bg-[#8DA399] text-white' : 'border-slate-200 text-slate-500 hover:border-purple-300 hover:text-[#8DA399] dark:border-slate-700 dark:text-slate-400 dark:hover:border-[#8DA399] dark:hover:text-purple-400' ?>">
                         <?= htmlspecialchars($pac['paciente_nombre']) ?>
                         <?php if ($pac['total_notas'] > 0): ?>
                         <span class="ml-1 text-[10px] opacity-75">(<?= $pac['total_notas'] ?>)</span>
@@ -338,7 +363,7 @@
             <div id="notasPacienteContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                 <?php if (!empty($pacientesHoy)): ?>
                 <div class="text-center py-6 text-slate-400 dark:text-slate-500 text-sm">
-                    <div class="w-6 h-6 border-3 border-purple-200 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
+                    <div class="w-6 h-6 border-3 border-[#8DA399]/30 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
                     Cargando notas...
                 </div>
                 <?php endif; ?>
@@ -407,12 +432,12 @@
 <!-- ══════════ MODAL: NOTA RÁPIDA ══════════ -->
 <div id="notaRapidaModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="cerrarNotaRapida()"></div>
-    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-md mx-4 z-10 p-7">
+    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-md mx-4 z-10 p-7">
         <button onclick="cerrarNotaRapida()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
         <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg mb-1">Nueva nota</h3>
-        <p id="notaRapidaPacienteNombre" class="text-sm text-purple-500 dark:text-purple-400 font-medium mb-5"></p>
+        <p id="notaRapidaPacienteNombre" class="text-sm text-[#8DA399] dark:text-purple-400 font-medium mb-5"></p>
         <input type="hidden" id="notaRapidaIdUsuario">
 
         <div class="space-y-4">
@@ -458,12 +483,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
     document.querySelectorAll('.paciente-notas-btn').forEach(b => {
-        b.classList.remove('border-purple-500','bg-purple-500','text-white');
+        b.classList.remove('border-[#8DA399]','bg-purple-500','text-white');
         b.classList.add('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
     });
     
     if (btn) {
-        btn.classList.add('border-purple-500','bg-purple-500','text-white');
+        btn.classList.add('border-[#8DA399]','bg-purple-500','text-white');
         btn.classList.remove('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
     }
 
@@ -474,7 +499,7 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
     if (tituloSeccion) tituloSeccion.textContent = `Notas de: ${nombre}`;
 
     const container = document.getElementById('notasPacienteContainer');
-    container.innerHTML = `<div class="flex justify-center py-4"><div class="w-6 h-6 border-3 border-purple-200 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin"></div></div>`;
+    container.innerHTML = `<div class="flex justify-center py-4"><div class="w-6 h-6 border-3 border-[#8DA399]/30 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin"></div></div>`;
 
     try {
         const res  = await fetch(BASE + 'panel_psicologas/notasPaciente?id_usuario=' + idUsuario);
@@ -482,7 +507,7 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
         if (!data.ok) throw new Error(data.error);
 
         if (!data.notas.length) {
-            container.innerHTML = `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin notas para ${esc(nombre)}. <button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="text-purple-500 dark:text-purple-400 hover:underline font-semibold">+ Agregar</button></p>`;
+            container.innerHTML = `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin notas para ${esc(nombre)}. <button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="text-[#8DA399] dark:text-purple-400 hover:underline font-semibold">+ Agregar</button></p>`;
             return;
         }
         container.innerHTML = data.notas.map(n => `
@@ -493,7 +518,7 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">${esc(n.contenido)}</p>
             </div>
-        `).join('') + `<button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="w-full mt-2 py-2 text-xs font-semibold text-purple-500 hover:bg-purple-50 border-purple-200 dark:text-purple-400 dark:hover:bg-purple-900/50 dark:border-purple-800/50 rounded-xl border-2 border-dashed transition-colors">+ Nueva nota</button>`;
+        `).join('') + `<button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="w-full mt-2 py-2 text-xs font-semibold text-[#8DA399] hover:bg-[#8DA399]/10 border-[#8DA399]/30 dark:text-purple-400 dark:hover:bg-purple-900/50 dark:border-purple-800/50 rounded-xl border-2 border-dashed transition-colors">+ Nueva nota</button>`;
     } catch(e) {
         container.innerHTML = `<p class="text-red-400 dark:text-red-500 text-sm text-center py-4">Error: ${e.message}</p>`;
     }
@@ -636,8 +661,8 @@ function crearBtnPag(num, activa) {
     btn.textContent = num;
     btn.onclick     = () => cambiarPaginaA(num);
     btn.className   = num === activa
-        ? 'w-8 h-8 rounded-xl text-sm font-black bg-blue-600 text-white shadow-sm'
-        : 'w-8 h-8 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:border-blue-600 dark:hover:text-blue-400 transition-all';
+        ? 'w-8 h-8 rounded-xl text-sm font-black bg-[#6B8CAE] text-white shadow-sm'
+        : 'w-8 h-8 rounded-xl text-sm font-semibold border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-[#6B8CAE] dark:hover:border-blue-600 dark:hover:text-blue-400 transition-all';
     return btn;
 }
 
@@ -736,7 +761,7 @@ function finalizarReunion() {}
 <!-- Modal: Reunión Finalizada -->
 <div id="modalReunionFinalizada" class="fixed inset-0 z-[70] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-sm mx-4 z-10 p-8 text-center">
+    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-sm mx-4 z-10 p-8 text-center">
         <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-5">
             <span class="material-symbols-outlined text-emerald-500 text-[44px]">check_circle</span>
         </div>
@@ -756,13 +781,13 @@ function finalizarReunion() {}
 <!-- ══════════ MODAL: AGENDAR CITA ══════════ -->
 <div id="modalAgendarCita" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalAgendarCita()"></div>
-    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-lg mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
+    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-lg mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
         <button onclick="cerrarModalAgendarCita()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="flex items-center gap-3 mb-6">
             <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-2xl">
-                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">calendar_add_on</span>
+                <span class="material-symbols-outlined text-[#6B8CAE] dark:text-blue-400 text-2xl">calendar_add_on</span>
             </div>
             <div>
                 <h3 class="font-black text-slate-800 dark:text-slate-100 text-xl">Agendar Cita</h3>
@@ -780,9 +805,9 @@ function finalizarReunion() {}
                         class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 bg-transparent dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-blue-400 transition-colors pr-10">
                     <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-500 text-[20px]">search</span>
                 </div>
-                <div id="agendarResultadosPacientes" class="hidden mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg overflow-hidden max-h-48 overflow-y-auto z-20 relative"></div>
+                <div id="agendarResultadosPacientes" class="hidden mt-1 bg-white  border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg overflow-hidden max-h-48 overflow-y-auto z-20 relative"></div>
                 <input type="hidden" id="agendarIdUsuario">
-                <p id="agendarPacienteSeleccionado" class="hidden mt-2 text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                <p id="agendarPacienteSeleccionado" class="hidden mt-2 text-xs font-semibold text-[#6B8CAE] dark:text-blue-400 flex items-center gap-1">
                     <span class="material-symbols-outlined text-[16px]">check_circle</span>
                     <span id="agendarPacienteNombre"></span>
                 </p>
@@ -830,7 +855,7 @@ function finalizarReunion() {}
 <!-- ══════════ MODAL: CREAR PACIENTE ══════════ -->
 <div id="modalCrearPaciente" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalCrearPaciente()"></div>
-    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
+    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
         <button onclick="cerrarModalCrearPaciente()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
@@ -927,7 +952,7 @@ function finalizarReunion() {}
         </div>
 
         <button onclick="guardarNuevoPaciente()" id="btnGuardarPaciente"
-            class="w-full mt-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all active:scale-[0.98] shadow-md shadow-blue-200 dark:shadow-none flex items-center justify-center gap-2">
+            class="w-full mt-5 py-3 bg-[#6B8CAE] text-white font-bold rounded-xl hover:bg-[#5a7e9f] transition-all active:scale-[0.98] shadow-md shadow-blue-200 dark:shadow-none flex items-center justify-center gap-2">
             <span class="material-symbols-outlined text-[20px]">person_check</span>
             Registrar Paciente
         </button>
@@ -1002,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lista.innerHTML = data.pacientes.map(p => `
                 <button type="button" onclick="seleccionarPacienteAgendar(${p.id_usuario}, '${esc(p.nombre)}', '${esc(p.correo_electronico)}')"
-                    class="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors border-b border-slate-100 last:border-0">
+                    class="w-full text-left px-4 py-2.5 hover:bg-[#6B8CAE]/10 transition-colors border-b border-slate-100 last:border-0">
                     <p class="text-sm font-bold text-slate-800">${esc(p.nombre)}</p>
                     <p class="text-xs text-slate-400">${esc(p.correo_electronico)} · Grado ${esc(p.grado)}</p>
                 </button>`).join('');
@@ -1183,7 +1208,7 @@ async function cargarDisponibilidad() {
     const container = document.getElementById('dispListaContainer');
     container.innerHTML = `
         <div class="text-center py-6 text-slate-400 text-sm">
-            <div class="w-6 h-6 border-3 border-indigo-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-2"></div>
+            <div class="w-6 h-6 border-3 border-[#6B8CAE]/30 border-t-indigo-500 rounded-full animate-spin mx-auto mb-2"></div>
             Cargando horarios...
         </div>`;
 
@@ -1231,7 +1256,7 @@ async function cargarDisponibilidad() {
                                     ? esc(b.jornada) 
                                     : (esc(b.hora_inicio) + ' - ' + esc(b.hora_fin));
                                 return `
-                                <div class="flex items-center justify-between bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2 text-sm shadow-sm hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
+                                <div class="flex items-center justify-between bg-white  border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2 text-sm shadow-sm hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
                                     <span class="font-semibold text-slate-600 dark:text-slate-300">${jornadaDisplay}</span>
                                     <button onclick="eliminarHorario(${b.id_disponibilidad})" class="p-1 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all active:scale-90" title="Eliminar jornada">
                                         <span class="material-symbols-outlined text-[18px]">delete</span>
@@ -1316,13 +1341,13 @@ async function eliminarHorario(idDisponibilidad) {
 <!-- ══════════ MODAL: GESTIONAR DISPONIBILIDAD (HTML) ══════════ -->
 <div id="modalDisponibilidad" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalDisponibilidad()"></div>
-    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-2xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
+    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-2xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
         <button onclick="cerrarModalDisponibilidad()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="flex items-center gap-3 mb-6">
             <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-2xl">
-                <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-2xl">schedule</span>
+                <span class="material-symbols-outlined text-[#6B8CAE] dark:text-indigo-400 text-2xl">schedule</span>
             </div>
             <div>
                 <h3 class="font-black text-slate-800 dark:text-slate-100 text-xl">Mi Disponibilidad</h3>
@@ -1367,7 +1392,7 @@ async function eliminarHorario(idDisponibilidad) {
             </div>
 
             <button onclick="agregarHorarioDisponibilidad()" id="btnAgregarDisp"
-                class="w-full mt-4 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
+                class="w-full mt-4 py-2.5 bg-[#6B8CAE] text-white font-bold rounded-xl hover:bg-[#5a7e9f] transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
                 <span class="material-symbols-outlined text-[18px]">add_circle</span>
                 Agregar jornada
             </button>
