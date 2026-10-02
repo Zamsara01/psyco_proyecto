@@ -88,4 +88,11 @@ class NotaPacienteModel extends Model
         return $this->db->prepare("DELETE FROM notas_paciente WHERE id_nota=? AND id_psicologo=?")
                         ->execute([$idNota, $idPsicologo]);
     }
+
+    /** Actualiza el título y contenido de una nota (solo si pertenece al psicólogo). */
+    public function updateNota(int $idNota, int $idPsicologo, string $titulo, string $contenido): bool
+    {
+        return $this->db->prepare("UPDATE notas_paciente SET titulo=?, contenido=? WHERE id_nota=? AND id_psicologo=?")
+                        ->execute([$titulo, $contenido, $idNota, $idPsicologo]);
+    }
 }

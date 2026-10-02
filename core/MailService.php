@@ -36,6 +36,7 @@ class MailService
     public function sendOtpEmail(string $toEmail, string $nombreUsuario, string $codigo): bool 
     {
         try {
+            $this->mail->clearAddresses();
             $this->mail->addAddress($toEmail, $nombreUsuario);
             $this->mail->isHTML(true);
             $this->mail->Subject = 'Tu codigo de verificacion de PsycoApp';
@@ -48,6 +49,33 @@ class MailService
                         <span style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #333;'>{$codigo}</span>
                     </div>
                     <p style='color: #888; font-size: 12px;'>Este código expirará en 10 minutos. Si no solicitaste este registro, ignora este correo.</p>
+                </div>
+            ";
+            
+            $this->mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('[MailService] Error enviando correo: ' . $this->mail->ErrorInfo);
+            return false;
+        }
+    }
+
+    public function sendPasswordResetEmail(string $toEmail, string $codigo): bool 
+    {
+        try {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($toEmail);
+            $this->mail->isHTML(true);
+            $this->mail->Subject = 'Restablecer contrasena - PsycoApp';
+            
+            $this->mail->Body = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>
+                    <h2 style='color: #4A90E2;'>Hola,</h2>
+                    <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Ingresa el siguiente código en la plataforma:</p>
+                    <div style='background-color: #f4f4f4; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;'>
+                        <span style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #333;'>{$codigo}</span>
+                    </div>
+                    <p style='color: #888; font-size: 12px;'>Este código expirará en 10 minutos. Si no solicitaste este cambio, puedes ignorar este correo de forma segura.</p>
                 </div>
             ";
             

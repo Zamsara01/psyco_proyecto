@@ -347,4 +347,115 @@ class ControllerUsers extends Controller
 
         $this->redirect('users/login');
     }
+
+    // =========================================================================
+    // RESTABLECER CONTRASEÑA
+    // =========================================================================
+
+    public function requestPasswordReset(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
+            exit;
+        }
+
+        $email = trim($_POST['email'] ?? '');
+        if (!$email) {
+            echo json_encode(['ok' => false, 'error' => 'Correo requerido']);
+            exit;
+        }
+
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare("SELECT id_usuario, estado FROM usuario WHERE correo_electronico = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$user) {
+            // Para evitar enumeración de usuarios, decimos que se envió de todos modos
+            echo json_encode(['ok' => true]);
+            exit;
+        }
+
+        if ($user['estado'] !== 'activo') {
+            echo json_encode(['ok' => false, 'error' => 'La cuenta está inactiva o bloqueada.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/OtpModel.php';
+        $otpModel = new OtpModel();
+        
+        $code = $otpModel->generateOtp($email, 'password_reset');
+
+        require_once dirname(__DIR__, 2) . '/core/MailService.php';
+        $mailService = new MailService();
+
+        if ($mailService->sendPasswordResetEmail($email, $code)) {
+            echo json_encode(['ok' => true]);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'Error al enviar el correo con el código.']);
+        }
+        exit;
+    }
+
+    public function resetPassword(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
+            exit;
+        }
+
+        $email = trim($_POST['email'] ?? '');
+        $code = trim($_POST['code'] ?? '');
+        $newPassword = $_POST['password'] ?? '';
+
+        if (!$email || !$code || !$newPassword) {
+            echo json_encode(['ok' => false, 'error' => 'Faltan datos obligatorios']);
+            exit;
+        }
+
+        if (strlen($newPassword) < 8) {
+            echo json_encode(['ok' => false, 'error' => 'La contraseña debe tener al menos 8 caracteres']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/OtpModel.php';
+        $otpModel = new OtpModel();
+        
+        $verifyResult = $otpModel->verifyOtp($email, $code, 'password_reset');
+        
+        if (!$verifyResult['status']) {
+            echo json_encode(['ok' => false, 'error' => $verifyResult['message']]);
+            exit;
+        }
+
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $pdo = Database::getInstance();
+        $stmtUser = $pdo->prepare("SELECT id_usuario FROM usuario WHERE correo_electronico = ?");
+        $stmtUser->execute([$email]);
+        $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$user) {
+            echo json_encode(['ok' => false, 'error' => 'Usuario no encontrado.']);
+            exit;
+        }
+
+        // Cambiar contraseña
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $pdo = Database::getInstance();
+        $hash = password_hash($newPassword, PASSWORD_BCRYPT);
+        $stmt = $pdo->prepare("UPDATE usuario SET contrasena = ? WHERE id_usuario = ?");
+        
+        if ($stmt->execute([$hash, $user['id_usuario']])) {
+            // Registrar en auditoría
+            $pdo->prepare("INSERT INTO auditoria_contrasenas (id_usuario) VALUES (?)")
+                ->execute([$user['id_usuario']]);
+            echo json_encode(['ok' => true]);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'Error al cambiar la contraseña en la base de datos.']);
+        }
+        exit;
+    }
 }

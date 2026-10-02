@@ -128,9 +128,9 @@
 
             <!-- Links secundarios -->
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1">
-                <a class="font-body-sm text-body-sm text-primary hover:underline transition-all" href="#">
+                <button type="button" onclick="openForgotPasswordModal()" class="font-body-sm text-body-sm text-primary hover:underline transition-all bg-transparent border-none cursor-pointer">
                     Olvidé mi contraseña
-                </a>
+                </button>
                 <a class="font-body-sm text-body-sm text-[#3a6a8a] font-semibold hover:text-blue-700 transition-all" href="<?= URL_BASE ?>users/register">
                     ¿No tienes una cuenta? Regístrate
                 </a>

@@ -7,7 +7,11 @@ class ControllerCalendario extends Controller
 {
     public function index(): void
     {
-        $this->requireAuth('paciente');
+        // Calendario accesible para pacientes y psicólogos (cualquier usuario autenticado)
+        if (!isset($_SESSION['user'])) {
+            $this->redirect('users/login');
+            return;
+        }
 
         $psicologosJson = '[]';
         try {

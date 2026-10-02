@@ -806,7 +806,7 @@ async function cargarPacientesHistorial() {
                         </div>
                         <p class="font-semibold text-slate-700 dark:text-slate-200 text-sm">${escReunion(p.paciente_nombre)}</p>
                     </div>
-                    <a href="${BASE}panel_psicologas/imprimirHistorial?id_usuario=${p.id_usuario}" target="_blank"
+                    <a href="${BASE}panel_psicologas/imprimirHistorial?id_paciente=${p.id_paciente}" target="_blank"
                        class="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 shadow-sm">
                        <span class="material-symbols-outlined text-[16px]">print</span>
                        Generar
@@ -1044,3 +1044,111 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
+<?php if ($rol === 'superusuario'): ?>
+<!-- MODAL NOTIFICACIONES SUPERADMIN -->
+<div id="modalNotificacionSuperadmin" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-opacity" role="dialog" aria-modal="true">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="modalNotifBox">
+        <div class="p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-3 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-xl">
+                    <span class="material-icons-round">notification_important</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Acción de otro Superusuario</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400" id="notifSuperOrigen"></p>
+                </div>
+            </div>
+            
+            <div class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 mb-6 border border-slate-100 dark:border-slate-700">
+                <p class="text-slate-700 dark:text-slate-300 font-medium" id="notifDescripcion"></p>
+                <p class="text-xs text-slate-400 mt-2" id="notifFecha"></p>
+            </div>
+
+            <div class="flex gap-3">
+                <button type="button" onclick="responderNotifSuperadmin('rechazada')" class="flex-1 py-2.5 px-4 bg-white dark:bg-slate-700 border-2 border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 font-semibold rounded-xl hover:bg-red-50 hover:border-red-300 dark:hover:bg-red-900/30 transition-colors">
+                    Rechazar (Revertir)
+                </button>
+                <button type="button" onclick="responderNotifSuperadmin('aceptada')" class="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md shadow-blue-500/20 transition-all">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let notifsPendientes = [];
+let notifActualId = null;
+
+async function checkNotificacionesSuperadmin() {
+    try {
+        const res = await fetch(BASE + 'superusuario/notificacionesPendientes');
+        const data = await res.json();
+        if (data.ok && data.notificaciones && data.notificaciones.length > 0) {
+            notifsPendientes = data.notificaciones;
+            mostrarSiguienteNotif();
+        }
+    } catch(e) { console.error('Error fetching notifs:', e); }
+}
+
+function mostrarSiguienteNotif() {
+    if (notifsPendientes.length === 0) {
+        cerrarModalNotif();
+        return;
+    }
+    const notif = notifsPendientes[0];
+    notifActualId = notif.id_notificacion;
+    document.getElementById('notifSuperOrigen').textContent = 'Por: ' + notif.super_origen_nombre;
+    document.getElementById('notifDescripcion').textContent = notif.descripcion;
+    document.getElementById('notifFecha').textContent = notif.fecha_creacion;
+    
+    const modal = document.getElementById('modalNotificacionSuperadmin');
+    const box = document.getElementById('modalNotifBox');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        box.classList.remove('scale-95', 'opacity-0');
+        box.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+function cerrarModalNotif() {
+    const modal = document.getElementById('modalNotificacionSuperadmin');
+    const box = document.getElementById('modalNotifBox');
+    box.classList.remove('scale-100', 'opacity-100');
+    box.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 300);
+}
+
+async function responderNotifSuperadmin(respuesta) {
+    if (!notifActualId) return;
+    try {
+        const res = await fetch(BASE + 'superusuario/responderNotificacion', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id_notificacion: notifActualId, respuesta })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            notifsPendientes.shift();
+            cerrarModalNotif();
+            setTimeout(() => {
+                if(notifsPendientes.length > 0) {
+                    mostrarSiguienteNotif();
+                } else {
+                    if(respuesta === 'rechazada') location.reload();
+                }
+            }, 350);
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch(e) { console.error(e); }
+}
+
+document.addEventListener('DOMContentLoaded', checkNotificacionesSuperadmin);
+</script>
+<?php endif; ?>

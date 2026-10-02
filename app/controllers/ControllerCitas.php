@@ -43,18 +43,15 @@ class ControllerCitas extends Controller
         $idPaciente = (int)$_SESSION['user']['id_paciente'];
 
         require_once dirname(__DIR__) . '/models/RecursoModel.php';
-        require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
+        require_once dirname(__DIR__) . '/models/RecursoModel.php';
 
         $recursoModel = new RecursoModel();
-        $notaModel    = new NotaPacienteModel();
 
         $recursos = $recursoModel->getRecursosByPaciente($idPaciente);
-        $notas    = $notaModel->getNotasByPaciente($idPaciente);
 
         $this->layout = 'tailwind';
         $this->render('pages/misrecursos', [
             'recursos' => $recursos,
-            'notas'    => $notas,
         ]);
     }
 

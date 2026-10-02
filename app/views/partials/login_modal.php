@@ -122,7 +122,7 @@
                 <div class="h-px flex-grow bg-slate-200 dark:bg-slate-600"></div>
             </div>
             <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-                <a href="#" class="text-primary hover:underline font-body-sm">Olvidé mi contraseña</a>
+                <button type="button" onclick="closeLoginModal(); openForgotPasswordModal();" class="text-primary hover:underline font-body-sm bg-transparent border-none cursor-pointer transition-colors">Olvidé mi contraseña</button>
                 <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-blue-600 font-semibold hover:text-blue-700 font-body-sm bg-transparent border-none cursor-pointer transition-colors">
                     ¿No tienes cuenta? Regístrate aquí
                 </button>

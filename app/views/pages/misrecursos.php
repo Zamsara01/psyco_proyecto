@@ -87,7 +87,7 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Contenido personalizado de tu psicóloga para apoyar tu proceso</p>
     </div>
 
-    <?php if (empty($recursos) && empty($notas)): ?>
+    <?php if (empty($recursos)): ?>
     <div class="recurso-card rounded-3xl p-12 text-center border border-white/60 dark:border-slate-700/50">
         <span class="material-symbols-outlined text-[56px] text-slate-300 dark:text-slate-600 block mb-3">folder_open</span>
         <p class="text-slate-600 dark:text-slate-400 font-semibold">Aún no tienes recursos asignados</p>
@@ -216,42 +216,6 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
                 <?php if (!empty($r['descripcion'])): ?>
                 <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($r['descripcion']) ?></p>
                 <?php endif; ?>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-    <?php endif; ?>
-
-    <!-- ══════════ NOTAS DE LA PSICÓLOGA ══════════ -->
-    <?php if (!empty($notas)): ?>
-    <section>
-        <div class="flex items-center gap-3 mb-5">
-            <div class="sec-icon shrink-0" style="background:#E8824A; box-shadow: 0 2px 8px rgba(232,130,74,0.3);">
-                <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
-            </div>
-            <div>
-                <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Notas de tu Psicóloga</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Recomendaciones y notas de sesión</p>
-            </div>
-        </div>
-        <div class="space-y-4">
-            <?php foreach ($notas as $nota): 
-                $partes = explode(' ', trim($nota['psicologo_nombre']));
-                $iniciales = strtoupper(($partes[0][0] ?? '') . ($partes[1][0] ?? ''));
-            ?>
-            <div class="recurso-card border border-white/60 dark:border-slate-700/50 rounded-2xl p-5">
-                <div class="flex items-center gap-3 mb-4 border-b border-slate-200/60 dark:border-slate-700/40 pb-3">
-                    <div class="psico-avatar"><?= $iniciales ?></div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800 dark:text-slate-100"><?= htmlspecialchars($nota['psicologo_nombre']) ?></p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[13px] text-[#E8824A]">calendar_today</span>
-                            <?= date('d M Y, H:i', strtotime($nota['fecha_creacion'])) ?>
-                        </p>
-                    </div>
-                </div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2 text-md"><?= htmlspecialchars($nota['titulo']) ?></h4>
-                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap"><?= htmlspecialchars($nota['contenido']) ?></p>
             </div>
             <?php endforeach; ?>
         </div>

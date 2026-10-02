@@ -102,20 +102,21 @@ class ControllerChat_bot extends Controller
             echo json_encode(['ok' => false, 'error' => 'Hora inválida.']);
             exit;
         }
-        if ($fecha < date('Y-m-d')) {
+        $tzLocal = new DateTimeZone('America/Bogota');
+        $hoyLocal = (new DateTime('now', $tzLocal))->format('Y-m-d');
+
+        if ($fecha < $hoyLocal) {
             echo json_encode(['ok' => false, 'error' => 'No puedes agendar en fechas pasadas.']);
             exit;
         }
-        $maxFecha = date('Y-m-d', strtotime('+1 month'));
+        $maxFecha = (new DateTime('+1 month', $tzLocal))->format('Y-m-d');
         if ($fecha > $maxFecha) {
-            $tzLocal  = new DateTimeZone('America/Bogota');
-            $maxFmt   = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
+            $maxFmt = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
             echo json_encode(['ok' => false, 'error' => "Solo puedes agendar citas hasta un mes de anticipación (máximo {$maxFmt})."]);
             exit;
         }
         // Si es hoy, validar que la hora no haya pasado usando la zona horaria local (UTC-5)
-        if ($fecha === date('Y-m-d')) {
-            $tzLocal        = new DateTimeZone('America/Bogota');
+        if ($fecha === $hoyLocal) {
             $ahoraLocal     = new DateTime('now', $tzLocal);
             $horaActualStr  = $ahoraLocal->format('H:i:s');
             $horaSolicitada = substr($hora, 0, 5) . ':00';
@@ -132,11 +133,23 @@ class ControllerChat_bot extends Controller
             exit;
         }
 
+        // Resolver id_paciente a partir del id_usuario de sesión
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        $db = Database::getInstance();
+        $stmtPac = $db->prepare("SELECT id_paciente FROM paciente WHERE id_usuario = ?");
+        $stmtPac->execute([$idUsuario]);
+        $rowPac = $stmtPac->fetch(PDO::FETCH_ASSOC);
+        if (!$rowPac) {
+            echo json_encode(['ok' => false, 'error' => 'Solo pacientes pueden agendar citas desde el calendario.']);
+            exit;
+        }
+        $idPaciente = (int)$rowPac['id_paciente'];
+
         try {
             require_once dirname(__DIR__) . '/models/CitaModel.php';
             $model = new CitaModel();
             $ok = $model->insertCita([
-                'id_usuario'      => $idUsuario,
+                'id_paciente'     => $idPaciente,
                 'id_psicologo'    => $idPsicologo,
                 'fecha'           => $fecha,
                 'hora'            => $hora . ':00',

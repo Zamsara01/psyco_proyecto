@@ -139,7 +139,7 @@ class ControllerPanel_psicologas extends Controller
 
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
         $model = new NotaPacienteModel();
-        $notas = $model->getNotasByPsicologoAndUsuario($idPsicologo, $idPaciente);
+        $notas = $model->getNotasByPsicologoAndPaciente($idPsicologo, $idPaciente);
 
         echo json_encode(['ok' => true, 'notas' => $notas]);
         exit;
@@ -189,9 +189,10 @@ class ControllerPanel_psicologas extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $db = Database::getInstance();
         $sql = "
-            SELECT DISTINCT u.id_paciente, u.nombre AS paciente_nombre
+            SELECT DISTINCT p.id_paciente, u.id_usuario, u.nombre AS paciente_nombre
             FROM notas_paciente np
-            JOIN usuario u ON np.id_paciente = u.id_paciente
+            JOIN paciente p ON np.id_paciente = p.id_paciente
+            JOIN usuario u ON p.id_usuario = u.id_usuario
             WHERE np.id_psicologo = ?
             ORDER BY u.nombre
         ";
@@ -224,7 +225,7 @@ class ControllerPanel_psicologas extends Controller
         // Fetch patient name
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT nombre FROM usuario WHERE id_paciente = ?");
+        $stmt = $db->prepare("SELECT u.nombre FROM paciente p JOIN usuario u ON p.id_usuario = u.id_usuario WHERE p.id_paciente = ?");
         $stmt->execute([$idPaciente]);
         $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -460,6 +461,61 @@ class ControllerPanel_psicologas extends Controller
         exit;
     }
 
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/editarNota
+    // Body JSON: { id_nota, titulo, contenido }
+    // ────────────────────────────────────────────────────────────────
+    public function editarNota(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+        $body = json_decode(file_get_contents('php://input'), true);
+        $idNota = (int)($body['id_nota'] ?? 0);
+        $titulo = trim($body['titulo'] ?? '');
+        $contenido = trim($body['contenido'] ?? '');
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        if ($idNota < 1 || !$titulo || !$contenido) {
+            echo json_encode(['ok' => false, 'error' => 'Datos inválidos.']);
+            exit;
+        }
+        require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
+        $model = new NotaPacienteModel();
+        if ($model->updateNota($idNota, $idPsicologo, $titulo, $contenido)) {
+            echo json_encode(['ok' => true]);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'Error al actualizar nota.']);
+        }
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/eliminarNota
+    // Body JSON: { id_nota }
+    // ────────────────────────────────────────────────────────────────
+    public function eliminarNota(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+        $body = json_decode(file_get_contents('php://input'), true);
+        $idNota = (int)($body['id_nota'] ?? 0);
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        if ($idNota < 1) {
+            echo json_encode(['ok' => false, 'error' => 'ID inválido.']);
+            exit;
+        }
+        require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
+        $model = new NotaPacienteModel();
+        if ($model->deleteNota($idNota, $idPsicologo)) {
+            echo json_encode(['ok' => true]);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'Error al eliminar nota.']);
+        }
+        exit;
+    }
+
     // ────────────────────────────────────────────────────────────────
     // GET /panel_psicologas/buscarTodosLosPacientes?q=...
     // Busca cualquier usuario activo (no solo los del psicólogo)
@@ -531,20 +587,21 @@ class ControllerPanel_psicologas extends Controller
             echo json_encode(['ok' => false, 'error' => 'Faltan datos obligatorios (paciente, fecha, hora).']);
             exit;
         }
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha) || $fecha < date('Y-m-d')) {
+        $tzLocal = new DateTimeZone('America/Bogota');
+        $hoyLocal = (new DateTime('now', $tzLocal))->format('Y-m-d');
+
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha) || $fecha < $hoyLocal) {
             echo json_encode(['ok' => false, 'error' => 'La fecha es inválida o está en el pasado.']);
             exit;
         }
-        $maxFecha = date('Y-m-d', strtotime('+1 month'));
+        $maxFecha = (new DateTime('+1 month', $tzLocal))->format('Y-m-d');
         if ($fecha > $maxFecha) {
-            $tzLocal  = new DateTimeZone('America/Bogota');
-            $maxFmt   = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
+            $maxFmt = (new DateTime($maxFecha, $tzLocal))->format('d/m/Y');
             echo json_encode(['ok' => false, 'error' => "Solo puedes agendar citas hasta un mes de anticipación (máximo {$maxFmt})."]);
             exit;
         }
         // Si la cita es hoy, verificar que la hora no haya pasado usando la zona horaria local (UTC-5)
-        if ($fecha === date('Y-m-d')) {
-            $tzLocal        = new DateTimeZone('America/Bogota');
+        if ($fecha === $hoyLocal) {
             $ahoraLocal     = new DateTime('now', $tzLocal);
             $horaActualStr  = $ahoraLocal->format('H:i:s');
             $horaSolicitada = substr($hora, 0, 5) . ':00';

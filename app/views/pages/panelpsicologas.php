@@ -14,59 +14,49 @@
         background-attachment: fixed !important;
         background-color: transparent !important;
     }
-    
+
     /* Fondo Modo Oscuro */
     .dark #main-content {
         background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
     }
 
-    /* PANELES (Efecto Papel/Cristal Cálido) */
-    .frosted-card, .bg-white, .dark\:bg-slate-800 {
-        background-color: rgba(253, 251, 247, 0.85) !important; /* Papel crema translúcido */
+    /* PANELES — scoped al wrapper del panel para no afectar sidebar ni footer */
+    #panel-psico-wrapper .frosted-card,
+    #panel-psico-wrapper .bg-white {
+        background-color: rgba(253, 251, 247, 0.85) !important;
         backdrop-filter: blur(12px) !important;
         border: 1px solid rgba(212, 195, 163, 0.5) !important;
-        border-radius: 1.5rem !important; /* Curvo y amigable */
+        border-radius: 1.5rem !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.05) !important;
     }
-    
-    .dark .frosted-card, .dark .bg-white, .dark .dark\:bg-slate-800 {
-        background-color: rgba(42, 41, 38, 0.85) !important; /* Marrón oscuro translúcido */
+
+    .dark #panel-psico-wrapper .frosted-card,
+    .dark #panel-psico-wrapper .bg-white {
+        background-color: rgba(42, 41, 38, 0.85) !important;
         backdrop-filter: blur(12px) !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important;
     }
 
     /* Textos para modo oscuro */
-    .dark #main-content * {
-        color: #E4EAE6;
+    .dark #panel-psico-wrapper * { color: #E4EAE6; }
+    .dark #panel-psico-wrapper .text-slate-900,
+    .dark #panel-psico-wrapper .text-slate-800,
+    .dark #panel-psico-wrapper .text-slate-700 { color: #E4EAE6 !important; }
+    .dark #panel-psico-wrapper .text-slate-500,
+    .dark #panel-psico-wrapper .text-slate-600,
+    .dark #panel-psico-wrapper .text-slate-400 { color: #a39c8e !important; }
+
+    .dark #panel-psico-wrapper .bg-blue-600 {
+        background-color: #4B7065 !important; color: #E4EAE6 !important;
     }
-    .dark .text-slate-900, .dark .text-slate-800, .dark .text-slate-700 {
-        color: #E4EAE6 !important;
-    }
-    .dark .text-slate-500, .dark .text-slate-600, .dark .text-slate-400 {
-        color: #a39c8e !important;
-    }
-    
-    /* Botones primarios (Agendar Cita etc) */
-    .dark .bg-blue-600 {
-        background-color: #4B7065 !important;
-        color: #E4EAE6 !important;
-    }
-    .dark .bg-blue-600:hover {
-        background-color: #3A5C3D !important;
-    }
-    
-    /* Table headers in dark mode */
-    .dark thead {
-        background-color: rgba(30, 30, 28, 0.6) !important;
-    }
-    
-    /* Chart ring fix for dark mode */
-    .dark canvas {
-        filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
-    }
+    .dark #panel-psico-wrapper .bg-blue-600:hover { background-color: #3A5C3D !important; }
+    .dark #panel-psico-wrapper thead { background-color: rgba(30,30,28,0.6) !important; }
+    .dark #panel-psico-wrapper canvas { filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
 </style>
-<div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full">
+
+<div id="panel-psico-wrapper" class="flex flex-col w-full flex-grow">
+<div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full pb-12">
 
 <!-- ══════════ BARRA DE ACCIONES RÁPIDAS ══════════ -->
     <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
@@ -509,6 +499,45 @@
     </div>
 </div>
 
+
+<!-- Modal: Detalle / Editar Nota -->
+<div id="detalleNotaModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="cerrarModalDetalleNota()"></div>
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-7 w-[95%] max-w-2xl relative z-10 shadow-2xl">
+        <button onclick="cerrarModalDetalleNota()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg mb-4" id="detalleNotaTituloTexto">Ver Nota</h3>
+
+        <div id="detalleNotaVista">
+            <h4 id="vistaNotaTitulo" class="font-bold text-slate-800 dark:text-slate-200 text-md mb-2"></h4>
+            <textarea id="vistaNotaContenido" readonly rows="12"
+                class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 mb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed resize-none focus:outline-none overflow-y-auto"
+            ></textarea>
+            <div class="flex gap-2">
+                <button onclick="activarEdicionNota()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-bold text-sm transition-colors">Editar</button>
+                <button onclick="eliminarNotaSeleccionada()" class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-bold text-sm transition-colors">Eliminar</button>
+            </div>
+        </div>
+
+        <div id="detalleNotaEdicion" class="hidden">
+            <input type="hidden" id="editNotaId">
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 mt-2">Título</label>
+            <input type="text" id="editNotaTitulo" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#8DA399] dark:text-white">
+            
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Contenido</label>
+            <textarea id="editNotaContenido" rows="5" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#8DA399] dark:text-white resize-none"></textarea>
+            
+            <p id="editNotaError" class="text-red-500 text-xs mb-3 hidden"></p>
+            
+            <div class="flex gap-2">
+                <button onclick="cancelarEdicionNota()" class="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-2 rounded-xl font-bold text-sm transition-colors">Cancelar</button>
+                <button onclick="guardarEdicionNota()" id="btnGuardarEdicionNota" class="flex-1 bg-[#8DA399] hover:bg-[#759286] text-white py-2 rounded-xl font-bold text-sm transition-colors">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
 
@@ -547,13 +576,15 @@ async function seleccionarPacienteNotas(idPaciente, nombre, btn) {
             container.innerHTML = `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin notas para ${esc(nombre)}. <button onclick="abrirNotaRapida(${idPaciente}, '${esc(nombre)}')" class="text-[#8DA399] dark:text-purple-400 hover:underline font-semibold">+ Agregar</button></p>`;
             return;
         }
+        window.notasGuardadas = {};
+        data.notas.forEach(n => window.notasGuardadas[n.id_nota] = n);
         container.innerHTML = data.notas.map(n => `
-            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-100 dark:border-purple-800/50">
+            <div onclick="abrirModalDetalleNota(${n.id_nota})" class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-100 dark:border-purple-800/50 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-800/40 transition-colors">
                 <div class="flex items-start justify-between gap-2">
                     <p class="text-sm font-bold text-slate-800 dark:text-slate-200">${esc(n.titulo)}</p>
                     <p class="text-[10px] text-slate-400 dark:text-slate-500 shrink-0">${n.fecha_creacion?.slice(0,10) || ''}</p>
                 </div>
-                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">${esc(n.contenido)}</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed line-clamp-3">${esc(n.contenido)}</p>
             </div>
         `).join('') + `<button onclick="abrirNotaRapida(${idPaciente}, '${esc(nombre)}')" class="w-full mt-2 py-2 text-xs font-semibold text-[#8DA399] hover:bg-[#8DA399]/10 border-[#8DA399]/30 dark:text-purple-400 dark:hover:bg-purple-900/50 dark:border-purple-800/50 rounded-xl border-2 border-dashed transition-colors">+ Nueva nota</button>`;
     } catch(e) {
@@ -578,6 +609,122 @@ function cerrarNotaRapida() {
     document.getElementById('notaRapidaModal').classList.remove('flex');
     document.body.style.overflow = '';
 }
+
+
+// ─── Modal: Detalle Nota ──────────────────────────────────────────
+let notaSeleccionadaIdPaciente = null;
+
+function abrirModalDetalleNota(idNota) {
+    const nota = window.notasGuardadas[idNota];
+    if(!nota) return;
+    
+    // Almacenar el paciente para poder recargar sus notas
+    notaSeleccionadaIdPaciente = nota.id_paciente;
+
+    // Llenar vista
+    document.getElementById('vistaNotaTitulo').textContent = nota.titulo;
+    document.getElementById('vistaNotaContenido').value = nota.contenido;
+    
+    // Llenar edición
+    document.getElementById('editNotaId').value = nota.id_nota;
+    document.getElementById('editNotaTitulo').value = nota.titulo;
+    document.getElementById('editNotaContenido').value = nota.contenido;
+    
+    // Mostrar vista, ocultar edición
+    document.getElementById('detalleNotaVista').classList.remove('hidden');
+    document.getElementById('detalleNotaEdicion').classList.add('hidden');
+    document.getElementById('detalleNotaTituloTexto').textContent = "Ver Nota";
+
+    const modal = document.getElementById('detalleNotaModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalDetalleNota() {
+    const modal = document.getElementById('detalleNotaModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+function activarEdicionNota() {
+    document.getElementById('detalleNotaVista').classList.add('hidden');
+    document.getElementById('detalleNotaEdicion').classList.remove('hidden');
+    document.getElementById('detalleNotaTituloTexto').textContent = "Editar Nota";
+}
+
+function cancelarEdicionNota() {
+    document.getElementById('detalleNotaVista').classList.remove('hidden');
+    document.getElementById('detalleNotaEdicion').classList.add('hidden');
+    document.getElementById('detalleNotaTituloTexto').textContent = "Ver Nota";
+}
+
+async function guardarEdicionNota() {
+    const idNota = document.getElementById('editNotaId').value;
+    const titulo = document.getElementById('editNotaTitulo').value.trim();
+    const contenido = document.getElementById('editNotaContenido').value.trim();
+    const err = document.getElementById('editNotaError');
+    const btn = document.getElementById('btnGuardarEdicionNota');
+
+    if (!titulo || !contenido) {
+        err.textContent = 'Llena todos los campos';
+        err.classList.remove('hidden');
+        return;
+    }
+    err.classList.add('hidden');
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/editarNota', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id_nota: parseInt(idNota), titulo, contenido })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            cerrarModalDetalleNota();
+            if (notaSeleccionadaIdPaciente) {
+                const pacienteInfo = document.getElementById('titulo-seccion-notas').textContent.replace('Notas de: ', '');
+                cargarNotas(notaSeleccionadaIdPaciente, pacienteInfo);
+            }
+        } else {
+            throw new Error(data.error || 'Error');
+        }
+    } catch(e) {
+        err.textContent = e.message;
+        err.classList.remove('hidden');
+    }
+    btn.disabled = false;
+    btn.textContent = 'Guardar';
+}
+
+async function eliminarNotaSeleccionada() {
+    if (!confirm('¿Estás seguro de eliminar esta nota permanentemente?')) return;
+    const idNota = document.getElementById('editNotaId').value;
+    
+    try {
+        const res = await fetch(BASE + 'panel_psicologas/eliminarNota', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id_nota: parseInt(idNota) })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            cerrarModalDetalleNota();
+            if (notaSeleccionadaIdPaciente) {
+                const pacienteInfo = document.getElementById('titulo-seccion-notas').textContent.replace('Notas de: ', '');
+                cargarNotas(notaSeleccionadaIdPaciente, pacienteInfo);
+            }
+        } else {
+            alert(data.error || 'Error al eliminar');
+        }
+    } catch(e) {
+        alert('Error: ' + e.message);
+    }
+}
+
 
 async function guardarNotaRapida() {
     const idPaciente = document.getElementById('notaRapidaIdUsuario').value;
@@ -1444,4 +1591,5 @@ async function eliminarHorario(idDisponibilidad) {
         </div>
     </div>
 </div>
+</div><!-- /panel-psico-wrapper -->
 

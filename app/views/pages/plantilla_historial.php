@@ -78,6 +78,9 @@ $pacienteNombre = htmlspecialchars($paciente['nombre'] ?? 'Paciente Desconocido'
         .nota-contenido {
             font-size: 14px;
             white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
             color: #4b5563;
         }
         .footer {

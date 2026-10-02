@@ -70,6 +70,9 @@ $content = $content ?? '';
 
         <!-- Modal de Login (global) -->
         <?php require __DIR__ . '/../partials/login_modal.php'; ?>
+        
+        <!-- Modal de Olvide Contraseña (global) -->
+        <?php require __DIR__ . '/../partials/forgot_password_modal.php'; ?>
 
         <!-- Modal de Registro (global) -->
         <?php require __DIR__ . '/../partials/register_modal.php'; ?>
