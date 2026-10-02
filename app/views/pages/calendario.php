@@ -48,14 +48,14 @@
     .calendar-grid > div.font-bold { background: transparent !important; border: none !important; font-size: 0.75rem; letter-spacing: 1px; color: #a39c8e !important; }
 
     /* Días del calendario (Piedras/Stickers redondos) */
-    .day-btn, .calendar-grid > div:not(.font-bold) {
+    .calendar-grid > div:not(.font-bold) {
         background-color: rgba(244, 239, 230, 0.6) !important;
         border: 1px solid transparent !important;
         border-radius: 1rem !important;
         transition: all 0.3s ease !important;
         font-weight: 600 !important;
     }
-    .dark .day-btn, .dark .calendar-grid > div:not(.font-bold) {
+    .dark .calendar-grid > div:not(.font-bold) {
         background-color: rgba(30, 30, 28, 0.6) !important;
     }
 
@@ -78,13 +78,13 @@
 
     /* COLORES DISPONIBILIDAD ORGÁNICOS */
     /* Claro */
-    .day-btn.bg-green-500 { background-color: #A3B19B !important; color: #2C3634 !important; }
-    .day-btn.bg-yellow-500 { background-color: #D4B98C !important; color: #4A3511 !important; }
-    .day-btn.bg-red-500 { background-color: #D69C93 !important; color: #4A1A1A !important; }
+    .calendar-grid .day-btn.bg-green-500 { background-color: #A3B19B !important; color: #2C3634 !important; }
+    .calendar-grid .day-btn.bg-yellow-500 { background-color: #D4B98C !important; color: #4A3511 !important; }
+    .calendar-grid .day-btn.bg-red-500 { background-color: #D69C93 !important; color: #4A1A1A !important; }
     /* Oscuro */
-    .dark .day-btn.bg-green-500 { background-color: #3A5C3D !important; color: #E4EAE6 !important; }
-    .dark .day-btn.bg-yellow-500 { background-color: #8A6538 !important; color: #E4EAE6 !important; }
-    .dark .day-btn.bg-red-500 { background-color: #73302B !important; color: #E4EAE6 !important; }
+    .dark .calendar-grid .day-btn.bg-green-500 { background-color: #3A5C3D !important; color: #E4EAE6 !important; }
+    .dark .calendar-grid .day-btn.bg-yellow-500 { background-color: #8A6538 !important; color: #E4EAE6 !important; }
+    .dark .calendar-grid .day-btn.bg-red-500 { background-color: #73302B !important; color: #E4EAE6 !important; }
 
     /* Leyenda */
     .mt-8 .bg-green-500 { background-color: #A3B19B !important; border-radius: 50% !important; border: none !important;}

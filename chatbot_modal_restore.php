@@ -54,12 +54,12 @@ if (!empty($_SESSION['user'])) {
      Se abre con: openChatbotModal()
      ═══════════════════════════════════════════════════════════ -->
 
-<div id="chatbotModal" class="fixed inset-0 z-50 hidden flex-col justify-center items-center p-4 md:p-6" role="dialog" aria-modal="true" aria-labelledby="chatbotTitle">
+<div id="chatbotModal" class="fixed inset-0 z-50 hidden flex-col justify-end" role="dialog" aria-modal="true" aria-labelledby="chatbotTitle">
     <!-- Backdrop oscuro -->
     <div id="chatbotBackdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeChatbotModal()"></div>
 
     <!-- Drawer Inferior -->
-    <div id="chatbotDrawer" class="relative w-full max-w-2xl w-full mx-auto bg-white dark:bg-slate-900 rounded-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.15)] p-6 md:p-8 transform transition-transform duration-300 max-h-[92vh] overflow-y-auto">
+    <div id="chatbotDrawer" class="relative w-full max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-t-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.15)] p-6 md:p-8 transform transition-transform duration-300 max-h-[92vh] overflow-y-auto">
         
         <!-- Botón cerrar -->
         <button onclick="closeChatbotModal()" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors focus:outline-none z-10">
@@ -70,141 +70,58 @@ if (!empty($_SESSION['user'])) {
         <div class="flex justify-center mb-6">
             <div class="w-10 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full cursor-pointer" onclick="closeChatbotModal()"></div>
         </div>
-
+        
         <!-- ──════════════ PASO 0: MENÚ INICIAL ════════════── -->
-<style>
-            /* Estilos específicos para la nueva UI de Acceso Rápido */
-            #chatbotDrawer {
-                background-color: #faf7f2 !important; /* Crema muy suave */
-                border-radius: 2rem !important;
-            }
-            .dark #chatbotDrawer {
-                background-color: #1e1d1b !important;
-            }
-            
-            /* Avatar Glow */
-            .avatar-glow {
-                box-shadow: 0 0 50px 20px rgba(220, 150, 120, 0.35);
-                border: 2px solid #faf7f2;
-            }
-            .dark .avatar-glow {
-                box-shadow: 0 0 50px 20px rgba(220, 150, 120, 0.15);
-                border-color: #1e1d1b;
-            }
-
-            /* Botones abstractos */
-            .cb-btn-abstract {
-                background-color: #f7f3ec;
-                border: 1px solid #e8e1d5;
-                border-radius: 1.5rem;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-                transition: transform 0.2s, box-shadow 0.2s;
-            }
-            .dark .cb-btn-abstract {
-                background-color: #2a2826;
-                border-color: #383532;
-            }
-            .cb-btn-abstract:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-            }
-            
-            /* Formas decorativas (Esquina inferior derecha) */
-            .shape-1, .shape-2 {
-                position: absolute;
-                border-radius: 50%;
-                z-index: 0;
-            }
-            /* Agendar / Reprogramar (Salvia y Terracota) */
-            .shape-sage { width: 80px; height: 80px; background-color: #A3B19B; right: 20px; bottom: -20px; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; opacity: 0.8; }
-            .shape-terra { width: 50px; height: 50px; background-color: #D69C93; right: -10px; bottom: -10px; border-radius: 50% 50% 0 50%; opacity: 0.9; }
-            
-            /* Cancelar / Recursos (Solo Terracota/Arena) */
-            .shape-sand { width: 70px; height: 70px; background-color: #D4B98C; right: 10px; bottom: -30px; opacity: 0.5; }
-            
-            /* Textos e iconos sobre las formas */
-            .cb-btn-content {
-                position: relative;
-                z-index: 10;
-            }
-        </style>
-
-        <div id="cbStep0" class="cb-step pb-8">
-            <div class="mb-8 text-center mt-4">
-                <!-- Avatar con resplandor -->
-                <div class="relative inline-block mb-6">
-                    <div class="w-[84px] h-[84px] rounded-full bg-gradient-to-tr from-amber-200 to-orange-400 flex items-center justify-center mx-auto avatar-glow overflow-hidden">
-                        <?php 
-                            $avatarUrl = !empty($_SESSION['user']['foto_perfil']) ? URL_BASE . 'public/uploads/profiles/' . $_SESSION['user']['foto_perfil'] : '';
-                            if ($avatarUrl): 
-                        ?>
-                            <img src="<?= $avatarUrl ?>" alt="Perfil" class="w-full h-full object-cover">
-                        <?php else: ?>
-                            <span class="material-symbols-outlined text-white text-[44px]">face_4</span>
-                        <?php endif; ?>
-                    </div>
+        <div id="cbStep0" class="cb-step">
+            <div class="mb-8 text-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-100 dark:shadow-none">
+                    <span class="material-symbols-outlined text-white text-[32px]">smart_toy</span>
                 </div>
-                
-                <h2 id="chatbotTitle" class="text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">Hola, estamos aquí para ti. ¿En qué podemos ayudarte?</h2>
+                <h2 id="chatbotTitle" class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-1">Hola, estamos aquí para ti. ¿En qué podemos ayudarte?</h2>
                 <p class="text-sm text-slate-500 dark:text-slate-400">Selecciona una de las opciones para comenzar.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 px-2 md:px-6">
-                
+            <div class="grid grid-cols-2 gap-3 md:gap-4">
                 <!-- Agendar Cita -->
-                <button onclick="cbGoToStep(1)" class="cb-btn-abstract group flex flex-col items-start justify-center p-6 h-32 text-left w-full">
-                    <div class="cb-btn-content flex flex-col items-start gap-3 w-full">
-                        <div class="text-[#8A6538] dark:text-[#d4c3a3]">
-                            <span class="material-symbols-outlined text-[36px]">edit_calendar</span>
-                        </div>
-                        <span class="text-[17px] font-semibold text-slate-700 dark:text-slate-200">Agendar Cita</span>
+                <button onclick="cbGoToStep1()" class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-[28px]">calendar_month</span>
                     </div>
-                    <div class="shape-1 shape-sage"></div>
-                    <div class="shape-2 shape-terra"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Agendar Cita</span>
                 </button>
                 
                 <!-- Cancelar Cita -->
-                <button onclick="cbGoToCancelList()" class="cb-btn-abstract group flex flex-col items-start justify-center p-6 h-32 text-left w-full">
-                    <div class="cb-btn-content flex flex-col items-start gap-3 w-full">
-                        <div class="text-[#8A6538] dark:text-[#d4c3a3]">
-                            <span class="material-symbols-outlined text-[36px]">event_busy</span>
-                        </div>
-                        <span class="text-[17px] font-semibold text-slate-700 dark:text-slate-200">Cancelar Cita</span>
+                <button onclick="cbGoToCancelList()" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-[28px]">cancel</span>
                     </div>
-                    <div class="shape-1 shape-sand"></div>
-                    <div class="shape-2 shape-terra"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Cancelar Cita</span>
                 </button>
                 
                 <!-- Reprogramar -->
-                <button onclick="cbGoToReprogramList()" class="cb-btn-abstract group flex flex-col items-start justify-center p-6 h-32 text-left w-full">
-                    <div class="cb-btn-content flex flex-col items-start gap-3 w-full">
-                        <div class="text-[#8A6538] dark:text-[#d4c3a3]">
-                            <span class="material-symbols-outlined text-[36px]">update</span>
-                        </div>
-                        <span class="text-[17px] font-semibold text-slate-700 dark:text-slate-200">Reprogramar</span>
+                <button onclick="cbGoToReprogramList()" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-[28px]">sync</span>
                     </div>
-                    <div class="shape-1 shape-sage"></div>
-                    <div class="shape-2 shape-terra"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Reprogramar</span>
                 </button>
                 
                 <!-- Recursos -->
-                <button onclick="window.location.href='<?= URL_BASE ?><?= ($cb_userRol === 'psicologo') ? 'panel_psicologas/recursos' : 'citas/misRecursos' ?>'" class="cb-btn-abstract group flex flex-col items-start justify-center p-6 h-32 text-left w-full">
-                    <div class="cb-btn-content flex flex-col items-start gap-3 w-full">
-                        <div class="text-[#8A6538] dark:text-[#d4c3a3]">
-                            <span class="material-symbols-outlined text-[36px]">menu_book</span>
-                        </div>
-                        <span class="text-[17px] font-semibold text-slate-700 dark:text-slate-200">Recursos</span>
+                <button onclick="window.location.href='<?= URL_BASE ?><?= ($cb_userRol === 'psicologo') ? 'panel_psicologas/recursos' : 'citas/misRecursos' ?>'" 
+                    class="group flex flex-col items-center justify-center p-5 bg-white border-2 border-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 transition-all active:scale-[0.97] duration-150 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/50 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-[28px]">auto_stories</span>
                     </div>
-                    <div class="shape-1 shape-sand"></div>
-                    <div class="shape-2 shape-terra"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-200 text-center">Recursos</span>
                 </button>
 
             </div>
+            <div class="h-4"></div>
         </div>
 
-<!-- ══════════════ PASO 1: SELECCIONAR FECHA ══════════════ -->
+        <!-- ══════════════ PASO 1: SELECCIONAR FECHA ══════════════ -->
         <div id="cbStep1" class="cb-step hidden">
             <div class="mb-6">
                 <button onclick="cbGoToStep(0)" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 transition-colors mb-4">

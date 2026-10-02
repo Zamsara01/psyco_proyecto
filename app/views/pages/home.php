@@ -99,7 +99,7 @@
         <!-- Botones CTAs -->
         <div class="flex flex-wrap justify-center gap-4 md:gap-5">
             
-            <button onclick="openChatbotModal()" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+            <button onclick="openAcceso RápidoModal()" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
                 <span class="material-symbols-outlined text-[20px]">smart_toy</span>
                 Gestionar Citas
             </button>

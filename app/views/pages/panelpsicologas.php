@@ -5,29 +5,66 @@
  */
 ?>
 <style>
-#main-content {
-    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-}
-#main-content::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(244, 247, 246, 0.55);
-    pointer-events: none;
-    z-index: 0;
-}
-.dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+    /* Fondo general */
+    #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        background-color: transparent !important;
+    }
+    
+    /* Fondo Modo Oscuro */
+    .dark #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
+    }
 
-/* Frosted card class */
-.frosted-card {
-    background: rgba(255,255,255,0.88) !important;
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.6);
-    border-radius: 1rem;
-}
+    /* PANELES (Efecto Papel/Cristal Cálido) */
+    .frosted-card, .bg-white, .dark\:bg-slate-800 {
+        background-color: rgba(253, 251, 247, 0.85) !important; /* Papel crema translúcido */
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(212, 195, 163, 0.5) !important;
+        border-radius: 1.5rem !important; /* Curvo y amigable */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05) !important;
+    }
+    
+    .dark .frosted-card, .dark .bg-white, .dark .dark\:bg-slate-800 {
+        background-color: rgba(42, 41, 38, 0.85) !important; /* Marrón oscuro translúcido */
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important;
+    }
+
+    /* Textos para modo oscuro */
+    .dark #main-content * {
+        color: #E4EAE6;
+    }
+    .dark .text-slate-900, .dark .text-slate-800, .dark .text-slate-700 {
+        color: #E4EAE6 !important;
+    }
+    .dark .text-slate-500, .dark .text-slate-600, .dark .text-slate-400 {
+        color: #a39c8e !important;
+    }
+    
+    /* Botones primarios (Agendar Cita etc) */
+    .dark .bg-blue-600 {
+        background-color: #4B7065 !important;
+        color: #E4EAE6 !important;
+    }
+    .dark .bg-blue-600:hover {
+        background-color: #3A5C3D !important;
+    }
+    
+    /* Table headers in dark mode */
+    .dark thead {
+        background-color: rgba(30, 30, 28, 0.6) !important;
+    }
+    
+    /* Chart ring fix for dark mode */
+    .dark canvas {
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+    }
 </style>
 <div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full">
 

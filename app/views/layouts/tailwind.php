@@ -42,9 +42,9 @@ $content = $content ?? '';
     <!--
         TAILWIND CSS COMPILADO (Tailwind CLI v4)
         Generado con: npm run build
-        Fuente: public/css/tailwind-input.css → public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?>
+        Fuente: public/css/tailwind-input.css → public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>
     -->
-    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?>">
+    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>">
 
     <!-- Estilos adicionales / Utilidades del proyecto -->
     <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>">

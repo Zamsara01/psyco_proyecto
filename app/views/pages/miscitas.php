@@ -102,7 +102,7 @@
             <h1 class="text-2xl font-black text-slate-800 dark:text-slate-100">Mis Citas</h1>
             <p class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Gestione y edite sus citas programadas</p>
         </div>
-        <button onclick="openChatbotModal()"
+        <button onclick="openAcceso RápidoModal()"
             class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-md transition-all hover:scale-105 active:scale-95"
             style="background: linear-gradient(135deg,#6B8CAE,#5a7e9f);">
             <span class="material-symbols-outlined text-[17px]">add</span>
@@ -134,7 +134,7 @@
             <span class="material-symbols-outlined text-[64px] text-slate-300 block mb-4">event_busy</span>
             <h3 class="text-lg font-bold text-slate-600 dark:text-slate-300 mb-2">Sin citas registradas</h3>
             <p class="text-slate-400 text-sm mb-6">Agenda tu primera cita con una de nuestras psicólogas.</p>
-            <button onclick="openChatbotModal()"
+            <button onclick="openAcceso RápidoModal()"
                 class="px-6 py-3 text-white font-bold rounded-xl"
                 style="background:#6B8CAE;">
                 Agendar ahora

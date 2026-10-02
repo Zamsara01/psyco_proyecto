@@ -66,11 +66,11 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </div>
             </button>
 
-            <!-- Chatbot — bloqueado -->
-            <button onclick="openLoginRequiredModal('Chatbot de Citas')"
+            <!-- Acceso Rápido — bloqueado -->
+            <button onclick="openLoginRequiredModal('Acceso Rápido')"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-[#8DA399] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634] relative">
                 <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-slate-400">forum</span>
-                Chatbot
+                Acceso Rápido
                 <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600 group-hover:text-slate-400">lock</span>
                 
                 <!-- Tooltip -->
@@ -97,11 +97,11 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Calendario
             </a>
 
-            <!-- Chatbot -->
+            <!-- Acceso Rápido -->
             <button onclick="openChatbotModal()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
-                Chatbot
+                Acceso Rápido
             </button>
 
             <!-- Mis Recursos (Dropdown) -->
@@ -148,11 +148,11 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Calendario
             </a>
 
-            <!-- Chatbot -->
+            <!-- Acceso Rápido -->
             <button onclick="openChatbotModal()"
                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
-                Chatbot
+                Acceso Rápido
             </button>
 
             <!-- Mi Panel -->
