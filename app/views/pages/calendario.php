@@ -243,7 +243,7 @@
 
     <!-- Right Section: Psychologist Panel only -->
     <aside class="lg:col-span-12 xl:col-span-4 flex flex-col gap-6">
-        <div class="glass-panel bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
+        <div class="glass-panel overflow-hidden bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
             <div class="p-6 border-b border-slate-50 dark:border-slate-700/60">
                 <h3 class="font-handwritten text-3xl font-bold text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
                 <p class="text-body-sm text-slate-500 dark:text-slate-400" id="psico-count">Haz clic en un día para ver disponibilidad</p>
@@ -258,8 +258,7 @@
                 </div>
             </div>
 
-            <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-b-2xl">
-    </section>
+            <div class="p-6 bg-slate-50 dark:bg-slate-800/50">
                 <?php if (isset($_SESSION['user'])): ?>
                     <p class="text-sm text-slate-500 dark:text-slate-400 text-center font-medium">
                         <span class="material-symbols-outlined align-middle text-[18px] mr-1">touch_app</span>
@@ -267,7 +266,17 @@
                             Selecciona un psicólogo y una hora para agendar una cita
                         <?php else: ?>
                             Haz clic en un psicólogo arriba para agendar tu cita
-<?php endif; ?>
+                        <?php endif; ?>
+                    </p>
+                <?php else: ?>
+                    <button type="button" onclick="openLoginModal()" class="w-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-4 rounded-xl shadow-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 duration-150">
+                        Inicia sesión para agendar
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </aside>
+</main>
 
 <!-- Carousel JavaScript -->
 <script>
@@ -329,16 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showTip(0);
 });
 </script>
-                    </p>
-                <?php else: ?>
-                    <button type="button" onclick="openLoginModal()" class="w-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-4 rounded-xl shadow-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 duration-150">
-                        Inicia sesión para agendar
-                    </button>
-                <?php endif; ?>
-            </div>
-        </div>
-    </aside>
-</main>
 
 
 

@@ -852,6 +852,142 @@ class ControllerPanel_psicologas extends Controller
     }
 
     // ────────────────────────────────────────────────────────────────
+    // GET  /panel_psicologas/proponerColega — formulario de propuesta
+    // POST /panel_psicologas/storePropuesta — guarda la propuesta
+    // GET  /panel_psicologas/solicitudesPendientes — lista para aprobar
+    // POST /panel_psicologas/aprobarPropuesta — aprueba y activa
+    // POST /panel_psicologas/rechazarPropuesta — rechaza y elimina
+    // ────────────────────────────────────────────────────────────────
+
+    /** Muestra el formulario para proponer un nuevo psicólogo */
+    public function proponerColega(): void
+    {
+        $this->requirePsicologo();
+        require_once dirname(__DIR__, 2) . '/core/Database.php';
+        require_once dirname(__DIR__) . '/models/SolicitudPsicologoModel.php';
+
+        $solModel     = new SolicitudPsicologoModel();
+        $idPsicologo  = (int)$_SESSION['user']['id'];
+
+        // Obtener especialidades para el select
+        $pdo          = Database::getInstance();
+        $stmt         = $pdo->query('SELECT id_especialidad, nombre FROM especialidades ORDER BY nombre');
+        $especialidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Mis propuestas pendientes (para mostrarlas debajo del formulario)
+        $misPropuestas = $solModel->obtenerMisPropuestas($idPsicologo);
+
+        $this->layout = 'tailwind';
+        $this->render('pages/proponer_colega', [
+            'especialidades' => $especialidades,
+            'misPropuestas'  => $misPropuestas,
+        ]);
+    }
+
+    /** Procesa el formulario de propuesta (POST) */
+    public function storePropuesta(): void
+    {
+        $this->requirePsicologo(true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']); exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/SolicitudPsicologoModel.php';
+        $model       = new SolicitudPsicologoModel();
+        $idPsicologo = (int)$_SESSION['user']['id'];
+
+        $nombre      = trim($_POST['nombre']   ?? '');
+        $correo      = trim($_POST['correo']   ?? '');
+        $password    = $_POST['password']      ?? '';
+        $idEsp       = (int)($_POST['id_especialidad'] ?? 0);
+
+        if (!$nombre || !$correo || !$password || !$idEsp) {
+            echo json_encode(['ok' => false, 'error' => 'Todos los campos son obligatorios']); exit;
+        }
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['ok' => false, 'error' => 'Correo inválido']); exit;
+        }
+        if (strlen($password) < 6) {
+            echo json_encode(['ok' => false, 'error' => 'La contraseña debe tener al menos 6 caracteres']); exit;
+        }
+        if ($model->correoExiste($correo)) {
+            echo json_encode(['ok' => false, 'error' => 'Ya existe una solicitud o psicólogo con ese correo']); exit;
+        }
+
+        $id = $model->crearSolicitud($nombre, $correo, $password, $idEsp, $idPsicologo);
+        echo json_encode(['ok' => true, 'id_solicitud' => $id]);
+        exit;
+    }
+
+    /** Lista las solicitudes que el psicólogo actual puede aprobar/rechazar */
+    public function solicitudesPendientes(): void
+    {
+        $this->requirePsicologo();
+        require_once dirname(__DIR__) . '/models/SolicitudPsicologoModel.php';
+
+        $model       = new SolicitudPsicologoModel();
+        $idPsicologo = (int)$_SESSION['user']['id'];
+        $pendientes  = $model->obtenerPendientes($idPsicologo);
+
+        $this->layout = 'tailwind';
+        $this->render('pages/solicitudes_psicologos', [
+            'pendientes' => $pendientes,
+        ]);
+    }
+
+    /** Aprueba una solicitud (POST, JSON) */
+    public function aprobarPropuesta(): void
+    {
+        $this->requirePsicologo(true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']); exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/SolicitudPsicologoModel.php';
+        $model       = new SolicitudPsicologoModel();
+        $idPsicologo = (int)$_SESSION['user']['id'];
+        $idSolicitud = (int)($_POST['id_solicitud'] ?? 0);
+
+        if (!$idSolicitud) {
+            echo json_encode(['ok' => false, 'error' => 'ID de solicitud inválido']); exit;
+        }
+
+        $ok = $model->aprobarSolicitud($idSolicitud, $idPsicologo);
+        if ($ok) {
+            echo json_encode(['ok' => true, 'mensaje' => 'Psicólogo creado y activado correctamente']);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'No se pudo aprobar. Solo puede aprobar un psicólogo diferente al que propuso.']);
+        }
+        exit;
+    }
+
+    /** Rechaza y elimina una solicitud (POST, JSON) */
+    public function rechazarPropuesta(): void
+    {
+        $this->requirePsicologo(true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']); exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/SolicitudPsicologoModel.php';
+        $model       = new SolicitudPsicologoModel();
+        $idPsicologo = (int)$_SESSION['user']['id'];
+        $idSolicitud = (int)($_POST['id_solicitud'] ?? 0);
+
+        if (!$idSolicitud) {
+            echo json_encode(['ok' => false, 'error' => 'ID de solicitud inválido']); exit;
+        }
+
+        $ok = $model->rechazarSolicitud($idSolicitud, $idPsicologo);
+        if ($ok) {
+            echo json_encode(['ok' => true, 'mensaje' => 'Solicitud rechazada']);
+        } else {
+            echo json_encode(['ok' => false, 'error' => 'No se pudo rechazar. Solo puede rechazar un psicólogo diferente al que propuso.']);
+        }
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
     // Alias de compatibilidad → delega al guard centralizado en Controller.
     // Permite migrar los 22 call sites existentes sin tocarlos de golpe.
     // ────────────────────────────────────────────────────────────────

@@ -190,6 +190,20 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Historial Clínico
             </button>
 
+            <!-- Proponer Colega -->
+            <a href="<?= URL_BASE ?>panel_psicologas/proponerColega"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('panel_psicologas/proponerColega') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">person_add</span>
+                Proponer colega
+            </a>
+
+            <!-- Solicitudes Pendientes -->
+            <a href="<?= URL_BASE ?>panel_psicologas/solicitudesPendientes"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('panel_psicologas/solicitudesPendientes') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">approval</span>
+                Aprobar colegas
+            </a>
+
         <?php endif; ?>
         </div>
 
