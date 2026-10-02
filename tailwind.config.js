@@ -30,6 +30,16 @@ module.exports = {
     ],
     theme: {
         extend: {
+            boxShadow: {
+                "sm": "0 2px 10px rgba(0, 0, 0, 0.05)",
+                "DEFAULT": "0 8px 30px rgba(0, 0, 0, 0.08)",
+                "md": "0 12px 40px rgba(0, 0, 0, 0.1)",
+                "lg": "0 20px 50px rgba(0, 0, 0, 0.12)",
+                "xl": "0 30px 60px rgba(0, 0, 0, 0.15)",
+                "2xl": "0 40px 80px rgba(0, 0, 0, 0.2)",
+                "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)",
+                "none": "none",
+            },
             colors: {
                 "primary":                   "#0c6e00",
                 "primary-container":         "#46b033",
@@ -89,10 +99,15 @@ module.exports = {
                 "on-background":              "#191c1e",
             },
             borderRadius: {
-                "DEFAULT": "0.25rem",
-                "lg":      "0.5rem",
-                "xl":      "0.75rem",
-                "full":    "9999px",
+                "none": "0",
+                "sm": "0.5rem",
+                "DEFAULT": "0.75rem",
+                "md": "1rem",
+                "lg": "1.25rem",
+                "xl": "1.5rem",
+                "2xl": "1.75rem",
+                "3xl": "2.25rem",
+                "full": "9999px",
             },
             spacing: {
                 "unit":               "8px",

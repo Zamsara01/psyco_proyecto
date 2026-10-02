@@ -42,12 +42,12 @@ $content = $content ?? '';
     <!--
         TAILWIND CSS COMPILADO (Tailwind CLI v4)
         Generado con: npm run build
-        Fuente: public/css/tailwind-input.css → public/css/tailwind.css
+        Fuente: public/css/tailwind-input.css → public/css/tailwind.css?v=<?= time() ?><?= time() ?>
     -->
-    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css">
+    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css?v=<?= time() ?><?= time() ?>">
 
     <!-- Estilos adicionales / Utilidades del proyecto -->
-    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css">
+    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css?v=<?= time() ?><?= time() ?>">
 </head>
 <body class="text-on-surface min-h-screen flex flex-row font-body-md relative overflow-x-hidden">
     

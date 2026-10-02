@@ -58,251 +58,335 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
     }
 </style>
 
-<div class="relative z-10 p-6 md:p-8 max-w-6xl mx-auto w-full">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
 
-    <!-- Encabezado -->
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+/* MODO OSCURO ESPECÍFICO PARA ESTA VISTA (WINTON/COZY) */
+.dark #main-content {
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-color: transparent !important;
+}
+.dark #main-content::before {
+    display: block !important;
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 25, 20, 0.45); /* Tint oscuro sepia muy sutil para dejar ver el fondo real */
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Tipografía de notas/mensajes */
+.font-handwritten {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    line-height: 1.3;
+}
+
+/* Efecto de carta apilada sutil */
+.card-inner { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-tilted:nth-child(even) .card-inner { transform: rotate(0.8deg); }
+.card-tilted:nth-child(odd) .card-inner { transform: rotate(-0.8deg); }
+.card-tilted:hover .card-inner { transform: rotate(0deg) scale(1.015); z-index: 10; box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; }
+
+/* Custom Scrollbar for dropdowns */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #d4c3a3; border-radius: 10px; }
+</style>
+
+<div class="relative z-10 p-6 md:p-10 max-w-7xl mx-auto w-full">
+    <!-- Header General -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
-            <h1 class="text-2xl font-black text-slate-900">Gestión de Recursos</h1>
-            <p class="text-slate-500 text-sm mt-1">Publica videos, mensajes e imágenes para tus pacientes</p>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] drop-shadow-md mb-1">Gestión de Recursos</h1>
+            <p class="text-slate-500 dark:text-[#c4bcae] text-sm">Publica videos, mensajes e imágenes para tus pacientes</p>
         </div>
-        <span class="text-xs text-slate-400 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full font-medium">
-            <?= count($recursos) ?> recurso(s) publicados
-        </span>
+        <div class="bg-white/80 dark:bg-white/10 px-4 py-2 rounded-full border border-[#b0d0c4] dark:border-[#d4c3a3] shadow-md flex items-center gap-2">
+            <span class="text-[#3d6b5a] dark:text-[#3a2e1d] font-bold text-sm">Has compartido <?= count($recursos) ?> momentos de bienestar.</span>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
-
-        <!-- ══ PANEL PUBLICAR (izquierda) ══ -->
-        <div class="xl:col-span-2">
-            <div class="glass-card p-6 sticky top-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 avatar-orange rounded-2xl">
-                        <span class="material-symbols-outlined text-white">add_circle</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 relative">
+        
+        <!-- =================== LEFT PANEL (FORM) =================== -->
+        <div class="lg:col-span-5">
+            <div class="bg-white/80 dark:bg-white dark:!bg-[#2a2926]/95 backdrop-blur-md rounded-[2.5rem] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-200 dark:!border-white/10">
+                
+                <!-- Title inside form -->
+                <div class="flex items-center gap-4 mb-7">
+                    <div class="w-10 h-10 rounded-full border border-[#f5ebd7]/30 flex items-center justify-center text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7]">
+                        <span class="material-symbols-outlined text-[20px]">add</span>
                     </div>
-                    <h2 class="font-bold text-slate-800 dark:text-slate-100 text-lg">Publicar Recurso</h2>
+                    <h2 class="text-xl font-bold text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] leading-tight">Crear un Nuevo Recurso<br>de Bienestar</h2>
                 </div>
 
-                <!-- Tipo selector -->
+                <!-- SELECTOR DE TIPO -->
+                <input type="hidden" id="recursoTipo" value="video">
+                <label class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-2.5">Tipo de contenido</label>
+                <div class="grid grid-cols-3 gap-3 mb-6" id="tipoSelector">
+                    <button type="button" onclick="seleccionarTipo('video')" id="btn-tipo-video"
+                        class="tipo-btn active-tipo flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl border border-[#b0d0c4] dark:border-[#d4c3a3] bg-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d] transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[24px]">video_camera_front</span>
+                        <span class="text-xs font-bold">Video</span>
+                    </button>
+                    <button type="button" onclick="seleccionarTipo('mensaje')" id="btn-tipo-mensaje"
+                        class="tipo-btn flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#3a3732] text-slate-500 dark:text-[#c4bcae] transition-all">
+                        <span class="material-symbols-outlined text-[24px]">edit_note</span>
+                        <span class="text-xs font-bold">Nota</span>
+                    </button>
+                    <button type="button" onclick="seleccionarTipo('imagen')" id="btn-tipo-imagen"
+                        class="tipo-btn flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#424d45] text-slate-500 dark:text-[#c4bcae] transition-all">
+                        <span class="material-symbols-outlined text-[24px]">image</span>
+                        <span class="text-xs font-bold">Imagen</span>
+                    </button>
+                </div>
+
+                <!-- TÍTULO -->
                 <div class="mb-5">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Tipo de contenido</label>
-                    <div class="grid grid-cols-3 gap-2" id="tipoSelector">
-                        <button type="button" onclick="seleccionarTipo('video')" id="btn-tipo-video"
-                            class="tipo-btn active-tipo flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-xs font-bold transition-all border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-400">
-                            <span class="material-symbols-outlined text-[22px]">play_circle</span>
-                            Video
-                        </button>
-                        <button type="button" onclick="seleccionarTipo('mensaje')" id="btn-tipo-mensaje"
-                            class="tipo-btn flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-[#8DA399] hover:bg-[#8DA399]/10 hover:text-[#4a6e66] dark:border-slate-700 dark:text-slate-400 dark:hover:border-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-400">
-                            <span class="material-symbols-outlined text-[22px]">chat_bubble</span>
-                            Mensaje
-                        </button>
-                        <button type="button" onclick="seleccionarTipo('imagen')" id="btn-tipo-imagen"
-                            class="tipo-btn flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-emerald-700 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-400">
-                            <span class="material-symbols-outlined text-[22px]">image</span>
-                            Imagen
-                        </button>
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-1.5">Título *</label>
+                    <input type="text" id="recursoTitulo" placeholder="Nombre de la técnica o consejo"
+                        class="w-full bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border border-slate-200 dark:!border-white/10 rounded-2xl px-5 py-3.5 text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] text-sm focus:outline-none focus:border-[#8DA399] dark:focus:border-[#d4c3a3] transition-colors placeholder-[#666]">
+                </div>
+
+                <!-- CONTENIDO DINÁMICO (VIDEO/IMAGEN) -->
+                <div id="campoVideo" class="mb-5">
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-1.5">URL del video *</label>
+                    <input type="text" id="recursoUrl" placeholder="https://youtube.com/watch?v=..."
+                        class="w-full bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border border-slate-200 dark:!border-white/10 rounded-2xl px-5 py-3.5 text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] text-sm focus:outline-none focus:border-[#8DA399] dark:focus:border-[#d4c3a3] transition-colors placeholder-[#666]">
+                    <p class="text-slate-500 dark:text-[#a39c8e] text-[10px] mt-2 ml-1">Comparte un enlace de ayuda, como una meditación guiada.</p>
+                    
+                    <div id="youtubePreviewContainer" class="hidden mt-3 rounded-xl overflow-hidden border border-slate-200 dark:!border-white/10 shadow-inner"></div>
+                </div>
+
+                <div id="campoImagen" class="mb-5 hidden">
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-1.5">Subir Imagen *</label>
+                    <div class="relative group cursor-pointer bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border border-slate-200 dark:!border-white/10 border-dashed rounded-2xl px-5 py-6 text-center hover:border-[#d4c3a3] transition-colors">
+                        <input type="file" id="recursoImagen" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="previewImagen(this)">
+                        <span class="material-symbols-outlined text-slate-500 dark:text-[#a39c8e] text-3xl mb-1 group-hover:text-[#d4c3a3] transition-colors">cloud_upload</span>
+                        <p class="text-slate-500 dark:text-[#c4bcae] text-xs">Haz clic o arrastra tu imagen aquí</p>
                     </div>
-                    <input type="hidden" id="recursoTipo" value="video">
+                    <img id="imagenPreview" class="hidden mt-3 w-full h-32 object-cover rounded-xl border border-slate-200 dark:!border-white/10 shadow-inner" src="" alt="Vista previa">
                 </div>
 
-                <!-- Título -->
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Título *</label>
-                    <input type="text" id="recursoTitulo" placeholder="Ej: Técnica de respiración 4-7-8"
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
-                </div>
-
-                <div id="campoVideo" class="mb-4">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">URL del Video *</label>
-                    <input type="url" id="recursoUrl" placeholder="https://youtube.com/watch?v=..."
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
-                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">YouTube (con previsualización) y otros reproductores</p>
-
-                    <!-- Previsualización oEmbed -->
-                    <div id="youtubePreviewContainer" class="hidden mt-3 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 transition-all">
-                        <!-- Contenido dinámico inyectado por JS -->
-                    </div>
-                </div>
-
-                <div id="campoImagen" class="mb-4 hidden">
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Imagen *</label>
-                    <label for="recursoImagen"
-                        class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 cursor-pointer transition-all group">
-                        <span class="material-symbols-outlined text-[36px] text-slate-300 dark:text-slate-600 group-hover:text-emerald-400 dark:group-hover:text-emerald-500 transition-colors">cloud_upload</span>
-                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Haz clic para seleccionar imagen</span>
-                        <span class="text-[10px] text-slate-400 dark:text-slate-500">JPG, PNG, GIF, WebP · máx. 5 MB</span>
-                    </label>
-                    <input type="file" id="recursoImagen" accept="image/*" class="hidden" onchange="previewImagen(this)">
-                    <img id="imagenPreview" src="#" alt="Preview" class="hidden mt-3 w-full rounded-xl object-cover max-h-40 border border-slate-100 dark:border-slate-700">
-                </div>
-
-                <!-- Descripción / Mensaje -->
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5" id="labelDescripcion">Descripción</label>
-                    <textarea id="recursoDescripcion" rows="3" placeholder="Texto adicional o mensaje para el paciente..."
-                        class="w-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#6B8CAE] transition-colors resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"></textarea>
-                </div>
-
-                <!-- Destino -->
+                <!-- DESCRIPCIÓN -->
                 <div class="mb-5">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Destino</label>
+                    <label id="labelDescripcion" class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-1.5">Descripción</label>
+                    <textarea id="recursoDescripcion" rows="3" placeholder="Describe el impacto o la guía para tu paciente."
+                        class="w-full bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border border-slate-200 dark:!border-white/10 rounded-2xl px-5 py-3.5 text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] text-sm focus:outline-none focus:border-[#8DA399] dark:focus:border-[#d4c3a3] transition-colors resize-none placeholder-[#666]"></textarea>
+                </div>
+
+                <!-- DESTINO -->
+                <div class="mb-8 relative" id="selectorPaciente">
+                    <input type="hidden" id="recursoDestino" value="todos">
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-[#a39c8e] uppercase tracking-widest mb-2">Destino</label>
+                    
                     <div class="flex gap-2">
                         <button type="button" onclick="seleccionarDestino('todos')" id="btn-dest-todos"
-                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a] dark:border-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
-                            <span class="material-symbols-outlined text-[16px]">groups</span>
-                            Todos mis pacientes
+                            class="flex-1 flex items-center justify-center gap-2 bg-[#d4c3a3] border border-[#b0d0c4] dark:border-[#d4c3a3] rounded-2xl py-2.5 px-3 transition-colors shadow-sm text-[#3d6b5a] dark:text-[#3a2e1d]">
+                            <span class="material-symbols-outlined text-[20px]">groups</span>
+                            <div class="flex -space-x-2 opacity-80">
+                                <?php $limit = min(3, count($pacientes ?? [])); for($i=0; $i<$limit; $i++): ?>
+                                    <div class="w-5 h-5 rounded-full bg-white dark:!bg-[#2a2926] border border-[#b0d0c4] dark:border-[#d4c3a3] flex items-center justify-center text-[8px] text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] font-bold">
+                                        <?= strtoupper(substr($pacientes[$i]['nombre'], 0, 1)) ?>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
                         </button>
+
                         <button type="button" onclick="seleccionarDestino('especifico')" id="btn-dest-especifico"
-                            class="dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50 dark:border-slate-700 dark:text-slate-400 dark:hover:border-indigo-700 dark:hover:bg-indigo-900/30">
-                            <span class="material-symbols-outlined text-[16px]">person</span>
+                            class="flex-1 flex items-center justify-center gap-2 bg-[#23221f] border border-slate-200 dark:!border-white/10 rounded-2xl py-2.5 px-3 text-slate-500 dark:text-[#c4bcae] text-xs font-bold hover:bg-[#33322d] transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">person_search</span>
                             Paciente específico
                         </button>
                     </div>
-                    <input type="hidden" id="recursoDestino" value="todos">
-                </div>
 
-                <!-- Selector de múltiples pacientes -->
-                <div id="selectorPaciente" class="mb-5 hidden">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Seleccionar Pacientes</label>
-                    
-                    <!-- Controles de búsqueda y filtrado -->
-                    <div class="space-y-2 mb-3">
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 text-[18px]">search</span>
-                            <input type="text" id="buscarPacienteRec" placeholder="Buscar por nombre o correo..."
-                                oninput="filtrarYMostrarPacientes()"
-                                class="w-full pl-9 pr-4 py-2 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-xl text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500">
-                        </div>
+                    <!-- Buscador Desplegable para Pacientes Específicos -->
+                    <div id="resultadosBusqRec" class="hidden absolute top-full z-50 w-full mt-2 class="bg-white dark:bg-white dark:!bg-[#2a2926] border border-slate-200 dark:!border-white/10 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.6)] max-h-64 flex flex-col overflow-hidden left-0 right-0 mt-2 bg-white dark:!bg-[#2a2926] border border-[#b0d0c4] dark:border-[#d4c3a3]/30 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] z-50 max-h-64 flex flex-col overflow-hidden">
                         
-                        <div class="grid grid-cols-2 gap-2">
-                            <!-- Filtro de Trastorno -->
-                            <select id="filtroTrastorno" onchange="filtrarYMostrarPacientes()"
-                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
-                                <option value="">Todos los trastornos</option>
-                                <option value="Ansiedad">Ansiedad</option>
-                                <option value="Depresión">Depresión</option>
-                                <option value="Estrés">Estrés</option>
-                                <option value="Autoestima">Autoestima</option>
-                                <option value="Duelo">Duelo</option>
-                                <option value="Académico / Concentración">Académico / Concentración</option>
-                                <option value="Adaptación / Conducta">Adaptación / Conducta</option>
-                                <option value="Otros">Otros</option>
-                                <option value="Sin especificar">Sin especificar</option>
-                            </select>
-                            
-                            <!-- Ordenación -->
-                            <select id="ordenarPacientes" onchange="filtrarYMostrarPacientes()"
-                                class="border-2 border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs focus:outline-none focus:border-[#6B8CAE] transition-colors bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-medium">
-                                <option value="AZ">Nombre (A-Z)</option>
-                                <option value="ZA">Nombre (Z-A)</option>
-                            </select>
+                        <div class="p-3 border-b border-slate-200 dark:!border-white/10 bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18]">
+                            <div class="flex items-center gap-2 bg-white dark:!bg-[#2a2926] rounded-xl px-3 py-2 border border-slate-200 dark:!border-white/10">
+                                <span class="material-symbols-outlined text-slate-500 dark:text-[#a39c8e] text-[18px]">search</span>
+                                <input type="text" id="buscarPacienteRec" placeholder="Buscar paciente..." oninput="filtrarYMostrarPacientes()"
+                                    class="bg-transparent border-none outline-none text-sm w-full text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] placeholder-[#666]">
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <select id="filtroTrastorno" onchange="filtrarYMostrarPacientes()" class="text-xs bg-white dark:!bg-[#2a2926] border border-slate-200 dark:!border-white/10 text-slate-500 dark:text-[#c4bcae] rounded-lg px-2 py-1 outline-none flex-1">
+                                    <option value="">Cualquier trastorno</option>
+                                    <option value="Ansiedad">Ansiedad</option>
+                                    <option value="Depresión">Depresión</option>
+                                    <option value="Estrés">Estrés</option>
+                                    <option value="TDAH">TDAH</option>
+                                    <option value="TCA">TCA</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                                <select id="ordenarPacientes" onchange="filtrarYMostrarPacientes()" class="text-xs bg-white dark:!bg-[#2a2926] border border-slate-200 dark:!border-white/10 text-slate-500 dark:text-[#c4bcae] rounded-lg px-2 py-1 outline-none">
+                                    <option value="AZ">A-Z</option>
+                                    <option value="ZA">Z-A</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="pacientesListContainer" class="overflow-y-auto custom-scrollbar p-2 space-y-1">
+                            <!-- JS inyecta lista de pacientes aquí -->
+                        </div>
+
+                        <div class="p-3 border-t border-white/5 bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] flex justify-between items-center">
+                            <span id="txt-seleccion-rec" class="text-xs font-bold text-[#d4c3a3]">0 seleccionados</span>
+                            <button type="button" onclick="document.getElementById('resultadosBusqRec').classList.add('hidden')"
+                                class="px-3 py-1 bg-white dark:bg-[#3a3732] text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] rounded-lg text-xs font-bold hover:bg-[#4a4742]">Listo</button>
                         </div>
                     </div>
-                    
-                    <!-- Lista de Pacientes -->
-                    <div id="pacientesListContainer" class="max-h-56 overflow-y-auto border-2 border-slate-100 dark:border-slate-700 rounded-xl p-2 space-y-1 bg-slate-50/50 dark:bg-slate-800/50">
-                        <!-- Se genera dinámicamente con JS -->
-                    </div>
-                    
-                    <!-- Resumen de selección -->
-                    <div class="flex items-center justify-between mt-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                        <span id="pacientesSeleccionadosCount">0 pacientes seleccionados</span>
-                        <button type="button" onclick="limpiarSeleccionPacientes()" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline">
-                            Limpiar selección
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Error / Success -->
-                <div id="pubError" class="hidden mb-3 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-xs text-red-600 dark:text-red-400 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[16px] shrink-0 mt-0.5">error</span>
-                    <span id="pubErrorMsg"></span>
+                <!-- ALERTS -->
+                <div id="pubError" class="hidden mb-4 p-3 bg-red-900/40 border border-red-500/30 rounded-xl text-red-200 text-sm flex gap-2 items-center">
+                    <span class="material-symbols-outlined text-[18px]">error</span>
+                    <span id="pubErrorMsg">Error general</span>
                 </div>
-                <div id="pubSuccess" class="hidden mb-3 p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl text-xs text-green-700 dark:text-green-400 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
-                    <span id="pubSuccessMsg"></span>
+                <div id="pubSuccess" class="hidden mb-4 p-3 bg-green-900/40 border border-[#3A5C3D] rounded-xl text-[#D7E6D5] text-sm flex gap-2 items-center">
+                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    <span id="pubSuccessMsg">¡Recurso publicado!</span>
                 </div>
 
-                <button onclick="publicarRecurso()" id="btnPublicar"
-                    class="w-full py-3 bg-[#6B8CAE] text-white font-bold rounded-xl hover:bg-[#5a7e9f] shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
-                    <span class="material-symbols-outlined text-[20px]">publish</span>
-                    Publicar
+                <!-- SUBMIT -->
+                <button onclick="publicarRecurso()" id="btnPublicar" 
+                    class="w-full bg-[#6B8CAE] hover:bg-[#5a7e9f] dark:bg-[#4a1a1a] dark:hover:bg-[#632222] dark:border-[#632222] text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] font-bold text-sm py-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg active:scale-[0.98]">
+                    <span class="material-symbols-outlined">psychiatry</span>
+                    Compartir Bienestar
                 </button>
             </div>
         </div>
 
-        <!-- ══ LISTA DE RECURSOS (derecha) ══ -->
-        <div class="xl:col-span-3">
-            <div id="listaRecursosContainer">
-                <?php if (empty($recursos)): ?>
-                <div class="glass-card p-12 text-center border-2 border-dashed">
-                    <span class="material-symbols-outlined text-[56px] text-slate-300 dark:text-slate-600 block mb-3">folder_open</span>
-                    <p class="text-slate-500 dark:text-slate-400 font-semibold">Aún no has publicado recursos</p>
-                    <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Usa el panel de la izquierda para crear el primero</p>
+        <!-- =================== RIGHT PANEL (FEED) =================== -->
+        <div class="lg:col-span-7">
+            <h2 class="text-2xl text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] mb-8 drop-shadow-md" style="font-family: 'Caveat', cursive; font-size:2rem;">Tus Contribuciones al Bienestar</h2>
+            
+            <?php if (empty($recursos)): ?>
+                <div class="text-center py-20 text-slate-500 dark:text-[#a39c8e]">
+                    <span class="material-symbols-outlined text-[64px] mb-4 opacity-50">auto_awesome</span>
+                    <p class="text-lg">No has compartido recursos aún.</p>
                 </div>
-                <?php else: ?>
-                <div class="space-y-4" id="recursosGrid">
-                    <?php foreach ($recursos as $r):
-                        $tipo  = $r['tipo'] ?? 'video';
-                        $ico   = $tipoIcono[$tipo] ?? 'folder';
-                        $color = $tipoColor[$tipo] ?? 'bg-slate-100 text-slate-600';
-                        $label = $tipoLabel[$tipo] ?? 'Recurso';
-                        $destLabel = $r['id_usuario'] ? 'Para: '.htmlspecialchars($r['paciente_nombre'] ?? 'Paciente') : 'Todos los pacientes';
+            <?php else: ?>
+                <div class="space-y-10 pl-2 md:pl-6 pb-20">
+                    <?php foreach ($recursos as $index => $rec): 
+                        $esVideo = ($rec['tipo'] === 'video');
+                        $esMsg   = ($rec['tipo'] === 'mensaje');
+                        $esImg   = ($rec['tipo'] === 'imagen');
+
+                        // Offset aleatorio para que se vea orgánico (zigzag)
+                        $marginLeft = ($index % 2 == 0) ? 'ml-0' : 'ml-8 md:ml-12';
                     ?>
-<div class="glass-card transition-all p-5 flex gap-4 group hover:shadow-md"
-                             id="rec-<?= $r['id_recurso'] ?>">
-                        <div class="w-11 h-11 rounded-2xl <?= $color ?> flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-[22px]"><?= $ico ?></span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-start justify-between gap-3">
-                                <div class="min-w-0">
-                                    <p class="font-bold text-slate-800 dark:text-slate-100 truncate"><?= htmlspecialchars($r['titulo']) ?></p>
-                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5"><?= $label ?> · <?= date('d M Y', strtotime($r['fecha_creacion'])) ?></p>
-                                    <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full <?= $r['id_usuario'] ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-indigo-100 text-[#3a6a8a] dark:bg-indigo-900/30 dark:text-indigo-400' ?>">
-                                        <span class="material-symbols-outlined text-[12px]"><?= $r['id_usuario'] ? 'person' : 'groups' ?></span>
-                                        <?= htmlspecialchars($destLabel) ?>
-                                    </span>
-                                </div>
-                                <button onclick="eliminarRecurso(<?= $r['id_recurso'] ?>)"
-                                    class="p-1.5 rounded-lg text-slate-300 dark:text-slate-600 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all opacity-0 group-hover:opacity-100 shrink-0" title="Eliminar">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                        <div class="card-tilted <?= $marginLeft ?>" id="rec-<?= $rec['id'] ?>">
+                            <div class="card-inner relative bg-white/90 dark:bg-[#2e2d2b] p-5 md:p-6 rounded-2xl flex flex-col md:flex-row gap-5 shadow-[0_10px_30px_rgba(0,0,0,0.6)] border border-slate-200 dark:!border-white/10 group transition-transform hover:-translate-y-1">
+                                
+                                <!-- Botón eliminar (oculto por defecto, visible en hover) -->
+                                <button onclick="eliminarRecurso(<?= $rec['id'] ?>)" 
+                                    class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-900/90 text-red-200 shadow-md border border-red-500/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:scale-110">
+                                    <span class="material-symbols-outlined text-[16px]">delete</span>
                                 </button>
+
+                                <?php if ($esVideo): ?>
+                                    <!-- THUMBNAIL VIDEO -->
+                                    <div class="w-full md:w-40 h-24 rounded-xl overflow-hidden relative shrink-0 border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18]">
+                                        <?php
+                                            $vidUrl = $rec['url_video'] ?? '';
+                                            $thumb = '';
+                                            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $vidUrl, $m)) {
+                                                $thumb = "https://img.youtube.com/vi/{$m[1]}/mqdefault.jpg";
+                                            }
+                                        ?>
+                                        <?php if($thumb): ?>
+                                            <img src="<?= $thumb ?>" class="w-full h-full object-cover opacity-80" alt="Video">
+                                        <?php else: ?>
+                                            <div class="w-full h-full flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-slate-500 dark:text-[#a39c8e] text-3xl">smart_display</span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] text-4xl drop-shadow-lg">play_circle</span>
+                                        </div>
+                                    </div>
+                                <?php elseif ($esImg && !empty($rec['url_imagen'])): ?>
+                                    <!-- THUMBNAIL IMAGEN -->
+                                    <div class="w-full md:w-40 h-24 rounded-xl overflow-hidden relative shrink-0 border border-slate-200 dark:border-white/10 cursor-pointer bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18]" onclick="verImagenFull('<?= URL_BASE . 'public/' . htmlspecialchars($rec['url_imagen']) ?>', '<?= htmlspecialchars($rec['titulo']) ?>')">
+                                        <img src="<?= URL_BASE . 'public/' . htmlspecialchars($rec['url_imagen']) ?>" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" alt="Imagen">
+                                        <div class="absolute bottom-1 right-1 bg-black/60 rounded p-1">
+                                            <span class="material-symbols-outlined text-white text-[14px]">zoom_in</span>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- CONTENIDO DE LA TARJETA -->
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-start gap-2">
+                                            <h3 class="text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] font-bold text-lg leading-tight break-words"><?= htmlspecialchars($rec['titulo']) ?></h3>
+                                            
+                                            <!-- Destinatario Avatar -->
+                                            <?php if ($rec['id_paciente']): ?>
+                                                <?php 
+                                                    // Buscar inicial del paciente
+                                                    $inicial = '?';
+                                                    foreach(($pacientes ?? []) as $pa) {
+                                                        if($pa['id'] == $rec['id_paciente']) {
+                                                            $inicial = strtoupper(substr($pa['nombre'], 0, 1));
+                                                            break;
+                                                        }
+                                                    }
+                                                ?>
+                                                <div class="w-7 h-7 rounded-full bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border-2 border-[#2e2d2b] flex items-center justify-center text-[10px] text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] font-bold shrink-0 shadow-sm" title="Paciente específico">
+                                                    <?= $inicial ?>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="w-7 h-7 rounded-full bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18] border-2 border-[#2e2d2b] flex items-center justify-center text-[14px] text-slate-500 dark:text-[#a39c8e] shrink-0 shadow-sm" title="Para todos">
+                                                    <span class="material-symbols-outlined text-[14px]">public</span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-1.5 text-slate-500 dark:text-[#a39c8e] text-xs mt-1">
+                                            <?php if ($esVideo): ?> <span class="material-symbols-outlined text-[14px]">movie</span> Video 
+                                            <?php elseif ($esMsg): ?> <span class="material-symbols-outlined text-[14px]">notes</span> Mensaje 
+                                            <?php else: ?> <span class="material-symbols-outlined text-[14px]">image</span> Imagen <?php endif; ?>
+                                            <span>&bull;</span>
+                                            <span><?= date('d M Y', strtotime($rec['fecha_creacion'])) ?></span>
+                                        </div>
+
+                                        <?php if ($esMsg): ?>
+                                            <!-- Texto manuscrito para notas -->
+                                            <p class="mt-4 font-handwritten text-[#d4c3a3] whitespace-pre-wrap">"<?= htmlspecialchars($rec['descripcion']) ?>"</p>
+                                        <?php else: ?>
+                                            <p class="text-slate-500 dark:text-[#c4bcae] text-sm mt-2 line-clamp-2"><?= htmlspecialchars($rec['descripcion']) ?></p>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php if ($esVideo && !empty($rec['url_video'])): ?>
+                                        <div class="mt-4 flex items-center gap-1.5 text-[#d4c3a3] text-sm font-bold">
+                                            <span class="material-symbols-outlined text-[18px]">open_in_new</span> 
+                                            <a href="<?= htmlspecialchars($rec['url_video']) ?>" target="_blank" class="hover:underline">Ver video original</a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                            <?php if ($r['descripcion']): ?>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2"><?= htmlspecialchars($r['descripcion']) ?></p>
-                            <?php endif; ?>
-                            <!-- Preview según tipo -->
-                            <?php if ($tipo === 'video' && $r['url_video']): ?>
-                            <a href="<?= htmlspecialchars($r['url_video']) ?>" target="_blank" rel="noopener"
-                               class="inline-flex items-center gap-1 mt-2 text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">
-                                <span class="material-symbols-outlined text-[14px]">open_in_new</span>
-                                Ver video
-                            </a>
-                            <?php elseif ($tipo === 'imagen' && $r['imagen_ruta']): ?>
-                            <img src="<?= URL_BASE . htmlspecialchars($r['imagen_ruta']) ?>" alt="<?= htmlspecialchars($r['titulo']) ?>"
-                                 class="mt-3 rounded-xl max-h-32 object-cover border border-slate-100 dark:border-slate-700 cursor-pointer"
-                                 onclick="verImagenFull('<?= URL_BASE . htmlspecialchars($r['imagen_ruta']) ?>', '<?= htmlspecialchars(addslashes($r['titulo'])) ?>')">
-                            <?php endif; ?>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
-                <?php endif; ?>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-<!-- Lightbox imagen -->
-<div id="lightbox" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/80 backdrop-blur-sm" onclick="cerrarLightbox()">
-    <div class="relative max-w-4xl max-h-[90vh] mx-4" onclick="event.stopPropagation()">
-        <button onclick="cerrarLightbox()" class="absolute -top-10 right-0 text-white/70 hover:text-white">
-            <span class="material-symbols-outlined text-[28px]">close</span>
+<!-- Modal para ver imagen en grande -->
+<div id="lightbox" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm items-center justify-center p-4">
+    <div class="relative max-w-4xl w-full">
+        <button onclick="cerrarLightbox()" class="absolute -top-12 right-0 text-white hover:text-[#d4c3a3] transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
         </button>
-        <img id="lightboxImg" src="#" alt="" class="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl">
-        <p id="lightboxCaption" class="text-white/70 text-sm text-center mt-3"></p>
+        <img id="lightboxImg" src="" alt="Zoom" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-200 dark:border-white/10">
+        <p id="lightboxCaption" class="text-center text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] mt-4 font-handwritten text-2xl"></p>
     </div>
 </div>
 
@@ -348,7 +432,7 @@ function filtrarYMostrarPacientes() {
     // Renderizar
     const container = document.getElementById('pacientesListContainer');
     if (filtered.length === 0) {
-        container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No se encontraron pacientes</p>';
+        container.innerHTML = '<p class="text-xs text-slate-500 dark:text-[#c4bcae] text-center py-4">No se encontraron pacientes</p>';
         return;
     }
     
@@ -357,7 +441,7 @@ function filtrarYMostrarPacientes() {
         const badgeClass = DISORDER_BADGES[p.trastorno] || 'bg-slate-50 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700';
         
         return `
-            <label class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer transition-colors select-none">
+            <label class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:!bg-[#3a3732] rounded-lg cursor-pointer transition-colors select-none">
                 <input type="checkbox" value="${p.id_usuario}" ${isChecked} 
                     onchange="togglePatientSelection(this)"
                     class="paciente-checkbox w-4 h-4 text-orange-500 focus:ring-orange-400 border-slate-300 dark:border-slate-600 rounded transition-all">
@@ -399,11 +483,11 @@ function limpiarSeleccionPacientes() {
 
 // ── Tipo selector ──────────────────────────────────────────────────
 const tipoStyles = {
-    video:   'border-red-300 bg-red-50 text-red-700',
-    mensaje: 'border-[#8DA399] bg-[#8DA399]/10 text-[#4a6e66]',
-    imagen:  'border-emerald-300 bg-emerald-50 text-emerald-700',
+    video:   'border-[#d4c3a3] bg-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d]',
+    mensaje: 'border-[#d4c3a3] bg-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d]',
+    imagen:  'border-[#d4c3a3] bg-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d]',
 };
-const tipoInactivo = 'border-slate-200 text-slate-500';
+const tipoInactivo = 'border-slate-200 dark:border-white/10 bg-white dark:bg-[#3a3732] text-slate-500 dark:text-[#c4bcae]';
 
 function seleccionarTipo(tipo) {
     document.getElementById('recursoTipo').value = tipo;
@@ -423,11 +507,11 @@ function seleccionarTipo(tipo) {
 function seleccionarDestino(dest) {
     document.getElementById('recursoDestino').value = dest;
     const esTodos = dest === 'todos';
-    document.getElementById('btn-dest-todos').className = 'dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all '
-        + (esTodos ? 'border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a]' : 'border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50');
-    document.getElementById('btn-dest-especifico').className = 'dest-btn flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-bold transition-all '
-        + (!esTodos ? 'border-[#6B8CAE] bg-[#6B8CAE]/10 text-[#3a6a8a]' : 'border-slate-200 text-slate-500 hover:border-[#6B8CAE] hover:bg-[#6B8CAE]/10/50');
-    document.getElementById('selectorPaciente').classList.toggle('hidden', esTodos);
+    document.getElementById('btn-dest-todos').className = 'dest-btn flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl border transition-colors shadow-sm '
+        + (esTodos ? 'bg-[#d4c3a3] border-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d]' : 'bg-[#23221f] border-white/5 text-slate-500 dark:text-[#c4bcae] hover:bg-[#33322d]');
+    document.getElementById('btn-dest-especifico').className = 'dest-btn flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl border transition-colors text-xs font-bold '
+        + (!esTodos ? 'bg-[#d4c3a3] border-[#d4c3a3] text-[#3d6b5a] dark:text-[#3a2e1d]' : 'bg-[#23221f] border-white/5 text-slate-500 dark:text-[#c4bcae] hover:bg-[#33322d]');
+    document.getElementById('resultadosBusqRec').classList.toggle('hidden', esTodos);
 }
 
 // ── Preview imagen ────────────────────────────────────────────────
@@ -625,7 +709,7 @@ if (urlInput) {
                         </div>
                         <div class="p-3 bg-white dark:bg-slate-800">
                             <p class="text-sm font-bold text-slate-800 dark:text-slate-100 line-clamp-1">${escRec(dto.title)}</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${escRec(dto.author_name || dto.provider_name)}</p>
+                            <p class="text-xs text-slate-500 dark:!text-[#8DA399] mt-1">${escRec(dto.author_name || dto.provider_name)}</p>
                         </div>
                     `;
                 } else {

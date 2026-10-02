@@ -1,3 +1,5 @@
+@import "tailwindcss";
+@source "../..";
 /* ─────────────────────────────────────────────────────────────────
    Tailwind v4 — Archivo de entrada
    Compilar:    npm run build
