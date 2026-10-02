@@ -437,12 +437,12 @@ function filtrarYMostrarPacientes() {
     }
     
     container.innerHTML = filtered.map(p => {
-        const isChecked = selectedPatientIds.has(p.id_usuario) ? 'checked' : '';
+        const isChecked = selectedPatientIds.has(p.id_paciente) ? 'checked' : '';
         const badgeClass = DISORDER_BADGES[p.trastorno] || 'bg-slate-50 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700';
         
         return `
             <label class="flex items-center gap-3 px-3 py-2 hover:bg-slate-100 dark:hover:!bg-[#3a3732] rounded-lg cursor-pointer transition-colors select-none">
-                <input type="checkbox" value="${p.id_usuario}" ${isChecked} 
+                <input type="checkbox" value="${p.id_paciente}" ${isChecked} 
                     onchange="togglePatientSelection(this)"
                     class="paciente-checkbox w-4 h-4 text-orange-500 focus:ring-orange-400 border-slate-300 dark:border-slate-600 rounded transition-all">
                 <div class="w-7 h-7 rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 flex items-center justify-center text-xs font-bold shrink-0 font-sans">
@@ -552,7 +552,7 @@ async function publicarRecurso() {
     
     if (destino === 'especifico') {
         selectedPatientIds.forEach(id => {
-            fd.append('id_usuarios[]', id);
+            fd.append('id_pacientes[]', id);
         });
     }
 

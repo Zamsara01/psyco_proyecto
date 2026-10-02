@@ -1,60 +1,50 @@
 <?php
 /**
- * Modelo de Notas Personalizadas de Psicóloga a Paciente
- *
- * Gestiona las notas que la psicóloga escribe para un paciente específico
- * (distintas a las notas_sesion de la tabla citas).
+ * NotaPacienteModel — notas privadas del psicólogo sobre un paciente.
+ * Usa id_paciente (FK a paciente). id_cita es NULLable.
+ * PRIVACIDAD: ningún método aquí debe ser llamado desde el panel del paciente.
  */
 class NotaPacienteModel extends Model
 {
     /**
-     * Obtiene todas las notas de un paciente específico escritas por cualquier psicóloga.
+     * Obtiene notas del psicólogo sobre un paciente (identificado por id_paciente).
+     * Solo para uso del psicólogo — nunca exponer al panel del paciente.
      */
-    public function getNotasByUsuario(int $idUsuario): array
+    public function getNotasByPaciente(int $idPaciente): array
     {
         $sql = "
-            SELECT n.*, p.nombre AS psicologo_nombre
+            SELECT n.*, up.nombre AS psicologo_nombre
             FROM notas_paciente n
-            JOIN psicologos p ON n.id_psicologo = p.id_psicologo
-            WHERE n.id_usuario = ?
+            JOIN psicologos ps ON n.id_psicologo = ps.id_psicologo
+            JOIN usuario up    ON ps.id_usuario  = up.id_usuario
+            WHERE n.id_paciente = ?
             ORDER BY n.fecha_creacion DESC
         ";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$idUsuario]);
+        $stmt->execute([$idPaciente]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Obtiene las notas escritas por una psicóloga específica a un paciente.
-     */
-    public function getNotasByPsicologoAndUsuario(int $idPsicologo, int $idUsuario): array
+    /** Notas de un psicólogo específico sobre un paciente específico. */
+    public function getNotasByPsicologoAndPaciente(int $idPsicologo, int $idPaciente): array
     {
-        $sql = "
-            SELECT * FROM notas_paciente
-            WHERE id_psicologo = ? AND id_usuario = ?
-            ORDER BY fecha_creacion DESC
-        ";
+        $sql = "SELECT * FROM notas_paciente WHERE id_psicologo=? AND id_paciente=? ORDER BY fecha_creacion DESC";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$idPsicologo, $idUsuario]);
+        $stmt->execute([$idPsicologo, $idPaciente]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Obtiene notas para los pacientes que tienen cita HOY con una psicóloga,
-     * agrupadas por paciente.
-     */
+    /** Pacientes que tienen cita hoy con este psicólogo, con conteo de notas. */
     public function getNotasParaPacientesDeHoy(int $idPsicologo): array
     {
         $sql = "
-            SELECT DISTINCT
-                u.id_usuario, u.nombre AS paciente_nombre,
-                (SELECT COUNT(*) FROM notas_paciente np 
-                 WHERE np.id_psicologo = ? AND np.id_usuario = u.id_usuario) AS total_notas
+            SELECT DISTINCT u.id_usuario, p.id_paciente, u.nombre AS paciente_nombre,
+                   (SELECT COUNT(*) FROM notas_paciente np
+                    WHERE np.id_psicologo=? AND np.id_paciente=p.id_paciente) AS total_notas
             FROM citas c
-            JOIN usuarios u ON c.id_usuario = u.id_usuario
-            WHERE c.id_psicologo = ?
-              AND c.fecha = CURRENT_DATE()
-              AND c.estado != 'cancelada'
+            JOIN paciente p ON c.id_paciente = p.id_paciente
+            JOIN usuario u  ON p.id_usuario  = u.id_usuario
+            WHERE c.id_psicologo=? AND c.fecha=CURRENT_DATE() AND c.estado!='cancelada'
             ORDER BY u.nombre
         ";
         $stmt = $this->db->prepare($sql);
@@ -63,29 +53,39 @@ class NotaPacienteModel extends Model
     }
 
     /**
-     * Crea una nueva nota para un paciente.
+     * Crea una nota. Valida que el psicólogo y el paciente sean coherentes con la cita.
+     * @param int|null $idCita NULL = nota general sin cita
      */
-    public function createNota(int $idPsicologo, int $idUsuario, string $titulo, string $contenido, string $tipoNota = 'general'): bool
+    public function createNota(int $idPsicologo, int $idPaciente, string $titulo,
+                               string $contenido, string $tipoNota = 'general',
+                               ?int $idCita = null): bool
     {
-        // Add column if it doesn't exist (safety check for migration)
+        // Asegurar que tipo_nota existe (safe idempotente)
         try {
             $this->db->exec("ALTER TABLE notas_paciente ADD COLUMN tipo_nota VARCHAR(50) NOT NULL DEFAULT 'general' AFTER contenido");
-        } catch (\Exception $e) {
-            // Ignore error if column already exists
+        } catch (\Exception $e) {}
+
+        // Si se indicó cita, validar que pertenece al mismo psicólogo y paciente
+        if ($idCita !== null) {
+            $stmtVal = $this->db->prepare(
+                "SELECT id_cita FROM citas WHERE id_cita=? AND id_psicologo=? AND id_paciente=?"
+            );
+            $stmtVal->execute([$idCita, $idPsicologo, $idPaciente]);
+            if (!$stmtVal->fetch()) {
+                error_log("[NotaPacienteModel] Intento de nota con cita inválida: cita=$idCita psicologo=$idPsicologo paciente=$idPaciente");
+                return false;
+            }
         }
 
-        $sql = "INSERT INTO notas_paciente (id_psicologo, id_usuario, titulo, contenido, tipo_nota) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idPsicologo, $idUsuario, $titulo, $contenido, $tipoNota]);
+        $sql = "INSERT INTO notas_paciente (id_psicologo, id_paciente, titulo, contenido, tipo_nota, id_cita)
+                VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->prepare($sql)->execute([$idPsicologo, $idPaciente, $titulo, $contenido, $tipoNota, $idCita]);
     }
 
-    /**
-     * Elimina una nota (solo si pertenece a la psicóloga).
-     */
+    /** Elimina una nota (solo si pertenece al psicólogo). */
     public function deleteNota(int $idNota, int $idPsicologo): bool
     {
-        $sql = "DELETE FROM notas_paciente WHERE id_nota = ? AND id_psicologo = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idNota, $idPsicologo]);
+        return $this->db->prepare("DELETE FROM notas_paciente WHERE id_nota=? AND id_psicologo=?")
+                        ->execute([$idNota, $idPsicologo]);
     }
 }

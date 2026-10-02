@@ -1,17 +1,21 @@
 <?php
 require_once dirname(__DIR__, 2) . '/core/Controller.php';
-require_once dirname(__DIR__) . '/models/UserModel.php';
 
 /**
  * Controlador de usuarios — autenticación y gestión
  */
 class ControllerUsers extends Controller
 {
-    private UserModel $userModel;
+    private ?UserModel $userModel = null;
 
-    public function __construct()
+    /** Lazy-load: solo conecta a la BD cuando se necesita, no en logout */
+    private function getUserModel(): UserModel
     {
-        $this->userModel = new UserModel();
+        if ($this->userModel === null) {
+            require_once dirname(__DIR__) . '/models/UserModel.php';
+            $this->userModel = new UserModel();
+        }
+        return $this->userModel;
     }
 
     public function login(): void
@@ -24,7 +28,7 @@ class ControllerUsers extends Controller
         $this->render('users/login', ['error' => $error]);
     }
 
-    public function authenticate(): void
+        public function authenticate(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('users/login');
@@ -33,65 +37,64 @@ class ControllerUsers extends Controller
         $email    = trim($_POST['txtEmail']    ?? '');
         $password = $_POST['txtPassword'] ?? '';
         
-        // 1. Intentar login como Paciente (tabla usuarios)
-        $user = $this->userModel->findByCredentials($email, $password);
+        $user = $this->getUserModel()->findByCredentials($email, $password);
 
         if ($user) {
-            $_SESSION['user'] = [
-                'id'              => $user['id_usuario'],
-                'nombre'          => $user['nombre'],
-                'correo'          => $user['correo_electronico'],
-                'grado'           => $user['grado'],
-                'estado'          => $user['estado'],
-                'rol'             => 'paciente',
-                'acudiente' => [
-                    'nombre'   => $user['acudiente_nombre'] ?? null,
-                    'cedula'   => $user['acudiente_cedula'] ?? null,
-                    'relacion' => $user['acudiente_relacion'] ?? null,
-                    'correo'   => $user['acudiente_correo'] ?? null,
-                ],
-            ];
-            // Redirigir a inicio o calendario donde ahora tiene todo desbloqueado
-            $this->redirect('pages/index');
-            return;
+            $rol = $user['rol'];
+                        if ($rol === 'paciente') {
+                $pacienteInfo = $this->getUserModel()->findById((int)$user['id_usuario']);
+                $_SESSION['user'] = [
+                    'id'              => $user['id_usuario'],
+                    'id_paciente'     => $pacienteInfo['id_paciente'] ?? null,
+                    'nombre'          => $user['nombre'],
+                    'correo'          => $user['correo_electronico'],
+                    'grado'           => $pacienteInfo['grado'] ?? null,
+                    'estado'          => $user['estado'],
+                    'rol'             => 'paciente',
+                    'acudiente' => [
+                        'nombre'   => $pacienteInfo['acudiente_nombre'] ?? null,
+                        'cedula'   => $pacienteInfo['acudiente_cedula'] ?? null,
+                        'relacion' => $pacienteInfo['acudiente_relacion'] ?? null,
+                        'correo'   => $pacienteInfo['acudiente_correo'] ?? null,
+                    ],
+                ];
+                $this->redirect('pages/index');
+                return;
+            } elseif ($rol === 'psicologo') {
+                require_once dirname(__DIR__) . '/models/PsicologoModel.php';
+                $psicoModel = new PsicologoModel();
+                $psicologa = $psicoModel->findByCredentials($email, $password);
+                if ($psicologa) {
+                    $_SESSION['user'] = [
+                        'id'     => $psicologa['id_psicologo'],
+                        'id_usuario' => $user['id_usuario'],
+                        'nombre' => $user['nombre'],
+                        'correo' => $user['correo_electronico'],
+                        'estado' => $user['estado'],
+                        'rol'    => 'psicologo'
+                    ];
+                    $this->redirect('panel_psicologas/index');
+                    return;
+                }
+            } elseif ($rol === 'superusuario') {
+                require_once dirname(__DIR__) . '/models/SuperusuarioModel.php';
+                $superModel = new SuperusuarioModel();
+                $superusuario = $superModel->findByCredentials($email, $password);
+                if ($superusuario) {
+                    $_SESSION['user'] = [
+                        'id'     => $superusuario['id_superusuario'],
+                        'id_usuario' => $user['id_usuario'],
+                        'nombre' => $user['nombre'],
+                        'correo' => $user['correo_electronico'],
+                        'estado' => $user['estado'],
+                        'rol'    => 'superusuario'
+                    ];
+                    $this->redirect('superusuario/index');
+                    return;
+                }
+            }
         }
 
-        // 2. Intentar login como Psicóloga (tabla psicologos)
-        require_once dirname(__DIR__) . '/models/PsicologoModel.php';
-        $psicoModel = new PsicologoModel();
-        $psicologa = $psicoModel->findByCredentials($email, $password);
-
-        if ($psicologa) {
-            $_SESSION['user'] = [
-                'id'     => $psicologa['id_psicologo'],
-                'nombre' => $psicologa['nombre'],
-                'correo' => $psicologa['correo_electronico'],
-                'estado' => $psicologa['estado'],
-                'rol'    => 'psicologo'
-            ];
-            // Redirigir a su panel de gestión
-            $this->redirect('panel_psicologas/index');
-            return;
-        }
-
-        // 3. Intentar login como Superusuario
-        require_once dirname(__DIR__) . '/models/SuperusuarioModel.php';
-        $superModel = new SuperusuarioModel();
-        $superusuario = $superModel->findByCredentials($email, $password);
-
-        if ($superusuario) {
-            $_SESSION['user'] = [
-                'id'     => $superusuario['id_superusuario'],
-                'nombre' => $superusuario['nombre'],
-                'correo' => $superusuario['correo_electronico'],
-                'estado' => $superusuario['estado'],
-                'rol'    => 'superusuario'
-            ];
-            $this->redirect('superusuario/index');
-            return;
-        }
-
-        // 4. Todos fallaron
         $this->layout = 'tailwind';
         $this->render('users/login', ['error' => 'Correo o contraseña inválidos']);
     }
@@ -137,7 +140,7 @@ class ControllerUsers extends Controller
             return;
         }
 
-        if ($this->userModel->emailExists($email)) {
+        if ($this->getUserModel()->emailExists($email)) {
             $this->layout = 'tailwind';
             $this->render('users/register', ['error' => 'Este correo ya está registrado.']);
             return;
@@ -167,7 +170,7 @@ class ControllerUsers extends Controller
         }
 
         // ── Persistencia ─────────────────────────────────────────
-        $userId = $this->userModel->create(
+        $userId = $this->getUserModel()->create(
             $grado,
             $nombre,
             $email,
@@ -190,7 +193,7 @@ class ControllerUsers extends Controller
             $mailService->sendOtpEmail($email, $nombre, $codigoOtp);
 
             if (session_status() === PHP_SESSION_NONE) {
-                session_start();
+
             }
 
             // Guardamos temporalmente el ID y correo para la verificación OTP (abre el modal)
@@ -209,7 +212,7 @@ class ControllerUsers extends Controller
     public function verifyOtp(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+
         }
 
         $userId = $_SESSION['temp_user_id'] ?? null;
@@ -232,10 +235,11 @@ class ControllerUsers extends Controller
                 unset($_SESSION['temp_user_id']);
                 unset($_SESSION['temp_user_email']);
 
-                // Autenticar al usuario
-                $user = $this->userModel->findById((int)$userId);
+                                // Autenticar al usuario
+                $user = $this->getUserModel()->findById((int)$userId);
                 $_SESSION['user'] = [
                     'id'              => $user['id_usuario'],
+                    'id_paciente'     => $user['id_paciente'] ?? null,
                     'nombre'          => $user['nombre'],
                     'correo'          => $user['correo_electronico'],
                     'grado'           => $user['grado'] ?? null,
@@ -266,7 +270,7 @@ class ControllerUsers extends Controller
     public function resendOtp(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+
         }
 
         $userId = $_SESSION['temp_user_id'] ?? null;
@@ -276,7 +280,7 @@ class ControllerUsers extends Controller
             require_once dirname(__DIR__) . '/models/OtpModel.php';
             require_once dirname(__DIR__, 2) . '/core/MailService.php';
 
-            $user = $this->userModel->findById((int)$userId);
+            $user = $this->getUserModel()->findById((int)$userId);
 
             $otpModel = new OtpModel();
             $codigoOtp = $otpModel->generateOtp($email, 'register');
@@ -309,7 +313,7 @@ class ControllerUsers extends Controller
     {
         $this->requireAdmin();
 
-        $users = $this->userModel->getAll();
+        $users = $this->getUserModel()->getAll();
         $this->render('users/list', ['users' => $users]);
     }
 
@@ -319,14 +323,28 @@ class ControllerUsers extends Controller
         $this->requireAdmin();
 
         $id   = (int) ($_GET['id'] ?? 0);
-        $user = $this->userModel->findById($id);
+        $user = $this->getUserModel()->findById($id);
         $this->render('users/edit', ['user' => $user]);
     }
 
     /** GET /users/logout */
     public function logout(): void
     {
-        session_destroy();
+        $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
+        }
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+
         $this->redirect('users/login');
     }
 }

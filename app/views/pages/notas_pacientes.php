@@ -49,7 +49,7 @@
                     <p class="text-center text-[#4a6e66] text-sm py-10">No hay pacientes hoy.</p>
                 <?php else: ?>
                     <?php foreach ($pacientesHoy as $idx => $pac): ?>
-                        <button onclick="cargarNotasPaciente(<?= $pac['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($pac['paciente_nombre'])) ?>', this)"
+                        <button onclick="cargarNotasPaciente(<?= $pac['id_paciente'] ?>, '<?= htmlspecialchars(addslashes($pac['paciente_nombre'])) ?>', this)"
                             class="paciente-tab-btn w-full text-left flex items-center justify-between p-3 rounded-xl transition-all <?= $idx === 0 ? 'bg-[#6B8CAE]/15 border-2 border-[#6B8CAE]/30' : 'bg-white/50 border-2 border-transparent hover:bg-[#8DA399]/15' ?>">
                             <span class="font-semibold <?= $idx === 0 ? 'text-[#3a6a8a]' : 'text-[#4a6e66]' ?>">
                                 <?= htmlspecialchars($pac['paciente_nombre']) ?>
@@ -83,7 +83,7 @@
                             <p class="text-xs text-[#4a6e66]">Historial de notas</p>
                         </div>
                     </div>
-                    <button id="btnNuevaNota" onclick="abrirNotaRapida(<?= $pacientesHoy[0]['id_usuario'] ?? 0 ?>, '<?= htmlspecialchars(addslashes($pacientesHoy[0]['paciente_nombre'] ?? '')) ?>')"
+                    <button id="btnNuevaNota" onclick="abrirNotaRapida(<?= $pacientesHoy[0]['id_paciente'] ?? 0 ?>, '<?= htmlspecialchars(addslashes($pacientesHoy[0]['paciente_nombre'] ?? '')) ?>')"
                         style="background:#6B8CAE;color:white;" class="px-4 py-2 text-sm font-bold rounded-xl hover:bg-[#5a7e9f] transition-colors shadow-sm flex items-center gap-2">
                         <span class="material-symbols-outlined text-[18px]">add</span> Nueva Nota
                     </button>
@@ -152,7 +152,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (primerBtn) primerBtn.click();
 });
 
-async function cargarNotasPaciente(idUsuario, nombre, btn) {
+async function cargarNotasPaciente(idPaciente, nombre, btn) {
     // UI Update
     document.querySelectorAll('.paciente-tab-btn').forEach(b => {
         b.classList.remove('bg-[#6B8CAE]/15', 'border-[#6B8CAE]/30');
@@ -172,13 +172,13 @@ async function cargarNotasPaciente(idUsuario, nombre, btn) {
     document.getElementById('detalleInicial').textContent = nombre.charAt(0).toUpperCase();
     
     const btnNueva = document.getElementById('btnNuevaNota');
-    btnNueva.setAttribute('onclick', `abrirNotaRapida(${idUsuario}, '${esc(nombre)}')`);
+    btnNueva.setAttribute('onclick', `abrirNotaRapida(${idPaciente}, '${esc(nombre)}')`);
 
     const container = document.getElementById('detalleNotasContainer');
     container.innerHTML = `<div class="flex justify-center py-10"><div class="w-8 h-8 border-4 border-[#6B8CAE]/30 border-t-[#6B8CAE] rounded-full animate-spin"></div></div>`;
 
     try {
-        const res  = await fetch(BASE + 'panel_psicologas/notasPaciente?id_usuario=' + idUsuario);
+        const res  = await fetch(BASE + 'panel_psicologas/notasPaciente?id_paciente=' + idPaciente);
         const data = await res.json();
         
         if (!data.ok) throw new Error(data.error);
@@ -210,8 +210,8 @@ async function cargarNotasPaciente(idUsuario, nombre, btn) {
     }
 }
 
-function abrirNotaRapida(idUsuario, nombre) {
-    document.getElementById('notaRapidaIdUsuario').value = idUsuario;
+function abrirNotaRapida(idPaciente, nombre) {
+    document.getElementById('notaRapidaIdUsuario').value = idPaciente;
     document.getElementById('notaRapidaPacienteNombre').textContent = nombre;
     document.getElementById('notaRapidaTitulo').value = '';
     document.getElementById('notaRapidaContenido').value = '';
@@ -228,7 +228,7 @@ function cerrarNotaRapida() {
 }
 
 async function guardarNotaRapida() {
-    const idUsuario = document.getElementById('notaRapidaIdUsuario').value;
+    const idPaciente = document.getElementById('notaRapidaIdUsuario').value;
     const titulo    = document.getElementById('notaRapidaTitulo').value.trim();
     const contenido = document.getElementById('notaRapidaContenido').value.trim();
     const tipoNota  = document.getElementById('notaRapidaTipo').value;
@@ -244,7 +244,7 @@ async function guardarNotaRapida() {
     try {
         const res  = await fetch(BASE + 'panel_psicologas/crearNota', {
             method: 'POST', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id_usuario: parseInt(idUsuario), titulo, contenido, tipo_nota: tipoNota })
+            body: JSON.stringify({ id_paciente: parseInt(idPaciente), titulo, contenido, tipo_nota: tipoNota })
         });
         const data = await res.json();
         if (data.ok) {
@@ -254,10 +254,10 @@ async function guardarNotaRapida() {
             const nombrePaciente = document.getElementById('notaRapidaPacienteNombre').textContent;
             
             // Intentar encontrar el botón en la lista (si es que existe en "citas de hoy")
-            const btnPaciente = document.querySelector('.paciente-tab-btn[onclick*="'+idUsuario+'"]');
+            const btnPaciente = document.querySelector('.paciente-tab-btn[onclick*="'+idPaciente+'"]');
             
             // Cargar de nuevo la vista de notas con el ID y nombre actualizados
-            cargarNotasPaciente(idUsuario, nombrePaciente, btnPaciente);
+            cargarNotasPaciente(idPaciente, nombrePaciente, btnPaciente);
         } else {
             errEl.textContent = data.error;
             errEl.classList.remove('hidden');

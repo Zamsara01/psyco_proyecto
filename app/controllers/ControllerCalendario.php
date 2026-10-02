@@ -7,7 +7,8 @@ class ControllerCalendario extends Controller
 {
     public function index(): void
     {
-        // Obtener psicólogos
+        $this->requireAuth('paciente');
+
         $psicologosJson = '[]';
         try {
             require_once dirname(__DIR__) . '/models/PsicologoModel.php';
@@ -31,13 +32,13 @@ class ControllerCalendario extends Controller
 
         // Obtener recursos del usuario (si está logueado)
         $recursosJson = '[]';
-        if (isset($_SESSION['user']['id'])) {
+        if (isset($_SESSION['user']['id_paciente'])) {
             try {
                 require_once dirname(__DIR__) . '/models/RecursoModel.php';
                 $recursoModel = new RecursoModel();
                 // Si es paciente, obtener sus recursos. Si es psicólogo, no tiene recursos asignados (o podemos mandar los de él)
                 // Para mantenerlo simple, obtenemos recursos para el ID de sesión.
-                $recursosData = $recursoModel->getRecursosByUsuario($_SESSION['user']['id']);
+                $recursosData = $recursoModel->getRecursosByPaciente($_SESSION['user']['id_paciente']);
                 $recursosJson = json_encode($recursosData, JSON_UNESCAPED_UNICODE);
             } catch (\Exception $e) {
                 $recursosJson = '[]';

@@ -15,7 +15,7 @@ class ControllerCitas extends Controller
     {
         $this->requireAuth('paciente'); // reemplaza chequeo inline duplicado
 
-        $idUsuario = (int)$_SESSION['user']['id'];
+        $idPaciente = (int)$_SESSION['user']['id_paciente'];
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         require_once dirname(__DIR__) . '/models/PsicologoModel.php';
@@ -23,7 +23,7 @@ class ControllerCitas extends Controller
         $citaModel    = new CitaModel();
         $psicologoModel = new PsicologoModel();
 
-        $citas      = $citaModel->getCitasUsuario($idUsuario);
+        $citas      = $citaModel->getCitasUsuario($idPaciente);
         $psicologos = $psicologoModel->getAllActivos();
 
         $this->layout = 'tailwind';
@@ -40,7 +40,7 @@ class ControllerCitas extends Controller
     {
         $this->requireAuth('paciente'); // reemplaza chequeo inline duplicado
 
-        $idUsuario = (int)$_SESSION['user']['id'];
+        $idPaciente = (int)$_SESSION['user']['id_paciente'];
 
         require_once dirname(__DIR__) . '/models/RecursoModel.php';
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
@@ -48,8 +48,8 @@ class ControllerCitas extends Controller
         $recursoModel = new RecursoModel();
         $notaModel    = new NotaPacienteModel();
 
-        $recursos = $recursoModel->getRecursosByUsuario($idUsuario);
-        $notas    = $notaModel->getNotasByUsuario($idUsuario);
+        $recursos = $recursoModel->getRecursosByPaciente($idPaciente);
+        $notas    = $notaModel->getNotasByPaciente($idPaciente);
 
         $this->layout = 'tailwind';
         $this->render('pages/misrecursos', [
@@ -69,7 +69,7 @@ class ControllerCitas extends Controller
 
         $body      = json_decode(file_get_contents('php://input'), true);
         $idCita    = (int)($body['id_cita'] ?? 0);
-        $idUsuario = (int)$_SESSION['user']['id'];
+        $idPaciente = (int)$_SESSION['user']['id_paciente'];
 
         if ($idCita < 1) {
             echo json_encode(['ok' => false, 'error' => 'Cita inválida.']);
@@ -78,7 +78,7 @@ class ControllerCitas extends Controller
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model = new CitaModel();
-        $ok    = $model->cancelarCita($idCita, $idUsuario);
+        $ok    = $model->cancelarCita($idCita, $idPaciente);
 
         echo json_encode($ok
             ? ['ok' => true,  'mensaje' => 'Cita cancelada exitosamente.']
@@ -99,7 +99,7 @@ class ControllerCitas extends Controller
         $body      = json_decode(file_get_contents('php://input'), true);
         $idCita    = (int)($body['id_cita'] ?? 0);
         $motivo    = trim($body['motivo'] ?? '');
-        $idPsicologo = (int)$_SESSION['user']['id'];
+        $idPsicologo = (int)$_SESSION['user']['id_paciente'];
 
         if ($idCita < 1 || empty($motivo)) {
             echo json_encode(['ok' => false, 'error' => 'Cita o motivo inválido.']);
@@ -129,7 +129,7 @@ class ControllerCitas extends Controller
             
             $recursoModel->createRecurso(
                 $idPsicologo, 
-                $citaInfo['id_usuario'], 
+                $citaInfo['id_paciente'], 
                 $tituloMensaje, 
                 'mensaje', 
                 null, 
@@ -159,7 +159,7 @@ class ControllerCitas extends Controller
         $nuevaFecha    = $body['fecha']               ?? '';
         $nuevaHora     = $body['hora']                ?? '';
         $nuevoIdPsico  = (int)($body['id_psicologo'] ?? 0);
-        $idUsuario     = (int)$_SESSION['user']['id'];
+        $idPaciente     = (int)$_SESSION['user']['id_paciente'];
 
         if ($idCita < 1 || !$nuevaFecha || !$nuevaHora || $nuevoIdPsico < 1) {
             echo json_encode(['ok' => false, 'error' => 'Datos incompletos.']);
@@ -176,7 +176,7 @@ class ControllerCitas extends Controller
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model     = new CitaModel();
-        $resultado = $model->editarCita($idCita, $idUsuario, $nuevaFecha, $nuevaHora, $nuevoIdPsico);
+        $resultado = $model->editarCita($idCita, $idPaciente, $nuevaFecha, $nuevaHora, $nuevoIdPsico);
 
         if ($resultado === true) {
             echo json_encode(['ok' => true, 'mensaje' => 'Cita actualizada correctamente.']);

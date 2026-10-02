@@ -135,7 +135,7 @@ class OtpModel extends Model
 
             // Marcar usuario como verificado en la tabla usuarios
             $stmtVerify = $this->db->prepare(
-                "UPDATE usuarios SET verificado = 1 WHERE correo_electronico = ?"
+                "UPDATE usuario SET email_verified_at = NOW() WHERE correo_electronico = ?"
             );
             $stmtVerify->execute([$email]);
 

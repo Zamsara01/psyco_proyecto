@@ -119,29 +119,60 @@
         </p>
 
         <!-- Botones CTAs -->
+        <?php
+            $urlLogin    = URL_BASE . 'users/login';
+            $urlCalend   = URL_BASE . 'calendario';
+            $urlCitas    = URL_BASE . 'citas/misCitas';
+            $urlRecursos = URL_BASE . 'citas/misRecursos';
+            $urlChatbot  = URL_BASE . 'chatbot';
+            $loggedIn    = isset($_SESSION['user']);
+            $rol         = $loggedIn ? ($_SESSION['user']['rol'] ?? '') : '';
+        ?>
         <div class="flex flex-wrap justify-center gap-4 md:gap-5">
-            
-            <button onclick="openAcceso RápidoModal()" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
-                <span class="material-symbols-outlined text-[20px]">smart_toy</span>
-                Gestionar Citas
-            </button>
-            
-            <?php if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'psicologo'): ?>
-                <a href="<?= URL_BASE ?>calendario" class="btn-miscitas flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
-                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
-                    Calendario
+
+            <?php if (!$loggedIn): ?>
+                <!-- Sin sesión: todos van al login -->
+                <a href="<?= $urlLogin ?>" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                    Gestionar Citas
                 </a>
-            <?php else: ?>
-                <a href="<?= URL_BASE ?>citas/misCitas" class="btn-miscitas flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                <a href="<?= $urlLogin ?>" class="btn-miscitas flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
                     <span class="material-symbols-outlined text-[20px]">event_note</span>
                     Mis Citas
                 </a>
+                <a href="<?= $urlLogin ?>" class="btn-recursos flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                    Mis Recursos
+                </a>
+            <?php elseif ($rol === 'psicologo'): ?>
+                <a href="<?= $urlCalend ?>" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                    Calendario
+                </a>
+                <a href="<?= URL_BASE ?>panel_psicologas" class="btn-miscitas flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Mi Panel
+                </a>
+            <?php elseif ($rol === 'paciente'): ?>
+                <a href="<?= $urlChatbot ?>" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                    Gestionar Citas
+                </a>
+                <a href="<?= $urlCitas ?>" class="btn-miscitas flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">event_note</span>
+                    Mis Citas
+                </a>
+                <a href="<?= $urlRecursos ?>" class="btn-recursos flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                    Mis Recursos
+                </a>
+            <?php else: ?>
+                <!-- Superusuario u otro rol -->
+                <a href="<?= URL_BASE ?>superusuario/usuarios" class="btn-gestionar flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                    Panel Admin
+                </a>
             <?php endif; ?>
-            
-            <a href="<?= URL_BASE ?>citas/misRecursos" class="btn-recursos flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-base shadow-lg transition-transform hover:scale-105 active:scale-95">
-                <span class="material-symbols-outlined text-[20px]">auto_stories</span>
-                Mis Recursos
-            </a>
 
         </div>
     </div>

@@ -293,13 +293,13 @@
                                 <?php if (!empty($cita['notas_sesion'])): ?>
                                     <?= htmlspecialchars(substr($cita['notas_sesion'], 0, 50) . (strlen($cita['notas_sesion']) > 50 ? '…' : '')) ?>
                                 <?php else: ?>
-                                    <a href="#notas-pacientes-section" onclick="seleccionarPacienteNotas(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>', null)" class="text-[#8DA399] hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold hover:underline inline-flex items-center gap-1 transition-colors">
+                                    <a href="#notas-pacientes-section" onclick="seleccionarPacienteNotas(<?= $cita['id_paciente'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>', null)" class="text-[#8DA399] hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold hover:underline inline-flex items-center gap-1 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">visibility</span> Ver notas
                                     </a>
                                 <?php endif; ?>
                             </td>
                             <td class="px-5 py-4 text-center">
-                                <button onclick="abrirNotaRapida(<?= $cita['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>')"
+                                <button onclick="abrirNotaRapida(<?= $cita['id_paciente'] ?>, '<?= htmlspecialchars(addslashes($cita['paciente_nombre'])) ?>')"
                                     class="p-1.5 rounded-lg text-slate-400 hover:text-[#6B8CAE] hover:bg-[#6B8CAE]/10 dark:text-slate-500 dark:hover:text-blue-400 dark:hover:bg-blue-900/50 transition-colors" title="Agregar nota">
                                     <span class="material-symbols-outlined text-[18px]">note_add</span>
                                 </button>
@@ -384,7 +384,7 @@
                 <!-- Selector de paciente -->
                 <div class="flex gap-2 flex-wrap mb-4">
                     <?php foreach ($pacientesHoy as $idx => $pac): ?>
-                    <button onclick="seleccionarPacienteNotas(<?= $pac['id_usuario'] ?>, '<?= htmlspecialchars(addslashes($pac['paciente_nombre'])) ?>', this)"
+                    <button onclick="seleccionarPacienteNotas(<?= $pac['id_paciente'] ?>, '<?= htmlspecialchars(addslashes($pac['paciente_nombre'])) ?>', this)"
                         class="paciente-notas-btn text-xs font-semibold px-3 py-1.5 rounded-full border-2 transition-all
                                <?= $idx === 0 ? 'border-[#8DA399] bg-[#8DA399] text-white' : 'border-slate-200 text-slate-500 hover:border-purple-300 hover:text-[#8DA399] dark:border-slate-700 dark:text-slate-400 dark:hover:border-[#8DA399] dark:hover:text-purple-400' ?>">
                         <?= htmlspecialchars($pac['paciente_nombre']) ?>
@@ -518,7 +518,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (primerBtn) primerBtn.click();
 });
 
-async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
+async function seleccionarPacienteNotas(idPaciente, nombre, btn) {
     document.querySelectorAll('.paciente-notas-btn').forEach(b => {
         b.classList.remove('border-[#8DA399]','bg-purple-500','text-white');
         b.classList.add('border-slate-200','text-slate-500', 'dark:border-slate-700', 'dark:text-slate-400');
@@ -539,12 +539,12 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
     container.innerHTML = `<div class="flex justify-center py-4"><div class="w-6 h-6 border-3 border-[#8DA399]/30 border-t-purple-400 dark:border-purple-900 dark:border-t-purple-500 rounded-full animate-spin"></div></div>`;
 
     try {
-        const res  = await fetch(BASE + 'panel_psicologas/notasPaciente?id_usuario=' + idUsuario);
+        const res  = await fetch(BASE + 'panel_psicologas/notasPaciente?id_paciente=' + idPaciente);
         const data = await res.json();
         if (!data.ok) throw new Error(data.error);
 
         if (!data.notas.length) {
-            container.innerHTML = `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin notas para ${esc(nombre)}. <button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="text-[#8DA399] dark:text-purple-400 hover:underline font-semibold">+ Agregar</button></p>`;
+            container.innerHTML = `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin notas para ${esc(nombre)}. <button onclick="abrirNotaRapida(${idPaciente}, '${esc(nombre)}')" class="text-[#8DA399] dark:text-purple-400 hover:underline font-semibold">+ Agregar</button></p>`;
             return;
         }
         container.innerHTML = data.notas.map(n => `
@@ -555,15 +555,15 @@ async function seleccionarPacienteNotas(idUsuario, nombre, btn) {
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">${esc(n.contenido)}</p>
             </div>
-        `).join('') + `<button onclick="abrirNotaRapida(${idUsuario}, '${esc(nombre)}')" class="w-full mt-2 py-2 text-xs font-semibold text-[#8DA399] hover:bg-[#8DA399]/10 border-[#8DA399]/30 dark:text-purple-400 dark:hover:bg-purple-900/50 dark:border-purple-800/50 rounded-xl border-2 border-dashed transition-colors">+ Nueva nota</button>`;
+        `).join('') + `<button onclick="abrirNotaRapida(${idPaciente}, '${esc(nombre)}')" class="w-full mt-2 py-2 text-xs font-semibold text-[#8DA399] hover:bg-[#8DA399]/10 border-[#8DA399]/30 dark:text-purple-400 dark:hover:bg-purple-900/50 dark:border-purple-800/50 rounded-xl border-2 border-dashed transition-colors">+ Nueva nota</button>`;
     } catch(e) {
         container.innerHTML = `<p class="text-red-400 dark:text-red-500 text-sm text-center py-4">Error: ${e.message}</p>`;
     }
 }
 
 // ─── Modal: Nota Rápida ──────────────────────────────────────────
-function abrirNotaRapida(idUsuario, nombre) {
-    document.getElementById('notaRapidaIdUsuario').value = idUsuario;
+function abrirNotaRapida(idPaciente, nombre) {
+    document.getElementById('notaRapidaIdUsuario').value = idPaciente;
     document.getElementById('notaRapidaPacienteNombre').textContent = nombre;
     document.getElementById('notaRapidaTitulo').value = '';
     document.getElementById('notaRapidaContenido').value = '';
@@ -580,7 +580,7 @@ function cerrarNotaRapida() {
 }
 
 async function guardarNotaRapida() {
-    const idUsuario = document.getElementById('notaRapidaIdUsuario').value;
+    const idPaciente = document.getElementById('notaRapidaIdUsuario').value;
     const titulo    = document.getElementById('notaRapidaTitulo').value.trim();
     const contenido = document.getElementById('notaRapidaContenido').value.trim();
     const tipoNota  = document.getElementById('notaRapidaTipo').value;
@@ -596,7 +596,7 @@ async function guardarNotaRapida() {
     try {
         const res  = await fetch(BASE + 'panel_psicologas/crearNota', {
             method: 'POST', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id_usuario: parseInt(idUsuario), titulo, contenido, tipo_nota: tipoNota })
+            body: JSON.stringify({ id_paciente: parseInt(idPaciente), titulo, contenido, tipo_nota: tipoNota })
         });
         const data = await res.json();
         if (data.ok) {
@@ -606,10 +606,10 @@ async function guardarNotaRapida() {
             const nombrePaciente = document.getElementById('notaRapidaPacienteNombre').textContent;
             
             // Intentar encontrar el botón en la lista (si es que existe en "citas de hoy")
-            const btnPaciente = document.querySelector(`.paciente-notas-btn[onclick*="${idUsuario}"]`);
+            const btnPaciente = document.querySelector(`.paciente-notas-btn[onclick*="${idPaciente}"]`);
             
             // Cargar de nuevo la vista de notas con el ID y nombre actualizados
-            seleccionarPacienteNotas(idUsuario, nombrePaciente, btnPaciente);
+            seleccionarPacienteNotas(idPaciente, nombrePaciente, btnPaciente);
         } else {
             errEl.textContent = data.error;
             errEl.classList.remove('hidden');
@@ -1063,7 +1063,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             lista.innerHTML = data.pacientes.map(p => `
-                <button type="button" onclick="seleccionarPacienteAgendar(${p.id_usuario}, '${esc(p.nombre)}', '${esc(p.correo_electronico)}')"
+                <button type="button" onclick="seleccionarPacienteAgendar(${p.id_paciente}, '${esc(p.nombre)}', '${esc(p.correo_electronico)}')"
                     class="w-full text-left px-4 py-2.5 hover:bg-[#6B8CAE]/10 transition-colors border-b border-slate-100 last:border-0">
                     <p class="text-sm font-bold text-slate-800">${esc(p.nombre)}</p>
                     <p class="text-xs text-slate-400">${esc(p.correo_electronico)} · Grado ${esc(p.grado)}</p>
@@ -1108,12 +1108,12 @@ async function guardarCitaAgendada() {
     ocultarError('agendarError');
     ocultarError('agendarSuccess');
 
-    const idUsuario = document.getElementById('agendarIdUsuario').value;
+    const idPaciente = document.getElementById('agendarIdUsuario').value;
     const fecha     = document.getElementById('agendarFecha').value;
     const hora      = document.getElementById('agendarHora').value;
     const motivo    = document.getElementById('agendarMotivo').value.trim();
 
-    if (!idUsuario) { mostrarError('agendarError','agendarErrorMsg','Selecciona un paciente.'); return; }
+    if (!idPaciente) { mostrarError('agendarError','agendarErrorMsg','Selecciona un paciente.'); return; }
     if (!fecha)     { mostrarError('agendarError','agendarErrorMsg','Elige una fecha.'); return; }
     if (!hora)      { mostrarError('agendarError','agendarErrorMsg','Selecciona una hora disponible.'); return; }
 
@@ -1125,7 +1125,7 @@ async function guardarCitaAgendada() {
         const res  = await fetch(BASE + 'panel_psicologas/agendarCita', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id_usuario: parseInt(idUsuario), fecha, hora, motivo_consulta: motivo })
+            body: JSON.stringify({ id_paciente: parseInt(idPaciente), fecha, hora, motivo_consulta: motivo })
         });
         const data = await res.json();
         if (data.ok) {

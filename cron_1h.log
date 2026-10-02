@@ -3975,3 +3975,20 @@ Stack trace:
 #2 /opt/lampp/htdocs/psyco_proyecto-davidBackend1/send_reminders_1h.php(16): Model->__construct()
 #3 {main}
   thrown in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/core/Database.php on line 30
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742
+PHP Parse error:  syntax error, unexpected token "else", expecting "function" or "const" in /opt/lampp/htdocs/psyco_proyecto-davidBackend1/app/models/CitaModel.php on line 742

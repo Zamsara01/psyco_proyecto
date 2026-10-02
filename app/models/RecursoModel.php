@@ -2,27 +2,27 @@
 /**
  * Modelo de Recursos de Acompañamiento
  *
- * Soporta 3 tipos de contenido: video, mensaje, imagen.
- * El destino puede ser un paciente específico (id_usuario) o todos (NULL).
+ * El destino puede ser un paciente específico (id_paciente) o todos (NULL).
  */
 class RecursoModel extends Model
 {
     /**
-     * Obtiene todos los recursos visibles para un usuario:
-     * - Recursos globales (id_usuario IS NULL) de cualquier psicóloga
-     * - Recursos específicos asignados a ese usuario
+     * Obtiene todos los recursos visibles para un paciente (identificado por id_paciente):
+     * - Recursos globales (id_paciente IS NULL) de cualquier psicóloga
+     * - Recursos específicos asignados a ese paciente
      */
-    public function getRecursosByUsuario(int $idUsuario): array
+    public function getRecursosByPaciente(int $idPaciente): array
     {
         $sql = "
-            SELECT r.*, p.nombre AS psicologo_nombre
+            SELECT r.*, up.nombre AS psicologo_nombre
             FROM recursos_acompanamiento r
             JOIN psicologos p ON r.id_psicologo = p.id_psicologo
-            WHERE r.id_usuario = ? OR r.id_usuario IS NULL
+            JOIN usuario up ON p.id_usuario = up.id_usuario
+            WHERE r.id_paciente = ? OR r.id_paciente IS NULL
             ORDER BY r.fecha_creacion DESC
         ";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$idUsuario]);
+        $stmt->execute([$idPaciente]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -34,7 +34,8 @@ class RecursoModel extends Model
         $sql = "
             SELECT r.*, u.nombre AS paciente_nombre
             FROM recursos_acompanamiento r
-            LEFT JOIN usuarios u ON r.id_usuario = u.id_usuario
+            LEFT JOIN paciente p ON r.id_paciente = p.id_paciente
+            LEFT JOIN usuario u ON p.id_usuario = u.id_usuario
             WHERE r.id_psicologo = ?
             ORDER BY r.fecha_creacion DESC
         ";
@@ -46,11 +47,11 @@ class RecursoModel extends Model
     /**
      * Crea un nuevo recurso.
      *
-     * @param int|null $idUsuario NULL = para todos los pacientes
+     * @param int|null $idPaciente NULL = para todos los pacientes
      */
     public function createRecurso(
         int    $idPsicologo,
-        ?int   $idUsuario,
+        ?int   $idPaciente,
         string $titulo,
         string $tipo,
         ?string $urlVideo,
@@ -58,10 +59,10 @@ class RecursoModel extends Model
         string $descripcion = ''
     ): bool {
         $sql = "INSERT INTO recursos_acompanamiento
-                    (id_psicologo, id_usuario, titulo, tipo, url_video, imagen_ruta, descripcion)
+                    (id_psicologo, id_paciente, titulo, tipo, url_video, imagen_ruta, descripcion)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$idPsicologo, $idUsuario, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion]);
+        return $stmt->execute([$idPsicologo, $idPaciente, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion]);
     }
 
     /**

@@ -9,6 +9,7 @@ class ControllerChat_bot extends Controller
 {
     public function index(): void
     {
+        $this->requireAuth('paciente');
         $this->layout = 'tailwind';
         $this->render('pages/chatbot');
     }

@@ -97,31 +97,31 @@ class ControllerPanel_psicologas extends Controller
     }
 
     // ────────────────────────────────────────────────────────────────
-    // GET /panel_psicologas/historialPaciente?id_usuario=X
+    // GET /panel_psicologas/historialPaciente?id_paciente=X
     // ────────────────────────────────────────────────────────────────
     public function historialPaciente(): void
     {
         header('Content-Type: application/json; charset=utf-8');
         $this->requirePsicologo(true);
 
-        $idUsuario   = (int)($_GET['id_usuario'] ?? 0);
+        $idPaciente = (int)($_GET['id_paciente'] ?? 0);
         $idPsicologo = (int)$_SESSION['user']['id'];
 
-        if ($idUsuario < 1) {
+        if ($idPaciente < 1) {
             echo json_encode(['ok' => false, 'error' => 'Usuario inválido.']);
             exit;
         }
 
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model    = new CitaModel();
-        $historial = $model->getHistorialPaciente($idUsuario, $idPsicologo);
+        $historial = $model->getHistorialPaciente($idPaciente, $idPsicologo);
 
         echo json_encode(['ok' => true, 'historial' => $historial]);
         exit;
     }
 
     // ────────────────────────────────────────────────────────────────
-    // GET /panel_psicologas/notasPaciente?id_usuario=X
+    // GET /panel_psicologas/notasPaciente?id_paciente=X
     // API: devuelve notas personalizadas + notas de sesión
     // ────────────────────────────────────────────────────────────────
     public function notasPaciente(): void
@@ -129,17 +129,17 @@ class ControllerPanel_psicologas extends Controller
         header('Content-Type: application/json; charset=utf-8');
         $this->requirePsicologo(true);
 
-        $idUsuario   = (int)($_GET['id_usuario'] ?? 0);
+        $idPaciente = (int)($_GET['id_paciente'] ?? 0);
         $idPsicologo = (int)$_SESSION['user']['id'];
 
-        if ($idUsuario < 1) {
+        if ($idPaciente < 1) {
             echo json_encode(['ok' => false, 'error' => 'Usuario inválido.']);
             exit;
         }
 
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
         $model = new NotaPacienteModel();
-        $notas = $model->getNotasByPsicologoAndUsuario($idPsicologo, $idUsuario);
+        $notas = $model->getNotasByPsicologoAndUsuario($idPsicologo, $idPaciente);
 
         echo json_encode(['ok' => true, 'notas' => $notas]);
         exit;
@@ -147,7 +147,7 @@ class ControllerPanel_psicologas extends Controller
 
     // ────────────────────────────────────────────────────────────────
     // POST /panel_psicologas/crearNota
-    // Body JSON: { id_usuario, titulo, contenido }
+    // Body JSON: { id_paciente, titulo, contenido }
     // ────────────────────────────────────────────────────────────────
     public function crearNota(): void
     {
@@ -155,20 +155,20 @@ class ControllerPanel_psicologas extends Controller
         $this->requirePsicologo(true);
 
         $body        = json_decode(file_get_contents('php://input'), true);
-        $idUsuario   = (int)($body['id_usuario'] ?? 0);
+        $idPaciente   = (int)($body['id_paciente'] ?? 0);
         $titulo      = trim($body['titulo']      ?? '');
         $contenido   = trim($body['contenido']   ?? '');
         $tipoNota    = trim($body['tipo_nota']   ?? 'general');
         $idPsicologo = (int)$_SESSION['user']['id'];
 
-        if ($idUsuario < 1 || !$titulo || !$contenido) {
+        if ($idPaciente < 1 || !$titulo || !$contenido) {
             echo json_encode(['ok' => false, 'error' => 'Datos incompletos.']);
             exit;
         }
 
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
         $model = new NotaPacienteModel();
-        $ok    = $model->createNota($idPsicologo, $idUsuario, $titulo, $contenido, $tipoNota);
+        $ok    = $model->createNota($idPsicologo, $idPaciente, $titulo, $contenido, $tipoNota);
 
         echo json_encode($ok
             ? ['ok' => true,  'mensaje' => 'Nota guardada.']
@@ -189,9 +189,9 @@ class ControllerPanel_psicologas extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $db = Database::getInstance();
         $sql = "
-            SELECT DISTINCT u.id_usuario, u.nombre AS paciente_nombre
+            SELECT DISTINCT u.id_paciente, u.nombre AS paciente_nombre
             FROM notas_paciente np
-            JOIN usuarios u ON np.id_usuario = u.id_usuario
+            JOIN usuario u ON np.id_paciente = u.id_paciente
             WHERE np.id_psicologo = ?
             ORDER BY u.nombre
         ";
@@ -204,28 +204,28 @@ class ControllerPanel_psicologas extends Controller
     }
 
     // ────────────────────────────────────────────────────────────────
-    // GET /panel_psicologas/imprimirHistorial?id_usuario=X
+    // GET /panel_psicologas/imprimirHistorial?id_paciente=X
     // ────────────────────────────────────────────────────────────────
     public function imprimirHistorial(): void
     {
         $this->requirePsicologo(false);
         $idPsicologo = (int)$_SESSION['user']['id'];
-        $idUsuario   = (int)($_GET['id_usuario'] ?? 0);
+        $idPaciente = (int)($_GET['id_paciente'] ?? 0);
 
-        if ($idUsuario < 1) {
+        if ($idPaciente < 1) {
             echo "ID de paciente inválido.";
             return;
         }
 
         require_once dirname(__DIR__) . '/models/NotaPacienteModel.php';
         $model = new NotaPacienteModel();
-        $notas = $model->getNotasByUsuario($idUsuario);
+        $notas = $model->getNotasByPaciente($idPaciente);
 
         // Fetch patient name
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT nombre FROM usuarios WHERE id_usuario = ?");
-        $stmt->execute([$idUsuario]);
+        $stmt = $db->prepare("SELECT nombre FROM usuario WHERE id_paciente = ?");
+        $stmt->execute([$idPaciente]);
         $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->render('pages/plantilla_historial', [
@@ -262,7 +262,7 @@ class ControllerPanel_psicologas extends Controller
     // ────────────────────────────────────────────────────────────────
     // POST /panel_psicologas/publicarRecurso (multipart/form-data)
     // Campos: tipo, titulo, descripcion, destino (especifico|todos),
-    //         id_usuario?, url_video?, imagen (file)
+    //         id_paciente?, url_video?, imagen (file)
     // ────────────────────────────────────────────────────────────────
     public function publicarRecurso(): void
     {
@@ -275,12 +275,12 @@ class ControllerPanel_psicologas extends Controller
         $descripcion = trim($_POST['descripcion'] ?? '');
         $destino     = trim($_POST['destino']     ?? 'todos'); // 'especifico' | 'todos'
         
-        $idUsuarios  = [];
+        $idPacientes  = [];
         if ($destino === 'especifico') {
-            if (isset($_POST['id_usuarios']) && is_array($_POST['id_usuarios'])) {
-                $idUsuarios = array_map('intval', $_POST['id_usuarios']);
-            } elseif (!empty($_POST['id_usuario'])) {
-                $idUsuarios = [(int)$_POST['id_usuario']];
+            if (isset($_POST['id_pacientes']) && is_array($_POST['id_pacientes'])) {
+                $idPacientes = array_map('intval', $_POST['id_pacientes']);
+            } elseif (!empty($_POST['id_paciente'])) {
+                $idPacientes = [(int)$_POST['id_paciente']];
             }
         }
 
@@ -387,12 +387,12 @@ class ControllerPanel_psicologas extends Controller
         if ($destino === 'todos') {
             $ok = $model->createRecurso($idPsicologo, null, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion);
         } else {
-            if (empty($idUsuarios)) {
+            if (empty($idPacientes)) {
                 echo json_encode(['ok' => false, 'error' => 'Debes seleccionar al menos un paciente.']);
                 exit;
             }
             $ok = true;
-            foreach ($idUsuarios as $idU) {
+            foreach ($idPacientes as $idU) {
                 if (!$model->createRecurso($idPsicologo, $idU, $titulo, $tipo, $urlVideo, $imagenRuta, $descripcion)) {
                     $ok = false;
                 }
@@ -513,7 +513,7 @@ class ControllerPanel_psicologas extends Controller
 
     // ────────────────────────────────────────────────────────────────
     // POST /panel_psicologas/agendarCita
-    // Body JSON: { id_usuario, fecha, hora, motivo_consulta }
+    // Body JSON: { id_paciente, fecha, hora, motivo_consulta }
     // ────────────────────────────────────────────────────────────────
     public function agendarCita(): void
     {
@@ -521,13 +521,13 @@ class ControllerPanel_psicologas extends Controller
         $this->requirePsicologo(true);
 
         $body            = json_decode(file_get_contents('php://input'), true);
-        $idUsuario       = (int)($body['id_usuario']       ?? 0);
+        $idPaciente       = (int)($body['id_paciente']       ?? 0);
         $fecha           = trim($body['fecha']              ?? '');
         $hora            = trim($body['hora']               ?? '');
         $motivoConsulta  = trim($body['motivo_consulta']    ?? '');
         $idPsicologo     = (int)$_SESSION['user']['id'];
 
-        if ($idUsuario < 1 || !$fecha || !$hora) {
+        if ($idPaciente < 1 || !$fecha || !$hora) {
             echo json_encode(['ok' => false, 'error' => 'Faltan datos obligatorios (paciente, fecha, hora).']);
             exit;
         }
@@ -558,7 +558,7 @@ class ControllerPanel_psicologas extends Controller
         require_once dirname(__DIR__) . '/models/CitaModel.php';
         $model     = new CitaModel();
         $resultado = $model->insertCitaPorPsicologo([
-            'id_usuario'      => $idUsuario,
+            'id_paciente'      => $idPaciente,
             'id_psicologo'    => $idPsicologo,
             'fecha'           => $fecha,
             'hora'            => $hora,
@@ -628,7 +628,7 @@ class ControllerPanel_psicologas extends Controller
         );
 
         if ($userId) {
-            echo json_encode(['ok' => true, 'mensaje' => "Paciente «{$nombre}» creado correctamente.", 'id_usuario' => $userId]);
+            echo json_encode(['ok' => true, 'mensaje' => "Paciente «{$nombre}» creado correctamente.", 'id_paciente' => $userId]);
         } else {
             echo json_encode(['ok' => false, 'error' => 'Error al crear el paciente.']);
         }

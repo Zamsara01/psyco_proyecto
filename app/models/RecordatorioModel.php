@@ -1,30 +1,22 @@
 <?php
-/**
- * Modelo para la tabla recordatorios
- */
 class RecordatorioModel extends Model
 {
-    /**
-     * Registra un recordatorio programado (antes de enviar)
-     */
     public function crearRecordatorio(
         int $idCita,
         string $mensaje,
         string $fechaProgramada,
-        string $canal = 'correo'
+        string $canal = 'correo',
+        string $tipo = null
     ): int {
         $sql = "
-            INSERT INTO recordatorios (id_cita, mensaje, fecha_programada, canal, estado_envio)
-            VALUES (?, ?, ?, ?, 'pendiente')
+            INSERT INTO recordatorios (id_cita, mensaje, fecha_programada, canal, estado_envio, tipo)
+            VALUES (?, ?, ?, ?, 'pendiente', ?)
         ";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$idCita, $mensaje, $fechaProgramada, $canal]);
+        $stmt->execute([$idCita, $mensaje, $fechaProgramada, $canal, $tipo]);
         return (int)$this->db->lastInsertId();
     }
 
-    /**
-     * Marca un recordatorio como enviado
-     */
     public function marcarEnviado(int $idRecordatorio): bool
     {
         $sql = "
@@ -36,9 +28,6 @@ class RecordatorioModel extends Model
         return $stmt->execute([$idRecordatorio]);
     }
 
-    /**
-     * Marca un recordatorio como fallido
-     */
     public function marcarFallido(int $idRecordatorio): bool
     {
         $sql = "
@@ -50,9 +39,6 @@ class RecordatorioModel extends Model
         return $stmt->execute([$idRecordatorio]);
     }
 
-    /**
-     * Obtiene recordatorios pendientes para una cita
-     */
     public function getByCita(int $idCita): array
     {
         $stmt = $this->db->prepare("
@@ -62,9 +48,6 @@ class RecordatorioModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Obtiene recordatorios pendientes de envío (para reintentos)
-     */
     public function getPendientes(int $limite = 50): array
     {
         $stmt = $this->db->prepare("

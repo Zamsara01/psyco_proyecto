@@ -8,13 +8,11 @@ class ControllerSuperusuario extends Controller
         $this->requireAuth('superusuario', $jsonResponse);
     }
 
-    private function logAuditoria(string $tipo, string $email, string $accion) {
-        require_once dirname(__DIR__, 2) . '/core/Database.php';
+    private function logAuditoria(int $idUsuarioActor, string $accion) {
         $pdo = Database::getInstance();
-        $realizadoPor = 'Superusuario: ' . ($_SESSION['user']['correo'] ?? 'Desconocido');
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
-        $stmt = $pdo->prepare("INSERT INTO auditoria_contrasenas (entidad_tipo, entidad_email, realizado_por, ip_address) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$tipo, $email, $realizadoPor, $ip]);
+        $stmt = $pdo->prepare("INSERT INTO auditoria_contrasenas (id_usuario, ip_address) VALUES (?, ?)");
+        $stmt->execute([$idUsuarioActor, $ip]);
     }
 
     public function index(): void
@@ -34,18 +32,16 @@ class ControllerSuperusuario extends Controller
         $perPage = 12;
         $q = trim($_GET['q'] ?? '');
         $like = '%' . $q . '%';
-
-        // Tab activa: 'psicologos' o 'pacientes'
         $tab = $_GET['tab'] ?? 'psicologos';
 
         if ($tab === 'psicologos') {
             $page = max(1, (int)($_GET['page'] ?? 1));
-            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM psicologos p WHERE p.nombre LIKE ? OR p.correo_electronico LIKE ?");
+            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM psicologos p JOIN usuario u ON p.id_usuario = u.id_usuario WHERE u.nombre LIKE ? OR u.correo_electronico LIKE ?");
             $totalStmt->execute([$like, $like]);
             $total = (int)$totalStmt->fetchColumn();
             $totalPaginas = max(1, ceil($total / $perPage));
             $offset = ($page - 1) * $perPage;
-            $stmt = $pdo->prepare("SELECT p.*, e.nombre as especialidad FROM psicologos p LEFT JOIN especialidades e ON p.id_especialidad=e.id_especialidad WHERE p.nombre LIKE ? OR p.correo_electronico LIKE ? ORDER BY p.fecha_registro DESC LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT p.id_psicologo, u.nombre, u.correo_electronico, u.estado, u.fecha_registro, e.nombre as especialidad, p.id_usuario FROM psicologos p JOIN usuario u ON p.id_usuario = u.id_usuario LEFT JOIN especialidades e ON p.id_especialidad=e.id_especialidad WHERE u.nombre LIKE ? OR u.correo_electronico LIKE ? ORDER BY u.fecha_registro DESC LIMIT ? OFFSET ?");
             $stmt->execute([$like, $like, $perPage, $offset]);
             $psicologos = $stmt->fetchAll();
             $pacientes = [];
@@ -54,12 +50,12 @@ class ControllerSuperusuario extends Controller
             $totalPsico = $total; $totalPac = 0;
         } else {
             $page = max(1, (int)($_GET['page'] ?? 1));
-            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE nombre LIKE ? OR correo_electronico LIKE ?");
+            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM usuario u JOIN roles r ON u.id_rol = r.id_rol WHERE r.nombre = 'paciente' AND (u.nombre LIKE ? OR u.correo_electronico LIKE ?)");
             $totalStmt->execute([$like, $like]);
             $total = (int)$totalStmt->fetchColumn();
             $totalPaginas = max(1, ceil($total / $perPage));
             $offset = ($page - 1) * $perPage;
-            $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE nombre LIKE ? OR correo_electronico LIKE ? ORDER BY fecha_registro DESC LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT u.*, p.grado FROM usuario u JOIN roles r ON u.id_rol = r.id_rol JOIN paciente p ON u.id_usuario = p.id_usuario WHERE r.nombre = 'paciente' AND (u.nombre LIKE ? OR u.correo_electronico LIKE ?) ORDER BY u.fecha_registro DESC LIMIT ? OFFSET ?");
             $stmt->execute([$like, $like, $perPage, $offset]);
             $pacientes = $stmt->fetchAll();
             $psicologos = [];
@@ -92,14 +88,22 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM psicologos WHERE correo_electronico = ?");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuario WHERE correo_electronico = ?");
         $stmt->execute([$correo]);
         if ($stmt->fetchColumn() > 0) { echo json_encode(['ok'=>false,'error'=>'El correo ya existe']); exit; }
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $pdo->prepare("INSERT INTO psicologos (id_especialidad, nombre, correo_electronico, contrasena, estado) VALUES (?, ?, ?, ?, 'activo')");
-        if ($stmt->execute([$idEsp, $nombre, $correo, $hash])) echo json_encode(['ok'=>true]);
-        else echo json_encode(['ok'=>false,'error'=>'Error de BD']);
+        
+        $rolStmt = $pdo->prepare("SELECT id_rol FROM roles WHERE nombre = 'psicologo'");
+        $rolStmt->execute();
+        $idRol = (int) $rolStmt->fetchColumn();
+
+        $stmt = $pdo->prepare("INSERT INTO usuario (nombre, correo_electronico, contrasena, id_rol, estado) VALUES (?, ?, ?, ?, 'activo')");
+        if ($stmt->execute([$nombre, $correo, $hash, $idRol])) {
+            $idU = $pdo->lastInsertId();
+            $pdo->prepare("INSERT INTO psicologos (id_psicologo, id_especialidad, id_usuario) VALUES (NULL, ?, ?)")->execute([$idEsp, $idU]);
+            echo json_encode(['ok'=>true]);
+        } else echo json_encode(['ok'=>false,'error'=>'Error de BD']);
     }
 
     public function crearPaciente(): void
@@ -117,30 +121,34 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE correo_electronico = ?");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuario WHERE correo_electronico = ?");
         $stmt->execute([$correo]);
         if ($stmt->fetchColumn() > 0) { echo json_encode(['ok'=>false,'error'=>'El correo ya existe']); exit; }
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, correo_electronico, contrasena, grado, estado) VALUES (?, ?, ?, ?, 'activo')");
-        if ($stmt->execute([$nombre, $correo, $hash, $grado])) echo json_encode(['ok'=>true]);
-        else echo json_encode(['ok'=>false,'error'=>'Error de BD']);
+        
+        $rolStmt = $pdo->prepare("SELECT id_rol FROM roles WHERE nombre = 'paciente'");
+        $rolStmt->execute();
+        $idRol = (int) $rolStmt->fetchColumn();
+
+        $stmt = $pdo->prepare("INSERT INTO usuario (nombre, correo_electronico, contrasena, id_rol, estado) VALUES (?, ?, ?, ?, 'activo')");
+        if ($stmt->execute([$nombre, $correo, $hash, $idRol])) {
+            $idU = $pdo->lastInsertId();
+            $pdo->prepare("INSERT INTO paciente (id_usuario, grado) VALUES (?, ?)")->execute([$idU, $grado]);
+            echo json_encode(['ok'=>true]);
+        } else echo json_encode(['ok'=>false,'error'=>'Error de BD']);
     }
 
     public function toggleEstadoUser(): void
     {
         $this->requireSuperusuario(true);
-        $id = (int)($_POST['id'] ?? 0);
-        $tipo = $_POST['tipo'] ?? 'paciente'; // 'paciente' o 'psicologo'
+        $id = (int)($_POST['id'] ?? 0); // Este ID ahora es id_usuario en la vista de superadmin
         $estado = $_POST['estado'] ?? 'activo';
         
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $tabla = $tipo === 'psicologo' ? 'psicologos' : 'usuarios';
-        $colId = $tipo === 'psicologo' ? 'id_psicologo' : 'id_usuario';
-        
-        $stmt = $pdo->prepare("UPDATE $tabla SET estado = ? WHERE $colId = ?");
+        $stmt = $pdo->prepare("UPDATE usuario SET estado = ? WHERE id_usuario = ?");
         if ($stmt->execute([$estado, $id])) echo json_encode(['ok'=>true]);
         else echo json_encode(['ok'=>false,'error'=>'Error']);
     }
@@ -148,8 +156,7 @@ class ControllerSuperusuario extends Controller
     public function editarUser(): void
     {
         $this->requireSuperusuario(true);
-        $id = (int)($_POST['id'] ?? 0);
-        $tipo = $_POST['tipo'] ?? 'paciente';
+        $id = (int)($_POST['id'] ?? 0); // id_usuario
         $nombre = $_POST['nombre'] ?? '';
         $correo = $_POST['correo'] ?? '';
         $pass = $_POST['password'] ?? '';
@@ -157,16 +164,13 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $tabla = $tipo === 'psicologo' ? 'psicologos' : 'usuarios';
-        $colId = $tipo === 'psicologo' ? 'id_psicologo' : 'id_usuario';
-        
         if ($pass) {
             $hash = password_hash($pass, PASSWORD_BCRYPT);
-            $stmt = $pdo->prepare("UPDATE $tabla SET nombre = ?, correo_electronico = ?, contrasena = ? WHERE $colId = ?");
+            $stmt = $pdo->prepare("UPDATE usuario SET nombre = ?, correo_electronico = ?, contrasena = ? WHERE id_usuario = ?");
             $stmt->execute([$nombre, $correo, $hash, $id]);
-            $this->logAuditoria($tipo, $correo, 'Cambio de contraseña desde edición superadmin');
+            $this->logAuditoria((int)$_SESSION['user']['id_usuario'], 'Cambio de contraseña desde edición superadmin a usuario '.$id);
         } else {
-            $stmt = $pdo->prepare("UPDATE $tabla SET nombre = ?, correo_electronico = ? WHERE $colId = ?");
+            $stmt = $pdo->prepare("UPDATE usuario SET nombre = ?, correo_electronico = ? WHERE id_usuario = ?");
             $stmt->execute([$nombre, $correo, $id]);
         }
         echo json_encode(['ok'=>true]);
@@ -177,7 +181,7 @@ class ControllerSuperusuario extends Controller
         $this->requireSuperusuario(true);
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
-        $pdo->exec("UPDATE usuarios SET estado = 'inactivo'");
+        $pdo->exec("UPDATE usuario u JOIN roles r ON u.id_rol = r.id_rol SET u.estado = 'inactivo' WHERE r.nombre = 'paciente'");
         echo json_encode(['ok'=>true]);
     }
 
@@ -197,12 +201,12 @@ class ControllerSuperusuario extends Controller
 
         if ($tab === 'citas') {
             $page = max(1, (int)($_GET['page'] ?? 1));
-            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM citas c JOIN psicologos p ON c.id_psicologo=p.id_psicologo JOIN usuarios u ON c.id_usuario=u.id_usuario WHERE p.nombre LIKE ? OR u.nombre LIKE ? OR c.estado LIKE ? OR c.fecha LIKE ?");
+            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM citas c JOIN psicologos p ON c.id_psicologo=p.id_psicologo JOIN usuario up ON p.id_usuario = up.id_usuario JOIN paciente pac ON c.id_paciente = pac.id_paciente JOIN usuario u ON pac.id_usuario=u.id_usuario WHERE up.nombre LIKE ? OR u.nombre LIKE ? OR c.estado LIKE ? OR c.fecha LIKE ?");
             $totalStmt->execute([$like, $like, $like, $like]);
             $total = (int)$totalStmt->fetchColumn();
             $totalPagCitas = max(1, ceil($total / $perPage));
             $offset = ($page - 1) * $perPage;
-            $stmt = $pdo->prepare("SELECT c.*, p.nombre as psico, u.nombre as pac FROM citas c JOIN psicologos p ON c.id_psicologo=p.id_psicologo JOIN usuarios u ON c.id_usuario=u.id_usuario WHERE p.nombre LIKE ? OR u.nombre LIKE ? OR c.estado LIKE ? OR c.fecha LIKE ? ORDER BY c.fecha DESC, c.hora DESC LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT c.*, up.nombre as psico, u.nombre as pac FROM citas c JOIN psicologos p ON c.id_psicologo=p.id_psicologo JOIN usuario up ON p.id_usuario = up.id_usuario JOIN paciente pac ON c.id_paciente = pac.id_paciente JOIN usuario u ON pac.id_usuario=u.id_usuario WHERE up.nombre LIKE ? OR u.nombre LIKE ? OR c.estado LIKE ? OR c.fecha LIKE ? ORDER BY c.fecha DESC, c.hora DESC LIMIT ? OFFSET ?");
             $stmt->execute([$like, $like, $like, $like, $perPage, $offset]);
             $citas = $stmt->fetchAll();
             $recursos = [];
@@ -210,12 +214,12 @@ class ControllerSuperusuario extends Controller
             $totalPagRecursos = 1; $totalCitas = $total; $totalRecursos = 0;
         } else {
             $page = max(1, (int)($_GET['page'] ?? 1));
-            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM recursos_acompanamiento r JOIN psicologos p ON r.id_psicologo=p.id_psicologo WHERE r.titulo LIKE ? OR p.nombre LIKE ? OR r.tipo LIKE ?");
+            $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM recursos_acompanamiento r JOIN psicologos p ON r.id_psicologo=p.id_psicologo JOIN usuario up ON p.id_usuario = up.id_usuario WHERE r.titulo LIKE ? OR up.nombre LIKE ? OR r.tipo LIKE ?");
             $totalStmt->execute([$like, $like, $like]);
             $total = (int)$totalStmt->fetchColumn();
             $totalPagRecursos = max(1, ceil($total / $perPage));
             $offset = ($page - 1) * $perPage;
-            $stmt = $pdo->prepare("SELECT r.*, p.nombre as psico FROM recursos_acompanamiento r JOIN psicologos p ON r.id_psicologo=p.id_psicologo WHERE r.titulo LIKE ? OR p.nombre LIKE ? OR r.tipo LIKE ? ORDER BY r.fecha_creacion DESC LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT r.*, up.nombre as psico FROM recursos_acompanamiento r JOIN psicologos p ON r.id_psicologo=p.id_psicologo JOIN usuario up ON p.id_usuario = up.id_usuario WHERE r.titulo LIKE ? OR up.nombre LIKE ? OR r.tipo LIKE ? ORDER BY r.fecha_creacion DESC LIMIT ? OFFSET ?");
             $stmt->execute([$like, $like, $like, $perPage, $offset]);
             $recursos = $stmt->fetchAll();
             $citas = [];
@@ -313,13 +317,13 @@ class ControllerSuperusuario extends Controller
         $q = trim($_GET['q'] ?? '');
         $like = '%' . $q . '%';
         $page = max(1, (int)($_GET['page'] ?? 1));
-        $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM auditoria_contrasenas WHERE entidad_email LIKE ? OR realizado_por LIKE ? OR ip_address LIKE ? OR entidad_tipo LIKE ?");
-        $totalStmt->execute([$like, $like, $like, $like]);
+        $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM auditoria_contrasenas a LEFT JOIN usuario u ON a.id_usuario = u.id_usuario WHERE u.correo_electronico LIKE ? OR a.ip_address LIKE ?");
+        $totalStmt->execute([$like, $like]);
         $totalRegistros = (int)$totalStmt->fetchColumn();
         $totalPaginas = max(1, ceil($totalRegistros / $perPage));
         $offset = ($page - 1) * $perPage;
-        $stmt = $pdo->prepare("SELECT * FROM auditoria_contrasenas WHERE entidad_email LIKE ? OR realizado_por LIKE ? OR ip_address LIKE ? OR entidad_tipo LIKE ? ORDER BY fecha DESC LIMIT ? OFFSET ?");
-        $stmt->execute([$like, $like, $like, $like, $perPage, $offset]);
+        $stmt = $pdo->prepare("SELECT a.*, u.correo_electronico as entidad_email, r.nombre as entidad_tipo FROM auditoria_contrasenas a LEFT JOIN usuario u ON a.id_usuario = u.id_usuario LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico LIKE ? OR a.ip_address LIKE ? ORDER BY a.fecha DESC LIMIT ? OFFSET ?");
+        $stmt->execute([$like, $like, $perPage, $offset]);
         $auditoria = $stmt->fetchAll();
 
         $this->layout = 'tailwind';
@@ -360,7 +364,6 @@ class ControllerSuperusuario extends Controller
         $count = 0;
         
         // Asume formato simple: nombre, correo, contrasena
-        // El usuario puede adaptarlo después
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
             if (count($data) < 3) continue;
             $nombre = trim($data[0]);
@@ -370,12 +373,22 @@ class ControllerSuperusuario extends Controller
             
             try {
                 if ($tipo === 'psicologos') {
-                    // id_especialidad=1 (por defecto en importación simple)
-                    $stmt = $pdo->prepare("INSERT INTO psicologos (id_especialidad, nombre, correo_electronico, contrasena) VALUES (1, ?, ?, ?)");
+                    $rolStmt = $pdo->prepare("SELECT id_rol FROM roles WHERE nombre = 'psicologo'");
+                    $rolStmt->execute();
+                    $idRol = (int) $rolStmt->fetchColumn();
+                    $stmt = $pdo->prepare("INSERT INTO usuario (nombre, correo_electronico, contrasena, id_rol) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$nombre, $correo, $hash, $idRol]);
+                    $idU = $pdo->lastInsertId();
+                    $pdo->prepare("INSERT INTO psicologos (id_especialidad, id_usuario) VALUES (1, ?)")->execute([$idU]);
                 } else {
-                    $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, correo_electronico, contrasena) VALUES (?, ?, ?)");
+                    $rolStmt = $pdo->prepare("SELECT id_rol FROM roles WHERE nombre = 'paciente'");
+                    $rolStmt->execute();
+                    $idRol = (int) $rolStmt->fetchColumn();
+                    $stmt = $pdo->prepare("INSERT INTO usuario (nombre, correo_electronico, contrasena, id_rol) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$nombre, $correo, $hash, $idRol]);
+                    $idU = $pdo->lastInsertId();
+                    $pdo->prepare("INSERT INTO paciente (id_usuario) VALUES (?)")->execute([$idU]);
                 }
-                $stmt->execute([$nombre, $correo, $hash]);
                 $count++;
             } catch (Exception $e) { } // ignorar duplicados
         }
@@ -393,8 +406,8 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $camposPacientes = $this->getColumnNames($pdo, 'usuarios');
-        $camposPsicologos = $this->getColumnNames($pdo, 'psicologos');
+        $camposPacientes = $this->getColumnNames($pdo, 'usuario');
+        $camposPsicologos = $this->getColumnNames($pdo, 'usuario');
 
         $this->layout = 'tailwind';
         $this->render('pages/superadmin/exportaciones', [
@@ -416,7 +429,7 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
         
-        $tabla = $tipo === 'psicologos' ? 'psicologos' : 'usuarios';
+        $tabla = 'usuario';
         
         // Saneamos campos para seguridad
         $validColumns = $this->getColumnNames($pdo, $tabla);

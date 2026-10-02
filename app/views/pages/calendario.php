@@ -769,10 +769,10 @@ document.addEventListener('DOMContentLoaded', () => {
     async function confirmarCitaModal() {
         if (!agendarData.hora) return;
         
-        let idUsuario = null;
+        let idPaciente = null;
         if (isPsicologo) {
-            idUsuario = document.getElementById('agendarModalIdUsuario').value;
-            if (!idUsuario) {
+            idPaciente = document.getElementById('agendarModalIdUsuario').value;
+            if (!idPaciente) {
                 const errEl = document.getElementById('agendarModalError');
                 errEl.textContent = "Selecciona un paciente para la cita.";
                 errEl.classList.remove('hidden');
@@ -803,7 +803,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isPsicologo) {
                 url = BASE + 'panel_psicologas/agendarCita';
                 bodyData = {
-                    id_usuario: parseInt(idUsuario),
+                    id_paciente: parseInt(idPaciente),
                     id_psicologo: agendarData.idPsicologo,
                     fecha: agendarData.fecha,
                     hora: agendarData.hora,
@@ -864,7 +864,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 lista.innerHTML = data.pacientes.map(p => `
-                    <button type="button" onclick="seleccionarPacienteBuscador(${p.id_usuario}, '${p.nombre.replace(/'/g, "\\'")}', '${p.correo_electronico.replace(/'/g, "\\'")}')"
+                    <button type="button" onclick="seleccionarPacienteBuscador(${p.id_paciente}, '${p.nombre.replace(/'/g, "\\'")}', '${p.correo_electronico.replace(/'/g, "\\'")}')"
                         class="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors border-b border-slate-100 last:border-0">
                         <p class="text-sm font-bold text-slate-800">${p.nombre}</p>
                         <p class="text-xs text-slate-400">${p.correo_electronico} · Grado ${p.grado}</p>
@@ -969,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Set the newly created user in the booking modal!
                 if (isPsicologo) {
-                    seleccionarPacienteBuscador(data.id_usuario, nombre, correo);
+                    seleccionarPacienteBuscador(data.id_paciente, nombre, correo);
                 }
 
                 setTimeout(() => {
