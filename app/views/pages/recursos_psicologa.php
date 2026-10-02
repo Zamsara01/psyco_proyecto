@@ -16,7 +16,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
 
 <style>
     #main-content {
-        background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
@@ -63,7 +63,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
 
 /* MODO OSCURO ESPECÍFICO PARA ESTA VISTA (WINTON/COZY) */
 .dark #main-content {
-    background-image: url('<?= URL_BASE ?>public/img/calendariobackground.jpeg') !important;
+    background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-color: transparent !important;

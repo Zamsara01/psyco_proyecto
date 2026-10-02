@@ -14,8 +14,8 @@ $inicial = $nombre ? strtoupper(mb_substr($nombre, 0, 1)) : '?';
 // URL actual para resaltar ítem activo
 $urlActual = $_GET['url'] ?? '';
 $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
-    ? 'text-[#3a6a8a] bg-[#dce8f0] font-semibold'
-    : 'text-slate-600 hover:text-[#4a6e8a] hover:bg-[#F4F7F6]/80 font-medium';
+    ? 'text-[#3a6a8a] bg-[#dce8f0] font-semibold dark:bg-[#3A5C3D] dark:text-[#D7E6D5]'
+    : 'text-slate-600 hover:text-[#4a6e8a] hover:bg-[#F4F7F6]/80 font-medium dark:text-[#8DA399] dark:hover:text-[#D7E6D5] dark:hover:bg-[#2C3634]';
 ?>
 
 <aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
@@ -47,14 +47,14 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Presentación -->
             <a href="<?= URL_BASE ?>pages/presentacion"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">folder_special</span>
                 Presentación
             </a>
 
             <!-- Calendario — bloqueado -->
             <button onclick="openLoginRequiredModal('Calendario')"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/60 relative">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-[#8DA399] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634] relative">
                 <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-slate-400 dark:group-hover:text-slate-500">calendar_month</span>
                 Calendario
                 <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600 group-hover:text-slate-400">lock</span>
@@ -68,7 +68,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Chatbot — bloqueado -->
             <button onclick="openLoginRequiredModal('Chatbot de Citas')"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/60 relative">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-400 dark:text-[#8DA399] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634] relative">
                 <span class="material-symbols-outlined text-[22px] shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-slate-400">forum</span>
                 Chatbot
                 <span class="ml-auto material-symbols-outlined text-[14px] text-slate-300 dark:text-slate-600 group-hover:text-slate-400">lock</span>
@@ -99,7 +99,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Chatbot -->
             <button onclick="openChatbotModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
                 Chatbot
             </button>
@@ -117,12 +117,12 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 <!-- Submenú -->
                 <div id="misRecursosMenu" class="hidden pl-4 space-y-0.5 mt-0.5">
                     <a href="<?= URL_BASE ?>citas/misCitas"
-                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misCitas') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60' ?>">
+                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misCitas') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]' ?>">
                         <span class="material-symbols-outlined text-[18px] shrink-0">event_note</span>
                         Mis Citas
                     </a>
                     <a href="<?= URL_BASE ?>citas/misRecursos"
-                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misRecursos') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60' ?>">
+                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all <?= $isActive('citas/misRecursos') ? 'text-[#4a6e8a] dark:text-blue-400 bg-[#dce8f0] dark:bg-blue-900/30 font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]' ?>">
                         <span class="material-symbols-outlined text-[18px] shrink-0">library_books</span>
                         Recursos
                     </a>
@@ -150,7 +150,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Chatbot -->
             <button onclick="openChatbotModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">forum</span>
                 Chatbot
             </button>
@@ -171,21 +171,21 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
             <!-- Búsquedas Específicas -->
             <button onclick="openBusquedaModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">manage_search</span>
                 Búsquedas Específicas
             </button>
 
             <!-- Reuniones -->
             <button onclick="openReunionesModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">groups</span>
                 Reuniones
             </button>
 
             <!-- Historial Clínico -->
             <button onclick="openHistorialModal()"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-slate-300 hover:text-[#4a6e8a] dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800/60">
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group w-full text-left text-slate-600 dark:text-[#8DA399] hover:text-[#4a6e8a] dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6]/80 dark:hover:bg-[#2C3634]">
                 <span class="material-symbols-outlined text-[22px] shrink-0">history_edu</span>
                 Historial Clínico
             </button>
@@ -205,7 +205,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate"><?= htmlspecialchars($nombre) ?></p>
-                    <p class="text-xs text-slate-400 dark:text-slate-500 truncate">
+                    <p class="text-xs text-slate-400 dark:text-[#8DA399] truncate">
                         <?= $rol === 'psicologo' ? '🧠 Psicóloga' : '👤 Paciente' ?>
                     </p>
                 </div>
@@ -220,7 +220,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </button>
                 <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                     aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
                     <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                 </button>
             </div>
@@ -243,7 +243,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                     </button>
                     <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                         aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
                         <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                     </button>
                 </div>
@@ -296,7 +296,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
 
         <!-- Resultados -->
         <div id="busquedaResultados" class="flex-1 overflow-y-auto p-5 space-y-3 min-h-[180px]">
-            <div class="text-center py-10 text-slate-400 dark:text-slate-500">
+            <div class="text-center py-10 text-slate-400 dark:text-[#8DA399]">
                 <span class="material-symbols-outlined text-[48px] block mb-2 text-slate-200 dark:text-slate-600">person_search</span>
                 <p class="text-sm">Escribe para buscar pacientes</p>
             </div>
@@ -318,7 +318,7 @@ function closeBusquedaModal() {
     document.body.style.overflow = '';
     document.getElementById('busquedaInput').value = '';
     document.getElementById('busquedaResultados').innerHTML = `
-        <div class="text-center py-10 text-slate-400 dark:text-slate-500">
+        <div class="text-center py-10 text-slate-400 dark:text-[#8DA399]">
             <span class="material-symbols-outlined text-[48px] block mb-2 text-slate-200 dark:text-slate-600">person_search</span>
             <p class="text-sm">Escribe para buscar pacientes</p>
         </div>`;
@@ -342,7 +342,7 @@ function doBusqueda(q) {
             const res = await fetch(BASE + 'panel_psicologas/buscarPaciente?q=' + encodeURIComponent(q));
             const data = await res.json();
             if (!data.ok || !data.pacientes.length) {
-                document.getElementById('busquedaResultados').innerHTML = `<div class="text-center py-10 text-slate-400 dark:text-slate-500"><span class="material-symbols-outlined text-[40px] block mb-2 text-slate-200 dark:text-slate-600">search_off</span><p class="text-sm">No se encontraron pacientes</p></div>`;
+                document.getElementById('busquedaResultados').innerHTML = `<div class="text-center py-10 text-slate-400 dark:text-[#8DA399]"><span class="material-symbols-outlined text-[40px] block mb-2 text-slate-200 dark:text-slate-600">search_off</span><p class="text-sm">No se encontraron pacientes</p></div>`;
                 return;
             }
             renderBusquedaResultados(data.pacientes);
@@ -366,7 +366,7 @@ function renderBusquedaResultados(pacientes) {
             </div>
             <div class="text-right shrink-0">
                 <p class="text-xs font-bold text-[#4a6e8a] dark:text-blue-400">${p.total_citas} cita${p.total_citas != 1 ? 's' : ''}</p>
-                <p class="text-[10px] text-slate-400 dark:text-slate-500">${p.ultima_cita || ''}</p>
+                <p class="text-[10px] text-slate-400 dark:text-[#8DA399]">${p.ultima_cita || ''}</p>
             </div>
             <span class="material-symbols-outlined text-slate-300 dark:text-slate-500 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">chevron_right</span>
         </div>
@@ -395,7 +395,7 @@ function renderHistorial(nombre, historial, idUsuario) {
     };
     const el = document.getElementById('busquedaResultados');
     el.innerHTML = `
-        <button onclick="doBusqueda(document.getElementById('busquedaInput').value)" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 mb-4 transition-colors">
+        <button onclick="doBusqueda(document.getElementById('busquedaInput').value)" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-[#D7E6D5] mb-4 transition-colors">
             <span class="material-symbols-outlined text-[16px]">arrow_back</span> Volver
         </button>
         <div class="flex items-center gap-3 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
@@ -405,7 +405,7 @@ function renderHistorial(nombre, historial, idUsuario) {
                 <p class="text-xs text-slate-500 dark:text-slate-400">${historial.length} cita${historial.length != 1 ? 's' : ''} registrada${historial.length != 1 ? 's' : ''}</p>
             </div>
         </div>
-        ${historial.length === 0 ? `<p class="text-center text-slate-400 dark:text-slate-500 text-sm py-4">Sin citas registradas.</p>` :
+        ${historial.length === 0 ? `<p class="text-center text-slate-400 dark:text-[#8DA399] text-sm py-4">Sin citas registradas.</p>` :
         historial.map(c => `
             <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-100 dark:border-slate-700 space-y-1 mb-2">
                 <div class="flex items-center justify-between">
@@ -413,7 +413,7 @@ function renderHistorial(nombre, historial, idUsuario) {
                     <span class="text-xs font-bold px-2 py-0.5 rounded-full ${estadoColor[c.estado] || 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'}">${c.estado}</span>
                 </div>
                 ${c.motivo_consulta ? `<p class="text-xs text-slate-500 dark:text-slate-400">Motivo: ${escBusqueda(c.motivo_consulta)}</p>` : ''}
-                ${c.notas_sesion ? `<p class="text-xs text-slate-400 dark:text-slate-500 italic">Notas: ${escBusqueda(c.notas_sesion)}</p>` : ''}
+                ${c.notas_sesion ? `<p class="text-xs text-slate-400 dark:text-[#8DA399] italic">Notas: ${escBusqueda(c.notas_sesion)}</p>` : ''}
             </div>
         `).join('')}
     `;
@@ -591,7 +591,7 @@ function actualizarVistaReunion() {
                             Sí asistió
                         </button>
                     </div>
-                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3">
+                    <p class="text-[10px] text-slate-400 dark:text-[#8DA399] mt-3">
                         ${restantes} min restante${restantes !== 1 ? 's' : ''} para confirmar asistencia
                     </p>
                 </div>

@@ -356,3 +356,10 @@ button, a, [role="button"] {
     color: #E4EAE6 !important;
     box-shadow: none !important;
 }
+
+/* DESACTIVAR FILTRO DE PALIDECIMIENTO DEL FONDO (A PETICIÓN DEL USUARIO) */
+#main-content::before {
+    display: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+}

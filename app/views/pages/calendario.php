@@ -1,34 +1,11 @@
 <!-- Fondo y Paleta de Colores Exclusiva del Calendario -->
+<!-- Fondo y Paleta de Colores Exclusiva del Calendario -->
+<!-- Fondo y Paleta de Colores Exclusiva del Calendario -->
 <style>
-    /* Variables de Paletas (Con mayor saturación/tonalidad) */
-    :root {
-        /* Paleta 1: Salvia y Pizarra */
-        /* === Colores sincronizados con miscitas.php === */
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
 
-        /* Botones principales → azul pizarra de miscitas */
-        --cal-btn-main: #6B8CAE;
-        --cal-btn-hover: #5a7e9f;
-
-        /* Elementos secundarios → verde salvia (tab activo de miscitas) */
-        --cal-sec-el: #8DA399;
-
-        /* Fondo general */
-        --cal-bg-gen: #F4F7F6;
-
-        /* Acento → tono btn-editar de miscitas */
-        --cal-accent: #4a6e8a;
-
-        /* Fondo de tarjetas → tono badge-pendiente de miscitas */
-        --cal-card-bg: #dce8f0;
-
-        /* Íconos → naranja cálido del avatar de miscitas */
-        --cal-icon: #E8824A;
-
-        /* Días activos/libres → verde salvia (tab active de miscitas) */
-        --cal-active: #8DA399;
-
-        /* Fondo progreso/tarjetas → tono badge-completada de miscitas */
-        --cal-prog-bg: #d8e8e2;
+    .font-handwritten {
+        font-family: 'Caveat', cursive;
     }
 
     /* Fondo general */
@@ -39,117 +16,164 @@
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
     }
-    
-    /* Overlay para oscurecer/aclarar sutilmente la imagen de fondo */
-    #main-content::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: rgba(244, 247, 246, 0.55) !important;
-        opacity: 1 !important;
-        pointer-events: none;
-        z-index: 0;
-    }
-    
-    /* 1. TEXTO NEGRO PURO UNIVERSAL (INCLUSO EN FECHAS PASADAS Y MODO OSCURO) */
-    #main-content * {
-        color: #000000 !important;
+    .dark #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
     }
 
-    /* 2. ARREGLO MODO OSCURO Y TARJETAS (Sobrescribir bg-slate-800) */
+    /* 1. TEXTO */
+    #main-content * { color: #3a352f !important; }
+    .dark #main-content * { color: #E4EAE6 !important; }
+
+    /* 2. PANELES (Efecto Papel/Cristal Cálido) */
     #main-content section > div,
-    #main-content aside > div,
-    #main-content .bg-white,
-    #main-content .dark\:bg-slate-800,
-    #main-content .dark\:bg-slate-700,
-    #main-content .dark\:bg-slate-800\/50 {
-        background-color: var(--cal-card-bg) !important;
-        border-color: var(--cal-prog-bg) !important;
+    #main-content main > aside > div,
+    #main-content .bg-white {
+        background-color: rgba(253, 251, 247, 0.85) !important; /* Papel crema translúcido */
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(212, 195, 163, 0.5) !important;
+        border-radius: 2rem !important; /* Más curvo y amigable */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05) !important;
     }
-    
-    /* Botones Principales (Mes ant/sig, Botón Login) */
-    #prev-month-btn, #next-month-btn,
-    aside button {
-        background-color: var(--cal-btn-main) !important;
-        border: 2px solid #3a6a8a !important;
-        box-shadow: 0px 2px 4px rgba(0,0,0,0.2) !important;
+    .dark #main-content section > div,
+    .dark #main-content main > aside > div,
+    .dark #main-content .bg-white {
+        background-color: rgba(42, 41, 38, 0.85) !important; /* Marrón oscuro translúcido */
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important;
     }
-    #prev-month-btn:hover, #next-month-btn:hover,
-    aside button:hover {
-        background-color: var(--cal-btn-hover) !important;
+
+    /* Ocultar bordes de la cuadrícula interna del calendario para romper la "tabla" */
+    .calendar-grid { gap: 6px !important; border: none !important; background: transparent !important; }
+    .calendar-grid > div.font-bold { background: transparent !important; border: none !important; font-size: 0.75rem; letter-spacing: 1px; color: #a39c8e !important; }
+
+    /* Días del calendario (Piedras/Stickers redondos) */
+    .day-btn, .calendar-grid > div:not(.font-bold) {
+        background-color: rgba(244, 239, 230, 0.6) !important;
+        border: 1px solid transparent !important;
+        border-radius: 1rem !important;
+        transition: all 0.3s ease !important;
+        font-weight: 600 !important;
     }
-    
-    /* Flechas e iconos (Forzados a negro para asegurar que aparezcan) */
-    .material-symbols-outlined {
-        color: #000000 !important;
-        opacity: 1 !important;
+    .dark .day-btn, .dark .calendar-grid > div:not(.font-bold) {
+        background-color: rgba(30, 30, 28, 0.6) !important;
     }
-    
-    /* Calendario: Días (Celdas) */
-    .day-btn, .calendar-grid > div {
-        background-color: var(--cal-prog-bg) !important;
-        border-color: var(--cal-sec-el) !important;
-        opacity: 1 !important;
-    }
-    .day-btn:hover {
-        background-color: var(--cal-active) !important;
-    }
-    
-    /* Calendario: Día Seleccionado */
+
+    /* Hover días */
+    .day-btn:hover { background-color: #d4c3a3 !important; transform: scale(1.05) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important; }
+    .dark .day-btn:hover { background-color: #4a453b !important; }
+
+    /* Día Seleccionado (Aro marcado tipo marcador) */
     .selected-day {
-        background-color: var(--cal-active) !important;
-        border: 2px solid #3a6a8a !important;
-        transform: scale(1.05);
+        background-color: #d4c3a3 !important;
+        border: 2px dashed #8A6538 !important;
+        transform: scale(1.08) !important;
+        color: #3a2e1d !important;
     }
-    
-    /* FONDOS de disponibilidad en las celdas enteras */
-    .day-btn.bg-green-500 { background-color: var(--cal-active) !important; border: 1px solid #8DA399 !important; }
-    .day-btn.bg-yellow-500 { background-color: var(--cal-icon) !important; border: 1px solid #8DA399 !important; }
-    .day-btn.bg-red-500 { background-color: var(--cal-btn-main) !important; border: 1px solid #8DA399 !important; }
-    
-    /* Puntos de disponibilidad en la Leyenda (volverlos cuadraditos tipo tarjeta) */
-    .mt-8 .bg-green-500 { background-color: var(--cal-active) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
-    .mt-8 .bg-yellow-500 { background-color: var(--cal-icon) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
-    .mt-8 .bg-red-500 { background-color: var(--cal-btn-main) !important; width: 1.25rem !important; height: 1.25rem !important; border-radius: 0.375rem !important; border: 1px solid #8DA399 !important;}
-
-
-    /* Carrusel de Consejos y Recursos */
-    #tip-content > div {
-        background: var(--cal-prog-bg) !important;
-        border: 1px solid var(--cal-sec-el) !important;
+    .dark .selected-day {
+        background-color: #4B7065 !important;
+        border: 2px dashed #D7E6D5 !important;
+        color: #E4EAE6 !important;
     }
+
+    /* COLORES DISPONIBILIDAD ORGÁNICOS */
+    /* Claro */
+    .day-btn.bg-green-500 { background-color: #A3B19B !important; color: #2C3634 !important; }
+    .day-btn.bg-yellow-500 { background-color: #D4B98C !important; color: #4A3511 !important; }
+    .day-btn.bg-red-500 { background-color: #D69C93 !important; color: #4A1A1A !important; }
+    /* Oscuro */
+    .dark .day-btn.bg-green-500 { background-color: #3A5C3D !important; color: #E4EAE6 !important; }
+    .dark .day-btn.bg-yellow-500 { background-color: #8A6538 !important; color: #E4EAE6 !important; }
+    .dark .day-btn.bg-red-500 { background-color: #73302B !important; color: #E4EAE6 !important; }
+
+    /* Leyenda */
+    .mt-8 .bg-green-500 { background-color: #A3B19B !important; border-radius: 50% !important; border: none !important;}
+    .mt-8 .bg-yellow-500 { background-color: #D4B98C !important; border-radius: 50% !important; border: none !important;}
+    .mt-8 .bg-red-500 { background-color: #D69C93 !important; border-radius: 50% !important; border: none !important;}
     
-    /* Acentos en elementos de psicólogos */
+    .dark .mt-8 .bg-green-500 { background-color: #3A5C3D !important; }
+    .dark .mt-8 .bg-yellow-500 { background-color: #8A6538 !important; }
+    .dark .mt-8 .bg-red-500 { background-color: #73302B !important; }
+
+    /* Botones Mes Anterior/Siguiente */
+    #prev-month-btn, #next-month-btn {
+        background-color: transparent !important;
+        border: 1px solid #d4c3a3 !important;
+        border-radius: 50% !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s !important;
+        box-shadow: none !important;
+    }
+    #prev-month-btn:hover, #next-month-btn:hover { background-color: #d4c3a3 !important; }
+    .dark #prev-month-btn, .dark #next-month-btn { border-color: #4B7065 !important; }
+    .dark #prev-month-btn:hover, .dark #next-month-btn:hover { background-color: #4B7065 !important; }
+
+    /* Tarjetas de Psicólogos (Derecha) */
+    main > aside > div > div:last-child > div {
+        background-color: transparent !important;
+        border: 1px solid rgba(212, 195, 163, 0.4) !important;
+        border-radius: 1.5rem !important;
+        padding: 1rem !important;
+    }
+    .dark main > aside > div > div:last-child > div { border-color: rgba(255,255,255,0.05) !important; }
+    
+    /* Agendar Cita Button (Inside the psych card) */
     .bg-blue-50, .dark\:bg-blue-900\/30 {
-        background-color: var(--cal-prog-bg) !important;
-        border-color: var(--cal-accent) !important;
+        background-color: #f0eadd !important;
+        border: 1px solid #d4c3a3 !important;
+        border-radius: 1rem !important;
+    }
+    .dark .bg-blue-50, .dark .dark\:bg-blue-900\/30 {
+        background-color: rgba(75, 112, 101, 0.2) !important;
+        border-color: #4B7065 !important;
     }
     
-    /* Quitar clases que opacan los días deshabilitados en JS */
-    .cursor-not-allowed {
-        opacity: 1 !important;
-        cursor: default !important;
+    /* Carrusel de Consejos (Post-it effect) */
+    #tip-carousel-container {
+        background-color: rgba(253, 251, 247, 0.9) !important;
+        border: 1px solid rgba(212, 195, 163, 0.4) !important;
+        box-shadow: 2px 4px 12px rgba(0,0,0,0.06) !important;
+        transform: rotate(-0.6deg);
     }
+    .dark #tip-carousel-container {
+        background-color: rgba(46, 45, 43, 0.9) !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
+        box-shadow: 2px 4px 15px rgba(0,0,0,0.4) !important;
+    }
+    #tip-text { font-family: 'Caveat', cursive !important; font-size: 1.6rem !important; color: #5c5346 !important; }
+    .dark #tip-text { color: #d4c3a3 !important; }
 
-    /* Forzar bordes rectos (sin redondear) en todas las celdas del calendario y leyenda */
-    .calendar-grid > div,
-    .day-btn {
-        border-radius: 0.375rem !important;
-    }
+    /* Eliminar clases de Tailwind que interfieren con las tarjetas pequeñas de abajo */
+    #recursos-carousel-container { background-color: rgba(253, 251, 247, 0.6) !important; border: 1px solid rgba(212, 195, 163, 0.3) !important; }
+    .dark #recursos-carousel-container { background-color: rgba(42, 41, 38, 0.6) !important; border-color: rgba(255,255,255,0.05) !important; }
 </style>
 
 
 
-<main class="pt-8 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 relative z-10 w-full">
+
+
+<main class="pt-8 px-4 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8 relative z-10 w-full" style="min-height: calc(100vh - 120px);">
     <!-- Left Section: Calendar + Carousel + Nuevos Recursos stacked -->
     <section class="lg:col-span-12 xl:col-span-8 flex flex-col gap-6">
         <!-- Calendar Card (Independent) -->
         <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60">
             <div class="flex items-center justify-between mb-8">
                 <div class="flex flex-col">
-                    <div class="flex items-center gap-1" id="calendar-month-year">
-                        <select id="month-select" class="font-headline-md text-on-surface dark:text-slate-100 bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"></select>
-                        <select id="year-select" class="font-headline-md text-on-surface dark:text-slate-100 bg-transparent border-transparent focus:border-transparent focus:ring-0 p-0 pr-6 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"></select>
+                    <!-- Custom month/year picker: visible label + invisible native select overlaid -->
+                    <div class="flex items-center gap-4" id="calendar-month-year">
+                        <div class="relative inline-flex items-center gap-1 cursor-pointer">
+                            <span id="month-label" class="font-handwritten text-3xl font-bold" style="color:inherit;">Octubre</span>
+                            <span class="material-symbols-outlined text-[18px] opacity-40" style="color:inherit;">expand_more</span>
+                            <select id="month-select" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" style="font-size:1rem;"></select>
+                        </div>
+                        <div class="relative inline-flex items-center gap-1 cursor-pointer">
+                            <span id="year-label" class="font-handwritten text-xl opacity-60" style="color:inherit;">2026</span>
+                            <span class="material-symbols-outlined text-[14px] opacity-40" style="color:inherit;">expand_more</span>
+                            <select id="year-select" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" style="font-size:1rem;"></select>
+                        </div>
                     </div>
                     <p class="text-body-sm text-on-tertiary-fixed-variant dark:text-slate-400">Selecciona un día para ver disponibilidad</p>
                 </div>
@@ -196,28 +220,25 @@
         </div>
 
         <!-- Carrusel + Nuevos Recursos side by side (below calendar) -->
-        <div class="flex flex-col sm:flex-row gap-4">
-            <!-- Carrusel de Consejos (square, funcional) -->
-            <div class="flex-1 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-700/60 h-40 flex flex-col justify-center" style="background-color: var(--cal-card-bg);">
-                <div id="tip-carousel" class="relative h-full">
-                    <div id="tip-content" class="transition-opacity duration-500 ease-in-out h-full">
-                        <div class="rounded-xl p-4 overflow-hidden relative group h-full flex items-center justify-center" style="background-color: var(--cal-prog-bg); border: 1px solid var(--cal-sec-el);">
-                            <div class="relative z-10 w-full">
-                                <p id="tip-text" class="text-[15px] opacity-100 leading-relaxed font-medium text-center" style="color: #000000;">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
-                            </div>
-                        </div>
+        <div class="flex flex-col sm:flex-row gap-6">
+            <!-- Carrusel de Consejos -->
+            <div class="flex-1 rounded-2xl p-6 h-44 flex items-center justify-center overflow-hidden shadow-sm" id="tip-carousel-container">
+                <div id="tip-carousel" class="relative w-full h-full flex items-center justify-center">
+                    <div id="tip-content" class="transition-opacity duration-500 ease-in-out w-full text-center">
+                        <p id="tip-text" class="leading-relaxed text-center">Priorizar tu salud mental no es un lujo, es una inversión en tu futuro bienestar.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Nuevos Recursos Card (Carrusel) -->
-            <a href="<?= URL_BASE ?>citas/misRecursos" class="flex-1 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-700/60 flex overflow-hidden h-40 hover:opacity-90 transition-colors group cursor-pointer block" style="background-color: var(--cal-card-bg);" id="recursos-carousel-container">
+            <a href="<?= URL_BASE ?>citas/misRecursos" class="flex-1 rounded-2xl p-4 shadow-sm flex overflow-hidden h-44 hover:opacity-90 transition-opacity group cursor-pointer" id="recursos-carousel-container">
                 <div id="recursos-carousel" class="relative w-full h-full flex items-center justify-center">
                     <div id="recursos-content" class="transition-opacity duration-500 ease-in-out w-full h-full flex items-center gap-4">
                         <div class="w-full text-center flex flex-col justify-center px-4">
-                            <h4 class="font-bold text-xs uppercase tracking-wider mb-2" style="color: #000000;">Nuevos Recursos</h4>
-                            <p class="text-[14px] leading-tight" style="color: #000000;">Aún no tienes recursos asignados.</p>
+                            <h4 class="font-bold text-xs uppercase tracking-wider mb-2">Nuevos Recursos</h4>
+                            <p class="text-[14px] leading-tight">Aún no tienes recursos asignados.</p>
                         </div>
+
                     </div>
                 </div>
             </a>
@@ -228,7 +249,7 @@
     <aside class="lg:col-span-12 xl:col-span-4 flex flex-col gap-6">
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
             <div class="p-6 border-b border-slate-50 dark:border-slate-700/60">
-                <h3 class="font-headline-md text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
+                <h3 class="font-handwritten text-3xl font-bold text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
                 <p class="text-body-sm text-slate-500 dark:text-slate-400" id="psico-count">Haz clic en un día para ver disponibilidad</p>
             </div>
 
@@ -388,6 +409,12 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderCalendar() {
             monthSelect.value = currentMonth;
             yearSelect.value = currentYear;
+
+            // Sync visible labels with select values
+            const monthLabel = document.getElementById('month-label');
+            const yearLabel = document.getElementById('year-label');
+            if (monthLabel) monthLabel.textContent = monthNames[currentMonth];
+            if (yearLabel) yearLabel.textContent = currentYear;
 
             // Disable past months if current year is selected
             Array.from(monthSelect.options).forEach(opt => {
