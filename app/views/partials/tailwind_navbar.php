@@ -1,8 +1,8 @@
-<header class="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm flex justify-between items-center w-full px-4 sm:px-6 h-16 sticky top-0 z-20">
+<header class="bg-white dark:bg-[#2a2926] border-b border-slate-100 dark:border-white/5 shadow-sm flex justify-between items-center w-full px-4 sm:px-6 h-16 sticky top-0 z-20">
     <div class="flex items-center gap-3">
         <!-- Botón hamburguesa (solo móvil / tablet) -->
         <button onclick="openSidebar()" aria-label="Abrir menú"
-            class="lg:hidden p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors active:scale-95">
+            class="lg:hidden p-2 rounded-xl text-slate-500 dark:text-[#a39c8e] hover:bg-slate-100 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-[#D7E6D5] transition-colors active:scale-95">
             <span class="material-symbols-outlined text-[24px]">menu</span>
         </button>
         <img alt="PSYCO Logo" class="h-8 w-auto object-contain hidden sm:block" src="<?= URL_BASE ?>public/img/psyco.png"/>
@@ -12,49 +12,33 @@
     </div>
     <div class="flex items-center gap-4">
 
+        <!-- Botón Tema Oscuro -->
+        <button onclick="toggleDarkMode()" class="p-2 rounded-full text-slate-500 dark:text-[#a39c8e] hover:bg-slate-100 dark:hover:bg-white/5 dark:hover:text-[#E4EAE6] transition-colors" title="Cambiar tema">
+            <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+        </button>
+
         <?php if (isset($_SESSION['user'])): ?>
             <!-- Sesión activa: saludo + logout -->
-            <span class="text-sm text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+            <span class="text-sm text-slate-500 dark:text-[#8DA399] font-medium hidden sm:block">
                 Hola, <?= htmlspecialchars($_SESSION['user']['nombre'] ?? 'Usuario') ?>
             </span>
             <a href="<?= URL_BASE ?>users/logout"
-               class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
+               class="p-2 rounded-full text-slate-500 dark:text-[#a39c8e] hover:bg-slate-50 dark:hover:bg-white/5 dark:hover:text-[#E4EAE6] transition-colors active:scale-95 duration-200"
                title="Cerrar sesión">
                 <span class="material-symbols-outlined">logout</span>
             </a>
 
         <?php else: ?>
-            <!-- Sin sesión: dropdown con Iniciar sesión / Registrarse -->
-            <div class="relative" id="nav-guest-dropdown">
-                <button onclick="toggleNavDropdown()"
-                        class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200"
-                        title="Cuenta" aria-haspopup="true" aria-expanded="false" id="nav-guest-btn">
-                    <span class="material-symbols-outlined">account_circle</span>
-                </button>
-
-                <!-- Menú desplegable -->
-                <div id="nav-guest-menu"
-                     class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700
-                            rounded-xl shadow-lg z-50 overflow-hidden
-                            origin-top-right transition-all duration-150">
-
-                    <button onclick="closeNavDropdown(); openLoginModal();"
-                            class="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 dark:text-slate-200
-                                   hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-left">
-                        <span class="material-symbols-outlined text-[18px] text-primary">login</span>
-                        Iniciar sesión
-                    </button>
-
-                    <div class="h-px bg-slate-100 dark:bg-slate-700 mx-3"></div>
-
-                    <button onclick="closeNavDropdown(); openRegisterModal();"
-                       class="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 dark:text-slate-200
-                              hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-left">
-                        <span class="material-symbols-outlined text-[18px] text-blue-500">person_add</span>
-                        Registrarse
-                    </button>
-                </div>
-            </div>
+            <!-- Sin sesión: botones directos de Iniciar sesión / Registrarse -->
+            <button onclick="openLoginModal()" class="flex items-center gap-2 text-slate-600 dark:text-[#a39c8e] hover:text-black dark:hover:text-[#E4EAE6] font-semibold transition-colors text-sm sm:text-base">
+                <span class="material-symbols-outlined text-[20px]">login</span>
+                <span class="hidden sm:inline">Iniciar sesión</span>
+            </button>
+            <button onclick="openRegisterModal()" class="flex items-center gap-2 text-slate-600 dark:text-[#a39c8e] hover:text-black dark:hover:text-[#E4EAE6] font-semibold transition-colors text-sm sm:text-base">
+                <span class="material-symbols-outlined text-[20px]">person_add</span>
+                <span class="hidden sm:inline">Registrarse</span>
+            </button>
         <?php endif; ?>
 
     </div>

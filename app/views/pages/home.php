@@ -49,33 +49,55 @@
     .btn-gestionar:hover { background-color: #5A7E9F; }
     .btn-miscitas:hover { background-color: #759286; }
     .btn-recursos:hover { background-color: #8C7164; }
+
+    /* MODO OSCURO (Dark Mode) overrides */
+    .dark #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
+    }
+    .dark .glass-card {
+        background-color: #1e293b !important; /* slate-800 */
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important; /* shadow-2xl con más opacidad para modo oscuro */
+        border: 1px solid #334155 !important; /* border-slate-700 */
+    }
 </style>
 
 <!-- ── Barra Superior Blanca (Top Bar) ──────────────────────────── -->
-<div class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-sm shadow-sm flex items-center justify-between px-6 md:px-12 py-4 z-50 h-[72px]">
+<div class="fixed top-0 left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm shadow-sm flex items-center justify-between px-6 md:px-12 py-4 z-50 h-[72px]">
     <div class="flex items-center gap-3">
-        <img src="<?= URL_BASE ?>public/img/logo.png" alt="Logo" class="h-8 md:h-10" onerror="this.style.display='none'"> 
-        <span class="font-extrabold text-slate-800 tracking-widest text-xl md:text-2xl" style="font-family: 'Plus Jakarta Sans', sans-serif;">PSYCO</span>
+        <img src="<?= URL_BASE ?>public/img/psyco.png" alt="Logo" class="h-8 md:h-10" onerror="this.style.display='none'"> 
+        <span class="font-extrabold text-slate-800 dark:text-white tracking-widest text-xl md:text-2xl" style="font-family: 'Plus Jakarta Sans', sans-serif;">PSYCO</span>
     </div>
     
-    <?php if (!isset($_SESSION['user'])): ?>
-    <button onclick="openLoginModal()" class="flex items-center gap-2 text-slate-700 hover:text-black font-bold transition-colors text-base md:text-lg">
-        <span class="material-symbols-outlined text-[22px]">login</span>
-        Iniciar sesión
-    </button>
-    <?php else: ?>
-        <?php if ($_SESSION['user']['rol'] === 'psicologo'): ?>
-        <a href="<?= URL_BASE ?>panel_psicologas" class="flex items-center gap-2 text-slate-700 hover:text-black font-bold transition-colors text-base md:text-lg">
-            <span class="material-symbols-outlined text-[22px]">dashboard</span>
-            Mi Panel
-        </a>
+    <div class="flex items-center gap-4 md:gap-6">
+        <!-- Botón de Tema (Oscuro/Claro) -->
+        <button onclick="toggleDarkMode()" class="text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors flex items-center" title="Cambiar tema">
+            <span class="material-symbols-outlined text-[22px] dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined text-[22px] hidden dark:block text-white">light_mode</span>
+        </button>
+
+        <?php if (!isset($_SESSION['user'])): ?>
+        <button onclick="openLoginModal()" class="flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white font-bold transition-colors text-base md:text-lg">
+            <span class="material-symbols-outlined text-[22px]">login</span>
+            <span class="hidden md:inline">Iniciar sesión</span>
+        </button>
+        <button onclick="openRegisterModal()" class="flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white font-bold transition-colors text-base md:text-lg">
+            <span class="material-symbols-outlined text-[22px]">person_add</span>
+            <span class="hidden md:inline">Registrarse</span>
+        </button>
         <?php else: ?>
-        <a href="<?= URL_BASE ?>citas/misCitas" class="flex items-center gap-2 text-slate-700 hover:text-black font-bold transition-colors text-base md:text-lg">
-            <span class="material-symbols-outlined text-[22px]">person</span>
-            Mi Cuenta
-        </a>
+            <?php if ($_SESSION['user']['rol'] === 'psicologo'): ?>
+            <a href="<?= URL_BASE ?>panel_psicologas" class="flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white font-bold transition-colors text-base md:text-lg">
+                <span class="material-symbols-outlined text-[22px]">dashboard</span>
+                Mi Panel
+            </a>
+            <?php else: ?>
+            <a href="<?= URL_BASE ?>citas/misCitas" class="flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white font-bold transition-colors text-base md:text-lg">
+                <span class="material-symbols-outlined text-[22px]">person</span>
+                Mi Cuenta
+            </a>
+            <?php endif; ?>
         <?php endif; ?>
-    <?php endif; ?>
+    </div>
 </div>
 
 <!-- ── Tarjeta Central ──────────────────────────────────────────── -->
@@ -88,11 +110,11 @@
 
     <!-- Contenido de Texto -->
     <div>
-        <h1 class="text-3xl md:text-[2.6rem] mb-6 leading-tight font-black text-[#1c2e2a]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+        <h1 class="text-3xl md:text-[2.6rem] mb-6 leading-tight font-black text-[#1c2e2a] dark:text-slate-100" style="font-family: 'Plus Jakarta Sans', sans-serif;">
             Un espacio seguro para<br>escucharte en PSYCO
         </h1>
         
-        <p class="text-[17px] md:text-[19px] mb-10 leading-relaxed font-medium text-[#2a3c38] max-w-2xl mx-auto" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+        <p class="text-[17px] md:text-[19px] mb-10 leading-relaxed font-medium text-[#2a3c38] dark:text-slate-400 max-w-2xl mx-auto" style="font-family: 'Plus Jakarta Sans', sans-serif;">
             Nuestra plataforma escolar está diseñada para acompañarte cuando lo necesites. Conecta con tu psicóloga de forma segura y confidencial. Agenda tus citas y encuentra apoyo a tu ritmo, en un entorno de confianza.
         </p>
 

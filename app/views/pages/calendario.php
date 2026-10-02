@@ -25,18 +25,14 @@
     .dark #main-content * { color: #E4EAE6 !important; }
 
     /* 2. PANELES (Efecto Papel/Cristal Cálido) */
-    #main-content section > div,
-    #main-content main > aside > div,
-    #main-content .bg-white {
+    .glass-panel {
         background-color: rgba(253, 251, 247, 0.85) !important; /* Papel crema translúcido */
         backdrop-filter: blur(12px) !important;
         border: 1px solid rgba(212, 195, 163, 0.5) !important;
         border-radius: 2rem !important; /* Más curvo y amigable */
         box-shadow: 0 10px 40px rgba(0,0,0,0.05) !important;
     }
-    .dark #main-content section > div,
-    .dark #main-content main > aside > div,
-    .dark #main-content .bg-white {
+    .dark .glass-panel {
         background-color: rgba(42, 41, 38, 0.85) !important; /* Marrón oscuro translúcido */
         backdrop-filter: blur(12px) !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -159,7 +155,7 @@
     <!-- Left Section: Calendar + Carousel + Nuevos Recursos stacked -->
     <section class="lg:col-span-12 xl:col-span-8 flex flex-col gap-6">
         <!-- Calendar Card (Independent) -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60">
+        <div class="glass-panel bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/60">
             <div class="flex items-center justify-between mb-8">
                 <div class="flex flex-col">
                     <!-- Custom month/year picker: visible label + invisible native select overlaid -->
@@ -247,7 +243,7 @@
 
     <!-- Right Section: Psychologist Panel only -->
     <aside class="lg:col-span-12 xl:col-span-4 flex flex-col gap-6">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
+        <div class="glass-panel bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700/60 flex flex-col h-full sticky top-24">
             <div class="p-6 border-b border-slate-50 dark:border-slate-700/60">
                 <h3 class="font-handwritten text-3xl font-bold text-on-surface dark:text-slate-100" id="selected-date-display">Selecciona un día</h3>
                 <p class="text-body-sm text-slate-500 dark:text-slate-400" id="psico-count">Haz clic en un día para ver disponibilidad</p>

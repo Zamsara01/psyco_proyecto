@@ -23,6 +23,9 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         background-position: center !important;
         background-attachment: fixed !important;
     }
+    .dark #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
+    }
     #main-content::before {
         content: '';
         position: fixed;
@@ -31,7 +34,7 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         pointer-events: none;
         z-index: 0;
     }
-    .dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+    .dark #main-content::before { background: transparent; }
 
     /* Tarjetas de recursos (Frosted Glass) */
     .recurso-card {
@@ -40,7 +43,13 @@ $imagenes = array_filter($recursos, fn($r) => ($r['tipo'] ?? '') === 'imagen');
         transition: box-shadow .2s, transform .2s, border-color .2s;
     }
     .dark .recurso-card {
-        background: rgba(30, 41, 59, 0.88) !important;
+        background-color: rgba(42, 41, 38, 0.85) !important;
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important;
+    }
+    .dark .recurso-card, .dark .recurso-card h3, .dark .recurso-card p, .dark .recurso-card span:not(.material-symbols-outlined) {
+        color: #E4EAE6 !important;
     }
     .recurso-card:hover {
         box-shadow: 0 8px 28px rgba(0,0,0,0.10) !important;

@@ -18,16 +18,16 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
     : 'text-slate-600 hover:text-[#4a6e8a] hover:bg-[#F4F7F6]/80 font-medium dark:text-[#8DA399] dark:hover:text-[#D7E6D5] dark:hover:bg-[#2C3634]';
 ?>
 
-<aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+<aside id="app-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/70 dark:bg-[#2a2926] backdrop-blur-md border-r border-slate-200/50 dark:border-white/5 shadow-lg flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
 
     <!-- ── Logo ─────────────────────────────────────────────── -->
-    <div class="py-8 flex items-center justify-center border-b border-slate-100 dark:border-slate-700/60 shrink-0 relative">
+    <div class="py-8 flex items-center justify-center border-b border-slate-100 dark:border-white/5 shrink-0 relative">
         <a href="<?= URL_BASE ?>" class="flex items-center justify-center w-full">
             <img alt="PSYCO Logo" class="w-44 h-auto object-contain drop-shadow-sm" src="<?= URL_BASE ?>public/img/psyco.png"/>
         </a>
         <!-- Botón cerrar sidebar (solo móvil) -->
         <button onclick="closeSidebar()" aria-label="Cerrar menú"
-            class="lg:hidden absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-500 dark:hover:text-slate-300 transition-colors shrink-0">
+            class="lg:hidden absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-white/10 dark:text-[#a39c8e] dark:hover:text-[#E4EAE6] transition-colors shrink-0">
             <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
     </div>
@@ -196,7 +196,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
     </nav>
 
     <!-- ── Footer de Usuario ─────────────────────────────────── -->
-    <div class="border-t border-slate-100 dark:border-slate-700/60 p-4 shrink-0">
+    <div class="border-t border-slate-100 dark:border-white/5 p-4 shrink-0">
         <?php if ($user): ?>
             <!-- Usuario logueado -->
             <div class="flex items-center gap-3 px-2 mb-3">
@@ -204,7 +204,7 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                     <?= htmlspecialchars($inicial) ?>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate"><?= htmlspecialchars($nombre) ?></p>
+                    <p class="text-sm font-semibold text-slate-800 dark:text-[#E4EAE6] truncate"><?= htmlspecialchars($nombre) ?></p>
                     <p class="text-xs text-slate-400 dark:text-[#8DA399] truncate">
                         <?= $rol === 'psicologo' ? '🧠 Psicóloga' : '👤 Paciente' ?>
                     </p>
@@ -214,19 +214,19 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
             <!-- Toggle dark mode + Toggle layout (en fila) -->
             <div class="flex items-center gap-2 mb-2">
                 <button onclick="toggleDarkMode()"
-                    class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                    class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-[#a39c8e] hover:bg-slate-100 dark:hover:bg-white/5 dark:hover:text-[#E4EAE6] rounded-xl transition-colors">
                     <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
                     <span id="darkModeLabel">Modo oscuro</span>
                 </button>
                 <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                     aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                    class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                    class="flex items-center justify-center p-2 text-slate-500 dark:text-[#a39c8e] hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-white/5 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-white/5">
                     <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                 </button>
             </div>
 
             <a href="<?= URL_BASE ?>users/logout"
-               class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-colors border border-slate-200 dark:border-slate-700">
+               class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-600 dark:text-[#a39c8e] bg-slate-50 dark:bg-white/5 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-300 rounded-xl transition-colors border border-slate-200 dark:border-white/5">
                 <span class="material-symbols-outlined text-[18px]">logout</span>
                 Cerrar sesión
             </a>
@@ -237,13 +237,13 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 <!-- Toggle dark mode + Toggle layout (en fila) -->
                 <div class="flex items-center gap-2">
                     <button onclick="toggleDarkMode()"
-                        class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                        class="flex flex-1 items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 dark:text-[#a39c8e] hover:bg-slate-100 dark:hover:bg-white/5 dark:hover:text-[#E4EAE6] rounded-xl transition-colors">
                         <span class="material-symbols-outlined text-[18px]" id="darkModeIcon">dark_mode</span>
                         <span id="darkModeLabel">Modo oscuro</span>
                     </button>
                     <button onclick="toggleLayoutMode()" id="layoutToggleBtn"
                         aria-label="Alternar diseño" title="Cambiar entre Navbar y Sidebar"
-                        class="flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-slate-800 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-slate-700">
+                        class="flex items-center justify-center p-2 text-slate-500 dark:text-[#a39c8e] hover:text-blue-500 dark:hover:text-[#D7E6D5] hover:bg-[#F4F7F6] dark:hover:bg-white/5 rounded-xl transition-colors shrink-0 border border-slate-200 dark:border-white/5">
                         <span class="material-symbols-outlined text-[18px]" id="layoutToggleIcon">dock_to_bottom</span>
                     </button>
                 </div>
@@ -799,11 +799,18 @@ body.navbar-mode #app-sidebar {
     align-items: center !important;
     inset-block: unset !important;
     border-right: none !important;
-    border-bottom: 1px solid rgba(148,163,184,0.25) !important;
+    border-bottom: 1px solid rgba(148,163,184,0.15) !important;
     padding: 0 1.25rem !important;
     gap: 0 !important;
     transform: none !important;
     overflow: visible !important;
+}
+
+/* Dark mode: borde inferior más sutil y fondo opaco */
+.dark body.navbar-mode #app-sidebar {
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    background-color: #2a2926 !important;
+    background-image: none !important;
 }
 
 /* Cabecera (logo) — ancho fijo, sin borde inferior */
@@ -814,6 +821,16 @@ body.navbar-mode #app-sidebar > div:first-child {
     padding: 0 1rem 0 0 !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Logo: limitar tamaño dentro del navbar */
+body.navbar-mode #app-sidebar > div:first-child img {
+    height: 36px !important;
+    width: auto !important;
+    max-width: none !important;
 }
 
 /* Botón toggle en navbar-mode: se ubica justo a la derecha del logo */
@@ -867,7 +884,7 @@ body.navbar-mode #misRecursosMenu {
     padding: 0.4rem !important;
     z-index: 999 !important;
 }
-.dark body.navbar-mode #misRecursosMenu { background: #1e293b !important; }
+.dark body.navbar-mode #misRecursosMenu { background: #2a2926 !important; border: 1px solid rgba(255,255,255,0.06) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important; }
 body.navbar-mode #misRecursosMenu a {
     width: 100% !important;
     margin: 0 !important;
@@ -913,26 +930,72 @@ body.navbar-mode #main-content {
     width: 100% !important;
     padding-top: 60px !important;
 }
+
+/* Transición suave del sidebar y main-content */
+#app-sidebar {
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1),
+                transform 0.4s cubic-bezier(0.4,0,0.2,1),
+                height 0.4s cubic-bezier(0.4,0,0.2,1),
+                background-color 0.3s ease;
+}
+#main-content {
+    transition: margin-left 0.4s cubic-bezier(0.4,0,0.2,1),
+                padding-top 0.4s cubic-bezier(0.4,0,0.2,1),
+                width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Overlay de transición (flash suave) */
+#layout-transition-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+#layout-transition-overlay.active {
+    opacity: 1;
+    background: rgba(0,0,0,0.18);
+}
 </style>
+
+<!-- Overlay de transición de layout -->
+<div id="layout-transition-overlay"></div>
 
 <script>
 function toggleLayoutMode() {
+    const overlay = document.getElementById('layout-transition-overlay');
     const isNavbar = document.body.classList.contains('navbar-mode');
-    if (isNavbar) {
-        document.body.classList.remove('navbar-mode');
-        localStorage.setItem('psyco-layout', 'sidebar');
-        document.getElementById('layoutToggleIcon').textContent = 'dock_to_bottom';
-    } else {
-        document.body.classList.add('navbar-mode');
-        localStorage.setItem('psyco-layout', 'navbar');
-        document.getElementById('layoutToggleIcon').textContent = 'dock_to_left';
-    }
+
+    // 1. Fade-in del overlay
+    overlay.classList.add('active');
+
+    setTimeout(() => {
+        // 2. Aplicar el cambio de modo cuando el overlay cubre la pantalla
+        if (isNavbar) {
+            document.body.classList.remove('navbar-mode');
+            localStorage.setItem('psyco-layout', 'sidebar');
+            document.querySelectorAll('#layoutToggleIcon').forEach(el => el.textContent = 'dock_to_bottom');
+        } else {
+            document.body.classList.add('navbar-mode');
+            localStorage.setItem('psyco-layout', 'navbar');
+            document.querySelectorAll('#layoutToggleIcon').forEach(el => el.textContent = 'dock_to_left');
+        }
+
+        // 3. Fade-out del overlay
+        setTimeout(() => {
+            overlay.classList.remove('active');
+        }, 80);
+
+    }, 180);
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('psyco-layout') === 'navbar') {
         document.body.classList.add('navbar-mode');
-        const icon = document.getElementById('layoutToggleIcon');
-        if(icon) icon.textContent = 'dock_to_left';
+        const icons = document.querySelectorAll('#layoutToggleIcon');
+        icons.forEach(icon => icon.textContent = 'dock_to_left');
     }
 });
 </script>

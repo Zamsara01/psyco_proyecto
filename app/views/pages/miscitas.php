@@ -12,6 +12,9 @@
         background-position: center !important;
         background-attachment: fixed !important;
     }
+    .dark #main-content {
+        background-image: url('<?= URL_BASE ?>public/img/calendariobackgroundnoche.jpeg') !important;
+    }
     #main-content::before {
         content: '';
         position: fixed;
@@ -20,7 +23,7 @@
         pointer-events: none;
         z-index: 0;
     }
-    .dark #main-content::before { background: rgba(15, 23, 42, 0.65); }
+    .dark #main-content::before { background: transparent; }
 
     /* Tarjetas */
     .cita-card {
@@ -28,7 +31,15 @@
         backdrop-filter: blur(6px);
         transition: box-shadow .2s, transform .2s;
     }
-    .dark .cita-card { background: rgba(30, 41, 59, 0.88) !important; }
+    .dark .cita-card { 
+        background-color: rgba(42, 41, 38, 0.85) !important; /* Estilo Calendario */
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important;
+    }
+    .dark .cita-card, .dark .cita-card h3, .dark .cita-card p, .dark .cita-card span:not(.badge):not(.material-symbols-outlined) {
+        color: #E4EAE6 !important;
+    }
     .cita-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.10) !important; transform: translateY(-1px); }
 
     /* Avatar circular con iniciales */
@@ -63,6 +74,11 @@
     }
     .tab-btn:not(.active):hover { border-color: #8DA399 !important; color: #3a5a50 !important; }
 
+    /* Ajustes modo oscuro para pestañas (Estilo Calendario) */
+    .dark .tab-btn.active { background: #3A5C3D !important; border-color: #3A5C3D !important; color: #E4EAE6 !important; }
+    .dark .tab-btn:not(.active) { background: rgba(42, 41, 38, 0.8) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #A39C8E !important; }
+    .dark .tab-btn:not(.active):hover { border-color: #3A5C3D !important; color: #E4EAE6 !important; }
+
     /* Botones de acción */
     .btn-editar {
         display: flex; align-items: center; gap: 5px;
@@ -72,6 +88,8 @@
         border: 1.5px solid rgba(107,140,174,0.35); transition: all .18s;
     }
     .btn-editar:hover { background: rgba(107,140,174,0.28); }
+    .dark .btn-editar { background: rgba(107, 140, 174, 0.2); color: #A8C2DC; border-color: rgba(107, 140, 174, 0.4); }
+    .dark .btn-editar:hover { background: rgba(107, 140, 174, 0.35); color: #E4EAE6; }
 
     .btn-cancelar {
         display: flex; align-items: center; gap: 5px;
@@ -81,17 +99,23 @@
         border: 1.5px solid rgba(174,107,107,0.3); transition: all .18s;
     }
     .btn-cancelar:hover { background: rgba(174,107,107,0.24); }
+    .dark .btn-cancelar { background: rgba(174, 107, 107, 0.2); color: #DCA8A8; border-color: rgba(174, 107, 107, 0.4); }
+    .dark .btn-cancelar:hover { background: rgba(174, 107, 107, 0.35); color: #E4EAE6; }
 
     /* Badges de estado — alineados con la paleta de la UI */
     .badge { font-size:0.72rem; padding:2px 9px; border-radius:999px; font-weight:700; }
     /* Pendiente → Azul pizarra suave (#6B8CAE) */
     .badge-pendiente  { background:#dce8f0; color:#3a6a8a; border:1px solid #b5cfe0; }
+    .dark .badge-pendiente { background:rgba(107,140,174,0.2); color:#A8C2DC; border:1px solid rgba(107,140,174,0.4); }
     /* Completada → Verde salvia suave (#8DA399) */
     .badge-completada { background:#d8e8e2; color:#3d6b5a; border:1px solid #b0d0c4; }
+    .dark .badge-completada { background:rgba(141,163,153,0.2); color:#A3B19B; border:1px solid rgba(141,163,153,0.4); }
     /* Cancelada → Arcilla/Terracota suave (tono del avatar naranja) */
     .badge-cancelada  { background:#f5e0d4; color:#a0503a; border:1px solid #e8c0a8; }
+    .dark .badge-cancelada { background:rgba(174,107,107,0.2); color:#DCA8A8; border:1px solid rgba(174,107,107,0.4); }
     /* En proceso → Arena cálida */
     .badge-en-proceso { background:#f0e8d8; color:#8a6a38; border:1px solid #ddd0b0; }
+    .dark .badge-en-proceso { background:rgba(212,185,140,0.2); color:#D4B98C; border:1px solid rgba(212,185,140,0.4); }
 </style>
 
 <div class="relative z-10 p-6 md:p-8 max-w-4xl mx-auto w-full">
