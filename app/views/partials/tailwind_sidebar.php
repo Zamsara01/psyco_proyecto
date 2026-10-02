@@ -190,18 +190,49 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 Historial Clínico
             </button>
 
-            <!-- Proponer Colega -->
-            <a href="<?= URL_BASE ?>panel_psicologas/proponerColega"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('panel_psicologas/proponerColega') ?>">
-                <span class="material-symbols-outlined text-[22px] shrink-0">person_add</span>
-                Proponer colega
+        <?php elseif ($rol === 'superusuario'): ?>
+        <!-- ════════════ SIDEBAR SUPERUSUARIO ════════════ -->
+
+            <!-- Usuarios -->
+            <a href="<?= URL_BASE ?>superusuario/usuarios"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/usuarios') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">group</span>
+                Usuarios
             </a>
 
-            <!-- Solicitudes Pendientes -->
-            <a href="<?= URL_BASE ?>panel_psicologas/solicitudesPendientes"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('panel_psicologas/solicitudesPendientes') ?>">
-                <span class="material-symbols-outlined text-[22px] shrink-0">approval</span>
-                Aprobar colegas
+            <!-- Citas y Recursos -->
+            <a href="<?= URL_BASE ?>superusuario/citasRecursos"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/citasRecursos') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">event_note</span>
+                Citas y Recursos
+            </a>
+
+            <!-- Códigos OTP -->
+            <a href="<?= URL_BASE ?>superusuario/codigos"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/codigos') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">pin</span>
+                Códigos OTP
+            </a>
+
+            <!-- Auditoría -->
+            <a href="<?= URL_BASE ?>superusuario/auditoria"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/auditoria') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">security</span>
+                Auditoría
+            </a>
+
+            <!-- Importaciones -->
+            <a href="<?= URL_BASE ?>superusuario/importaciones"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/importaciones') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">upload_file</span>
+                Importaciones
+            </a>
+
+            <!-- Exportaciones -->
+            <a href="<?= URL_BASE ?>superusuario/exportaciones"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-body-md group <?= $isActive('superusuario/exportaciones') ?>">
+                <span class="material-symbols-outlined text-[22px] shrink-0">download</span>
+                Exportaciones
             </a>
 
         <?php endif; ?>

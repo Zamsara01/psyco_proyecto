@@ -74,7 +74,24 @@ class ControllerUsers extends Controller
             return;
         }
 
-        // 3. Ambos fallaron
+        // 3. Intentar login como Superusuario
+        require_once dirname(__DIR__) . '/models/SuperusuarioModel.php';
+        $superModel = new SuperusuarioModel();
+        $superusuario = $superModel->findByCredentials($email, $password);
+
+        if ($superusuario) {
+            $_SESSION['user'] = [
+                'id'     => $superusuario['id_superusuario'],
+                'nombre' => $superusuario['nombre'],
+                'correo' => $superusuario['correo_electronico'],
+                'estado' => $superusuario['estado'],
+                'rol'    => 'superusuario'
+            ];
+            $this->redirect('superusuario/index');
+            return;
+        }
+
+        // 4. Todos fallaron
         $this->layout = 'tailwind';
         $this->render('users/login', ['error' => 'Correo o contraseña inválidos']);
     }
