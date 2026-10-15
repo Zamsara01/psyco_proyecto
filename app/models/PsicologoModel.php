@@ -104,6 +104,41 @@ class PsicologoModel extends Model
         return array_unique($slots);
     }
 
+    public function getHorasOcupadas(int $idPsicologo, string $fecha): array
+    {
+        $sqlOcupadas = "
+            SELECT hora FROM citas WHERE id_psicologo = ? AND fecha = ?
+              AND estado IN ('pendiente','completada')
+        ";
+        $stmt = $this->db->prepare($sqlOcupadas);
+        $stmt->execute([$idPsicologo, $fecha]);
+        return array_map(fn($h) => substr($h, 0, 5),
+                         array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'hora'));
+    }
+
+    public function getTodosLosSlots(int $idPsicologo, string $diaSemana): array
+    {
+        $sqlDispo = "
+            SELECT hora_inicio, hora_fin FROM disponibilidad_psicologos
+            WHERE id_psicologo = ? AND dia_semana = ? AND activo = 1
+        ";
+        $stmt = $this->db->prepare($sqlDispo);
+        $stmt->execute([$idPsicologo, $diaSemana]);
+        $bloques = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($bloques)) return [];
+
+        $slots = [];
+        foreach ($bloques as $bloque) {
+            $ini = strtotime($bloque['hora_inicio']);
+            $fin = strtotime($bloque['hora_fin']);
+            for ($t = $ini; $t < $fin; $t += 3600) {
+                $slots[] = date('H:i', $t);
+            }
+        }
+        sort($slots);
+        return array_unique($slots);
+    }
+
     public function findByCredentials(string $email, string $password): ?array
     {
         $stmt = $this->db->prepare(

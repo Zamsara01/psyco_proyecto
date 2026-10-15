@@ -8,6 +8,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+date_default_timezone_set('America/Bogota');
+
 set_exception_handler(function (\Throwable $e) {
     @file_put_contents(__DIR__ . '/debug_error.log', date('Y-m-d H:i:s') . " - " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
     http_response_code(500);

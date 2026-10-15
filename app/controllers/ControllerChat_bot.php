@@ -63,9 +63,16 @@ class ControllerChat_bot extends Controller
 
         try {
             require_once dirname(__DIR__) . '/models/PsicologoModel.php';
-            $model = new PsicologoModel();
-            $horas = $model->getHorasDisponibles($idPsicologo, $fecha, $diaSemana);
-            echo json_encode(['ok' => true, 'horas' => $horas]);
+            $model    = new PsicologoModel();
+            $horas    = $model->getHorasDisponibles($idPsicologo, $fecha, $diaSemana);
+            $ocupadas = $model->getHorasOcupadas($idPsicologo, $fecha);
+            $todos    = $model->getTodosLosSlots($idPsicologo, $diaSemana);
+            echo json_encode([
+                'ok'       => true,
+                'horas'    => $horas,
+                'ocupadas' => $ocupadas,
+                'todos'    => $todos
+            ]);
         } catch (\Exception $e) {
             echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
         }

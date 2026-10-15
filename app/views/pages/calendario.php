@@ -117,12 +117,12 @@
     .dark main > aside > div > div:last-child > div { border-color: rgba(255,255,255,0.05) !important; }
     
     /* Agendar Cita Button (Inside the psych card) */
-    .bg-blue-50, .dark\:bg-blue-900\/30 {
+    .badge-agendar-cita {
         background-color: #f0eadd !important;
         border: 1px solid #d4c3a3 !important;
         border-radius: 1rem !important;
     }
-    .dark .bg-blue-50, .dark .dark\:bg-blue-900\/30 {
+    .dark .badge-agendar-cita {
         background-color: rgba(75, 112, 101, 0.2) !important;
         border-color: #4B7065 !important;
     }
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const clickAttr = canSchedule && selectedDate >= today ? `onclick="abrirModalAgendar('${dateString}', ${p.id}, '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}', '${p.foto_perfil}', '${turnosText}')"` : '';
 
                 const agendarBadge = (canSchedule && selectedDate >= today)
-                    ? `<span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-500/30 rounded-full px-2 py-0.5 mt-1">
+                    ? `<span class="badge-agendar-cita inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-500/30 rounded-full px-2 py-0.5 mt-1">
                         <span class="material-symbols-outlined text-[13px]">event_available</span> Agendar cita
                        </span>`
                     : '';
@@ -702,10 +702,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             console.log('[Agendar] Respuesta:', data);
 
-            if (!data.ok || !data.horas || data.horas.length === 0) {
+            const slots = (data.todos && data.todos.length > 0) ? data.todos : (data.horas || []);
+
+            if (!data.ok || slots.length === 0) {
                 grid.innerHTML = `<div class="col-span-3 text-center py-6">
-                    <span class="material-symbols-outlined text-slate-300 text-4xl block mb-2">schedule</span>
-                    <p class="text-slate-500 text-sm">No hay horas disponibles este día.</p>
+                    <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-4xl block mb-2">schedule</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">No hay horas configuradas para este día.</p>
                 </div>`;
                 return;
             }
@@ -713,28 +715,41 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si la fecha seleccionada es hoy, calcular la hora actual del cliente
             const esHoy = (fecha === new Date().toISOString().slice(0, 10));
             const ahora = new Date(); // hora local del navegador
+            const ocupadas = data.ocupadas || [];
 
-            const botonesHTML = data.horas.map(h => {
+            const botonesHTML = slots.map(h => {
+                const ocupada = ocupadas.includes(h);
                 const [hh, mm] = h.split(':').map(Number);
                 const horaSlot = new Date(ahora);
                 horaSlot.setHours(hh, mm, 0, 0);
                 const pasada = esHoy && horaSlot <= ahora;
 
-                if (pasada) {
+                if (ocupada) {
                     return `<button disabled
-                        class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-100 rounded-xl text-slate-300 bg-slate-50 cursor-not-allowed relative"
-                        title="Esta hora ya pasó">
+                        class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200/60 dark:border-slate-700/50 rounded-xl text-slate-400 dark:text-slate-500 bg-slate-100/70 dark:bg-slate-800/40 cursor-not-allowed relative"
+                        title="Este horario ya está reservado">
                         ${h}
-                        <span class="block text-[9px] font-normal text-slate-300 mt-0.5">Hora pasada</span>
+                        <span class="block text-[9px] font-normal text-amber-600 dark:text-amber-400/90 mt-0.5">Ocupado</span>
                     </button>`;
                 }
+
+                if (pasada) {
+                    return `<button disabled
+                        class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200/60 dark:border-slate-700/50 rounded-xl text-slate-400 dark:text-slate-500 bg-slate-100/70 dark:bg-slate-800/40 cursor-not-allowed relative"
+                        title="Esta hora ya pasó">
+                        ${h}
+                        <span class="block text-[9px] font-normal text-slate-400 dark:text-slate-500 mt-0.5">Hora pasada</span>
+                    </button>`;
+                }
+
                 return `<button onclick="seleccionarHoraAgendar('${h}', this)"
-                    class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 transition-all active:scale-95">
+                    class="hora-agendar-btn py-2.5 text-sm font-bold border-2 border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700/40 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-300 transition-all active:scale-95">
                     ${h}
                 </button>`;
             }).join('');
 
-            const hayDisponibles = data.horas.some(h => {
+            const hayDisponibles = slots.some(h => {
+                if (ocupadas.includes(h)) return false;
                 if (!esHoy) return true;
                 const [hh, mm] = h.split(':').map(Number);
                 const horaSlot = new Date(ahora);
@@ -746,23 +761,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!hayDisponibles) {
                 grid.innerHTML = `<div class="col-span-3 text-center py-6">
-                    <span class="material-symbols-outlined text-slate-300 text-4xl block mb-2">schedule</span>
-                    <p class="text-slate-500 text-sm">Todos los horarios de hoy ya pasaron.<br>Selecciona otra fecha.</p>
+                    <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-4xl block mb-2">schedule</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">No hay horarios disponibles para hoy.<br>Selecciona otra fecha.</p>
                 </div>`;
             }
         } catch (e) {
             console.error('[Agendar] Error:', e);
-            grid.innerHTML = `<div class="col-span-3 text-center py-4 text-red-500 text-sm">Error al cargar horarios: ${e.message}</div>`;
+            grid.innerHTML = `<div class="col-span-3 text-center py-4 text-red-500 dark:text-red-400 text-sm">Error al cargar horarios: ${e.message}</div>`;
         }
     }
 
     function seleccionarHoraAgendar(hora, btn) {
         document.querySelectorAll('.hora-agendar-btn').forEach(b => {
-            b.classList.remove('border-blue-500', 'bg-blue-500', 'text-white');
-            b.classList.add('border-slate-200', 'text-slate-600');
+            if (b.disabled) return;
+            b.classList.remove(
+                'border-blue-500', 'bg-blue-500', 'text-white',
+                'dark:border-blue-500', 'dark:bg-blue-600', 'dark:text-white',
+                'shadow-md', 'shadow-blue-500/25'
+            );
+            b.classList.add(
+                'border-slate-200', 'dark:border-slate-700',
+                'text-slate-700', 'dark:text-slate-200',
+                'bg-white', 'dark:bg-slate-700/40'
+            );
         });
-        btn.classList.add('border-blue-500', 'bg-blue-500', 'text-white');
-        btn.classList.remove('border-slate-200', 'text-slate-600');
+
+        btn.classList.remove(
+            'border-slate-200', 'dark:border-slate-700',
+            'text-slate-700', 'dark:text-slate-200',
+            'bg-white', 'dark:bg-slate-700/40'
+        );
+        btn.classList.add(
+            'border-blue-500', 'bg-blue-500', 'text-white',
+            'dark:border-blue-500', 'dark:bg-blue-600', 'dark:text-white',
+            'shadow-md', 'shadow-blue-500/25'
+        );
 
         agendarData.hora = hora;
         document.getElementById('agendarModalBtn').disabled = false;

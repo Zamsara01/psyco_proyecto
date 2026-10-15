@@ -167,13 +167,14 @@
     <?php else: ?>
         <div id="citasContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <?php foreach ($citas as $cita):
-                $fechaF   = date('d M Y', strtotime($cita['fecha']));
-                $horaF    = date('h:i A', strtotime($cita['hora']));
-                $esPasada = $cita['fecha'] < date('Y-m-d');
-                $estado   = $cita['estado'];
-                $partes   = explode(' ', trim($cita['psicologo_nombre']));
-                $iniciales = strtoupper(($partes[0][0] ?? '') . ($partes[1][0] ?? ''));
-                $badgeClass = match($estado) {
+                $fechaF        = date('d M Y', strtotime($cita['fecha']));
+                $horaF         = date('h:i A', strtotime($cita['hora']));
+                $timestampCita = strtotime($cita['fecha'] . ' ' . $cita['hora']);
+                $esPasada      = ($timestampCita <= time());
+                $estado        = $cita['estado'];
+                $partes        = explode(' ', trim($cita['psicologo_nombre']));
+                $iniciales     = strtoupper(($partes[0][0] ?? '') . ($partes[1][0] ?? ''));
+                $badgeClass    = match($estado) {
                     'pendiente'  => 'badge-pendiente',
                     'completada' => 'badge-completada',
                     'cancelada'  => 'badge-cancelada',
@@ -222,7 +223,7 @@
                 <div class="mb-3"></div>
                 <?php endif; ?>
 
-                <!-- Área de botones (parte inferior izquierda) -->
+                <!-- Área de botones (parte inferior) -->
                 <?php if ($estado === 'pendiente' && !$esPasada): ?>
                 <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center gap-2">
                     <button onclick="abrirModalEditar(<?= $cita['id_cita'] ?>, '<?= $cita['fecha'] ?>', '<?= substr($cita['hora'],0,5) ?>', <?= $cita['id_psicologo'] ?>, '<?= htmlspecialchars(addslashes($cita['psicologo_nombre'])) ?>')"
@@ -237,8 +238,15 @@
                     </button>
                 </div>
                 <?php else: ?>
-                <!-- Espacio reservado para mantener altura uniforme -->
-                <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700/50 h-[44px]"></div>
+                <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 h-[44px] px-1">
+                    <?php if ($estado === 'cancelada'): ?>
+                        <span class="flex items-center gap-1 text-red-400/80"><span class="material-symbols-outlined text-[14px]">cancel</span> Cita cancelada</span>
+                    <?php elseif ($estado === 'completada'): ?>
+                        <span class="flex items-center gap-1 text-emerald-500/80"><span class="material-symbols-outlined text-[14px]">check_circle</span> Sesión realizada</span>
+                    <?php elseif ($esPasada): ?>
+                        <span class="flex items-center gap-1 text-slate-400 dark:text-slate-500"><span class="material-symbols-outlined text-[14px]">history</span> Horario finalizado</span>
+                    <?php endif; ?>
+                </div>
                 <?php endif; ?>
 
             </div>

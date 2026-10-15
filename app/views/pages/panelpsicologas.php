@@ -1440,7 +1440,7 @@ async function cargarDisponibilidad() {
                                     ? esc(b.jornada) 
                                     : (esc(b.hora_inicio) + ' - ' + esc(b.hora_fin));
                                 return `
-                                <div class="flex items-center justify-between bg-white  border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2 text-sm shadow-sm hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
+                                <div class="flex items-center justify-between bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2 text-sm shadow-sm hover:border-slate-200 dark:hover:border-slate-600 transition-colors">
                                     <span class="font-semibold text-slate-600 dark:text-slate-300">${jornadaDisplay}</span>
                                     <button onclick="eliminarHorario(${b.id_disponibilidad})" class="p-1 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all active:scale-90" title="Eliminar jornada">
                                         <span class="material-symbols-outlined text-[18px]">delete</span>
@@ -1466,14 +1466,23 @@ async function agregarHorarioDisponibilidad() {
     const errorMsg = document.getElementById('dispFormErrorMsg');
     errorCont.classList.add('hidden');
 
-    const dia = document.getElementById('dispDia').value;
-    const jornada = document.getElementById('dispJornada').value;
+    const dia        = document.getElementById('dispDia').value;
+    const horaInicio = document.getElementById('dispHoraInicio').value;
+    const horaFin    = document.getElementById('dispHoraFin').value;
 
-    if (!dia || !jornada) {
-        errorMsg.textContent = 'Selecciona el día y la jornada.';
+    if (!dia || !horaInicio || !horaFin) {
+        errorMsg.textContent = 'Selecciona el día, la hora de inicio y la hora de fin.';
         errorCont.classList.remove('hidden');
         return;
     }
+
+    if (horaInicio >= horaFin) {
+        errorMsg.textContent = 'La hora de inicio debe ser anterior a la hora de fin.';
+        errorCont.classList.remove('hidden');
+        return;
+    }
+
+    const jornada = horaInicio + '-' + horaFin;
 
     const btn = document.getElementById('btnAgregarDisp');
     btn.disabled = true;
@@ -1488,7 +1497,8 @@ async function agregarHorarioDisponibilidad() {
         const data = await res.json();
         if (data.ok) {
             cargarDisponibilidad();
-            document.getElementById('dispJornada').value = '';
+            document.getElementById('dispHoraInicio').value = '08:00';
+            document.getElementById('dispHoraFin').value    = '14:00';
         } else {
             errorMsg.textContent = data.error;
             errorCont.classList.remove('hidden');
@@ -1525,7 +1535,7 @@ async function eliminarHorario(idDisponibilidad) {
 <!-- ══════════ MODAL: GESTIONAR DISPONIBILIDAD (HTML) ══════════ -->
 <div id="modalDisponibilidad" class="fixed inset-0 z-[60] hidden items-center justify-center">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalDisponibilidad()"></div>
-    <div class="relative bg-white  rounded-3xl shadow-2xl w-full max-w-2xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto">
+    <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-2xl mx-4 z-10 p-7 max-h-[92vh] overflow-y-auto border border-slate-100 dark:border-slate-700/60">
         <button onclick="cerrarModalDisponibilidad()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 transition-colors">
             <span class="material-symbols-outlined">close</span>
         </button>
@@ -1542,7 +1552,7 @@ async function eliminarHorario(idDisponibilidad) {
         <!-- Agregar nuevo horario -->
         <div class="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/50 rounded-2xl p-4 mb-6">
             <h4 class="text-xs font-bold text-indigo-800 dark:text-indigo-300 uppercase tracking-wider mb-3">Agregar Jornada</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Día de la Semana</label>
                     <select id="dispDia" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
@@ -1556,17 +1566,14 @@ async function eliminarHorario(idDisponibilidad) {
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Jornada (solo 1 por día)</label>
-                    <select id="dispJornada" class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
-                        <option value="">Seleccionar jornada</option>
-                        <option value="07:00-13:00">07:00 - 13:00 (Mañana)</option>
-                        <option value="08:00-14:00">08:00 - 14:00 (Mañana)</option>
-                        <option value="09:00-15:00">09:00 - 15:00 (Mañana-Tarde)</option>
-                        <option value="10:00-16:00">10:00 - 16:00 (Mediodía)</option>
-                        <option value="13:00-19:00">13:00 - 19:00 (Tarde)</option>
-                        <option value="14:00-20:00">14:00 - 20:00 (Tarde)</option>
-                        <option value="15:00-21:00">15:00 - 21:00 (Tarde-Noche)</option>
-                    </select>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Hora de inicio</label>
+                    <input type="time" id="dispHoraInicio" value="08:00"
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Hora de fin</label>
+                    <input type="time" id="dispHoraFin" value="14:00"
+                        class="w-full border-2 border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors">
                 </div>
             </div>
             

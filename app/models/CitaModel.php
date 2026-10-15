@@ -280,7 +280,19 @@ class CitaModel extends Model
             JOIN usuario up    ON ps.id_usuario  = up.id_usuario
             JOIN especialidades e ON ps.id_especialidad = e.id_especialidad
             WHERE c.id_paciente = ?
-            ORDER BY c.fecha DESC, c.hora DESC
+            ORDER BY 
+                CASE 
+                    WHEN c.estado = 'pendiente' AND c.fecha >= CURRENT_DATE() THEN 0 
+                    ELSE 1 
+                END ASC,
+                CASE 
+                    WHEN c.estado = 'pendiente' AND c.fecha >= CURRENT_DATE() THEN c.fecha 
+                END ASC,
+                CASE 
+                    WHEN c.estado = 'pendiente' AND c.fecha >= CURRENT_DATE() THEN c.hora 
+                END ASC,
+                c.fecha DESC,
+                c.hora DESC
         ";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$idPaciente]);
