@@ -182,4 +182,26 @@ class PsicologoModel extends Model
         );
         return $stmt->execute([$idDisponibilidad, $idPsicologo]);
     }
+
+    /**
+     * Actualiza el avatar_url del usuario asociado al psicólogo.
+     */
+    public function updateAvatarUrl(int $idUsuario, string $avatarUrl): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE usuario SET avatar_url = ? WHERE id_usuario = ?"
+        );
+        return $stmt->execute([$avatarUrl, $idUsuario]);
+    }
+
+    /**
+     * Obtiene el avatar_url actual del psicólogo (desde usuario).
+     */
+    public function getAvatarUrl(int $idUsuario): ?string
+    {
+        $stmt = $this->db->prepare("SELECT avatar_url FROM usuario WHERE id_usuario = ?");
+        $stmt->execute([$idUsuario]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? ($row['avatar_url'] ?? null) : null;
+    }
 }

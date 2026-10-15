@@ -279,11 +279,11 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                         // Offset aleatorio para que se vea orgánico (zigzag)
                         $marginLeft = ($index % 2 == 0) ? 'ml-0' : 'ml-8 md:ml-12';
                     ?>
-                        <div class="card-tilted <?= $marginLeft ?>" id="rec-<?= $rec['id'] ?>">
+                        <div class="card-tilted <?= $marginLeft ?>" id="rec-<?= $rec['id_recurso'] ?>">
                             <div class="card-inner relative bg-white/90 dark:bg-[#2e2d2b] p-5 md:p-6 rounded-2xl flex flex-col md:flex-row gap-5 shadow-[0_10px_30px_rgba(0,0,0,0.6)] border border-slate-200 dark:!border-white/10 group transition-transform hover:-translate-y-1">
                                 
                                 <!-- Botón eliminar (oculto por defecto, visible en hover) -->
-                                <button onclick="eliminarRecurso(<?= $rec['id'] ?>)" 
+                                <button onclick="eliminarRecurso(<?= $rec['id_recurso'] ?>)" 
                                     class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-900/90 text-red-200 shadow-md border border-red-500/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:scale-110">
                                     <span class="material-symbols-outlined text-[16px]">delete</span>
                                 </button>
@@ -309,10 +309,10 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                                             <span class="material-symbols-outlined text-slate-800 dark:text-slate-800 dark:text-[#f5ebd7] text-4xl drop-shadow-lg">play_circle</span>
                                         </div>
                                     </div>
-                                <?php elseif ($esImg && !empty($rec['url_imagen'])): ?>
+                                <?php elseif ($esImg && !empty($rec['imagen_ruta'])): ?>
                                     <!-- THUMBNAIL IMAGEN -->
-                                    <div class="w-full md:w-40 h-24 rounded-xl overflow-hidden relative shrink-0 border border-slate-200 dark:border-white/10 cursor-pointer bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18]" onclick="verImagenFull('<?= URL_BASE . 'public/' . htmlspecialchars($rec['url_imagen']) ?>', '<?= htmlspecialchars($rec['titulo']) ?>')">
-                                        <img src="<?= URL_BASE . 'public/' . htmlspecialchars($rec['url_imagen']) ?>" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" alt="Imagen">
+                                    <div class="w-full md:w-40 h-24 rounded-xl overflow-hidden relative shrink-0 border border-slate-200 dark:border-white/10 cursor-pointer bg-slate-50 dark:bg-slate-50 dark:!bg-[#1b1a18]" onclick="verImagenFull('<?= URL_BASE . htmlspecialchars($rec['imagen_ruta']) ?>', '<?= htmlspecialchars($rec['titulo']) ?>')">
+                                        <img src="<?= URL_BASE . htmlspecialchars($rec['imagen_ruta']) ?>" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" alt="Imagen">
                                         <div class="absolute bottom-1 right-1 bg-black/60 rounded p-1">
                                             <span class="material-symbols-outlined text-white text-[14px]">zoom_in</span>
                                         </div>
@@ -331,7 +331,7 @@ $tipoLabel = ['video' => 'Video', 'mensaje' => 'Mensaje', 'imagen' => 'Imagen'];
                                                     // Buscar inicial del paciente
                                                     $inicial = '?';
                                                     foreach(($pacientes ?? []) as $pa) {
-                                                        if($pa['id'] == $rec['id_paciente']) {
+                                                        if($pa['id_paciente'] == $rec['id_paciente']) {
                                                             $inicial = strtoupper(substr($pa['nombre'], 0, 1));
                                                             break;
                                                         }

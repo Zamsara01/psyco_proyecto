@@ -42,12 +42,12 @@ $content = $content ?? '';
     <!--
         TAILWIND CSS COMPILADO (Tailwind CLI v4)
         Generado con: npm run build
-        Fuente: public/css/tailwind-input.css → public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>
+        Fuente: public/css/tailwind-input.css → public/css/tailwind.css?v=<?= time() ?>
     -->
-    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>">
+    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind.css?v=<?= time() ?>">
 
     <!-- Estilos adicionales / Utilidades del proyecto -->
-    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css?v=<?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?><?= time() ?>">
+    <link rel="stylesheet" href="<?= URL_BASE ?>public/css/tailwind-custom.css?v=<?= time() ?>">
 </head>
 <body class="text-on-surface min-h-screen flex flex-row font-body-md relative overflow-x-hidden">
     
@@ -89,12 +89,7 @@ $content = $content ?? '';
         <?php require __DIR__ . '/../partials/login_required_modal.php'; ?>
 
         <?php if (empty($hideSidebar)): ?>
-        <!-- Footer global -->
-        <footer class="bg-white/70 dark:bg-[#2a2926]/90 backdrop-blur-sm border-t border-slate-200/60 dark:border-white/5 py-4 px-6 text-center mt-auto">
-            <p class="text-body-sm text-on-surface-variant dark:text-[#a39c8e]">
-                &copy; <?= date('Y') ?> <span class="font-semibold text-primary dark:text-[#E4EAE6]">grupo_psyco</span> — Todos los derechos reservados.
-            </p>
-        </footer>
+        <?php require __DIR__ . '/../partials/tailwind_footer.php'; ?>
         <?php endif; ?>
     </div>
 

@@ -908,6 +908,156 @@ class ControllerPanel_psicologas extends Controller
         exit;
     }
 
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/subirFotoPerfil
+    // Campos: foto (file)
+    // ────────────────────────────────────────────────────────────────
+    public function subirFotoPerfil(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+
+        $idUsuario = (int)($_SESSION['user']['id_usuario'] ?? 0);
+        if ($idUsuario < 1) {
+            echo json_encode(['ok' => false, 'error' => 'Sesión inválida.']);
+            exit;
+        }
+
+        if (!isset($_FILES['foto']) || $_FILES['foto']['error'] === UPLOAD_ERR_NO_FILE) {
+            echo json_encode(['ok' => false, 'error' => 'Debes seleccionar una imagen.']);
+            exit;
+        }
+
+        $file = $_FILES['foto'];
+
+        // Código de error de PHP
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $errMsgs = [
+                UPLOAD_ERR_INI_SIZE   => 'La imagen supera el límite del servidor.',
+                UPLOAD_ERR_FORM_SIZE  => 'La imagen supera el límite del formulario.',
+                UPLOAD_ERR_PARTIAL    => 'La imagen se subió de forma parcial. Inténtalo de nuevo.',
+                UPLOAD_ERR_NO_TMP_DIR => 'Error del servidor: falta directorio temporal.',
+                UPLOAD_ERR_CANT_WRITE => 'Error del servidor: no se pudo escribir la imagen.',
+                UPLOAD_ERR_EXTENSION  => 'Una extensión de PHP bloqueó la subida.',
+            ];
+            echo json_encode(['ok' => false, 'error' => $errMsgs[$file['error']] ?? "Error al subir la imagen."]);
+            exit;
+        }
+
+        if (empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            echo json_encode(['ok' => false, 'error' => 'El archivo no es válido.']);
+            exit;
+        }
+
+        // Validar extensión
+        $ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($ext, $allowed, true)) {
+            echo json_encode(['ok' => false, 'error' => 'Formato no permitido. Usa JPG, PNG, GIF o WebP.']);
+            exit;
+        }
+
+        // Validar tamaño (3 MB)
+        if ($file['size'] > 3 * 1024 * 1024) {
+            echo json_encode(['ok' => false, 'error' => 'La imagen no puede superar 3 MB.']);
+            exit;
+        }
+
+        // Validar MIME real
+        if (function_exists('finfo_open')) {
+            $finfo    = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeReal = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+            $mimesPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!in_array($mimeReal, $mimesPermitidos, true)) {
+                echo json_encode(['ok' => false, 'error' => 'El archivo no es una imagen válida.']);
+                exit;
+            }
+        }
+
+        $uploadsDir = __DIR__ . '/../../public/uploads/perfiles/';
+        if (!is_dir($uploadsDir)) {
+            if (!mkdir($uploadsDir, 0775, true)) {
+                echo json_encode(['ok' => false, 'error' => 'No se pudo crear el directorio de perfiles.']);
+                exit;
+            }
+        }
+
+        if (!is_writable($uploadsDir)) {
+            echo json_encode(['ok' => false, 'error' => 'El directorio de perfiles no tiene permisos de escritura.']);
+            exit;
+        }
+
+        // Eliminar foto anterior si existe y es local
+        require_once dirname(__DIR__) . '/models/PsicologoModel.php';
+        $model      = new PsicologoModel();
+        $avatarAnterior = $model->getAvatarUrl($idUsuario);
+        if ($avatarAnterior && str_starts_with($avatarAnterior, 'public/uploads/perfiles/')) {
+            $fullPath = dirname(__DIR__, 2) . '/' . $avatarAnterior;
+            if (file_exists($fullPath)) @unlink($fullPath);
+        }
+
+        // Guardar nueva imagen con nombre único
+        $nombre   = 'psico_' . $idUsuario . '_' . uniqid('', true) . '.' . $ext;
+        $destPath = $uploadsDir . $nombre;
+
+        if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+            echo json_encode(['ok' => false, 'error' => 'Error al mover la imagen al servidor.']);
+            exit;
+        }
+
+        $rutaRelativa = 'public/uploads/perfiles/' . $nombre;
+
+        // Actualizar en BD
+        if (!$model->updateAvatarUrl($idUsuario, $rutaRelativa)) {
+            // Intentar borrar el archivo subido para no dejar basura
+            @unlink($destPath);
+            echo json_encode(['ok' => false, 'error' => 'Error al actualizar la foto en la base de datos.']);
+            exit;
+        }
+
+        // Actualizar sesión
+        $_SESSION['user']['avatar'] = $rutaRelativa;
+
+        echo json_encode([
+            'ok'      => true,
+            'mensaje' => 'Foto de perfil actualizada correctamente.',
+            'avatar'  => $rutaRelativa,
+        ]);
+        exit;
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // POST /panel_psicologas/eliminarFotoPerfil
+    // ────────────────────────────────────────────────────────────────
+    public function eliminarFotoPerfil(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $this->requirePsicologo(true);
+
+        $idUsuario = (int)($_SESSION['user']['id_usuario'] ?? 0);
+        if ($idUsuario < 1) {
+            echo json_encode(['ok' => false, 'error' => 'Sesión inválida.']);
+            exit;
+        }
+
+        require_once dirname(__DIR__) . '/models/PsicologoModel.php';
+        $model = new PsicologoModel();
+        $avatarActual = $model->getAvatarUrl($idUsuario);
+
+        if ($avatarActual && str_starts_with($avatarActual, 'public/uploads/perfiles/')) {
+            $fullPath = dirname(__DIR__, 2) . '/' . $avatarActual;
+            if (file_exists($fullPath)) @unlink($fullPath);
+        }
+
+        $model->updateAvatarUrl($idUsuario, '');
+        $_SESSION['user']['avatar'] = null;
+
+        echo json_encode(['ok' => true, 'mensaje' => 'Foto de perfil eliminada.']);
+        exit;
+    }
+
     // ────────────────────────────────────────────────────────────────
     // Alias de compatibilidad → delega al guard centralizado en Controller.
     // Permite migrar los 22 call sites existentes sin tocarlos de golpe.

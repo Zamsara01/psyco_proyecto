@@ -66,12 +66,13 @@ class ControllerUsers extends Controller
                 $psicologa = $psicoModel->findByCredentials($email, $password);
                 if ($psicologa) {
                     $_SESSION['user'] = [
-                        'id'     => $psicologa['id_psicologo'],
+                        'id'         => $psicologa['id_psicologo'],
                         'id_usuario' => $user['id_usuario'],
-                        'nombre' => $user['nombre'],
-                        'correo' => $user['correo_electronico'],
-                        'estado' => $user['estado'],
-                        'rol'    => 'psicologo'
+                        'nombre'     => $user['nombre'],
+                        'correo'     => $user['correo_electronico'],
+                        'estado'     => $user['estado'],
+                        'rol'        => 'psicologo',
+                        'avatar'     => $user['avatar_url'] ?? null,
                     ];
                     $this->redirect('panel_psicologas/index');
                     return;
@@ -449,9 +450,24 @@ class ControllerUsers extends Controller
         $stmt = $pdo->prepare("UPDATE usuario SET contrasena = ? WHERE id_usuario = ?");
         
         if ($stmt->execute([$hash, $user['id_usuario']])) {
-            // Registrar en auditoría
-            $pdo->prepare("INSERT INTO auditoria_contrasenas (id_usuario) VALUES (?)")
-                ->execute([$user['id_usuario']]);
+            // Registrar en auditoría de forma adaptativa al esquema de la tabla
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+            $cols = $pdo->query("SHOW COLUMNS FROM auditoria_contrasenas")->fetchAll(PDO::FETCH_COLUMN);
+            $data = [];
+            if (in_array('id_usuario', $cols, true)) $data['id_usuario'] = $user['id_usuario'];
+            if (in_array('id_usuario_actor', $cols, true)) $data['id_usuario_actor'] = $user['id_usuario'];
+            if (in_array('realizado_por', $cols, true)) {
+                $stName = $pdo->prepare("SELECT nombre FROM usuario WHERE id_usuario = ?");
+                $stName->execute([$user['id_usuario']]);
+                $data['realizado_por'] = $stName->fetchColumn() ?: 'Mismo usuario';
+            }
+            if (in_array('ip_address', $cols, true)) $data['ip_address'] = $ip;
+            if (!empty($data)) {
+                $colsStr = implode(', ', array_keys($data));
+                $qMarks  = implode(', ', array_fill(0, count($data), '?'));
+                $pdo->prepare("INSERT INTO auditoria_contrasenas ({$colsStr}) VALUES ({$qMarks})")
+                    ->execute(array_values($data));
+            }
             echo json_encode(['ok' => true]);
         } else {
             echo json_encode(['ok' => false, 'error' => 'Error al cambiar la contraseña en la base de datos.']);

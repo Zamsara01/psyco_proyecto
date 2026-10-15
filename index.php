@@ -4,6 +4,27 @@
  * Toda petición HTTP pasa por aquí gracias al .htaccess
  */
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+set_exception_handler(function (\Throwable $e) {
+    @file_put_contents(__DIR__ . '/debug_error.log', date('Y-m-d H:i:s') . " - " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
+    http_response_code(500);
+    echo "<h1>Error en la aplicación:</h1>";
+    echo "<pre style='background:#222;color:#f88;padding:15px;border-radius:8px;font-size:14px;'>" . htmlspecialchars($e->getMessage()) . "\n\n" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+    exit;
+});
+
+register_shutdown_function(function () {
+    $err = error_get_last();
+    if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        @file_put_contents(__DIR__ . '/debug_error.log', date('Y-m-d H:i:s') . " - Fatal: " . $err['message'] . " in " . $err['file'] . ":" . $err['line'] . "\n", FILE_APPEND);
+        echo "<h1>Fatal error:</h1>";
+        echo "<pre style='background:#222;color:#f88;padding:15px;border-radius:8px;font-size:14px;'>" . htmlspecialchars($err['message']) . " in " . $err['file'] . ":" . $err['line'] . "</pre>";
+    }
+});
+
 define('BASE_PATH', __DIR__ . '/');
 
 /**

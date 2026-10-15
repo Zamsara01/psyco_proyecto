@@ -16,7 +16,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
             <h1 class="font-handwritten text-4xl font-bold text-[#E4EAE6]" style="color:#3d3730">Auditoría de Seguridad</h1>
-            <p class="text-sm text-[#a39c8e] mt-1">Cambios de contraseña registrados, quién los hizo y desde qué IP.</p>
+            <p class="text-sm text-[#a39c8e] mt-1">Cambios de contraseña registrados: quién fue afectado y quién realizó el cambio.</p>
         </div>
         <form method="GET" action="<?= URL_BASE ?>superusuario/auditoria" class="search-box w-full sm:w-72">
             <input type="hidden" name="url" value="superusuario/auditoria" />
@@ -41,7 +41,6 @@
                         <th class="px-4 py-3">Tipo</th>
                         <th class="px-4 py-3">Email Afectado</th>
                         <th class="px-4 py-3">Realizado por</th>
-                        <th class="px-4 py-3">IP de Origen</th>
                         <th class="px-4 py-3">Fecha</th>
                     </tr>
                 </thead>
@@ -55,11 +54,10 @@
                         };
                     ?>
                     <tr class="border-b border-white/5 hover:bg-white/5 transition">
-                        <td class="px-4 py-3"><span class="text-[10px] uppercase font-bold px-2 py-1 rounded <?= $tipoClass ?>"><?= $a['entidad_tipo'] ?></span></td>
-                        <td class="px-4 py-3 font-semibold"><?= htmlspecialchars($a['entidad_email']) ?></td>
-                        <td class="px-4 py-3 text-[#a39c8e]"><?= htmlspecialchars($a['realizado_por']) ?></td>
-                        <td class="px-4 py-3"><code class="bg-white/10 px-2 py-0.5 rounded text-xs"><?= htmlspecialchars($a['ip_address']) ?></code></td>
-                        <td class="px-4 py-3 text-[#a39c8e] text-xs"><?= $a['fecha'] ?></td>
+                        <td class="px-4 py-3"><span class="text-[10px] uppercase font-bold px-2 py-1 rounded <?= $tipoClass ?>"><?= htmlspecialchars($a['entidad_tipo'] ?? 'Desconocido') ?></span></td>
+                        <td class="px-4 py-3 font-semibold"><?= htmlspecialchars($a['entidad_email'] ?? '—') ?></td>
+                        <td class="px-4 py-3 text-[#a39c8e]"><?= htmlspecialchars($a['realizado_por'] ?? '—') ?></td>
+                        <td class="px-4 py-3 text-[#a39c8e] text-xs"><?= htmlspecialchars($a['fecha'] ?? '') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

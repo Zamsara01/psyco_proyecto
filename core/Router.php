@@ -30,6 +30,11 @@ class Router
             }
         }
 
+        // Alias: /chatbot → chat_bot
+        if ($this->controller === 'chatbot') {
+            $this->controller = 'chat_bot';
+        }
+
         $controllerClass = 'Controller' . ucfirst($this->controller);
         $controllerFile  = dirname(__DIR__) . '/app/controllers/' . $controllerClass . '.php';
 

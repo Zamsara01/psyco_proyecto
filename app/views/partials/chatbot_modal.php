@@ -16,16 +16,16 @@ if (!empty($_SESSION['user'])) {
         if (!empty($cb_citasUser)) {
             $cb_tieneCitaAlguna = true;
             foreach ($cb_citasUser as $c) {
-                if ($c['estado'] === 'pendiente' && $c['fecha'] >= date('Y-m-d')) {
+                if (($c['estado'] ?? '') === 'pendiente' && ($c['fecha'] ?? '') >= date('Y-m-d')) {
                     $cb_tieneCitaPendiente = true;
                     $pendientes[] = [
-                        'id_cita' => $c['id_cita'],
-                        'fecha' => $c['fecha'],
-                        'hora' => substr($c['hora'], 0, 5),
-                        'id_psicologo' => $c['id_psicologo'],
-                        'psicologo_nombre' => $c['psicologo_nombre'],
-                        'especialidad' => $c['especialidad'],
-                        'foto_perfil' => $c['foto_perfil']
+                        'id_cita' => $c['id_cita'] ?? null,
+                        'fecha' => $c['fecha'] ?? '',
+                        'hora' => isset($c['hora']) ? substr($c['hora'], 0, 5) : '',
+                        'id_psicologo' => $c['id_psicologo'] ?? null,
+                        'psicologo_nombre' => $c['psicologo_nombre'] ?? '',
+                        'especialidad' => $c['especialidad'] ?? '',
+                        'foto_perfil' => $c['foto_perfil'] ?? ''
                     ];
                 }
             }
@@ -37,11 +37,11 @@ if (!empty($_SESSION['user'])) {
             $cb_tieneCitaPendiente = true;
             foreach ($cb_citasPsicologa as $c) {
                 $pendientes[] = [
-                    'id_cita' => $c['id_cita'],
-                    'id_usuario' => $c['id_usuario'],
-                    'fecha' => $c['fecha'],
-                    'hora' => substr($c['hora'], 0, 5),
-                    'paciente_nombre' => $c['paciente_nombre']
+                    'id_cita' => $c['id_cita'] ?? null,
+                    'id_usuario' => $c['id_usuario'] ?? $c['id_paciente'] ?? null,
+                    'fecha' => $c['fecha'] ?? '',
+                    'hora' => isset($c['hora']) ? substr($c['hora'], 0, 5) : '',
+                    'paciente_nombre' => $c['paciente_nombre'] ?? ''
                 ];
             }
         }
@@ -872,4 +872,24 @@ async function cbTerminarCita(id_cita, duracion_minutos, notas_sesion) {
         console.error('Excepción al terminar cita:', e);
     }
 }
+</script>
+
+<script>
+/* Auto-open del modal cuando la URL tiene ?open=chatbot */
+(function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('open') === 'chatbot') {
+        // Limpiar el param de la barra de direcciones sin recargar
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+        // Esperar a que el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof openChatbotModal === 'function') openChatbotModal();
+            });
+        } else {
+            if (typeof openChatbotModal === 'function') openChatbotModal();
+        }
+    }
+})();
 </script>

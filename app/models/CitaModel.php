@@ -321,7 +321,7 @@ class CitaModel extends Model
         require_once dirname(__DIR__, 2) . '/core/EncryptionService.php';
         $sql = "
             SELECT c.id_cita, c.fecha, c.hora, c.estado, c.motivo_consulta,
-                   u.nombre AS paciente_nombre, p.id_paciente
+                   u.nombre AS paciente_nombre, p.id_paciente, u.id_usuario
             FROM citas c
             JOIN paciente p ON c.id_paciente = p.id_paciente
             JOIN usuario u  ON p.id_usuario  = u.id_usuario

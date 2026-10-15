@@ -591,8 +591,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += `
                 <div class="flex flex-col gap-3 ${hoverClasses}" ${clickAttr}>
                     <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-blue-100 dark:border-slate-700 shrink-0">
-                            <img class="w-full h-full object-cover rounded-full"
+                        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-blue-100 dark:border-slate-700 shrink-0 cursor-pointer relative group/avatar hover:ring-2 hover:ring-blue-400 transition-all"
+                             onclick="event.stopPropagation(); abrirZoomFoto('${p.foto_perfil.replace(/'/g, "\\'")}', '${p.nombre.replace(/'/g, "\\'")}', '${p.especialidad.replace(/'/g, "\\'")}')"
+                             title="Ampliar foto de perfil">
+                            <img class="w-full h-full object-cover rounded-full transition-transform duration-200 group-hover/avatar:scale-110"
                                  src="${p.foto_perfil}"
                                  alt="${p.nombre}"
                                  onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=3b82f6&color=fff'"/>
@@ -1058,6 +1060,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // ─── Zoom de Foto de Perfil de Psicólogo ────────────────────────
+    function abrirZoomFoto(src, nombre, especialidad) {
+        const modal  = document.getElementById('modalZoomFoto');
+        const img    = document.getElementById('zoomFotoImg');
+        const nom    = document.getElementById('zoomFotoNombre');
+        const esp    = document.getElementById('zoomFotoEspecialidad');
+        const dialog = document.getElementById('zoomFotoDialog');
+        if (!modal || !img) return;
+
+        img.src = src;
+        if (nom) nom.textContent = nombre || '';
+        if (esp) esp.textContent = especialidad || '';
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0');
+            if (dialog) {
+                dialog.classList.remove('scale-90');
+                dialog.classList.add('scale-100');
+            }
+        });
+        document.addEventListener('keydown', _zoomFotoEscHandler);
+    }
+
+    function cerrarZoomFoto() {
+        const modal  = document.getElementById('modalZoomFoto');
+        const dialog = document.getElementById('zoomFotoDialog');
+        if (!modal) return;
+
+        modal.classList.add('opacity-0');
+        if (dialog) {
+            dialog.classList.remove('scale-100');
+            dialog.classList.add('scale-90');
+        }
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 220);
+        document.removeEventListener('keydown', _zoomFotoEscHandler);
+    }
+
+    function _zoomFotoEscHandler(e) {
+        if (e.key === 'Escape') cerrarZoomFoto();
+    }
 </script>
 
 <!-- ══════════ MODAL AGENDAR CITA (CALENDARIO) ══════════ -->
@@ -1081,7 +1130,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <!-- Info Psicólogo -->
         <div class="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl mb-5 border border-slate-100 dark:border-slate-700/60">
-            <img id="agendarModalFoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm">
+            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white dark:border-slate-700 shadow-sm shrink-0 cursor-pointer hover:ring-2 hover:ring-blue-400 group/avatar transition-all"
+                 onclick="event.stopPropagation(); abrirZoomFoto(document.getElementById('agendarModalFoto').src, document.getElementById('agendarModalNombre').textContent, document.getElementById('agendarModalEspecialidad').textContent)"
+                 title="Ampliar foto de perfil">
+                <img id="agendarModalFoto" src="" alt="Foto" class="w-full h-full object-cover transition-transform duration-200 group-hover/avatar:scale-110">
+            </div>
             <div class="min-w-0 flex-1">
                 <p id="agendarModalNombre" class="font-bold text-slate-800 dark:text-slate-100 text-sm truncate"></p>
                 <p id="agendarModalEspecialidad" class="text-xs text-slate-500 dark:text-slate-400 truncate"></p>
@@ -1242,3 +1295,25 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>
 <?php endif; ?>
+
+<!-- ══════════ MODAL ZOOM FOTO PSICÓLOGO ══════════ -->
+<div id="modalZoomFoto" class="fixed inset-0 z-[120] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0" onclick="cerrarZoomFoto()">
+    <div id="zoomFotoDialog" class="relative max-w-sm sm:max-w-md w-full flex flex-col items-center transform transition-all duration-300 scale-90" onclick="event.stopPropagation()">
+        <!-- Botón cerrar flotante -->
+        <button type="button" onclick="cerrarZoomFoto()" aria-label="Cerrar vista de foto"
+            class="absolute -top-12 right-0 sm:-right-2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer backdrop-blur-sm focus:outline-none">
+            <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+
+        <!-- Imagen con zoom -->
+        <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-white/30 dark:border-white/20 shadow-2xl bg-slate-900 shrink-0 ring-4 ring-black/30">
+            <img id="zoomFotoImg" src="" alt="Foto de perfil" class="w-full h-full object-cover select-none">
+        </div>
+
+        <!-- Nombre y especialidad -->
+        <div class="mt-5 text-center px-4">
+            <h3 id="zoomFotoNombre" class="text-xl sm:text-2xl font-bold text-white drop-shadow-md"></h3>
+            <p id="zoomFotoEspecialidad" class="text-sm text-blue-300 font-medium mt-1"></p>
+        </div>
+    </div>
+</div>

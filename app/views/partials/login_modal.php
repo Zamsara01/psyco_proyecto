@@ -86,7 +86,7 @@
                 <!-- Divisor con botón Google OAuth -->
                 <div class="flex items-center gap-4">
                     <div class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-600"></div>
-                    <span class="text-body-sm font-medium text-tertiary dark:text-slate-400">O regístrate con</span>
+                    <span class="text-body-sm font-medium text-tertiary dark:text-slate-400">O inicia sesión con</span>
                     <div class="h-[1px] flex-grow bg-slate-200 dark:bg-slate-600"></div>
                 </div>
 
@@ -116,12 +116,7 @@
 
         <!-- Footer del modal -->
         <div class="px-8 pb-7 pt-4 flex flex-col gap-3">
-            <div class="flex items-center gap-3">
-                <div class="h-px flex-grow bg-slate-200 dark:bg-slate-600"></div>
-                <span class="text-label-md text-on-surface-variant dark:text-slate-400">o</span>
-                <div class="h-px flex-grow bg-slate-200 dark:bg-slate-600"></div>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm pt-2">
                 <button type="button" onclick="closeLoginModal(); openForgotPasswordModal();" class="text-primary hover:underline font-body-sm bg-transparent border-none cursor-pointer transition-colors">Olvidé mi contraseña</button>
                 <button type="button" onclick="closeLoginModal(); openRegisterModal();" class="text-blue-600 font-semibold hover:text-blue-700 font-body-sm bg-transparent border-none cursor-pointer transition-colors">
                     ¿No tienes cuenta? Regístrate aquí

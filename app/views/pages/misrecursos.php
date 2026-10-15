@@ -249,54 +249,40 @@ function cerrarLb() {
     lb.classList.remove('flex');
 }
 
-// ── Renderizado asíncrono de YouTube oEmbed ─────────────────────
+// ── Renderizado local de YouTube (sin llamada a la API) ────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const BASE = window.URL_BASE || (window.location.origin + '/psyco_proyecto-davidBackend1/');
-    const placeholders = document.querySelectorAll('.oembed-video-placeholder');
-    
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                obs.unobserve(el);
-                loadOEmbed(el, BASE);
-            }
-        });
-    }, { rootMargin: '100px' });
+    document.querySelectorAll('.oembed-video-placeholder').forEach(el => {
+        const url   = el.getAttribute('data-url') || '';
+        const title = el.getAttribute('data-title') || 'Video';
+        const vidId = extractYoutubeId(url);
 
-    placeholders.forEach(el => observer.observe(el));
-});
-
-async function loadOEmbed(el, BASE) {
-    const url = el.getAttribute('data-url');
-    const title = el.getAttribute('data-title');
-    
-    try {
-        const res = await fetch(BASE + 'api/oembed/youtube?link=' + encodeURIComponent(url));
-        const json = await res.json();
-        
-        if (json.ok) {
-            let html = json.data.html;
-            html = html.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="100%"');
-            el.innerHTML = html;
-            
-            const iframe = el.querySelector('iframe');
-            if (iframe) iframe.className = 'absolute inset-0 w-full h-full';
+        if (vidId) {
+            el.innerHTML = `<iframe
+                src="https://www.youtube.com/embed/${vidId}"
+                title="${title.replace(/"/g, '&quot;')}"
+                class="absolute inset-0 w-full h-full"
+                allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                loading="lazy"
+                frameborder="0"></iframe>`;
             el.className = 'relative aspect-video bg-slate-900 border-b border-slate-100 dark:border-slate-700';
         } else {
-            throw new Error(json.error);
+            // URL no es de YouTube — mostrar botón externo directamente
+            el.className = 'relative aspect-video bg-slate-900/10 dark:bg-slate-900/50 border-b border-white/40 flex items-center justify-center';
+            el.innerHTML = `
+                <div class="text-center p-4">
+                    <span class="material-symbols-outlined text-[48px] text-slate-400 mb-2 block">play_circle</span>
+                    <a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener"
+                       class="inline-block bg-[#6B8CAE] text-white hover:bg-[#5a7e9f] px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
+                        Ver video
+                    </a>
+                </div>`;
         }
-    } catch (e) {
-        el.className = 'relative aspect-video bg-slate-900/10 dark:bg-slate-900/50 border-b border-white/40 flex items-center justify-center';
-        el.innerHTML = `
-            <div class="text-center p-4">
-                <span class="material-symbols-outlined text-[48px] text-slate-400 mb-2 block">broken_image</span>
-                <p class="text-xs text-slate-500 font-semibold mb-2">No se pudo incrustar el video</p>
-                <a href="${url.replace(/"/g, '"')}" target="_blank" rel="noopener" class="inline-block bg-[#6B8CAE] text-white hover:bg-[#5a7e9f] px-4 py-1.5 rounded-full text-xs font-bold transition-colors">
-                    Ver en YouTube
-                </a>
-            </div>
-        `;
-    }
+    });
+});
+
+function extractYoutubeId(url) {
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
 }
 </script>

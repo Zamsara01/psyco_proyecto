@@ -11,6 +11,17 @@ $nombre  = $user['nombre']  ?? '';
 $correo  = $user['correo']  ?? '';
 $inicial = $nombre ? strtoupper(mb_substr($nombre, 0, 1)) : '?';
 
+// Avatar para psicóloga: foto propia o generada
+$avatarUrl = null;
+if ($rol === 'psicologo') {
+    $avatarSesion = $user['avatar'] ?? null;
+    if ($avatarSesion && $avatarSesion !== '') {
+        $avatarUrl = URL_BASE . ltrim($avatarSesion, '/');
+    } else {
+        $avatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($nombre) . '&background=4a6e8a&color=fff&size=128&bold=true';
+    }
+}
+
 // URL actual para resaltar ítem activo
 $urlActual = $_GET['url'] ?? '';
 $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
@@ -244,6 +255,70 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
     <div class="border-t border-slate-100 dark:border-white/5 p-4 shrink-0">
         <?php if ($user): ?>
             <!-- Usuario logueado -->
+            <?php if ($rol === 'psicologo'): ?>
+            <!-- ── Área de perfil clicable para psicólogas ── -->
+            <div class="relative mb-3" id="perfilDropdownWrapper">
+                <button
+                    type="button"
+                    id="perfilDropdownBtn"
+                    onclick="togglePerfilDropdown()"
+                    class="w-full flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group text-left cursor-pointer"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    title="Ver opciones de perfil"
+                >
+                    <!-- Foto de perfil con badge indicador -->
+                    <div class="relative shrink-0 w-9 h-9" style="position: relative; width: 36px; height: 36px;">
+                        <img
+                            id="sidebarAvatarImg"
+                            src="<?= htmlspecialchars($avatarUrl) ?>"
+                            alt="Foto de perfil de <?= htmlspecialchars($nombre) ?>"
+                            class="w-9 h-9 rounded-full object-cover shadow-sm ring-2 ring-emerald-500/30 dark:ring-emerald-400/40"
+                            onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<?= urlencode($nombre) ?>&background=4a6e8a&color=fff&size=128&bold=true';"
+                            style="width: 36px; height: 36px; border-radius: 9999px;"
+                        >
+                        <span class="w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full" title="En línea" style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 9999px;"></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-slate-800 dark:text-[#E4EAE6] truncate"><?= htmlspecialchars($nombre) ?></p>
+                        <p class="text-xs text-slate-400 dark:text-[#8DA399] flex items-center gap-1 truncate">
+                            <span>🧠</span> Psicóloga
+                        </p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors">expand_more</span>
+                </button>
+
+                <!-- Dropdown menu -->
+                <div
+                    id="perfilDropdownMenu"
+                    class="hidden absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-[#2C3634] border border-slate-200 dark:border-white/10 rounded-xl shadow-lg z-50 overflow-hidden"
+                >
+                    <div class="p-3 border-b border-slate-100 dark:border-white/5">
+                        <p class="text-xs font-semibold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Mi perfil</p>
+                    </div>
+                    <!-- Cambiar foto -->
+                    <button
+                        type="button"
+                        onclick="abrirModalFotoPerfil()"
+                        class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 dark:text-[#E4EAE6] hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                    >
+                        <span class="material-symbols-outlined text-[18px] text-blue-500">add_a_photo</span>
+                        <span>Cambiar foto de perfil</span>
+                    </button>
+                    <!-- Eliminar foto -->
+                    <button
+                        type="button"
+                        onclick="eliminarFotoPerfil()"
+                        class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 dark:text-[#E4EAE6] hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
+                        id="btnEliminarFoto"
+                    >
+                        <span class="material-symbols-outlined text-[18px] text-red-500">no_photography</span>
+                        <span>Eliminar foto</span>
+                    </button>
+                </div>
+            </div>
+            <?php else: ?>
+            <!-- Avatar genérico para otros roles -->
             <div class="flex items-center gap-3 px-2 mb-3">
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm">
                     <?= htmlspecialchars($inicial) ?>
@@ -251,10 +326,34 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-slate-800 dark:text-[#E4EAE6] truncate"><?= htmlspecialchars($nombre) ?></p>
                     <p class="text-xs text-slate-400 dark:text-[#8DA399] truncate">
-                        <?= $rol === 'psicologo' ? '🧠 Psicóloga' : '👤 Paciente' ?>
+                        👤 <?= ucfirst($rol ?? 'Usuario') ?>
                     </p>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($rol === 'psicologo'): ?>
+            <!-- Avatar compacto visible SOLO en navbar-mode (oculto en sidebar normal) -->
+            <div id="navbarAvatarWrapper" class="hidden items-center gap-2 shrink-0">
+                <button
+                    type="button"
+                    onclick="abrirModalFotoPerfil()"
+                    title="Cambiar foto de perfil"
+                    class="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group cursor-pointer"
+                >
+                    <img
+                        id="navbarAvatarImg"
+                        src="<?= htmlspecialchars($avatarUrl) ?>"
+                        alt="Perfil"
+                        class="w-7 h-7 rounded-full object-cover ring-2 ring-emerald-500/30 dark:ring-slate-600"
+                        onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=<?= urlencode($nombre) ?>&background=4a6e8a&color=fff&size=64&bold=true';"
+                        data-navbar-avatar
+                    >
+                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 max-w-[120px] truncate hidden sm:inline"><?= htmlspecialchars($nombre) ?></span>
+                    <span class="material-symbols-outlined text-slate-400 text-[14px]">photo_camera</span>
+                </button>
+            </div>
+            <?php endif; ?>
 
             <!-- Toggle dark mode + Toggle layout (en fila) -->
             <div class="flex items-center gap-2 mb-2">
@@ -270,10 +369,12 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
                 </button>
             </div>
 
+            <!-- Botón Cerrar Sesión -->
             <a href="<?= URL_BASE ?>users/logout"
+               title="Cerrar sesión"
                class="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-semibold text-slate-600 dark:text-[#a39c8e] bg-slate-50 dark:bg-white/5 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-300 rounded-xl transition-colors border border-slate-200 dark:border-white/5">
                 <span class="material-symbols-outlined text-[18px]">logout</span>
-                Cerrar sesión
+                <span class="logout-text">Cerrar sesión</span>
             </a>
 
         <?php else: ?>
@@ -306,6 +407,343 @@ $isActive  = fn(string $path) => str_starts_with($urlActual, ltrim($path, '/'))
         <?php endif; ?>
     </div>
 </aside>
+
+<?php if ($rol === 'psicologo'): ?>
+<!-- ══════════════ MODAL DE FOTO DE PERFIL (solo psicóloga) ══════════════ -->
+<style>
+/* Estilos para el dropdown de perfil y modal en modo oscuro */
+.dark #perfilDropdownMenu {
+    background-color: #2C3634 !important;
+    border-color: #3A4744 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+#perfilDropdownMenu button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #334155 !important;
+    justify-content: flex-start !important;
+}
+#perfilDropdownMenu button:hover {
+    background-color: #f1f5f9 !important;
+    color: #2563eb !important;
+}
+.dark #perfilDropdownMenu button {
+    background: transparent !important;
+    color: #E4EAE6 !important;
+}
+.dark #perfilDropdownMenu button:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #D7E6D5 !important;
+}
+.dark #perfilDropdownMenu button#btnEliminarFoto:hover {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #F2D4CE !important;
+}
+.dark #perfilDropdownMenu button span {
+    color: inherit !important;
+}
+.dark #perfilDropdownWrapper button#perfilDropdownBtn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.dark #perfilDropdownWrapper button#perfilDropdownBtn:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Modal Foto de Perfil */
+.dark #fotoPerfil-modal > div:last-child {
+    background-color: #242c2a !important;
+    border: 1px solid #3A4744 !important;
+}
+.dark #fotoPerfil-title {
+    color: #E4EAE6 !important;
+}
+.dark #fotoPerfil-instruction {
+    color: #E4EAE6 !important;
+}
+#fotoPerfil-submitBtn:not(:disabled) {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+.dark #fotoPerfil-submitBtn:not(:disabled) {
+    background-color: #3A5C3D !important;
+    color: #D7E6D5 !important;
+}
+#fotoPerfil-submitBtn:disabled {
+    background-color: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+}
+.dark #fotoPerfil-submitBtn:disabled {
+    background-color: #2e3836 !important;
+    color: #6b7c76 !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+}
+#fotoPerfil-submitLabel {
+    color: inherit !important;
+}
+</style>
+
+<div id="fotoPerfil-modal" class="fixed inset-0 z-[70] hidden items-end sm:items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="fotoPerfil-title">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="cerrarModalFotoPerfil()"></div>
+    <div class="relative bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md mx-0 sm:mx-4 z-10 flex flex-col">
+
+        <!-- Header -->
+        <div class="flex items-center gap-4 p-5 border-b border-slate-100 dark:border-slate-700">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined">add_a_photo</span>
+            </div>
+            <div class="flex-1">
+                <h3 id="fotoPerfil-title" class="font-bold text-slate-800 dark:text-slate-100 text-base">Cambiar foto de perfil</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">JPG, PNG, GIF o WebP · máx. 3 MB</p>
+            </div>
+            <button onclick="cerrarModalFotoPerfil()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Vista previa -->
+        <div class="p-5 flex flex-col items-center gap-4">
+            <div class="relative group cursor-pointer" onclick="document.getElementById('fotoPerfilInput').click()">
+                <img
+                    id="fotoPerfil-preview"
+                    src="<?= htmlspecialchars($avatarUrl) ?>"
+                    alt="Vista previa"
+                    class="w-28 h-28 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-700 shadow-lg transition-opacity group-hover:opacity-70"
+                    onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=<?= urlencode($nombre) ?>&background=4a6e8a&color=fff&size=128&bold=true';"
+                >
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-white text-4xl drop-shadow">photo_camera</span>
+                </div>
+            </div>
+            <p id="fotoPerfil-instruction" class="text-xs text-slate-600 dark:text-slate-200 font-medium text-center">Haz click en la imagen para seleccionar una foto</p>
+
+            <!-- Input de archivo (oculto) -->
+            <input
+                type="file"
+                id="fotoPerfilInput"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                class="hidden"
+                onchange="previsualizarFoto(this)"
+            >
+
+            <!-- Barra de error -->
+            <div id="fotoPerfil-error" class="hidden w-full px-4 py-2 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400"></div>
+
+            <!-- Botón subir -->
+            <button
+                type="button"
+                id="fotoPerfil-submitBtn"
+                onclick="subirFotoPerfil()"
+                disabled
+                class="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold rounded-xl transition-colors"
+            >
+                <span class="material-symbols-outlined text-[18px]">upload</span>
+                <span id="fotoPerfil-submitLabel">Selecciona una imagen primero</span>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- /MODAL FOTO DE PERFIL -->
+
+
+<script>
+// ──────────────────────────────────────────────
+// Dropdown del perfil de psicóloga
+// ──────────────────────────────────────────────
+function togglePerfilDropdown() {
+    const menu = document.getElementById('perfilDropdownMenu');
+    const btn  = document.getElementById('perfilDropdownBtn');
+    const isOpen = !menu.classList.contains('hidden');
+    if (isOpen) {
+        cerrarPerfilDropdown();
+    } else {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+    }
+}
+
+function cerrarPerfilDropdown() {
+    const menu = document.getElementById('perfilDropdownMenu');
+    const btn  = document.getElementById('perfilDropdownBtn');
+    if (menu) {
+        menu.classList.add('hidden');
+        btn && btn.setAttribute('aria-expanded', 'false');
+    }
+}
+
+// Cerrar dropdown al clickear fuera
+document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('perfilDropdownWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+        cerrarPerfilDropdown();
+    }
+});
+
+// ──────────────────────────────────────────────
+// Modal de foto de perfil
+// ──────────────────────────────────────────────
+function abrirModalFotoPerfil() {
+    cerrarPerfilDropdown();
+    const modal = document.getElementById('fotoPerfil-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    // Reset estado
+    document.getElementById('fotoPerfilInput').value = '';
+    document.getElementById('fotoPerfil-error').classList.add('hidden');
+    document.getElementById('fotoPerfil-submitBtn').disabled = true;
+    document.getElementById('fotoPerfil-submitLabel').textContent = 'Selecciona una imagen primero';
+    // Restaurar preview al avatar actual
+    const currentSrc = document.getElementById('sidebarAvatarImg').src;
+    document.getElementById('fotoPerfil-preview').src = currentSrc;
+}
+
+function cerrarModalFotoPerfil() {
+    const modal = document.getElementById('fotoPerfil-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function previsualizarFoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Validar tamaño en el cliente (3 MB)
+    if (file.size > 3 * 1024 * 1024) {
+        mostrarErrorFoto('La imagen no puede superar 3 MB.');
+        input.value = '';
+        return;
+    }
+    // Validar tipo
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!tiposPermitidos.includes(file.type)) {
+        mostrarErrorFoto('Formato no permitido. Usa JPG, PNG, GIF o WebP.');
+        input.value = '';
+        return;
+    }
+
+    document.getElementById('fotoPerfil-error').classList.add('hidden');
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('fotoPerfil-preview').src = e.target.result;
+        document.getElementById('fotoPerfil-submitBtn').disabled = false;
+        document.getElementById('fotoPerfil-submitLabel').textContent = 'Guardar foto de perfil';
+    };
+    reader.readAsDataURL(file);
+}
+
+function mostrarErrorFoto(msg) {
+    const el = document.getElementById('fotoPerfil-error');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+}
+
+async function subirFotoPerfil() {
+    const input = document.getElementById('fotoPerfilInput');
+    if (!input.files[0]) return;
+
+    const btn   = document.getElementById('fotoPerfil-submitBtn');
+    const label = document.getElementById('fotoPerfil-submitLabel');
+    btn.disabled = true;
+    label.textContent = 'Subiendo…';
+
+    const formData = new FormData();
+    formData.append('foto', input.files[0]);
+
+    try {
+        const res  = await fetch('<?= URL_BASE ?>panel_psicologas/subirFotoPerfil', {
+            method: 'POST',
+            body: formData,
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+            // Actualizar avatar en el sidebar sin recargar la página
+            const nuevaUrl = '<?= URL_BASE ?>' + data.avatar;
+            document.getElementById('sidebarAvatarImg').src       = nuevaUrl;
+            document.getElementById('fotoPerfil-preview').src     = nuevaUrl;
+            // Actualizar también en el navbar (si existe)
+            document.querySelectorAll('[data-navbar-avatar]').forEach(img => img.src = nuevaUrl);
+            cerrarModalFotoPerfil();
+            mostrarToastFoto('✅ Foto de perfil actualizada correctamente.');
+        } else {
+            mostrarErrorFoto(data.error || 'Error al subir la foto.');
+            btn.disabled = false;
+            label.textContent = 'Reintentar';
+        }
+    } catch (err) {
+        mostrarErrorFoto('Error de conexión. Inténtalo de nuevo.');
+        btn.disabled = false;
+        label.textContent = 'Reintentar';
+    }
+}
+
+async function eliminarFotoPerfil() {
+    if (!confirm('¿Seguro que quieres eliminar tu foto de perfil?')) return;
+    cerrarPerfilDropdown();
+
+    try {
+        const res  = await fetch('<?= URL_BASE ?>panel_psicologas/eliminarFotoPerfil', { method: 'POST' });
+        const data = await res.json();
+        if (data.ok) {
+            const fallback = 'https://ui-avatars.com/api/?name=<?= urlencode($nombre) ?>&background=4a6e8a&color=fff&size=128&bold=true';
+            document.getElementById('sidebarAvatarImg').src   = fallback;
+            document.getElementById('fotoPerfil-preview').src = fallback;
+            document.querySelectorAll('[data-navbar-avatar]').forEach(img => img.src = fallback);
+            mostrarToastFoto('🗑️ Foto de perfil eliminada.');
+        } else {
+            alert(data.error || 'No se pudo eliminar la foto.');
+        }
+    } catch (err) {
+        alert('Error de conexión. Inténtalo de nuevo.');
+    }
+}
+
+// Toast de confirmación ligero
+function mostrarToastFoto(mensaje) {
+    let toast = document.getElementById('fotoPerfil-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'fotoPerfil-toast';
+        document.body.appendChild(toast);
+    }
+    const isDark = document.documentElement.classList.contains('dark');
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(4rem);
+        z-index: 99999;
+        transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s ease;
+        opacity: 0;
+        pointer-events: none;
+        padding: 0.85rem 1.6rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        background-color: ${isDark ? '#2C3634' : '#1e293b'} !important;
+        color: ${isDark ? '#E4EAE6' : '#ffffff'} !important;
+        border: 1px solid ${isDark ? 'rgba(215, 230, 213, 0.25)' : 'rgba(255, 255, 255, 0.15)'} !important;
+    `;
+    toast.textContent = mensaje;
+    requestAnimationFrame(() => {
+        toast.style.transform  = 'translateX(-50%) translateY(0)';
+        toast.style.opacity    = '1';
+        setTimeout(() => {
+            toast.style.transform = 'translateX(-50%) translateY(4rem)';
+            toast.style.opacity   = '0';
+        }, 3200);
+    });
+}
+</script>
+<?php endif; ?>
 
 <!-- ══════════════ MODAL DE BÚSQUEDA (solo psicóloga) ══════════════ -->
 <?php if ($rol === 'psicologo'): ?>
@@ -837,18 +1275,19 @@ body.navbar-mode {
 /* El sidebar se convierte en una barra horizontal fija arriba */
 body.navbar-mode #app-sidebar {
     position: fixed !important;
-    top: 0 !important; left: 0 !important;
-    width: 100vw !important;
+    top: 0 !important; left: 0 !important; right: 0 !important;
+    width: 100% !important;
     height: 60px !important;
     flex-direction: row !important;
     align-items: center !important;
     inset-block: unset !important;
     border-right: none !important;
     border-bottom: 1px solid rgba(148,163,184,0.15) !important;
-    padding: 0 1.25rem !important;
-    gap: 0 !important;
+    padding: 0 1rem !important;
+    gap: 0.5rem !important;
     transform: none !important;
-    overflow: visible !important;
+    overflow: hidden !important;
+    z-index: 50 !important;
 }
 
 /* Dark mode: borde inferior más sutil y fondo opaco */
@@ -863,7 +1302,7 @@ body.navbar-mode #app-sidebar > div:first-child {
     border-bottom: none !important;
     height: 60px !important;
     min-width: max-content !important;
-    padding: 0 1rem 0 0 !important;
+    padding: 0 0.5rem 0 0 !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
     overflow: hidden !important;
@@ -873,47 +1312,61 @@ body.navbar-mode #app-sidebar > div:first-child {
 
 /* Logo: limitar tamaño dentro del navbar */
 body.navbar-mode #app-sidebar > div:first-child img {
-    height: 36px !important;
+    height: 34px !important;
     width: auto !important;
     max-width: none !important;
 }
 
-/* Botón toggle en navbar-mode: se ubica justo a la derecha del logo */
+/* Botón toggle en navbar-mode */
 body.navbar-mode #layoutToggleBtn {
     position: static !important;
-    order: 2 !important;
-    margin-right: 1rem !important;
+    margin: 0 !important;
 }
 
-/* Nav — ocupa el espacio central y pone items en fila */
+/* Nav — ocupa el espacio central de forma flexible y con scroll horizontal seguro */
 body.navbar-mode #app-sidebar nav {
-    flex: 1 !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    padding: 0 !important;
-    overflow: visible !important;
+    padding: 0 0.25rem !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
     height: 60px !important;
     min-width: 0 !important;
+}
+body.navbar-mode #app-sidebar nav::-webkit-scrollbar {
+    display: none !important;
 }
 body.navbar-mode #app-sidebar nav > div.space-y-1 {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.125rem !important;
+    gap: 0.2rem !important;
     height: 60px !important;
     flex-wrap: nowrap !important;
+    flex-shrink: 0 !important;
 }
 body.navbar-mode #app-sidebar nav > div.space-y-1 > a,
 body.navbar-mode #app-sidebar nav > div.space-y-1 > button,
 body.navbar-mode #app-sidebar nav > div.space-y-1 > div {
     width: auto !important;
-    height: 38px !important;
-    padding: 0 0.75rem !important;
+    height: 36px !important;
+    padding: 0 0.5rem !important;
+    gap: 0.35rem !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
     white-space: nowrap !important;
     border-radius: 0.5rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    flex-shrink: 0 !important;
+}
+body.navbar-mode #app-sidebar nav > div.space-y-1 .material-symbols-outlined {
+    font-size: 19px !important;
 }
 
 /* Dropdown en navbar */
@@ -940,7 +1393,7 @@ body.navbar-mode #misRecursosMenu a {
 /* Ocultar bloque decorativo inferior */
 body.navbar-mode #app-sidebar nav > div.mt-auto { display: none !important; }
 
-/* Footer (info de usuario) — al final a la derecha */
+/* Footer (info de usuario) — anclado a la derecha, sin colisiones */
 body.navbar-mode #app-sidebar > div:last-child {
     border-top: none !important;
     padding: 0 !important;
@@ -948,26 +1401,82 @@ body.navbar-mode #app-sidebar > div:last-child {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.5rem !important;
+    gap: 0.35rem !important;
     flex-shrink: 0 !important;
     height: 60px !important;
+    position: relative !important;
+    z-index: 20 !important;
 }
-body.navbar-mode #app-sidebar > div:last-child > div.flex.items-center.gap-3 { display: none !important; } /* Ocultar bloque nombre/avatar */
+/* Ocultar bloque de perfil vertical en navbar-mode */
+body.navbar-mode #app-sidebar > div:last-child > div.flex.items-center.gap-3 { display: none !important; }
+body.navbar-mode #perfilDropdownWrapper { display: none !important; }
+
+/* Mostrar avatar compacto SOLO en navbar-mode */
+#navbarAvatarWrapper { display: none !important; }
+body.navbar-mode #navbarAvatarWrapper { 
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+body.navbar-mode #navbarAvatarWrapper .material-symbols-outlined {
+    display: none !important;
+}
+
+/* Ocultar texto 'Modo oscuro' en navbar-mode para mantener el botón de icono compacto */
+body.navbar-mode #darkModeLabel {
+    display: none !important;
+}
+
 body.navbar-mode #app-sidebar > div:last-child button,
 body.navbar-mode #app-sidebar > div:last-child a {
     margin: 0 !important;
     width: auto !important;
-    padding: 0.4rem 0.75rem !important;
+    padding: 0.4rem 0.55rem !important;
     white-space: nowrap !important;
     border-radius: 0.5rem !important;
     font-size: 0.8rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
 }
 body.navbar-mode #app-sidebar > div:last-child .space-y-2 {
     display: flex !important;
     flex-direction: row !important;
-    gap: 0.4rem !important;
+    gap: 0.35rem !important;
 }
 body.navbar-mode #app-sidebar > div:last-child .space-y-2 > * { margin: 0 !important; }
+
+/* Limpiar márgenes verticales en hijos directos del footer en navbar-mode */
+body.navbar-mode #app-sidebar > div:last-child > * {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+/* El div wrapper de los toggles: mostrar en fila, sin margin */
+body.navbar-mode #app-sidebar > div:last-child > div.flex.items-center.gap-2 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    margin: 0 !important;
+}
+
+/* Pantallas medianas: ocultar textos secundarios en footer para máxima holgura */
+@media (max-width: 1380px) {
+    body.navbar-mode #navbarAvatarWrapper span.text-xs {
+        display: none !important;
+    }
+    body.navbar-mode .logout-text {
+        display: none !important;
+    }
+    body.navbar-mode #app-sidebar > div:last-child a[href*="logout"] {
+        padding: 0 0.5rem !important;
+    }
+}
 
 /* Contenido principal: quitar margen izquierdo y agregar padding-top */
 body.navbar-mode #main-content {

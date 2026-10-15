@@ -8,10 +8,57 @@ class ControllerSuperusuario extends Controller
         $this->requireAuth('superusuario', $jsonResponse);
     }
 
-    private function logAuditoria(int $idUsuarioActor, string $accion) {
+    /**
+     * Registra un evento de cambio de contraseña en la tabla auditoria_contrasenas.
+     * Se adapta dinámicamente a las columnas existentes en la tabla (lote 2, lote 3 o migración).
+     */
+    private function logAuditoria(int $idUsuarioAfectado, ?int $idUsuarioActor = null): void
+    {
         $pdo = Database::getInstance();
-        $stmt = $pdo->prepare("INSERT INTO auditoria_contrasenas (id_usuario) VALUES (?)");
-        $stmt->execute([$idUsuarioActor]);
+        $ip  = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+
+        $cols = $pdo->query("SHOW COLUMNS FROM auditoria_contrasenas")->fetchAll(PDO::FETCH_COLUMN);
+
+        $data = [];
+        if (in_array('id_usuario', $cols, true)) {
+            $data['id_usuario'] = $idUsuarioAfectado;
+        }
+        if (in_array('id_usuario_actor', $cols, true)) {
+            $data['id_usuario_actor'] = $idUsuarioActor;
+        }
+        if (in_array('realizado_por', $cols, true)) {
+            $actorNombre = 'Mismo usuario';
+            if ($idUsuarioActor && $idUsuarioActor !== $idUsuarioAfectado) {
+                $stmtActor = $pdo->prepare("SELECT nombre FROM usuario WHERE id_usuario = ?");
+                $stmtActor->execute([$idUsuarioActor]);
+                $actorNombre = $stmtActor->fetchColumn() ?: 'Superusuario';
+            } elseif ($idUsuarioAfectado) {
+                $stmtUser = $pdo->prepare("SELECT nombre FROM usuario WHERE id_usuario = ?");
+                $stmtUser->execute([$idUsuarioAfectado]);
+                $actorNombre = $stmtUser->fetchColumn() ?: 'Mismo usuario';
+            }
+            $data['realizado_por'] = $actorNombre;
+        }
+        if (in_array('entidad_email', $cols, true)) {
+            $stmtEmail = $pdo->prepare("SELECT correo_electronico FROM usuario WHERE id_usuario = ?");
+            $stmtEmail->execute([$idUsuarioAfectado]);
+            $data['entidad_email'] = $stmtEmail->fetchColumn() ?: '';
+        }
+        if (in_array('entidad_tipo', $cols, true)) {
+            $stmtRol = $pdo->prepare("SELECT r.nombre FROM usuario u JOIN roles r ON u.id_rol = r.id_rol WHERE u.id_usuario = ?");
+            $stmtRol->execute([$idUsuarioAfectado]);
+            $data['entidad_tipo'] = $stmtRol->fetchColumn() ?: 'paciente';
+        }
+        if (in_array('ip_address', $cols, true)) {
+            $data['ip_address'] = $ip;
+        }
+
+        if (!empty($data)) {
+            $colNames = implode(', ', array_keys($data));
+            $placeholders = implode(', ', array_fill(0, count($data), '?'));
+            $stmt = $pdo->prepare("INSERT INTO auditoria_contrasenas ({$colNames}) VALUES ({$placeholders})");
+            $stmt->execute(array_values($data));
+        }
     }
 
     public function index(): void
@@ -193,7 +240,9 @@ class ControllerSuperusuario extends Controller
             $hash = password_hash($pass, PASSWORD_BCRYPT);
             $pdo->prepare("UPDATE usuario SET nombre = ?, correo_electronico = ?, contrasena = ? WHERE id_usuario = ?")
                 ->execute([$nombre, $correo, $hash, $id]);
-            $this->logAuditoria((int)$_SESSION['user']['id_usuario'], 'Cambio de contraseña desde edición superadmin a usuario '.$id);
+
+            $idActor = (int)($_SESSION['user']['id_usuario'] ?? $_SESSION['user']['id'] ?? 0);
+            $this->logAuditoria($id, $idActor > 0 ? $idActor : null);
             $this->crearNotificacion(
                 "Editó usuario «{$prev['nombre']}» → nombre: «{$nombre}», correo: «{$correo}» (contraseña cambiada)",
                 'editarUser',
@@ -394,18 +443,89 @@ class ControllerSuperusuario extends Controller
         require_once dirname(__DIR__, 2) . '/core/Database.php';
         $pdo = Database::getInstance();
 
+        $colsStmt = $pdo->query("SHOW COLUMNS FROM auditoria_contrasenas");
+        $cols = $colsStmt->fetchAll(PDO::FETCH_COLUMN);
+
+        $hasIdUsuarioActor = in_array('id_usuario_actor', $cols, true);
+        $hasRealizadoPor   = in_array('realizado_por', $cols, true);
+        $hasIdUsuario      = in_array('id_usuario', $cols, true);
+        $hasEntidadEmail   = in_array('entidad_email', $cols, true);
+        $hasEntidadTipo    = in_array('entidad_tipo', $cols, true);
+        $hasIpAddress      = in_array('ip_address', $cols, true);
+
         $perPage = 20;
         $q = trim($_GET['q'] ?? '');
-        $like = '%' . $q . '%';
         $page = max(1, (int)($_GET['page'] ?? 1));
-        $totalStmt = $pdo->prepare("SELECT COUNT(*) FROM auditoria_contrasenas a LEFT JOIN usuario u ON a.id_usuario = u.id_usuario WHERE u.correo_electronico LIKE ?");
-        $totalStmt->execute([$like]);
+
+        $selectFields = ["a.id_auditoria", "a.fecha"];
+        $selectFields[] = $hasIpAddress ? "a.ip_address" : "'' AS ip_address";
+
+        $joins = "";
+
+        if ($hasIdUsuario) {
+            $joins .= " LEFT JOIN usuario u ON a.id_usuario = u.id_usuario";
+            $joins .= " LEFT JOIN roles r ON u.id_rol = r.id_rol";
+            $selectFields[] = "COALESCE(u.correo_electronico, '') AS entidad_email";
+            $selectFields[] = "COALESCE(r.nombre, 'paciente') AS entidad_tipo";
+        } elseif ($hasEntidadEmail && $hasEntidadTipo) {
+            $selectFields[] = "a.entidad_email";
+            $selectFields[] = "a.entidad_tipo";
+        } else {
+            $selectFields[] = "'' AS entidad_email";
+            $selectFields[] = "'paciente' AS entidad_tipo";
+        }
+
+        if ($hasRealizadoPor) {
+            $selectFields[] = "a.realizado_por";
+        } elseif ($hasIdUsuarioActor) {
+            $joins .= " LEFT JOIN usuario actor ON a.id_usuario_actor = actor.id_usuario";
+            $selectFields[] = "COALESCE(actor.nombre, actor.correo_electronico, " . ($hasIdUsuario ? "u.nombre" : "''") . ", 'Mismo usuario') AS realizado_por";
+        } else {
+            $selectFields[] = ($hasIdUsuario ? "COALESCE(u.nombre, 'Mismo usuario')" : "'—'") . " AS realizado_por";
+        }
+
+        $whereClause = "";
+        $params = [];
+        if ($q !== '') {
+            $like = '%' . $q . '%';
+            $conditions = [];
+            if ($hasIdUsuario) {
+                $conditions[] = "u.correo_electronico LIKE ?";
+                $conditions[] = "u.nombre LIKE ?";
+                $conditions[] = "r.nombre LIKE ?";
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+            } elseif ($hasEntidadEmail) {
+                $conditions[] = "a.entidad_email LIKE ?";
+                $params[] = $like;
+            }
+            if ($hasRealizadoPor) {
+                $conditions[] = "a.realizado_por LIKE ?";
+                $params[] = $like;
+            } elseif ($hasIdUsuarioActor) {
+                $conditions[] = "actor.nombre LIKE ?";
+                $conditions[] = "actor.correo_electronico LIKE ?";
+                $params[] = $like;
+                $params[] = $like;
+            }
+            if (!empty($conditions)) {
+                $whereClause = "WHERE (" . implode(" OR ", $conditions) . ")";
+            }
+        }
+
+        $totalSql = "SELECT COUNT(*) FROM auditoria_contrasenas a {$joins} {$whereClause}";
+        $totalStmt = $pdo->prepare($totalSql);
+        $totalStmt->execute($params);
         $totalRegistros = (int)$totalStmt->fetchColumn();
-        $totalPaginas = max(1, ceil($totalRegistros / $perPage));
+        $totalPaginas = max(1, (int)ceil($totalRegistros / $perPage));
         $offset = ($page - 1) * $perPage;
-        $stmt = $pdo->prepare("SELECT a.*, u.correo_electronico as entidad_email, r.nombre as entidad_tipo FROM auditoria_contrasenas a LEFT JOIN usuario u ON a.id_usuario = u.id_usuario LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo_electronico LIKE ? ORDER BY a.fecha DESC LIMIT ? OFFSET ?");
-        $stmt->execute([$like, $perPage, $offset]);
-        $auditoria = $stmt->fetchAll();
+
+        $fieldsSql = implode(", ", $selectFields);
+        $sql = "SELECT {$fieldsSql} FROM auditoria_contrasenas a {$joins} {$whereClause} ORDER BY a.fecha DESC LIMIT " . (int)$perPage . " OFFSET " . (int)$offset;
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $auditoria = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $this->layout = 'tailwind';
         $this->render('pages/superadmin/auditoria', compact('auditoria','q','page','totalPaginas','totalRegistros'));

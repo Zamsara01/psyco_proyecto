@@ -9,9 +9,10 @@ class ControllerChat_bot extends Controller
 {
     public function index(): void
     {
-        $this->requireAuth('paciente');
-        $this->layout = 'tailwind';
-        $this->render('pages/chatbot');
+        // Redirige a la página principal abriendo el modal de Acceso Rápido
+        // (cualquier rol puede usar el chatbot desde el modal global)
+        header('Location: ' . URL_BASE . '?open=chatbot');
+        exit;
     }
 
     // ────────────────────────────────────────────────────────────────
